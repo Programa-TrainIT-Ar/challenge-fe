@@ -8,6 +8,7 @@ import {TableModule} from 'primeng/table';
 import {StyleClassModule} from 'primeng/styleclass';
 import {PanelMenuModule} from 'primeng/panelmenu';
 import {ButtonModule} from 'primeng/button';
+import { AuthService } from '@auth0/auth0-angular';
 
 @Component({
     templateUrl: './dashboard.component.html',
@@ -17,6 +18,7 @@ import {ButtonModule} from 'primeng/button';
 export class DashboardComponent implements OnInit {
     userService = inject(UserService);
     user$: Observable<unknown>;
+    constructor(public auth:AuthService){}
 
     ngOnInit() {
         this.user$ = this.userService.getUser();
