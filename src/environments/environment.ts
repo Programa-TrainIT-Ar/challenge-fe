@@ -4,6 +4,18 @@
 
 export const environment = {
   production: false,
+  auth0: {
+    domain: 'dev-57mb2czg3obaii4q.us.auth0.com',
+    clientId: 'fSXB15CjWcHa1mcW0cCgG0nG9ska0Qx0',
+    authorizationParams: {
+      audience: 'https://pct-api.demo.com',
+      redirect_uri: 'http://localhost:4200/',
+    },
+    // errorPath: '/callback',
+  },
+  api: {
+    serverUrl: 'http://localhost:8000',
+  },
 };
 
 /*

@@ -17,4 +17,17 @@
     (click)="layoutService.showProfileSidebar()">
     <i class="pi pi-ellipsis-v"></i>
   </button>
+
+  <ng-container *ngIf="auth.isAuthenticated$ | async; else loggedOut">
+    <button
+      (click)="
+        auth.logout({ logoutParams: { returnTo: document.location.origin } })
+      ">
+      Log out
+    </button>
+  </ng-container>
+
+  <ng-template #loggedOut>
+    <button class="p-button" (click)="auth.loginWithPopup()">Log in</button>
+  </ng-template>
 </div>
