@@ -28,7 +28,7 @@ export class DashboardComponent implements OnInit {
   user$: Observable<unknown>;
 
   ngOnInit() {
-    this.user$ = this.userService.getUserById('clxdtn52v0008c2a7hrx9tsj6');
+    this.user$ = this.userService.getUserById('clxdu0lfo000114k3vqzdngah');
     console.log(this.user$);
   }
   constructor(public auth: AuthService) {}
