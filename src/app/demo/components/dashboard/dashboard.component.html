@@ -5,3 +5,12 @@
     <li>{{user.name}}</li>
     <li>{{user.email}}</li>
 </div>
+
+<div>
+    <h1 class="text-white">
+        @for (item of data(); track $index) {
+            {{item}}
+        }
+    </h1>
+</div>
+<button (click)="callProtectedEndpoint()" class="btn btn-danger">llamado</button>
