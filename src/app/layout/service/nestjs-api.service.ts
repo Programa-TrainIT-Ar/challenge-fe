@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 
 @Injectable({
@@ -11,8 +11,8 @@ export class NestjsApiService {
 
   constructor() { }
 
-    getNestjs() {
-        return this.http.get(`${this.urlApi}/protected`)
+    getNestjs(headers) {
+        return this.http.get(`${this.urlApi}/protected`, {headers})
     }
 
 }

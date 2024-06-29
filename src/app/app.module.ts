@@ -8,7 +8,6 @@ import { AuthService } from '@auth0/auth0-angular';
 import { AuthModule } from '@auth0/auth0-angular';
 import { environment } from 'src/environments/environment';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { AuthInterceptor } from './demo/interceptor/auth.interceptor';
 
 @NgModule({
   declarations: [AppComponent],
@@ -29,10 +28,6 @@ import { AuthInterceptor } from './demo/interceptor/auth.interceptor';
       provide: LocationStrategy,
       useClass: PathLocationStrategy,
 
-    },
-    {
-        provide:HTTP_INTERCEPTORS,
-        useClass: AuthInterceptor
     }
   ],
   bootstrap: [AppComponent],

@@ -10,7 +10,7 @@ import {PanelMenuModule} from 'primeng/panelmenu';
 import {ButtonModule} from 'primeng/button';
 import { AuthService } from '@auth0/auth0-angular';
 import { NestjsApiService } from 'src/app/layout/service/nestjs-api.service';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Component({
     templateUrl: './dashboard.component.html',
@@ -28,29 +28,27 @@ export class DashboardComponent implements OnInit {
         ngOnInit(): void {}
 
         callProtectedEndpoint(): void {
-          this.auth.idTokenClaims$.subscribe((claims) => {
-            const token = claims.__raw;
-            const headers = {
-              Authorization: `Bearer ${token}`
-            };
-            console.log(`${token}`);
-            if (claims.aud !== 'https://trainIT') {
-                console.error('El token JWT tiene una audiencia incorrecta.');
-                console.log(claims.aud);
-
-                return;
+            if (this.auth.isAuthenticated$) {
+                this.auth.getAccessTokenSilently().subscribe(
+                  token => {
+                    const headers = new HttpHeaders ({
+                      Authorization: `Bearer ${token}`
+                    });
+                    this.nestjsService.getNestjs(headers).subscribe(
+                      (response) => {
+                        console.log('Respuesta del endpoint protegido:', response);
+                      },
+                      (error) => {
+                        console.error('Error al llamar al endpoint protegido:', error);
+                      }
+                    );
+                  },
+                  error => {
+                    console.error('Error obteniendo el access token:', error);
+                  }
+                );
               }
-
-            this.http.get('http://localhost:3000/protected', { headers }).subscribe(
-              (response) => {
-                console.log('Respuesta del endpoint protegido:', response);
-              },
-              (error) => {
-                console.error('Error al llamar al endpoint protegido:', error);
-              }
-            );
-          });
-        }
+            }
 
 
 
