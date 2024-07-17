@@ -18,19 +18,27 @@
     <i class="pi pi-ellipsis-v"></i>
   </button>
 
-  <div *ngIf="auth.isAuthenticated$ | async; else loggedOut">
-      <button
-        class="p-link layout-menu-button text-white"
-        (click)="auth.logout()">
-        Log out
-      </button>
+  <div class="d-flex justify-content-end w-100" *ngIf="auth.isAuthenticated$ | async; else loggedOut">
+        <button
+            class="p-link layout-menu-button text-white mx-3"
+            (click)="auth.logout()">
+            Log out
+        </button>
+        <div *ngIf="auth.user$ | async as user" class="layout-topbar-logo d-flex justify-content-center">
+            @if (user.picture) {
+                <img class="rounded-5" src={{user.picture}} alt="">
+            }@else {
+                <img class="rounded-5" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQyD3SI8Qdekp6twYtnVVcpKfHw7WVQGy9Yfd32EiXPZI30cEgXJ-XhquB0ObTnutlwQrM&usqp=CAU" alt="">
+            }
+            <p class="overflow-hidden">{{user.name}}</p>
+        </div>
   </div>
   <ng-template #loggedOut>
     <button
-        class="p-link layout-menu-button text-white"
+        class="p-link layout-menu-button text-white d-flex justify-content-end w-100 me-5"
         (click)="auth.loginWithRedirect()">
         Log in
     </button>
-
   </ng-template>
+
 </div>
