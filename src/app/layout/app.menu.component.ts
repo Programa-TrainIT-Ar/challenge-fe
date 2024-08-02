@@ -16,10 +16,25 @@ export class AppMenuComponent implements OnInit {
       {
         label: 'Home',
         items: [
+          // {
+          //   label: 'Dashboard',
+          //   icon: 'pi pi-fw pi-home',
+          //   routerLink: ['/dashboard'], 
+          // },
           {
-            label: 'Dashboard',
-            icon: 'pi pi-fw pi-home',
-            routerLink: ['/'],
+            label: 'Candidatos',
+            icon: 'fa-solid fa-users',
+            routerLink: ['/candidatos'], 
+          },
+          {
+            label: 'Configurar Challenge',
+            icon: 'fa-solid fa-share-nodes',
+            routerLink: ['/challenge'], 
+          },
+          {
+            label: 'Calificar Challenge',
+            icon: 'fa-solid fa-graduation-cap',
+            routerLink: ['/calificar'], 
           },
         ],
       },

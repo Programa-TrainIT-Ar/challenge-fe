@@ -1,0 +1,22 @@
+
+.layout-menu {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin: auto;
+  
+}
+.card {
+  background: var(--surface-card);
+  border-style: none !important;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  box-shadow: var(--card-shadow);
+  border-style: solid;
+  border-radius: 5%;
+  color: azure;
+}
+.card:last-child {
+  margin-bottom: 0;
+}
+
