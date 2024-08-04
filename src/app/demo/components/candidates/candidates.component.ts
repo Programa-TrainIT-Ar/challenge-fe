@@ -3,13 +3,13 @@ import { LayoutService } from 'src/app/layout/service/app.layout.service';
 import { ElementRef } from '@angular/core';
 
 @Component({
-  selector: 'app-candidatos',
+  selector: 'app-candidates',
   standalone: true,
   imports: [],
-  templateUrl: './candidatos.component.html',
-  styleUrl: './candidatos.component.scss'
+  templateUrl: './candidates.component.html',
+  styleUrl: './candidates.component.scss'
 })
-export class CandidatosComponent {
+export class CandidatesComponent {
   constructor(
     public layoutService: LayoutService,
     public el: ElementRef

@@ -1,0 +1,67 @@
+/* Asegúrate de que el contenedor ocupe el ancho completo y que el contenido esté centrado */
+.container {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px; /* Espacio entre columnas, puedes ajustarlo según sea necesario */
+    padding: 10px;
+  }
+  
+  /* Estilo común para las columnas */
+  .column {
+    width: 50%; /* Ancho del 45% de la ventana del navegador */
+    border-radius: 15px; /* Bordes redondeados */
+    padding: 20px; /* Espacio interno */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra para el efecto de profundidad */
+    background-color: #2A323D; /* Color de fondo para las columnas */
+    box-sizing: border-box; /* Incluye padding y border en el ancho total */
+  }
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px; /* Espacio debajo del encabezado */
+  }
+
+
+  
+  #toggleButton {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #6200ff;
+    color: white;
+    cursor: pointer;
+  }
+  
+  #toggleButton:hover {
+    background-color: #0056b3;
+  }
+  
+  /* Estilo para los selectores */
+  .selectors, .categories {
+    margin-bottom: 20px; /* Espacio debajo de los selectores */
+  }
+  
+  select {
+    width: calc(50% - 10px); /* Ancho de los selectores múltiples */
+    margin-right: 10px; /* Espacio entre los selectores */
+    border-radius: 5px; /* Bordes redondeados */
+    padding: 10px; /* Espacio interno */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra para el efecto de profundidad */
+  }
+  
+  
+ 
+  
+ 
+  @media (max-width: 800px) {
+    .container {
+      flex-direction: column; /* Cambia la dirección del flujo para pantallas pequeñas */
+    }
+  
+    .column {
+      width: 100%; /* Ocupa el ancho completo en pantallas pequeñas */
+      margin-bottom: 10px; /* Espacio entre columnas en pantallas pequeñas */
+    }
+  }
+  

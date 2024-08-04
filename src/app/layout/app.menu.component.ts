@@ -34,7 +34,7 @@ export class AppMenuComponent implements OnInit {
           {
             label: 'Calificar Challenge',
             icon: 'fa-solid fa-graduation-cap',
-            routerLink: ['/calificar'], 
+            routerLink: ['/challenge-rating'], 
           },
         ],
       },
