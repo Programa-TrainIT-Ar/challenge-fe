@@ -2,31 +2,88 @@
   <div class="column left-column">
       <div class="header">
           <h2>Challenges Configurados</h2>
-          <button id="toggleButton">+</button>
+          <button class="toggle-button">
+              <i class="fa fa-plus" aria-hidden="true"></i>
+          </button>
       </div>
       <div class="selectors">
-          <select multiple>
-              <option value="modulo1">Módulo 1</option>
-              <option value="modulo2">Módulo 2</option>
-              <option value="modulo3">Módulo 3</option>
-          </select>
-          <select multiple>
-              <option value="celula1">Célula 1</option>
-              <option value="celula2">Célula 2</option>
-              <option value="celula3">Célula 3</option>
-          </select>
+          <div>
+              <label for="module-select">Módulo</label>
+              <select id="module-select" name="module">
+                  <option value="" disabled selected>Seleccionar módulo</option>
+                  <option value="value1">Value 1</option>
+                  <option value="value2">Value 2</option>
+                  <option value="value3">Value 3</option>
+              </select>
+          </div>
+          <div>
+              <label for="cell-select">Célula</label>
+              <select id="cell-select" name="cell">
+                  <option value="" disabled selected>Seleccionar célula</option>
+                  <option value="value1">Value 1</option>
+                  <option value="value2">Value 2</option>
+                  <option value="value3">Value 3</option>
+              </select>
+          </div>
       </div>
-      <div class="categories">
-          <select multiple>
-              <option value="educacion">Educación</option>
-              <option value="marketing">Marketing</option>
-              <option value="sistemas">Sistemas</option>
+      <div class="select-container">
+          <select id="education-select" name="education">
+              <option value="" disabled selected>Educación</option>
+              <option value="pm">PM</option>
+              <option value="backend">Backend</option>
+              <option value="qa">QA</option>
           </select>
+          <hr>
+      </div>
+
+      <div class="select-container">
+          <select id="marketing-select" name="marketing">
+              <option value="" disabled selected>Marketing</option>
+              <option value="pm">PM</option>
+              <option value="backend">Backend</option>
+              <option value="qa">QA</option>
+          </select>
+          <hr>
+      </div>
+
+      <div class="select-container">
+          <select id="systems-select" name="systems">
+              <option value="" disabled selected>Sistemas</option>
+              <option value="pm">PM</option>
+              <option value="backend">Backend</option>
+              <option value="qa">QA</option>
+          </select>
+          <hr>
       </div>
   </div>
-  <div #emergingColumn class="column right-column">
-      <!-- Contenido de la columna emergente -->
-      <h2>Contenido Emergente</h2>
-      <p>Esta columna se despliega al hacer clic en el botón.</p>
+  <div class="column right-column">
+      <div class="header">
+          <h2>Nuevo Challenge</h2>
+          <button class="toggle-button">
+              <i class="fa fa-plus" aria-hidden="true"></i>
+          </button>
+      </div>
+      <input class="form-control form-control-lg" type="text" placeholder="Nombre Challenge">
+      <br>
+      <div class="selectors">
+          <div>
+              <label for="new-module-select">Módulo</label>
+              <select id="new-module-select" name="module">
+                  <option value="" disabled selected>Seleccionar módulo</option>
+                  <option value="value1">Value 1</option>
+                  <option value="value2">Value 2</option>
+                  <option value="value3">Value 3</option>
+              </select>
+          </div>
+          <div>
+              <label for="new-cell-select">Célula</label>
+              <select id="new-cell-select" name="cell">
+                  <option value="" disabled selected>Seleccionar célula</option>
+                  <option value="value1">Value 1</option>
+                  <option value="value2">Value 2</option>
+                  <option value="value3">Value 3</option>
+              </select>
+          </div>
+      </div>
   </div>
 </div>

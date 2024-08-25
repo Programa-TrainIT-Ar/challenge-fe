@@ -1,39 +1,88 @@
-<div class="layout-menu">
-    <div class="card" style="width: 48%;height: 100%;">
-        <img src="..." class="card-img-top" alt="...">
-        <div class="card-body">
-          <h5 class="card-title">Card title</h5>
-          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-        </div>
-        <ul class="list-group list-group-flush">
-          <li class="list-group-item">An item</li>
-          <li class="list-group-item">A second item</li>
-          <li class="list-group-item">A third item</li>
-        </ul>
-        <div class="card-body">
-          <a href="#" class="card-link">Card link</a>
-          <a href="#" class="card-link">Another link</a>
-          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis doloremque rem repellat voluptates dignissimos error aut, repudiandae explicabo sint officiis alias numquam amet consequuntur tenetur omnis reprehenderit voluptatum, deserunt laborum.</p>
-        </div>
-        
+<div class="container">
+  <div class="column left-column">
+      <div class="header">
+          <div class="header-top">
+              <h2>QA Jr.</h2>
+              <p>Pregunta 10/32</p>
+          </div>
+          <h3>Sistemas</h3>
+          <p>Examen técnico de informática</p>
+          <p>
+              Los usuarios se quejan de que no pueden acceder a recursos de la casa
+              central. Se realizaron ping a algunos hosts en la sede central y las
+              respuestas son todas infructuosas. ¿Cuál sería el paso siguiente para
+              resolver el problema?
+          </p>
       </div>
 
+      <div class="check">
+          <div class="form-check">
+              <input
+                  class="form-check-input"
+                  type="radio"
+                  name="exampleRadios"
+                  id="exampleRadios1"
+                  value="option1"
+                  checked />
+              <label class="form-check-label" for="exampleRadios1">
+                  Default radio
+              </label>
+          </div>
 
-      <div class="card" style="width: 48%;height: 100%;">
-        <img src="..." class="card-img-top" alt="...">
-        <div class="card-body">
-          <h5 class="card-title">Card title</h5>
-          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-        </div>
-        <ul class="list-group list-group-flush">
-          <li class="list-group-item">An item</li>
-          <li class="list-group-item">A second item</li>
-          <li class="list-group-item">A third item</li>
-        </ul>
-        <div class="card-body">
-          <a href="#" class="card-link">Card link</a>
-          <a href="#" class="card-link">Another link</a>
+          <div class="form-check">
+              <input
+                  class="form-check-input"
+                  type="radio"
+                  name="exampleRadios"
+                  id="exampleRadios2"
+                  value="option2" />
+              <label class="form-check-label" for="exampleRadios2">
+                  Second default radio
+              </label>
+          </div>
+
+          <div class="form-check disabled">
+              <input
+                  class="form-check-input"
+                  type="radio"
+                  name="exampleRadios"
+                  id="exampleRadios3"
+                  value="option3" />
+              <label class="form-check-label" for="exampleRadios3">
+                  Disabled radio
+              </label>
+          </div>
+
+          <div class="form-check">
+            <input
+                class="form-check-input"
+                type="radio"
+                name="exampleRadios"
+                id="exampleRadios4"
+                value="option4" />
+            <label class="form-check-label" for="exampleRadios4">
+                fourth default radio
+            </label>
         </div>
       </div>
-    
+
+      <div class="column-footer">
+          <span class="timer">
+              <i class="far fa-clock"></i> Tiempo 01:03
+          </span>
+          <div class="buttons-left-column">
+              <button class="btn posponer">Posponer</button>
+              <button class="btn siguiente">Siguiente</button>
+          </div>
+      </div>
+  </div>
+
+  <div class="column right-column">
+      <div class="header">
+          <h3>Preguntas</h3>
+          <button class="btn toggle">
+              <i class="fa fa-plus" aria-hidden="true"></i>
+          </button>
+      </div>
+  </div>
 </div>

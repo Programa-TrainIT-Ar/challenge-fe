@@ -11,5 +11,6 @@ import { RouterLink } from '@angular/router';
   styleUrl: './challenge.component.scss'
 })
 export class ChallengeComponent {
-
+ 
+  
 }

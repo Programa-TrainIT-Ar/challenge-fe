@@ -1,31 +1,47 @@
-/* Asegúrate de que el contenedor ocupe el ancho completo y que el contenido esté centrado */
 .container {
   display: flex;
   justify-content: space-between;
-  gap: 10px; /* Espacio entre columnas, puedes ajustarlo según sea necesario */
+  gap: 10px;
   padding: 10px;
+  flex-wrap: wrap;
 }
 
-/* Estilo común para las columnas */
 .column {
-  width: 50%; /* Ancho del 45% de la ventana del navegador */
-  border-radius: 15px; /* Bordes redondeados */
-  padding: 20px; /* Espacio interno */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra para el efecto de profundidad */
-  background-color: #2A323D; /* Color de fondo para las columnas */
-  box-sizing: border-box; /* Incluye padding y border en el ancho total */
+  flex: 1; 
+  min-width: 300px; 
+  height: 618px;
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: #2A323D;
+  box-sizing: border-box;
 }
+
+h2, h3 {
+  font-weight: 700;
+  color: #ffffff; 
+}
+
 .header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 20px; /* Espacio debajo del encabezado */
+  margin-bottom: 20px;
 }
 
+label {
+  display: block;
+  margin-bottom: 0.5em;
+  font-weight: 500;
+  color: #ffffff; 
+}
 
+option[disabled] {
+  color: #aaa;
+}
 
-#toggleButton {
-  padding: 10px 20px;
+.toggle-button {
+  padding: 10px 15px;
   border: none;
   border-radius: 5px;
   background-color: #6200ff;
@@ -33,34 +49,85 @@
   cursor: pointer;
 }
 
-#toggleButton:hover {
+.toggle-button:hover {
   background-color: #0056b3;
 }
 
 /* Estilo para los selectores */
-.selectors, .categories {
-  margin-bottom: 20px; /* Espacio debajo de los selectores */
+.selectors {
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  gap: 5px;
+  flex-wrap: wrap;
 }
 
-select {
-  width: calc(50% - 10px); /* Ancho de los selectores múltiples */
-  margin-right: 10px; /* Espacio entre los selectores */
-  border-radius: 5px; /* Bordes redondeados */
-  padding: 10px; /* Espacio interno */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra para el efecto de profundidad */
+#cell-select, #module-select,#new-module-select, #new-cell-select{
+  min-width: 250px;
+  max-width: 350px;
+  border-radius: 5px;
+  padding: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  font-size: 1em;
+  background-color: #202629;
+  color: #ffffff; 
+}
+
+select:hover {
+  cursor: pointer;
+}
+
+.select-container {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.select-container::after {
+  content: '▼';
+  color: white;
+  font-size: 16px;
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.select-container select {
+  background: #2A323D;
+  border: none;
+  border-bottom: 1px solid white;
+  color: white;
+  padding: 5px 20px 5px 40px;
+  font-size: 16px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 
-
+hr {
+  border: 0;
+  border-top: 1px solid white;
+  margin: 0;
+}
 
 
 @media (max-width: 800px) {
   .container {
-    flex-direction: column; /* Cambia la dirección del flujo para pantallas pequeñas */
+      flex-direction: column;
   }
 
   .column {
-    width: 100%; /* Ocupa el ancho completo en pantallas pequeñas */
-    margin-bottom: 10px; /* Espacio entre columnas en pantallas pequeñas */
+      width: 100%;
+      margin-bottom: 10px;
+  }
+}
+
+@media (max-width: 500px) {
+  .select-container {
+      margin-bottom: 15px;
   }
 }
