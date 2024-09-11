@@ -2,6 +2,7 @@ import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 
 import { AppLayoutComponent } from './layout/app.layout.component';
+import { AuthPageComponent } from './modules/auth/pages/auth-page/auth-page.component';
 
 @NgModule({
   imports: [
@@ -19,6 +20,9 @@ import { AppLayoutComponent } from './layout/app.layout.component';
                 ),
             },
           ],
+        },{
+          path:'login',
+          component: AuthPageComponent
         },
         {
           path: '**',
