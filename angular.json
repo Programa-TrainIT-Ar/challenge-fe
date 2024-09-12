@@ -31,8 +31,10 @@
               "src/assets",
               "src/mockServiceWorker.js"
             ],
-            "styles": ["src/styles.scss"],
-            "scripts": []
+            "styles": [
+                "node_modules/bootstrap/dist/css/bootstrap.min.css",
+                "src/styles.scss"],
+            "scripts": ["node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"]
           },
           "configurations": {
             "production": {
@@ -101,6 +103,9 @@
     }
   },
   "cli": {
-    "schematicCollections": ["@angular-eslint/schematics"]
+    "schematicCollections": [
+      "@angular-eslint/schematics"
+    ],
+    "analytics": false
   }
 }

@@ -1,3 +1,12 @@
-<div class="grid">
-  {{ user$ | async | json }}
-</div>
+<!-- <div *ngIf="hasAccess; else noAccess"> -->
+    <router-outlet></router-outlet>
+  <!-- </div>
+  <ng-template #noAccess>
+    <div class="announcement-content">
+        <h1>¡Regístrate para poder empezar el challenge!</h1>
+        <p>Completa el registro para acceder a todas las funcionalidades y comenzar el challenge.</p>
+        <button pButton type="button" label="Log in" (click)="auth.loginWithRedirect()"></button>
+      </div>
+    
+  </ng-template> -->
+  

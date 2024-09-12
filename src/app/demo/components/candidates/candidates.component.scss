@@ -1,0 +1,131 @@
+.container {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 10px;
+  flex-wrap: wrap; 
+}
+
+/* Column Styles */
+.column {
+  flex: 1;
+  min-width: 300px;
+  height: 600px;
+  border-radius: 25px;
+  padding: 30px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: #2a323d;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* Header Styles */
+.header {
+  margin-bottom: 20px;
+  color: #ffffff; 
+}
+
+.header h2 {
+  color: rgb(248, 21, 163);
+  font-weight: 700;
+}
+
+.header h3 {
+  font-weight: 700;
+}
+
+/* Label */
+label {
+  display: block;
+  margin-bottom: 0.5em;
+  font-weight: 500;
+  color: #ffffff; 
+}
+
+/* Toggle Button */
+#toggleButton {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 10px;
+  background-color: #6200ff;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+#toggleButton:hover {
+  background-color: #0056b3;
+}
+
+/* Column Footer */
+.column-footer {
+  margin-top: auto; 
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Form Check Styles */
+.form-check {
+  margin-block: 20px;
+  color: #ffffff; 
+}
+
+.form-check-input {
+  margin-right: 10px;
+}
+
+
+.buttons-left-column {
+  display: flex;
+  gap: 30px;
+}
+
+.btn {
+  padding: 10px 15px;
+  border: 2px solid transparent;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 1em;
+  background-color: #6200ff;
+  color: white;
+  transition: background-color 0.3s, border-color 0.3s;
+}
+
+.btn:hover {
+  background-color: #0056b3;
+}
+
+.btn.posponer {
+  background-color: transparent;
+  border-color: #6200ff;
+}
+
+.btn.posponer:hover {
+  background-color: #6200ff;
+  color: white;
+}
+
+
+@media (max-width: 800px) {
+  .container {
+      flex-direction: column;
+  }
+
+  .column {
+      width: 100%;
+      margin-bottom: 10px;
+  }
+}
+
+@media (max-width: 500px) {
+  .buttons-left-column {
+      gap: 5px;
+  }
+
+  .column-footer .timer {
+      display: none; /* Oculta el ícono de reloj en pantallas muy pequeñas */
+  }
+ }
