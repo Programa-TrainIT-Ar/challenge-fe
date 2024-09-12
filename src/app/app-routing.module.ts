@@ -9,7 +9,6 @@ import { AdminGestionQuizzComponent } from './modules/admin-gestion-quiz/admin-g
 import { AuthSignInPageComponent } from './modules/auth-sign-in/pages/auth-sign-in-page/auth-sign-in-page.component';
 import { HomePageComponent } from './modules/home/pages/home-page/home-page.component';
 
-
 @NgModule({
   imports: [
     RouterModule.forRoot(
@@ -28,14 +27,14 @@ import { HomePageComponent } from './modules/home/pages/home-page/home-page.comp
           ],
         },
         {
-          path: 'login',
-          component: AuthPageComponent,
-        },
-        {
           path: 'home',
           component: HomePageComponent,
           loadChildren: () =>
             import('./modules/home/home.module').then(m => m.HomeModule),
+        },
+        {
+          path: 'login',
+          component: AuthPageComponent,
         },
         {
           path: 'sign-in',
