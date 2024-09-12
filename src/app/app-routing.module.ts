@@ -3,7 +3,11 @@ import { NgModule } from '@angular/core';
 
 import { AppLayoutComponent } from './layout/app.layout.component';
 import { AuthPageComponent } from './modules/auth/pages/auth-page/auth-page.component';
+
 import { AdminGestionQuizzComponent } from './modules/admin-gestion-quiz/admin-gestion-quizz.component';
+
+import { AuthSignInPageComponent } from './modules/auth-sign-in/pages/auth-sign-in-page/auth-sign-in-page.component';
+
 
 @NgModule({
   imports: [
@@ -25,9 +29,10 @@ import { AdminGestionQuizzComponent } from './modules/admin-gestion-quiz/admin-g
           path:'login',
           component: AuthPageComponent
         },
-        {
-          path:'admin-gestion-quizz',
-          component: AdminGestionQuizzComponent
+      {
+        path: "sign-in",
+        component: AuthSignInPageComponent
+
         },
         {
           path: '**',
