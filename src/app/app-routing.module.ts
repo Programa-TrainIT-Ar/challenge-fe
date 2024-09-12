@@ -4,6 +4,7 @@ import { NgModule } from '@angular/core';
 import { AppLayoutComponent } from './layout/app.layout.component';
 import { AuthPageComponent } from './modules/auth/pages/auth-page/auth-page.component';
 import { AuthSignInPageComponent } from './modules/auth-sign-in/pages/auth-sign-in-page/auth-sign-in-page.component';
+import { HomePageComponent } from './modules/home/pages/home-page/home-page.component';
 
 @NgModule({
   imports: [
@@ -21,13 +22,20 @@ import { AuthSignInPageComponent } from './modules/auth-sign-in/pages/auth-sign-
                 ),
             },
           ],
-        },{
-          path:'login',
-          component: AuthPageComponent
         },
         {
-path: "sign-in",
-component: AuthSignInPageComponent
+          path: 'login',
+          component: AuthPageComponent,
+        },
+        {
+          path: 'home',
+          component: HomePageComponent,
+          loadChildren: () =>
+            import('./modules/home/home.module').then(m => m.HomeModule),
+        },
+        {
+          path: 'sign-in',
+          component: AuthSignInPageComponent,
         },
         {
           path: '**',
