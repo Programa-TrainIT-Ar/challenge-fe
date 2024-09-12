@@ -1,0 +1,78 @@
+body {
+  background-color: #121212; /* Fondo oscuro */
+}
+
+h1 {
+  font-size: 2rem;
+  color: #f5f5f5;
+}
+
+
+.sidebar {
+  background-color: #222; /* Fondo oscuro del sidebar */
+}
+
+.btn-outline-light {
+  border-radius: 50%;
+  padding: 0.5rem 1rem;
+}
+.buttondemas{
+  background: linear-gradient(255.96deg, rgba(106, 95, 255, 0.5) 0%, rgba(255, 94, 166, 0.5) 100%);
+
+}
+.icon-container {
+  background: linear-gradient(90deg, #9b3064, #5e69c9);
+  border-radius: 10px; 
+  gap: 16 px;
+  display: inline-block;
+}
+
+.btn-icon {
+  background-color: transparent;
+  border: none;
+  color: white;
+  font-size: 24px;
+}
+
+.btn-icon:hover {
+  background-color: transparent;
+  border: none;
+  color: white;
+  opacity: 0.8;
+}
+
+.layout-topbar-logo {  
+  align-items: center;     
+  width: 40px;
+  height: 41px; 
+}
+.content-placeholder {
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #b3b3b3;
+  min-height: 300px;
+}
+
+/* Estilos de los botones de las tabs */
+.btn-outline-primary {
+  border-color: #00bfff;
+  color: #00bfff;
+}
+
+.btn-outline-danger {
+  border-color: #ff4b5c;
+  color: #ff4b5c;
+}
+
+.btn-outline-info {
+  border-color: #17a2b8;
+  color: #17a2b8;
+}
+
+/* Efectos hover para los botones */
+.btn-outline-primary:hover,
+.btn-outline-danger:hover,
+.btn-outline-info:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
