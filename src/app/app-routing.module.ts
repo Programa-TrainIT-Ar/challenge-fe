@@ -13,7 +13,7 @@ import { HomePageComponent } from './modules/home/pages/home-page/home-page.comp
   imports: [
     RouterModule.forRoot(
       [
-        {
+/*         {
           path: '',
           component: AppLayoutComponent,
           children: [
@@ -25,16 +25,18 @@ import { HomePageComponent } from './modules/home/pages/home-page/home-page.comp
                 ),
             },
           ],
-        },
+        }, */
         {
-          path: 'home',
+          path: '',
           component: HomePageComponent,
           loadChildren: () =>
             import('./modules/home/home.module').then(m => m.HomeModule),
         },
         {
           path: 'login',
-          component: AuthPageComponent,
+          /* component: AuthPageComponent, */
+          loadChildren: () =>
+            import('./modules/auth/auth.module').then(m => m.AuthModule),
         },
         {
           path: 'sign-in',

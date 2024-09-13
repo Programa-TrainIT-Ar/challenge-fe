@@ -6,5 +6,11 @@ import { Component } from '@angular/core';
   styleUrl: './home-page.component.scss'
 })
 export class HomePageComponent {
+  user: string = 'Agustín';  // Aquí puedes cambiar dinámicamente el nombre del usuario
 
+  activeSection = 'Todos';  // Sección activa por defecto
+
+  setActiveSection(section: string) {
+    this.activeSection = section;
+  }
 }
