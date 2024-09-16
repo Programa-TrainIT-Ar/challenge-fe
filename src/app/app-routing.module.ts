@@ -2,12 +2,18 @@ import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 
 import { AppLayoutComponent } from './layout/app.layout.component';
+import { AuthPageComponent } from './modules/auth/pages/auth-page/auth-page.component';
+
+
+
+import { AuthSignInPageComponent } from './modules/auth-sign-in/pages/auth-sign-in-page/auth-sign-in-page.component';
+import { HomePageComponent } from './modules/home/pages/home-page/home-page.component';
 
 @NgModule({
   imports: [
     RouterModule.forRoot(
       [
-        {
+/*         {
           path: '',
           component: AppLayoutComponent,
           children: [
@@ -19,6 +25,22 @@ import { AppLayoutComponent } from './layout/app.layout.component';
                 ),
             },
           ],
+        }, */
+        {
+          path: '',
+          component: HomePageComponent,
+          loadChildren: () =>
+            import('./modules/home/home.module').then(m => m.HomeModule),
+        },
+        {
+          path: 'login',
+          /* component: AuthPageComponent, */
+          loadChildren: () =>
+            import('./modules/auth/auth.module').then(m => m.AuthModule),
+        },
+        {
+          path: 'sign-in',
+          component: AuthSignInPageComponent,
         },
         {
           path: '**',
