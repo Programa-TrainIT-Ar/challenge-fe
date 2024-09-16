@@ -8,7 +8,6 @@
 }
 
 .column-tasks {
-  background-color: red;
   width: 60px;
   height: 551px;
   border-radius: 12px;
@@ -43,8 +42,8 @@
 .column-btn .span-linear::after {
   content: '';
   position: absolute;
-  left:0;
-  bottom: -3px; 
+  left: 0;
+  bottom: -3px;
   width: 100%;
   height: 3px;
   border: 0px 0px 3px 0px solid;
@@ -61,3 +60,25 @@
   background: linear-gradient(to right, #6a5fff80, #ff5ea680);
   border: none;
 }
+
+.circle {
+  border: 2px solid white;
+  border-radius: 50%;
+  width: 25px;
+  height: 25px;
+  display: inline-block;
+}
+
+.bi-plus {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 22px;
+}
+
+.ti-img{
+  width: 414px;
+  position: relative;
+  left: 170px;
+}
+
