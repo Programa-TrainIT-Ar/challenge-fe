@@ -1,43 +1,9 @@
-<div class="container-fluid vh-100 d-flex">
-  <div
-    class="col-2 vh-100 bg-gradient p-4 d-flex flex-column text-white"
-    style="
-      background: linear-gradient(180deg, #343a40, #212529);
-      box-shadow: 5px 0 15px rgba(0, 0, 0, 0.3);
-    ">
+<div class="container-fluid d-flex home-container">
+  <div class="sidebar-container">
     <app-side-bar></app-side-bar>
   </div>
-  <!-- Contenido principal -->
-  <div class="flex-grow-1 bg-dark text-dark d-flex flex-column p-4">
-    <!-- Mensaje de saludo -->
-    <div class="d-flex justify-content-between align-items-center mb-4">
-      <h1 class="h3">Bienvenido {{ user }}</h1>
-      <div class="icon-container">
-        <button class="btn btn-icon">
-          <i class="bi bi-plus"></i>
-        </button>
-      </div>
-    </div>
-
-    <!-- Botones -->
-
-    <div class="d-flex mb-3">
-<!-- recordar cambiar CSS a cada uno -->
-      <app-all-page></app-all-page>
-      <app-new-pages></app-new-pages>
-      <app-edit-pages></app-edit-pages>
-    </div>
-
-    <!-- Secciones condicionales -->
-    <div *ngIf="activeSection === 'Todos'">
-      <p>Mostrando todos los elementos</p>
-    </div>
-    <div *ngIf="activeSection === 'Nuevo'">
-      <p>Mostrando la sección de nuevo</p>
-    </div>
-    <div *ngIf="activeSection === 'Editor'">
-      <p>Mostrando el editor</p>
-    </div>
+  <div>
+    <router-outlet></router-outlet>
   </div>
+  <!-- Contenido principal -->
 </div>
-<router-outlet></router-outlet>

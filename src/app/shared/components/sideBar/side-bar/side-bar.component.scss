@@ -77,3 +77,35 @@ body {
     background-color: rgba(255, 255, 255, 0.1);
   }
   
+  /* agregado */
+
+  .sidebar-btns {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    background-color: red;
+    height: 60vh;
+  }
+
+  .gestion-btns {
+    
+    width: 167px;
+    height: 133px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .sidebar-btns button {
+    width: 166px;
+    height: 31px;
+    border-radius: 10px;
+    padding: 0px 16px 0px 16px;
+    gap: 16px;
+    font-size: 10px;
+  }
+
+  .side-img img{
+    height: 41px;
+  }

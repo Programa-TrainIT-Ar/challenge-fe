@@ -6,6 +6,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { AllModule } from '../all/all.module';
 import { NewModule } from '../new/new.module';
 import { EditModule } from "../edit/edit.module";
+import { WelcomeModule } from '../welcome/welcome.module';
 
 @NgModule({
   declarations: [HomePageComponent],
@@ -13,9 +14,8 @@ import { EditModule } from "../edit/edit.module";
     CommonModule,
     HomeRoutingModule,
     SharedModule,
-    AllModule,
-    NewModule,
-    EditModule
+
+    WelcomeModule
 ],
 })
 export class HomeModule {}
