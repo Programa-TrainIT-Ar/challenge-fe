@@ -18,13 +18,26 @@
 }
 
 .sidebar-btns {
+  background-color: #5f5f5f;
   width: 166px;
   height: 31px;
   border-radius: 10px;
   padding: 0px 16px 0px 16px;
   gap: 16px;
+  border: solid 1px #333232;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.sidebar-font-btn {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
+  font-style: normal;
   font-size: 10px;
-  border: solid 1px #1b1b1bb2;
+  display: flex;
+  justify-content: start;
+  align-items: flex-start;
 }
 
 .sidebar-btns:hover,
@@ -34,4 +47,9 @@
 
 .side-img img {
   height: 41px;
+}
+
+.sidebar-btns i {
+  color: #5974c7;
+  font-size: 11.5px;
 }
