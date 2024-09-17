@@ -26,100 +26,45 @@ $spacing: 20px; // Espaciado general para márgenes y padding
   background-repeat: no-repeat; // Evita que la imagen se repita
 
 
-
-  select {
-    width: 150px; // Ancho fijo para cada select
-    padding: 8px;
-    font-size: 16px;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-    background-color: #fff;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-
-
-
-
   // Contenido interno del contenedor
   .content {
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    align-items: center;
     gap: $spacing;
 
+
     .content-1{
-        background-color: red;
+        background-color: #353434;
         display: flex;
         justify-content: space-between;
         gap: 20px;
         width: 80vw;
         height: 20vh;
-        justify-content: space-around;
-    }
+        border-radius: 12px;
 
-    .content-2{
-        background-color: blue;
-        width: 80vw;
-        height: 20vh;
-    }
-
-    .content-img {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 20vh;
-        padding: 20px;
-    }
-    .new-img {
-        max-width: 15%;
-        height: auto;
-    }
-
-    h2 {
-      color: $text-color;
-      text-align: center;
-    }
-
-    p {
-      color: $text-color;
-      text-align: center;
-    }
-
-    .form-group {
-      display: flex;
-      flex-direction: column;
-      label {
-        color: $text-color;
-        margin-bottom: 5px;
-      }
-
-      input {
-        padding: 10px;
-        background-color: $input-bg-color;
-        color: $text-color;
-        border: none;
-        border-radius: $border-radius;
-        outline: none;
-        transition: background-color $transition-time;
-
-        &:focus {
-          background-color: darken($input-bg-color, 10%);
+        h4 {
+            padding: 5px;
         }
-      }
+
+        .option-select {
+            border: 2px solid #fff;
+            color: #C2BBBB;
+            background-color: #202020;
+
+        }
+
+        .option {
+            background-color: #353434;
+            border-radius: 12px;
+        }
+
+
+
     }
 
-    // Botón de envío
-    .submit-btn {
-      padding: 10px;
-      background-color: $shadow-color;
-      color: $text-color;
-      border: none;
-      border-radius: $border-radius;
-      cursor: pointer;
-      transition: background-color $transition-time;
 
-      &:hover {
-        background-color: lighten($shadow-color, 20%);
-      }
-    }
+
   }
 }
