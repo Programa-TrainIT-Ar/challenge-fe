@@ -88,14 +88,15 @@ $spacing: 20px; // Espaciado general para márgenes y padding
     /* width: Fixed (804px) px;
       height: Hug (278px) px; */
     width: 804px;
-    height: 278px;
+    height: 274px;
     padding: 16px 0px 0px 0px;
     gap: 17px;
     font-family: Poppins;
-    border-radius: 8px 0px 0px 0px;
+    border-radius: 8px;
+    padding: 16px;
     opacity: 0px;
     box-shadow: 0px -3px 12.8px 0px rgba(241, 121, 197, 1);
-    background: rgba(79, 77, 77, 0.45);
+    background-color: #4f4d4d73;
 
     .custom-label {
       font-family: Poppins;
