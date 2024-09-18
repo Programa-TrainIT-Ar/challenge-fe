@@ -104,20 +104,20 @@ $spacing: 20px; // Espaciado general para márgenes y padding
     }
 
     .custom-select {
-      width: Fill (377.5px) px;
-      height: Fixed (28px) px;
-      gap: 0px;
-      border-radius: 8px 0px 0px 0px;
+      width: 377.5px;
+      height: 28px;
+      gap: 8px;
+      border-radius: 8px;
       opacity: 0px;
-      color: rgba(48, 48, 48, 1);
+      background: rgba(48, 48, 48, 1);
       color: rgba(194, 187, 187, 0.6);
     }
     .custom-input {
       width: 377.5px;
       height: 28px;
-      gap: 0px;
-      border-radius: 8px 0px 0px 0px;
-      border: 1px 0px 0px 0px;
+      gap: 8px;
+      border-radius: 8px ;
+      
       opacity: 0px;
       background: rgba(32, 32, 32, 1);
     }
