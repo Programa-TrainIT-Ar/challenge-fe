@@ -33,7 +33,8 @@ import {
       state(
         'collapsed',
         style({
-          display: 'none',
+          width: "0px",
+          
         })
       ),
       state(

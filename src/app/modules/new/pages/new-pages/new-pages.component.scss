@@ -91,7 +91,7 @@ $spacing: 20px; // Espaciado general para márgenes y padding
     /* width: Fixed (804px) px;
       height: Hug (278px) px; */
     width: 804px;
-    height: 274px;
+    /* height: 274px; */
     padding: 16px 0px 0px 0px;
     gap: 17px;
     font-family: Poppins;
@@ -102,7 +102,7 @@ $spacing: 20px; // Espaciado general para márgenes y padding
     background-color: #4f4d4d73;
 
     .question-container {
-      background-color: pink;
+      
       width: 772px;
       height: 52px;
       display: flex;
@@ -112,7 +112,8 @@ $spacing: 20px; // Espaciado general para márgenes y padding
 
     .custom-label {
       font-family: Poppins;
-      
+      font-weight: 500;
+      font-size: 14px;
       color: rgba(255, 255, 255, 1);
     }
 
@@ -157,13 +158,13 @@ $spacing: 20px; // Espaciado general para márgenes y padding
     .custom-btn-submit {
       width: 91px;
       height: 42px;
-      padding: 8px 0px 0px 0px;
-      gap: 8px;
-      border-radius: 8px 0px 0px 0px;
-      border: 1.4px 0px 0px 0px;
-      opacity: 0px;
+      padding: 8px;
+      cursor: pointer;
+      border-radius: 8px;
+      border: 1.4px solid #706FE5;
+      font-size: 12px;
       color: rgba(106, 95, 255, 1);
-      background: rgba(32, 32, 32, 1);
+      background: #00000026;
     }
     .i {
       width: 7.89px;
@@ -178,13 +179,16 @@ $spacing: 20px; // Espaciado general para márgenes y padding
       box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.15);
       width: 91px;
       height: 42px;
-      padding: 8px 0px 0px 0px;
-      gap: 8px;
-      border-radius: 8px 0px 0px 0px;
-      border: 1.4px 0px 0px 0px;
-      opacity: 0px;
+      padding: 8px;
+      
+      border-radius: 8px;
+      border: 1.4px solid #5F5F5F;
+      font-size: 12px;
       background: rgba(95, 95, 95, 1);
       color: rgba(126, 126, 126, 1);
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
   }
 }

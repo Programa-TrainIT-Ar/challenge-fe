@@ -116,17 +116,17 @@
         </button>
       </div>
 
-      <div class="d-flex justify-content-between mt-4">
+      <div class="d-flex justify-content-around">
         <button
           type="submit"
-          class="btn custom-btn-submit"
+          class="custom-btn-submit"
           [disabled]="!questionForm.valid"
           >
           Guardar
         </button>
         <button
           type="button"
-          class="btn custom-btn-new-question"
+          class="custom-btn-new-question"
           (click)="addNewQuestion(questionForm)"
           [disabled]="!questionForm.valid">
           Nueva Pregunta
