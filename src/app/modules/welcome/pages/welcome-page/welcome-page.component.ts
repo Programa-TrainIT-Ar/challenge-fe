@@ -23,7 +23,7 @@ import {
       state(
         'expanded',
         style({
-          width: '900px',
+          maxWidth: '900px',
         })
       ),
       transition('collapsed => expanded', [animate('300ms ease-out')]),
@@ -39,7 +39,7 @@ import {
       state(
         'expanded',
         style({
-          width: '900px',
+          maxWidth: '900px',
         })
       ),
       transition('collapsed => expanded', [animate('300ms ease-out')]),
@@ -55,7 +55,7 @@ import {
       state(
         'expanded',
         style({
-          width: '900px',
+          maxWidth: '900px',
         })
       ),
       transition('collapsed => expanded', [animate('300ms ease-out')]),
