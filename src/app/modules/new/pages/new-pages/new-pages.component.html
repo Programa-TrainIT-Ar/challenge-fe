@@ -59,8 +59,9 @@
           <select
             class="custom-select"
             id="questionType"
-            name="questionType"
-            ngModel
+              name="questionType"
+              [(ngModel)]="selectedOption"
+              (ngModelChange)="onQuestionTypeChange($event)"
             required>
             <option
               *ngFor="let type of questionTypes"
