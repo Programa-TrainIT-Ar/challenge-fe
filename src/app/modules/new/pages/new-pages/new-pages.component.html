@@ -40,49 +40,48 @@
       </div>
     </div>
   </div>
+
+  <!-- componente agus -->
+
   <div class="content-2">
-    <h3 class="mb-4">Define la pregunta</h3>
+    <h3 class="">Define la pregunta</h3>
 
     <!-- Formulario Angular con ngForm -->
     <form
       #questionForm="ngForm"
       (ngSubmit)="onSubmit(questionForm)"
-      class="custom-form">
-      <div class="row">
-        <div class="col-md-6">
-          <div class="form-group">
-            <label for="questionType" class="custom-label"
-              >Tipo de Pregunta</label
-            >
-            <select
+      class="">
+      <div class="question-container">
+        <div class="">
+          <label for="questionType" class="custom-label"
+            >Tipo de Pregunta</label
+          >
+          <select
+            class="custom-select"
+            id="questionType"
+            name="questionType"
+            ngModel
+            required>
+            <option
+              *ngFor="let type of questionTypes"
               class="custom-select"
-              id="questionType"
-              name="questionType"
-              ngModel
-              required>
-              <option
-                *ngFor="let type of questionTypes"
-                class="custom-select"
-                [value]="type">
-                {{ type }}
-              </option>
-            </select>
-          </div>
+              [value]="type">
+              {{ type }}
+            </option>
+          </select>
         </div>
-        <div class="col-md-6">
-          <div class="form-group">
-            <label for="questionText" class="custom-label"
-              >Escribe una pregunta</label
-            >
-            <input
-              type="text"
-              id="questionText"
-              class="custom-input"
-              name="questionText"
-              ngModel
-              placeholder="Escribe una pregunta"
-              required />
-          </div>
+        <div class="">
+          <label for="questionText" class="custom-label d-flex justify-content-end"
+            >Escribe una pregunta</label
+          >
+          <input
+            type="text"
+            id="questionText"
+            class="custom-input"
+            name="questionText"
+            ngModel
+            placeholder="Escribe una pregunta"
+            required />
         </div>
       </div>
 
