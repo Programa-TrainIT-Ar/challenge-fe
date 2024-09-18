@@ -121,17 +121,15 @@ $spacing: 20px; // Espaciado general para márgenes y padding
       height: 28px;
       border: none;
       opacity: 0px;
-      padding: 0 0 0 8px;
       color: rgba(48, 48, 48, 1);
-      background: rgba(32, 32, 32, 1);
       color: rgba(194, 187, 187, 0.6);
     }
     .custom-input {
       width: 377.5px;
       height: 28px;
-      border: none;
       gap: 0px;
-      padding: 0px 0px 0px 8px;
+      border-radius: 8px 0px 0px 0px;
+      border: 1px 0px 0px 0px;
       opacity: 0px;
       background: rgba(32, 32, 32, 1);
       border-radius: 8px;

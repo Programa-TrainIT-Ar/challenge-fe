@@ -101,11 +101,12 @@
             [(ngModel)]="options[i]"
             name="option{{ i }}"
             placeholder="Opción"
+            [readonly]="isTrueFalseQuestion"
             required />
         </div>
       </div>
 
-      <div>
+      <div *ngIf="!isTrueFalseQuestion">
         <button
           type="button"
           class="btn custom-add-option-btn"
@@ -118,7 +119,8 @@
         <button
           type="submit"
           class="btn custom-btn-submit"
-          [disabled]="!questionForm.valid">
+          [disabled]="!questionForm.valid"
+          >
           Guardar
         </button>
         <button
