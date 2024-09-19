@@ -10,27 +10,27 @@ import { environment } from 'src/environments/environment';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 @NgModule({
-  declarations: [AppComponent],
-  imports: [
-    AppRoutingModule,
-    AppLayoutModule,
-    HttpClientModule,
-    BrowserAnimationsModule,
-    AuthModule.forRoot({
-      domain: environment.auth.domain,
-      clientId: environment.auth.clientId,
-      authorizationParams: {
-        audience: environment.auth.authorizationParams.audience,
-        redirect_uri: environment.auth.authorizationParams.redirect_uri,
-      },
-    }),
-  ],
-  providers: [
-    {
-      provide: LocationStrategy,
-      useClass: PathLocationStrategy,
-    },
-  ],
-  bootstrap: [AppComponent],
+    declarations: [AppComponent],
+    imports: [
+        AppRoutingModule,
+        AppLayoutModule,
+        HttpClientModule,
+        BrowserAnimationsModule,
+        AuthModule.forRoot({
+            domain: environment.auth.domain,
+            clientId: environment.auth.clientId,
+            authorizationParams: {
+                audience: environment.auth.authorizationParams.audience,
+                redirect_uri: environment.auth.authorizationParams.redirect_uri,
+            },
+        }),
+    ],
+    providers: [
+        {
+            provide: LocationStrategy,
+            useClass: PathLocationStrategy,
+        },
+    ],
+    bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }

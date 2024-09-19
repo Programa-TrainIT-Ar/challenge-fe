@@ -4,134 +4,150 @@
 </div> -->
 
 <div class="normal-container">
-  <div class="content">
-    <div class="content-1">
-      <div class="input-container">
-        <h4>Modulo</h4>
-        <select
-          class="form-select option-select"
-          aria-label="Default select example">
-          <option class="option" selected>Desarrollo</option>
-          <option class="option" value="1">Marketing</option>
-          <option class="option" value="2">Sistemas</option>
-        </select>
-      </div>
-      <div class="input-container">
-        <h4>Célula</h4>
-        <select
-          class="form-select option-select"
-          aria-label="Default select example">
-          <option class="option" selected>Selecciona la Célula</option>
-          <option class="option" value="1">Marketing</option>
-          <option class="option" value="2">Sistemas</option>
-          <option class="option" value="3">Desarrollo</option>
-        </select>
-      </div>
-      <div class="input-container">
-        <h4>Seniority / Nivel</h4>
-        <select
-          class="form-select option-select"
-          aria-label="Default select example">
-          <option class="option" selected>Seniority</option>
-          <option class="option" value="1">Seniority1</option>
-          <option class="option" value="2">Seniority2</option>
-          <option class="option" value="3">Seniority3</option>
-        </select>
-      </div>
+    <div class="content">
+        <div class="content-1">
+            <div class="input-container">
+                <h4>Modulo</h4>
+                <select
+                    class="form-select option-select"
+                    aria-label="Default select example">
+                    <option class="option" selected>Desarrollo</option>
+                    <option class="option" value="1">Marketing</option>
+                    <option class="option" value="2">Sistemas</option>
+                </select>
+            </div>
+
+            <div class="input-container">
+                <h4>Célula</h4>
+                <select
+                    class="form-select option-select"
+                    aria-label="Default select example">
+
+                    <option class="option" selected>Selecciona la
+                        Célula</option>
+
+                    <option class="option diseño-ux-ui" value="1">Diseño
+                        UX/UI</option>
+
+                    <option class="option qa-tester" value="2">QA
+                        Tester</option>
+                    <option class="option frontend" value="3">Front end</option>
+                    <option class="option backend" value="4">Back end</option>
+                    <option class="option pm" value="5">PM</option>
+                    <option class="option scrum-master" value="6">Scrum
+                        Master</option>
+                    <option class="option trainee" value="7">Trainee</option>
+                    <option class="option junior" value="8">Junior</option>
+                    <option class="option semi-sr" value="9">Semi Sr</option>
+                    <option class="option senior" value="10">Senior</option>
+                </select>
+            </div>
+
+            <div class="input-container">
+                <h4>Seniority / Nivel</h4>
+                <select
+                    class="form-select option-select"
+                    aria-label="Default select example">
+                    <option class="option trainee" value="3">Trainee</option>
+                    <option class="option junior" value="3">Junior</option>
+                    <option class="option semi-sr" value="3">Semi Sr</option>
+                    <option class="option senior" value="3">Senior</option>
+                </select>
+            </div>
+        </div>
     </div>
-  </div>
 
-  <!-- componente agus -->
+    <!-- componente agus -->
 
-  <div class="content-2">
-    <h3 class="">Define la pregunta</h3>
+    <div class="content-2">
+        <h3 class>Define la pregunta</h3>
 
-    <!-- Formulario Angular con ngForm -->
-    <form
-      #questionForm="ngForm"
-      (ngSubmit)="onSubmit(questionForm)"
-      class="">
-      <div class="question-container">
-        <div class="">
-          <label for="questionType" class="custom-label"
-            >Tipo de Pregunta</label
-          >
-          <select
-            class="custom-select"
-            id="questionType"
-              name="questionType"
-              [(ngModel)]="selectedOption"
-              (ngModelChange)="onQuestionTypeChange($event)"
-            required>
-            <option
-              *ngFor="let type of questionTypes"
-              class="custom-select"
-              [value]="type">
-              {{ type }}
-            </option>
-          </select>
-        </div>
-        <div class="">
-          <label for="questionText" class="custom-label d-flex justify-content-end"
-            >Escribe una pregunta</label
-          >
-          <input
-            type="text"
-            id="questionText"
-            class="custom-input"
-            name="questionText"
-            ngModel
-            placeholder="Escribe una pregunta"
-            required />
-        </div>
-      </div>
+        <!-- Formulario Angular con ngForm -->
+        <form
+            #questionForm="ngForm"
+            (ngSubmit)="onSubmit(questionForm)"
+            class>
+            <div class="question-container">
+                <div class>
+                    <label for="questionType" class="custom-label">Tipo de
+                        Pregunta</label>
+                    <select
+                        class="custom-select"
+                        id="questionType"
+                        name="questionType"
+                        [(ngModel)]="selectedOption"
+                        (ngModelChange)="onQuestionTypeChange($event)"
+                        required>
+                        <option
+                            *ngFor="let type of questionTypes"
+                            class="custom-select"
+                            [value]="type">
+                            {{ type }}
+                        </option>
+                    </select>
+                </div>
+                <div class>
+                    <label for="questionText"
+                        class="custom-label d-flex justify-content-end">Escribe
+                        una pregunta</label>
+                    <input
+                        type="text"
+                        id="questionText"
+                        class="custom-input"
+                        name="questionText"
+                        ngModel
+                        placeholder="Escribe una pregunta"
+                        required />
+                </div>
+            </div>
 
-      <div class="form-group">
-        <label class="options-container d-flex flex-wrap">Opciones</label>
-        <div *ngFor="let option of options; let i = index" class="option-row">
-          <input
-            type="radio"
-            [value]="option"
-            name="option"
-            [(ngModel)]="selectedOption"
-            class="custom-radio"
-            id="option{{ i }}" />
-          <input
-            type="text"
-            class="custom-option-input"
-            [(ngModel)]="options[i]"
-            name="option{{ i }}"
-            placeholder="Opción"
-            [readonly]="isTrueFalseQuestion"
-            required />
-        </div>
-      </div>
+            <div class="form-group">
+                <label
+                    class="options-container d-flex flex-wrap">Opciones</label>
+                <div *ngFor="let option of options; let i = index"
+                    class="option-row">
+                    <input
+                        type="radio"
+                        [value]="option"
+                        name="option"
+                        [(ngModel)]="selectedOption"
+                        class="custom-radio"
+                        id="option{{ i }}" />
+                    <input
+                        type="text"
+                        class="custom-option-input"
+                        [(ngModel)]="options[i]"
+                        name="option{{ i }}"
+                        placeholder="Opción"
+                        [readonly]="isTrueFalseQuestion"
+                        required />
+                </div>
+            </div>
 
-      <div *ngIf="!isTrueFalseQuestion">
-        <button
-          type="button"
-          class="btn custom-add-option-btn"
-          (click)="addOption()">
-          <i class="bi bi-plus-circle"></i> Añadir una nueva opción
-        </button>
-      </div>
+            <div *ngIf="!isTrueFalseQuestion">
+                <button
+                    type="button"
+                    class="btn custom-add-option-btn"
+                    (click)="addOption()">
+                    <i class="bi bi-plus-circle"></i> Añadir una nueva opción
+                </button>
+            </div>
 
-      <div class="d-flex justify-content-around">
-        <button
-          type="submit"
-          class="custom-btn-submit"
-          [disabled]="!questionForm.valid"
-          >
-          Guardar
-        </button>
-        <button
-          type="button"
-          class="custom-btn-new-question"
-          (click)="addNewQuestion(questionForm)"
-          [disabled]="!questionForm.valid">
-          Nueva Pregunta
-        </button>
-      </div>
-    </form>
-  </div>
+            <div class="d-flex justify-content-around">
+                <button
+                    type="submit"
+                    class="custom-btn-submit"
+                    [disabled]="!questionForm.valid">
+                    Guardar
+                </button>
+                <button
+                    type="button"
+                    class="custom-btn-new-question"
+                    (click)="addNewQuestion(questionForm)"
+                    [disabled]="!questionForm.valid">
+                    Nueva Pregunta
+                </button>
+            </div>
+        </form>
+    </div>
 </div>

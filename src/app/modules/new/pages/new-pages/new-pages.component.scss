@@ -39,7 +39,7 @@ $spacing: 20px; // Espaciado general para márgenes y padding
     /* gap: $spacing; */
     /* agregado */
 
-    margin-bottom: 100px;
+    margin-bottom: 30px;
 
     .input-container {
       width: 251.33px;
@@ -82,6 +82,58 @@ $spacing: 20px; // Espaciado general para márgenes y padding
         background-color: #353434;
         border-radius: 12px;
       }
+
+      .diseño-ux-ui {
+        background-color: #ffcc00;
+        color: #795f3a;
+      }
+
+      .qa-tester{
+        border-radius: 20px;
+        background-color: #ff9500;
+        color: #795f3a;
+      }
+      .frontend{
+        border-radius: 20px;
+        background-color: #34c759;
+        color: #795f3a;
+      }
+      .backend{
+        border-radius: 20px;
+        background-color: #00c7be;
+        color: #795f3a;
+      }
+      .pm{
+        border-radius: 20px;
+        background-color: #30b0c7;
+        color: #795f3a;
+      }
+      .scrum-master{
+        border-radius: 20px;
+        background-color: #32ade6;
+        color: #795f3a;
+      }
+      .trainee{
+        border-radius: 20px;
+        background-color: #007aff;
+        color: #795f3a;
+      }
+      .junior{
+        border-radius: 20px;
+        background-color: #5856d6;
+        color: #795f3a;
+      }
+      .semi-sr{
+        border-radius: 20px;
+        background-color: #af52de;
+        color: #795f3a;
+      }
+      .senior{
+        border-radius: 20px;
+        background-color: #ff2d55;
+        color: #795f3a;
+      }
+
     }
   }
 
@@ -102,7 +154,7 @@ $spacing: 20px; // Espaciado general para márgenes y padding
     background-color: #4f4d4d73;
 
     .question-container {
-      
+
       width: 772px;
       height: 52px;
       display: flex;
@@ -148,10 +200,10 @@ $spacing: 20px; // Espaciado general para márgenes y padding
 
     .custom-add-option-btn {
       width: 350px;
-      height: 28px;
+      /* height: 28px; */
       gap: 5px;
       border-radius: 8px;
-      padding: 8px;
+      padding: 5px;
       color: rgba(194, 187, 187, 0.6);
     }
 
@@ -180,7 +232,7 @@ $spacing: 20px; // Espaciado general para márgenes y padding
       width: 91px;
       height: 42px;
       padding: 8px;
-      
+
       border-radius: 8px;
       border: 1.4px solid #5F5F5F;
       font-size: 12px;
