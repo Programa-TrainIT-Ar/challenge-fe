@@ -72,14 +72,20 @@ export class WelcomePageComponent {
 
   toggleExpand1() {
     this.isExpanded1 = !this.isExpanded1;
+    this.isExpanded2 = false;
+    this.isExpanded3 = false;
   }
 
   toggleExpand2() {
     this.isExpanded2 = !this.isExpanded2;
+    this.isExpanded1 = false;
+    this.isExpanded3 = false;
   }
 
   toggleExpand3() {
-    this.isExpanded3 = !this.isExpanded3;
+    this.isExpanded1 = !this.isExpanded3;
+    this.isExpanded2 = false;
+    this.isExpanded3 = false;
   }
   goToAll() {
     this.router.navigate(['/all']);
