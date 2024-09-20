@@ -1,47 +1,48 @@
-<!-- Mensaje de saludo -->
-<div class="welcome-container">
-  <h1 class="h3">Bienvenido "User"</h1>
-  <div class="" (click)="toggleExpand2()">
-    <button class="btn-plus">
-      <span class="circle"><i class="bi bi-plus"></i></span>
-    </button>
-  </div>
-</div>
-
-<!-- Botones -->
-
-<div class="d-flex wall">
-  <div class="column-tasks" (click)="toggleExpand1()">
-    <!-- <button class="column-btn" (click)="goToAll()"> -->
-    <button class="column-btn">
-      <span class="span-linear">Todos</span>
-    </button>
-  </div>
-  <div
-    class="column-tasks"
-    [@expandState1]="isExpanded1 ? 'expanded' : 'collapsed'">
-    <app-all-page></app-all-page>
+<div class="wall">
+  <!-- Mensaje de saludo -->
+  <div class="welcome-container">
+    <h1 class="h3">Bienvenido "User"</h1>
+    <div class="" (click)="toggleExpand2()">
+      <button class="btn-plus">
+        <span class="circle"><i class="bi bi-plus"></i></span>
+      </button>
+    </div>
   </div>
 
-  <div class="column-tasks" (click)="toggleExpand2()">
-    <button class="column-btn">
-      <span class="span-linear">Nuevo</span>
-    </button>
-  </div>
-  <div class="" [@expandState2]="isExpanded2 ? 'expanded' : 'collapsed'">
-    <app-new-pages *ngIf="isExpanded2"></app-new-pages>
-  </div>
+  <!-- Botones -->
 
-  <div class="column-tasks" (click)="toggleExpand3()">
-    <button class="column-btn">
-      <span class="span-linear">Editar</span>
-    </button>
-  </div>
-  <div
-    class="column-tasks"
-    [@expandState3]="isExpanded3 ? 'expanded' : 'collapsed'">
-    <app-edit-pages></app-edit-pages>
-  </div>
+  <div class="d-flex">
+    <div class="column-tasks" (click)="toggleExpand1()">
+      <!-- <button class="column-btn" (click)="goToAll()"> -->
+      <button class="column-btn">
+        <span class="span-linear">Todos</span>
+      </button>
+    </div>
+    <div
+      class="column-tasks"
+      [@expandState1]="isExpanded1 ? 'expanded' : 'collapsed'">
+      <app-all-page></app-all-page>
+    </div>
 
-  <img src="assets/layout/images/logo.svg" class="ti-img" alt="logo" />
+    <div class="column-tasks" (click)="toggleExpand2()">
+      <button class="column-btn">
+        <span class="span-linear">Nuevo</span>
+      </button>
+    </div>
+    <div class="" [@expandState2]="isExpanded2 ? 'expanded' : 'collapsed'">
+      <app-new-pages *ngIf="isExpanded2"></app-new-pages>
+    </div>
+
+    <div class="column-tasks" (click)="toggleExpand3()">
+      <button class="column-btn">
+        <span class="span-linear">Editar</span>
+      </button>
+    </div>
+    <div
+      class="column-tasks"
+      [@expandState3]="isExpanded3 ? 'expanded' : 'collapsed'">
+      <app-edit-pages></app-edit-pages>
+    </div>
+
+  </div>
 </div>
