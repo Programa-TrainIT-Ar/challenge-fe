@@ -45,8 +45,11 @@
   background-color: #1b1b1bb2;
 }
 
-.side-img img {
-  height: 41px;
+.side-img  {
+  height: 88px;
+  display: flex ;
+  justify-content: center;
+
 }
 
 .sidebar-btns i {
