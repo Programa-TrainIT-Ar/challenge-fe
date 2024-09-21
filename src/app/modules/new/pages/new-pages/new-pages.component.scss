@@ -88,56 +88,65 @@ $spacing: 20px; // Espaciado general para márgenes y padding
         color: #795f3a;
       }
 
-      .qa-tester{
+      .qa-tester {
         border-radius: 20px;
         background-color: #ff9500;
         color: #795f3a;
       }
-      .frontend{
+      .frontend {
         border-radius: 20px;
         background-color: #34c759;
         color: #795f3a;
       }
-      .backend{
+      .backend {
         border-radius: 20px;
         background-color: #00c7be;
         color: #795f3a;
       }
-      .pm{
+      .pm {
         border-radius: 20px;
         background-color: #30b0c7;
         color: #795f3a;
       }
-      .scrum-master{
+      .scrum-master {
         border-radius: 20px;
         background-color: #32ade6;
         color: #795f3a;
       }
-      .trainee{
+      .trainee {
         border-radius: 20px;
         background-color: #007aff;
         color: #795f3a;
       }
-      .junior{
+      .junior {
         border-radius: 20px;
         background-color: #5856d6;
         color: #795f3a;
       }
-      .semi-sr{
+      .semi-sr {
         border-radius: 20px;
         background-color: #af52de;
         color: #795f3a;
       }
-      .senior{
+      .senior {
         border-radius: 20px;
         background-color: #ff2d55;
         color: #795f3a;
       }
-
     }
   }
 
   /* componente agus */
+
+  .form-group {
+
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    width: 772px;
+
+    /* height: 100px; */
+  }
 
   .content-2 {
     /* width: Fixed (804px) px;
@@ -152,9 +161,12 @@ $spacing: 20px; // Espaciado general para márgenes y padding
     opacity: 0px;
     box-shadow: 0px -3px 12.8px 0px rgba(241, 121, 197, 1);
     background-color: #4f4d4d73;
+    background-image: url('../../../../../assets/layout/images/logo.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 180px;
 
     .question-container {
-
       width: 772px;
       height: 52px;
       display: flex;
@@ -175,7 +187,7 @@ $spacing: 20px; // Espaciado general para márgenes y padding
       border: none;
       opacity: 0px;
       padding: 0 0 0 8px;
-      
+
       background: rgba(32, 32, 32, 1);
       color: rgba(194, 187, 187, 0.6);
     }
@@ -194,8 +206,24 @@ $spacing: 20px; // Espaciado general para márgenes y padding
       margin-bottom: 10px;
     }
 
+    .option-row {
+      width: 804px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .custom-option-input {
+      width: 378px;
+      height: 28px;
+      border-radius: 8px;
+      background-color: #202020;
+      border: none;
+      color: gray
+    }
     .custom-radio {
-      margin-right: 8px;
+      /* margin-right: 8px; */
+      padding: 0 0 0 8px;
+      width: 378px;
     }
 
     .custom-add-option-btn {
@@ -213,7 +241,7 @@ $spacing: 20px; // Espaciado general para márgenes y padding
       padding: 8px;
       cursor: pointer;
       border-radius: 8px;
-      border: 1.4px solid #706FE5;
+      border: 1.4px solid #706fe5;
       font-size: 12px;
       color: rgba(106, 95, 255, 1);
       background: #00000026;
@@ -234,7 +262,7 @@ $spacing: 20px; // Espaciado general para márgenes y padding
       padding: 8px;
 
       border-radius: 8px;
-      border: 1.4px solid #5F5F5F;
+      border: 1.4px solid #5f5f5f;
       font-size: 12px;
       background: rgba(95, 95, 95, 1);
       color: rgba(126, 126, 126, 1);

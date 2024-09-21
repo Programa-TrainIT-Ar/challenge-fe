@@ -59,8 +59,8 @@
 
     <!-- Formulario Angular con ngForm -->
     <form #questionForm="ngForm" (ngSubmit)="onSubmit(questionForm)" class>
-      <div class="question-container">
-        <div class>
+      <div class="question-container mb-2">
+        <div>
           <label for="questionType" class="custom-label"
             >Tipo de Pregunta</label
           >
@@ -80,7 +80,7 @@
           </option>
         </select>
         </div>
-        <div class>
+        <div class="custom-label">
           <label
             for="questionText"
             class="custom-label d-flex justify-content-end"
@@ -98,15 +98,25 @@
       </div>
 
       <div class="form-group">
-        <label class="options-container d-flex flex-wrap">Opciones</label>
+        <!-- <label class="options-container d-flex flex-wrap">Opciones</label> -->
+         
         <div *ngFor="let option of options; let i = index" class="option-row">
-          <input
+          <!-- <input
             type="radio"
             [value]="option"
             name="option"
             [(ngModel)]="selectedOption"
             class="custom-radio"
-            id="option{{ i }}" />
+            id="option{{ i }}" /> -->
+          <input
+            type="text"
+            class="custom-option-input"
+            [(ngModel)]="options[i]"
+            name="option{{ i }}"
+            placeholder="Opción"
+            [readonly]="isTrueFalseQuestion"
+            required />
+
           <input
             type="text"
             class="custom-option-input"
