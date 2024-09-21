@@ -270,5 +270,10 @@ $spacing: 20px; // Espaciado general para márgenes y padding
       justify-content: center;
       align-items: center;
     }
+
+    .label-input{
+      display: flex;
+      justify-content: flex-start;
+    }
   }
 }
