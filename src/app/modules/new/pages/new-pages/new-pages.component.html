@@ -59,34 +59,35 @@
 
     <!-- Formulario Angular con ngForm -->
     <form #questionForm="ngForm" (ngSubmit)="onSubmit(questionForm)" class>
-      <div class="question-container mb-2">
+      <div class="question-container mb-3">
         <div>
           <label for="questionType" class="custom-label"
             >Tipo de Pregunta</label
           >
           <select
-          class="custom-select"
-          id="questionType"
-          name="questionType"
-          [(ngModel)]="selectedOption"
-          (ngModelChange)="onQuestionTypeChange($event)"
-          required>
-          <option value="" disabled selected>Selecciona una opción</option>
-          <option
-            *ngFor="let type of questionTypes"
             class="custom-select"
-            [value]="type">
-            {{ type }}
-          </option>
-        </select>
+            id="questionType"
+            name="questionType"
+            [(ngModel)]="selectedOption"
+            (ngModelChange)="onQuestionTypeChange($event)"
+            required>
+            <option value="" disabled selected>Selecciona una opción</option>
+            <option
+              *ngFor="let type of questionTypes"
+              class="custom-select"
+              [value]="type">
+              {{ type }}
+            </option>
+          </select>
         </div>
         <div class="custom-label">
           <div class="label-input">
-          <label
-            for="questionText"
-            class="custom-label d-flex justify-content-end"
-            >Escribe una pregunta</label
-          ></div>
+            <label
+              for="questionText"
+              class="custom-label d-flex justify-content-end"
+              >Escribe una pregunta</label
+            >
+          </div>
           <input
             type="text"
             id="questionText"
@@ -100,42 +101,40 @@
 
       <div class="form-group">
         <!-- <label class="options-container d-flex flex-wrap">Opciones</label> -->
-         
-        <div *ngFor="let option of options; let i = index" class="option-row">
-          <!-- <input
-            type="radio"
-            [value]="option"
-            name="option"
-            [(ngModel)]="selectedOption"
-            class="custom-radio"
-            id="option{{ i }}" /> -->
-          <input
-            type="text"
-            class="custom-option-input"
-            [(ngModel)]="options[i]"
-            name="option{{ i }}"
-            placeholder="Opción"
-            [readonly]="isTrueFalseQuestion"
-            required />
 
+        <div class="option-row">
+          <div *ngFor="let option of options; let i = index" class="mb-3">
+            <input
+              type="text"
+              class="custom-option-input"
+              [(ngModel)]="options[i]"
+              name="option{{ i }}"
+              placeholder="Opción"
+              [readonly]="isTrueFalseQuestion"
+              required />
+          </div>
+        </div>
+        <div class="option-row">
+          <input
+            type=""
+            class="custom-option-input"
+            name="agregate"
+            placeholder="Añadir una nueva opción" />
           <input
             type="text"
             class="custom-option-input"
-            [(ngModel)]="options[i]"
-            name="option{{ i }}"
-            placeholder="Opción"
-            [readonly]="isTrueFalseQuestion"
-            required />
+            name="agregate"
+            placeholder="Añadir una nueva opción" />
         </div>
       </div>
 
       <div *ngIf="!isTrueFalseQuestion">
-        <button
+        <!-- <button
           type="button"
           class="btn custom-add-option-btn"
           (click)="addOption()">
           <i class="bi bi-plus-circle"></i> Añadir una nueva opción
-        </button>
+        </button> -->
       </div>
 
       <div class="d-flex justify-content-around">

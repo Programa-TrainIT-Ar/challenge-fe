@@ -8,7 +8,7 @@ import { Component } from '@angular/core';
 export class NewPagesComponent {
 
     questionTypes: string[] = ['Selección mutiple', 'Casilla', 'Verdadero o falso'];
-    options: string[] = ['Opción 1'];
+    options: string[] = ['Opción 1', 'Opción 2'];
     selectedOption: string = '';
 
     isTrueFalseQuestion: boolean = false;
@@ -22,7 +22,7 @@ export class NewPagesComponent {
         } else {
             this.isTrueFalseQuestion = false;
             // Volver a permitir opciones personalizadas
-            this.options = ['Opción 1'];
+            this.options = ['Opción 1',];
         }
     }
 
