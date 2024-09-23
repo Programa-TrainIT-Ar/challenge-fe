@@ -12,7 +12,7 @@
   <!-- Botones -->
 
   <div class="d-flex">
-    <div class="column-tasks" (click)="toggleExpand1()">
+    <div [ngClass]="isExpanded1 ? 'active-column' : 'column-tasks'" (click)="toggleExpand1()">
       <!-- <button class="column-btn" (click)="goToAll()"> -->
       <button class="column-btn">
         <span class="span-linear">Todos</span>
@@ -24,7 +24,7 @@
       <app-all-page></app-all-page>
     </div>
 
-    <div class="column-tasks" (click)="toggleExpand2()">
+    <div [ngClass]="isExpanded2 ? 'active-column' : 'column-tasks'" (click)="toggleExpand2()">
       <button class="column-btn">
         <span class="span-linear">Nuevo</span>
       </button>
@@ -33,16 +33,16 @@
       <app-new-pages *ngIf="isExpanded2"></app-new-pages>
     </div>
 
-    <div class="column-tasks" (click)="toggleExpand3()">
+<!--    <div class="column-tasks" (click)="toggleExpand3()">
       <button class="column-btn">
         <span class="span-linear">Editar</span>
       </button>
     </div>
-    <div
+     <div
       class="column-tasks"
       [@expandState3]="isExpanded3 ? 'expanded' : 'collapsed'">
       <app-edit-pages></app-edit-pages>
-    </div>
+    </div> -->
 
   </div>
 </div>
