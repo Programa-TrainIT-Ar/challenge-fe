@@ -4,11 +4,13 @@
 </div> -->
 
 <div class="normal-container">
-  <div class="content">
+
+<form [formGroup]="createHeaderForm" (submit)="send()" class="content" >
     <div class="content-1">
       <div class="input-container">
         <h4>Módulo</h4>
         <select
+        formControlName="modulo"
           class="form-select option-select"
           aria-label="Default select example">
           <option class="option" selected>Desarrollo</option>
@@ -20,6 +22,7 @@
       <div class="input-container">
         <h4>Célula</h4>
         <select
+        formControlName="celula"
           class="form-select option-select"
           aria-label="Default select example">
           <option class="option" selected>Selecciona la Célula</option>
@@ -37,20 +40,23 @@
           <option class="option senior" value="10">Senior</option>
         </select>
       </div>
-
+      
       <div class="input-container">
         <h4>Seniority / Nivel</h4>
         <select
-          class="form-select option-select"
-          aria-label="Default select example">
-          <option class="option trainee" value="3">Trainee</option>
-          <option class="option junior" value="3">Junior</option>
-          <option class="option semi-sr" value="3">Semi Sr</option>
-          <option class="option senior" value="3">Senior</option>
-        </select>
-      </div>
+        class="form-select option-select"
+        formControlName="level"
+        aria-label="Default select example">
+        <option class="option trainee" value="3">Trainee</option>
+        <option class="option junior" value="3">Junior</option>
+        <option class="option semi-sr" value="3">Semi Sr</option>
+        <option class="option senior" value="3">Senior</option>
+      </select>
     </div>
   </div>
+<!--   <button>Send</button>
+  <div>Valido: {{createHeaderForm.valid | json}}</div> -->
+  </form> 
 
   <!-- componente agus -->
 
