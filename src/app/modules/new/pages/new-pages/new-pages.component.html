@@ -55,12 +55,12 @@
 
   <!-- componente agus -->
 
-  <div class="content-2">
-    <!-- <div *ngIf="selectHeaderForm.valid" class="content-2"> -->
+  <!-- <div class="content-2"> -->
+     <div *ngIf="selectHeaderForm.valid" class="content-2"> 
     <h3 class>Define la pregunta</h3>
 
     <!-- Formulario Angular con ngForm -->
-    <form #questionForm="ngForm" (ngSubmit)="onSubmit(questionForm)" class>
+    <form  #questionForm="ngForm" (ngSubmit)="onSubmit(questionForm)" class>
       <div class="question-container mb-3">
         <div>
           <label for="questionType" class="custom-label"
@@ -74,6 +74,7 @@
             id="questionType"
             name="questionType"
             [(ngModel)]="selectedOption"
+
             (ngModelChange)="onQuestionTypeChange($event)"
             required>
             <option value="" disabled selected>Selecciona una opción</option>
@@ -150,7 +151,6 @@
         <button
           type="submit"
           class="custom-btn-submit"
-          (click)="send()"
           >
           Guardar Pregunta
         </button>

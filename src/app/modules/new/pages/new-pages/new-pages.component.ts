@@ -8,11 +8,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 })
 export class NewPagesComponent {
   public selectHeaderForm: FormGroup;
-  public selectQuestionForm: FormGroup;
-  constructor(
-    private formsBuilder: FormBuilder,
-    private formsBuilder2: FormBuilder
-  ) {}
+  constructor(private formsBuilder: FormBuilder) {}
 
   ngOnInit(): void {
     this.selectHeaderForm = this.formsBuilder.group({
@@ -20,14 +16,10 @@ export class NewPagesComponent {
       celula: ['', Validators.required],
       level: ['', Validators.required],
     });
-    this.selectQuestionForm = this.formsBuilder2.group({
-      tipo: ['', Validators.required],
-      pregunta: ['', Validators.required],
-    });
   }
 
   send(): any {
-    console.log(this.selectHeaderForm.value, this.selectQuestionForm);
+    console.log(this.selectHeaderForm.value);
   }
 
   questionTypes: string[] = [
@@ -41,7 +33,7 @@ export class NewPagesComponent {
   isTrueFalseQuestion: boolean = false;
   showPlus: boolean = false;
   showSubmits: boolean = false;
-  inputType: string = ''
+  inputType: string = '';
 
   // DETECTA EL CAMBIO DE PREGUNTA
   onQuestionTypeChange(selectedType: string) {
@@ -51,20 +43,20 @@ export class NewPagesComponent {
       this.options = ['Verdadero', 'Falso'];
       this.showPlus = false;
       this.showSubmits = true;
-      this.inputType = 'radio'
+      this.inputType = 'radio';
     } else if (selectedType === 'Selección mutiple') {
       this.isTrueFalseQuestion = false;
       // Volver a permitir opciones personalizadas
       this.options = ['Opción 1', 'Opción 2', 'Opción 3'];
       this.showPlus = true;
       this.showSubmits = true;
-      this.inputType = 'checkbox'
+      this.inputType = 'checkbox';
     } else if (selectedType == 'Casilla') {
       this.isTrueFalseQuestion = false;
       this.showPlus = false;
       this.options = ['Opción 1', 'Opción 2'];
       this.showSubmits = true;
-      this.inputType = 'radio'
+      this.inputType = 'radio';
     }
   }
   addOption() {
