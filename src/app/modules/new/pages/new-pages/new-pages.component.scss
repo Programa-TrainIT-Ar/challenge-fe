@@ -253,11 +253,15 @@ $spacing: 20px; // Espaciado general para márgenes y padding
       padding: 5px;
       color: rgba(194, 187, 187, 0.6);
     }
-
+    .custom-btn-submit:hover{
+      background-color: rgba(106, 95, 255, 1);
+      color: #fff;
+    }
     .custom-btn-submit {
       width: 91px;
       height: 42px;
-      padding: 8px;
+      padding: 3px;
+      
       cursor: pointer;
       border-radius: 8px;
       border: 1.4px solid #706fe5;

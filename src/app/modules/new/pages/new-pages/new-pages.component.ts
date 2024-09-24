@@ -7,19 +7,27 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   styleUrls: ['./new-pages.component.scss'],
 })
 export class NewPagesComponent {
-  public createHeaderForm: FormGroup;
-  constructor(private formsBuilder: FormBuilder) {}
+  public selectHeaderForm: FormGroup;
+  public selectQuestionForm: FormGroup;
+  constructor(
+    private formsBuilder: FormBuilder,
+    private formsBuilder2: FormBuilder
+  ) {}
 
   ngOnInit(): void {
-    this.createHeaderForm = this.formsBuilder.group({
+    this.selectHeaderForm = this.formsBuilder.group({
       modulo: ['', Validators.required],
       celula: ['', Validators.required],
       level: ['', Validators.required],
     });
+    this.selectQuestionForm = this.formsBuilder2.group({
+      tipo: ['', Validators.required],
+      pregunta: ['', Validators.required],
+    });
   }
 
   send(): any {
-    console.log(this.createHeaderForm.value);
+    console.log(this.selectHeaderForm.value, this.selectQuestionForm);
   }
 
   questionTypes: string[] = [
@@ -27,10 +35,13 @@ export class NewPagesComponent {
     'Casilla',
     'Verdadero o falso',
   ];
-  options: string[] = ['Opción 1', 'Opción 2'];
+  options: string[] = [];
   selectedOption: string = '';
 
   isTrueFalseQuestion: boolean = false;
+  showPlus: boolean = false;
+  showSubmits: boolean = false;
+  inputType: string = ''
 
   // DETECTA EL CAMBIO DE PREGUNTA
   onQuestionTypeChange(selectedType: string) {
@@ -38,19 +49,28 @@ export class NewPagesComponent {
       this.isTrueFalseQuestion = true;
       // Si es verdadero o falso muestra estas opciones nada mas
       this.options = ['Verdadero', 'Falso'];
-    } else {
+      this.showPlus = false;
+      this.showSubmits = true;
+      this.inputType = 'radio'
+    } else if (selectedType === 'Selección mutiple') {
       this.isTrueFalseQuestion = false;
       // Volver a permitir opciones personalizadas
-      this.options = ['Opción 1'];
+      this.options = ['Opción 1', 'Opción 2', 'Opción 3'];
+      this.showPlus = true;
+      this.showSubmits = true;
+      this.inputType = 'checkbox'
+    } else if (selectedType == 'Casilla') {
+      this.isTrueFalseQuestion = false;
+      this.showPlus = false;
+      this.options = ['Opción 1', 'Opción 2'];
+      this.showSubmits = true;
+      this.inputType = 'radio'
     }
   }
   addOption() {
     this.options.push(`Opción ${this.options.length + 1}`);
   }
-  loge(){
-    console.log('hola');
-    
-  }
+
   // enviar el formulario
   onSubmit(form: any) {
     console.log('Formulario enviado', form.value);
