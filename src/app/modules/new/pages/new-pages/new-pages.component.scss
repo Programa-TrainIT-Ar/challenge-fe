@@ -80,12 +80,14 @@ $spacing: 20px; // Espaciado general para márgenes y padding
 
       .option {
         background-color: #353434;
-        border-radius: 12px;
+        white-space: nowrap;
       }
 
       .diseño-ux-ui {
         background-color: #ffcc00;
         color: #795f3a;
+        border-radius: 10px;
+        white-space: nowrap;
       }
 
       .qa-tester {

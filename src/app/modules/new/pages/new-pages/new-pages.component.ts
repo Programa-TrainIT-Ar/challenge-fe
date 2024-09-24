@@ -1,23 +1,20 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-
 @Component({
   selector: 'app-new-pages',
   templateUrl: './new-pages.component.html',
   styleUrls: ['./new-pages.component.scss'],
 })
 export class NewPagesComponent {
-  public createHeaderForm : FormGroup;
-  
-
+  public createHeaderForm: FormGroup;
   constructor(private formsBuilder: FormBuilder) {}
 
   ngOnInit(): void {
     this.createHeaderForm = this.formsBuilder.group({
-      modulo: [Validators.required],
-      celula: [Validators.required],
-      level: [Validators.required],
+      modulo: ['', Validators.required],
+      celula: ['', Validators.required],
+      level: ['', Validators.required],
     });
   }
 
@@ -47,16 +44,13 @@ export class NewPagesComponent {
       this.options = ['Opción 1'];
     }
   }
-
   addOption() {
     this.options.push(`Opción ${this.options.length + 1}`);
   }
-
   // enviar el formulario
   onSubmit(form: any) {
     console.log('Formulario enviado', form.value);
   }
-
   // Crear una nueva pregunta
   addNewQuestion(form: any) {
     console.log('Nueva pregunta agregada');

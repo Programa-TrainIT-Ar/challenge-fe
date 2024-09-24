@@ -26,9 +26,7 @@
           class="form-select option-select"
           aria-label="Default select example">
           <option class="option" selected>Selecciona la Célula</option>
-
           <option class="option diseño-ux-ui" value="1">Diseño UX/UI</option>
-
           <option class="option qa-tester" value="2">QA Tester</option>
           <option class="option frontend" value="3">Front end</option>
           <option class="option backend" value="4">Back end</option>
@@ -54,13 +52,14 @@
       </select>
     </div>
   </div>
-<!--   <button>Send</button>
-  <div>Valido: {{createHeaderForm.valid | json}}</div> -->
+
+  
   </form> 
 
   <!-- componente agus -->
 
   <div class="content-2">
+  <!-- <div *ngIf="createHeaderForm.valid" class="content-2"> -->
     <h3 class>Define la pregunta</h3>
 
     <!-- Formulario Angular con ngForm -->
@@ -106,7 +105,6 @@
       </div>
 
       <div class="form-group">
-        <!-- <label class="options-container d-flex flex-wrap">Opciones</label> -->
 
         <div class="option-row">
           <div *ngFor="let option of options; let i = index" class="mb-3">
@@ -122,7 +120,7 @@
         </div>
         <div class="option-row">
           <input
-            type=""
+            type="checkbox"
             class="custom-option-input"
             name="agregate"
             placeholder="Añadir una nueva opción" />
