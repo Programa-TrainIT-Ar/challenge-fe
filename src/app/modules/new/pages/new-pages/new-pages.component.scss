@@ -141,7 +141,6 @@ $spacing: 20px; // Espaciado general para márgenes y padding
   /* componente agus */
 
   .form-group {
-
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
@@ -212,15 +211,33 @@ $spacing: 20px; // Espaciado general para márgenes y padding
       width: 804px;
       display: flex;
       justify-content: space-between;
+      flex-wrap: wrap;
     }
 
     .custom-option-input {
-      width: 378px;
+      width: 350px;
       height: 28px;
       border-radius: 8px;
       background-color: #202020;
       border: none;
-      color: gray
+      color: gray;
+      border-radius: 0 8px 8px 0px;
+    }
+
+    .checkbox-container {
+      width: 28px;
+      height: 28px;
+      background-color: #303030;
+      border-radius: 8px 0 0 8px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .checkbox-input {
+      height: 29px;
+      background-color: red;
+      border: none;
     }
     .custom-radio {
       /* margin-right: 8px; */
@@ -273,7 +290,7 @@ $spacing: 20px; // Espaciado general para márgenes y padding
       align-items: center;
     }
 
-    .label-input{
+    .label-input {
       display: flex;
       justify-content: flex-start;
     }

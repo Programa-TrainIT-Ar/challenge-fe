@@ -4,13 +4,12 @@
 </div> -->
 
 <div class="normal-container">
-
-<form [formGroup]="createHeaderForm" (submit)="send()" class="content" >
+  <form [formGroup]="createHeaderForm" (submit)="send()" class="content">
     <div class="content-1">
       <div class="input-container">
         <h4>Módulo</h4>
         <select
-        formControlName="modulo"
+          formControlName="modulo"
           class="form-select option-select"
           aria-label="Default select example">
           <option class="option" selected>Desarrollo</option>
@@ -22,7 +21,7 @@
       <div class="input-container">
         <h4>Célula</h4>
         <select
-        formControlName="celula"
+          formControlName="celula"
           class="form-select option-select"
           aria-label="Default select example">
           <option class="option" selected>Selecciona la Célula</option>
@@ -38,28 +37,26 @@
           <option class="option senior" value="10">Senior</option>
         </select>
       </div>
-      
+
       <div class="input-container">
         <h4>Seniority / Nivel</h4>
         <select
-        class="form-select option-select"
-        formControlName="level"
-        aria-label="Default select example">
-        <option class="option trainee" value="3">Trainee</option>
-        <option class="option junior" value="3">Junior</option>
-        <option class="option semi-sr" value="3">Semi Sr</option>
-        <option class="option senior" value="3">Senior</option>
-      </select>
+          class="form-select option-select"
+          formControlName="level"
+          aria-label="Default select example">
+          <option class="option trainee" value="3">Trainee</option>
+          <option class="option junior" value="3">Junior</option>
+          <option class="option semi-sr" value="3">Semi Sr</option>
+          <option class="option senior" value="3">Senior</option>
+        </select>
+      </div>
     </div>
-  </div>
-
-  
-  </form> 
+  </form>
 
   <!-- componente agus -->
 
   <div class="content-2">
-  <!-- <div *ngIf="createHeaderForm.valid" class="content-2"> -->
+    <!-- <div *ngIf="createHeaderForm.valid" class="content-2"> -->
     <h3 class>Define la pregunta</h3>
 
     <!-- Formulario Angular con ngForm -->
@@ -69,6 +66,9 @@
           <label for="questionType" class="custom-label"
             >Tipo de Pregunta</label
           >
+
+          <!-- Seleccion de opcion -->
+
           <select
             class="custom-select"
             id="questionType"
@@ -93,6 +93,9 @@
               >Escribe una pregunta</label
             >
           </div>
+
+          <!-- Pregunta -->
+
           <input
             type="text"
             id="questionText"
@@ -104,10 +107,20 @@
         </div>
       </div>
 
-      <div class="form-group">
+      <!-- opciones: Opcion 1 Opcion 2 con bucle -->
 
+      <div class="form-group">
         <div class="option-row">
-          <div *ngFor="let option of options; let i = index" class="mb-3">
+          <div *ngFor="let option of options; let i = index" class="mb-3 row">
+            <!-- check -->
+            <div class="checkbox-container">
+              <input
+                type="checkbox"
+                class="checkbox-input"
+                name="agregate"
+                placeholder="Añadir una nueva opción" />
+            </div>
+            <!-- input del check -->
             <input
               type="text"
               class="custom-option-input"
@@ -118,28 +131,36 @@
               required />
           </div>
         </div>
+
+        <!--  -->
         <div class="option-row">
-          <input
-            type="checkbox"
-            class="custom-option-input"
-            name="agregate"
-            placeholder="Añadir una nueva opción" />
-          <input
-            type="text"
-            class="custom-option-input"
-            name="agregate"
-            placeholder="Añadir una nueva opción" />
+          <div class="row">
+            <div class="checkbox-container">
+              <input
+                type="checkbox"
+                class="checkbox-input"
+                name="agregate"
+                placeholder="Añadir una nueva opción"
+                (click)="addOption()" />
+            </div>
+            <input
+              type="text"
+              class="custom-option-input"
+              name="agregate"
+              placeholder="Añadir una nueva opción" />
+            
+          </div>
         </div>
       </div>
 
-      <div *ngIf="!isTrueFalseQuestion">
-        <!-- <button
+      <!--<div *ngIf="!isTrueFalseQuestion">
+         <button
           type="button"
           class="btn custom-add-option-btn"
           (click)="addOption()">
           <i class="bi bi-plus-circle"></i> Añadir una nueva opción
-        </button> -->
-      </div>
+        </button> 
+      </div>-->
 
       <div class="d-flex justify-content-around">
         <button

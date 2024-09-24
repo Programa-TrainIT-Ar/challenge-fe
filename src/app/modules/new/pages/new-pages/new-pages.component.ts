@@ -47,6 +47,10 @@ export class NewPagesComponent {
   addOption() {
     this.options.push(`Opción ${this.options.length + 1}`);
   }
+  loge(){
+    console.log('hola');
+    
+  }
   // enviar el formulario
   onSubmit(form: any) {
     console.log('Formulario enviado', form.value);
