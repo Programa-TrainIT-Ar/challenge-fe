@@ -18,17 +18,16 @@ export class NewPagesComponent {
     });
   }
 
-  send(): any {
-    console.log(this.selectHeaderForm.value);
-  }
-
   questionTypes: string[] = [
     'Selección mutiple',
     'Casilla',
     'Verdadero o falso',
   ];
+
   options: string[] = [];
-  selectedOption: string = '';
+  selection: string[] = [];
+  coso: string[] = [];
+  selectedOption: string | null = null;
 
   isTrueFalseQuestion: boolean = false;
   showPlus: boolean = false;
@@ -59,13 +58,36 @@ export class NewPagesComponent {
       this.inputType = 'radio';
     }
   }
+
+  send(): any {
+    console.log(this.selectHeaderForm.value);
+  }
+  choose(i: number, type: string) {
+    if (type === 'radio') {
+      this.coso = [];
+      this.coso.push(this.options[i]);
+      this.selection = this.coso;
+    } else if (this.coso.includes(this.options[i])) {
+      this.coso = this.coso.filter(el => el != this.options[i]);
+      this.selection = this.coso;
+      console.log(this.coso);
+    } else {
+      this.coso = this.coso.filter(el => el != 'Verdadero');
+      this.coso = this.coso.filter(el => el != 'Falso');
+      this.coso.push(this.options[i]);
+      this.selection = this.coso;
+    }
+  }
+
   addOption() {
     this.options.push(`Opción ${this.options.length + 1}`);
   }
 
   // enviar el formulario
   onSubmit(form: any) {
-    console.log('Formulario enviado', form.value);
+    const formHeader = this.selectHeaderForm.valid;
+    const formSection = form.value;
+    console.log(formSection);
   }
   // Crear una nueva pregunta
   addNewQuestion(form: any) {
