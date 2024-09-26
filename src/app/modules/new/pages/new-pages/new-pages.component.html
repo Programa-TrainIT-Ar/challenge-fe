@@ -5,14 +5,14 @@
 
 <div class="normal-container">
   <div class="transparent">
-    <div class="header-inputs-container">
+    <form [formGroup]="titleForm" class="header-inputs-container">
       <div>
-        <input type="text" class="input-name" placeholder="Nombre del Quiz"/>
+        <input type="text" class="input-name" placeholder="Nombre del Quiz" formControlName="nombreQuiz"/>
       </div>
       <div>
-        <textarea class="text-description" placeholder="Descripción"></textarea>
+        <textarea class="text-description" placeholder="Descripción" formControlName="descripcion"></textarea>
       </div>
-    </div>
+    </form>
     <form [formGroup]="selectHeaderForm" (submit)="send()" class="content">
       <div class="content-1">
         <div class="input-container">
@@ -64,8 +64,8 @@
 
     <!-- componente agus -->
 
-    <div class="content-2">
-      <!-- <div *ngIf="selectHeaderForm.valid" class="content-2">  -->
+    <!-- <div class="content-2"> -->
+       <div *ngIf="selectHeaderForm.valid" class="content-2">  
       <h3 class>Define la pregunta</h3>
 
       <!-- Formulario Angular con ngForm -->
@@ -157,8 +157,8 @@
           </div>
         </div>
 
-        <!-- <div *ngIf="showSubmits" class="d-flex justify-content-around"> -->
-        <div class="d-flex justify-content-around">
+         <div *ngIf="showSubmits" class="d-flex justify-content-around"> 
+        <!-- <div class="d-flex justify-content-around"> -->
           <button type="submit" class="custom-btn-submit">
             Guardar Pregunta
           </button>
