@@ -9,7 +9,7 @@
 
 .column-tasks {
   width: 60px;
-  height: 551px;
+  height: 623px;
   border-radius: 12px;
   padding: 24px 8px 8px 8px;
   background-color: #212121;
@@ -27,7 +27,7 @@
 
 .active-column {
   width: 60px;
-  height: 551px;
+  height: 623px;
   border-radius: 12px;
   padding: 24px 8px 8px 8px;
   background-color: #212121;
@@ -107,10 +107,22 @@
   height: 623px;
   width: 1034px;
   display: flex;
-  flex-direction: column;
+  flex-direction: row-reverse;
   justify-content: space-between;
   background-image: url('../../../../../assets/layout/images/logo.svg');
   background-repeat: no-repeat;
   background-position: center;
   background-size: 414px 404px;
+  
+}
+
+.order-item{
+  
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: start;
+}
+
+.negro {
+  background-color: gray;
 }
