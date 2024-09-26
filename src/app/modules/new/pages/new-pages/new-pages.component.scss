@@ -1,44 +1,38 @@
-// Variables SCSS para colores y otros valores reutilizables
+
 $background-color: #2a2a2a;
 $shadow-color: rgba(0, 217, 255, 0.4);
 $input-bg-color: #333;
 $text-color: #fff;
 $border-radius: 12px;
 $transition-time: 0.3s;
-$spacing: 20px; // Espaciado general para márgenes y padding
+$spacing: 20px; 
 
 .new-title {
   margin-top: 20px;
 }
 
-// Contenedor regular
 .normal-container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  /*   width: 85vw;
-  height: 80vh; */
   width: 869px;
   height: 551px;
-  /* margin: 20px auto; */ // Centra el contenedor horizontalmente
+
   background-color: #212121;
   padding: $spacing;
   border-radius: $border-radius;
   box-shadow: 0 6px 15px rgba(0, 0, 0, 0.9);
-  background-image: url('/src/assets/layout/images/logo.svg'); // Ruta de la imagen
-  background-size: cover; // Ajusta la imagen para cubrir todo el contenedor
-  background-position: center; // Posiciona la imagen en el centro
-  background-repeat: no-repeat; // Evita que la imagen se repita
+  background-image: url('/src/assets/layout/images/logo.svg'); 
+  background-size: cover; 
+  background-position: center; 
+  background-repeat: no-repeat; 
 
-  // Contenido interno del contenedor
+  
   .content {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    /* gap: $spacing; */
-    /* agregado */
-
     margin-bottom: 30px;
 
     .input-container {
@@ -54,16 +48,12 @@ $spacing: 20px; // Espaciado general para márgenes y padding
 
       display: flex;
       justify-content: space-between;
-      /* gap: 20px; */
-      /*       width: 80vw;
-      height: 20vh; */
       width: 804px;
       height: 68px;
       border-radius: 12px;
       padding: 8px;
 
       h4 {
-        /* padding: 5px; */
         margin: 0;
         font-size: 16px;
       }
@@ -73,7 +63,6 @@ $spacing: 20px; // Espaciado general para márgenes y padding
         border: none;
         color: #c2bbbb99;
         background-color: #202020;
-
         width: 251.33px;
         height: 28px;
       }
@@ -138,22 +127,15 @@ $spacing: 20px; // Espaciado general para márgenes y padding
     }
   }
 
-  /* componente agus */
-
   .form-group {
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
     width: 772px;
-
-    /* height: 100px; */
   }
 
   .content-2 {
-    /* width: Fixed (804px) px;
-      height: Hug (278px) px; */
     width: 804px;
-    /* height: 274px; */
     padding: 16px 0px 0px 0px;
     gap: 17px;
     font-family: Poppins;
