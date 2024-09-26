@@ -25,8 +25,8 @@ export class NewPagesComponent {
   ];
 
   options: string[] = [];
-  selection: string[] = [];
-  coso: string[] = [];
+  selection: string[] = [''];
+  array: string[] = [''];
   selectedOption: string | null = null;
 
   isTrueFalseQuestion: boolean = false;
@@ -36,16 +36,16 @@ export class NewPagesComponent {
 
   // DETECTA EL CAMBIO DE PREGUNTA
   onQuestionTypeChange(selectedType: string) {
+    this.array = []; /* <--- este array se crea porque no permite hacer push a selection directamente */
+    this.selection = []; /* <--- 'DEBERIA' limpiar el array, pero en modo 'CASILLA' no se limpia */
     if (selectedType === 'Verdadero o falso') {
       this.isTrueFalseQuestion = true;
-      // Si es verdadero o falso muestra estas opciones nada mas
       this.options = ['Verdadero', 'Falso'];
       this.showPlus = false;
       this.showSubmits = true;
       this.inputType = 'radio';
     } else if (selectedType === 'Selección mutiple') {
       this.isTrueFalseQuestion = false;
-      // Volver a permitir opciones personalizadas
       this.options = ['Opción 1', 'Opción 2', 'Opción 3'];
       this.showPlus = true;
       this.showSubmits = true;
@@ -53,30 +53,35 @@ export class NewPagesComponent {
     } else if (selectedType == 'Casilla') {
       this.isTrueFalseQuestion = false;
       this.showPlus = false;
-      this.options = ['Opción 1', 'Opción 2'];
+      this.options = ['Opción 1.', 'Opción 2.']; /* haciendo distinto el valor funciona */
       this.showSubmits = true;
       this.inputType = 'radio';
     }
   }
 
+    answerChoice(i: number, type: string, form: any) {
+    if (type === 'radio') {
+      this.array = []; /* <--- este array se crea porque no permite hacer push a selection directamente */
+      this.selection = []; /* <--- 'DEBERIA' limpiar el array, pero en modo 'CASILLA' no se limpia */
+      this.array.push(this.options[i]);
+      this.selection = this.array;
+      console.log(this.selection);
+      
+    } else if (this.array.includes(this.options[i])) {
+      this.array = this.array.filter(el => el != this.options[i]);
+      this.selection = this.array;
+      console.log(this.array);
+
+    } else {
+      this.array = this.array.filter(el => el != 'Verdadero');
+      this.array = this.array.filter(el => el != 'Falso');
+      this.array.push(this.options[i]);
+      this.selection = this.array;
+    }
+  }
+
   send(): any {
     console.log(this.selectHeaderForm.value);
-  }
-  choose(i: number, type: string) {
-    if (type === 'radio') {
-      this.coso = [];
-      this.coso.push(this.options[i]);
-      this.selection = this.coso;
-    } else if (this.coso.includes(this.options[i])) {
-      this.coso = this.coso.filter(el => el != this.options[i]);
-      this.selection = this.coso;
-      console.log(this.coso);
-    } else {
-      this.coso = this.coso.filter(el => el != 'Verdadero');
-      this.coso = this.coso.filter(el => el != 'Falso');
-      this.coso.push(this.options[i]);
-      this.selection = this.coso;
-    }
   }
 
   addOption() {
