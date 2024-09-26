@@ -60,7 +60,7 @@ export class NewPagesComponent {
       this.inputType = 'checkbox';
     } else if (selectedType == 'Casilla') {
       this.isTrueFalseQuestion = false;
-      this.showPlus = false;
+      this.showPlus = true;
       this.options = [
         'Opción 1.',
         'Opción 2.',
