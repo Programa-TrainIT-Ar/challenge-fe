@@ -13,11 +13,11 @@ export class NewPagesComponent {
 
   ngOnInit(): void {
     this.selectHeaderForm = this.formsBuilder.group({
-      nombreQuiz :['', Validators.required],
-      descripcion: ['', Validators.required],
-      modulo: ['', Validators.required],
-      celula: ['', Validators.required],
-      level: ['', Validators.required],
+      nombreQuiz :[''], /* Validators.required */
+      descripcion: [''], /* Validators.required */
+      modulo: [''], /* Validators.required */
+      celula: [''], /* Validators.required */
+      level: [''], /* Validators.required */
     });
 
   }
@@ -37,6 +37,7 @@ export class NewPagesComponent {
 
   isTrueFalseQuestion: boolean = false;
   showPlus: boolean = false;
+  showPlus2: boolean = false;
   showSubmits: boolean = false;
   inputType: string = '';
 
@@ -49,17 +50,20 @@ export class NewPagesComponent {
       this.isTrueFalseQuestion = true;
       this.options = ['Verdadero', 'Falso'];
       this.showPlus = false;
+      this.showPlus2 = false;
       this.showSubmits = true;
       this.inputType = 'radio';
     } else if (selectedType === 'Selección mutiple') {
       this.isTrueFalseQuestion = false;
       this.options = ['Opción 1', 'Opción 2', 'Opción 3'];
       this.showPlus = true;
+      this.showPlus2 = false;
       this.showSubmits = true;
       this.inputType = 'checkbox';
     } else if (selectedType == 'Casilla') {
       this.isTrueFalseQuestion = false;
-      this.showPlus = true;
+      this.showPlus = false;
+      this.showPlus2 = true;
       this.showSubmits = true;
       this.inputType = 'radio';
       this.options = [
@@ -78,11 +82,11 @@ export class NewPagesComponent {
         []; /* <--- 'DEBERIA' limpiar el array, pero en modo 'CASILLA' no se limpia */
       this.array.push(this.options[i]);
       this.selection = this.array;
-      console.log(this.selection);
+      
     } else if (this.array.includes(this.options[i])) {
       this.array = this.array.filter(el => el != this.options[i]);
       this.selection = this.array;
-      console.log(this.array);
+      
     } else {
       this.array = this.array.filter(el => el != 'Verdadero');
       this.array = this.array.filter(el => el != 'Falso');
@@ -97,6 +101,9 @@ export class NewPagesComponent {
 
   addOption() {
     this.options.push(`Opción ${this.options.length + 1}`);
+  }
+  addOption2() {
+    this.options.push(`Opción ${this.options.length + 1+'.'}`);
   }
 
   // enviar el formulario
