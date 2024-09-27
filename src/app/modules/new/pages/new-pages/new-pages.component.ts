@@ -8,16 +8,15 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 })
 export class NewPagesComponent {
   public selectHeaderForm: FormGroup;
-  public titleForm: FormGroup;
   constructor(private formsBuilder: FormBuilder) {}
 
   ngOnInit(): void {
     this.selectHeaderForm = this.formsBuilder.group({
-      nombreQuiz :[''], /* Validators.required */
-      descripcion: [''], /* Validators.required */
-      modulo: [''], /* Validators.required */
-      celula: [''], /* Validators.required */
-      level: [''], /* Validators.required */
+      nombreQuiz :['' , Validators.required], /* Validators.required */
+      descripcion: ['', Validators.required], /* Validators.required */
+      modulo: ['', Validators.required], /* Validators.required */
+      celula: ['', Validators.required], /* Validators.required */
+      level: ['', Validators.required], /* Validators.required */
     });
 
   }
