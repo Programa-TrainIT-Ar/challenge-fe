@@ -11,6 +11,12 @@ $spacing: 20px;
   height: 40;
 }
 
+.question-title {
+  font-style: Poppins;
+  font-weight: 400;
+  font-size: 22px;
+}
+
 .input-name {
   width: 384px;
   height: 40px;
@@ -256,6 +262,7 @@ $spacing: 20px;
       background-color: red;
       border: none;
     }
+    
     .custom-radio {
       padding: 0 0 0 8px;
       width: 378px;
@@ -266,23 +273,21 @@ $spacing: 20px;
       gap: 5px;
       border-radius: 8px;
       padding: 5px;
-      color: rgba(194, 187, 187, 0.6);
+      color: #D8D6D6;
     }
-    .custom-btn-submit:hover {
-      background-color: rgba(106, 95, 255, 1);
-      color: #fff;
-    }
+    
     .custom-btn-submit {
       width: 91px;
       height: 42px;
       padding: 3px;
-
+      background-color: rgba(106, 95, 255, 1);
+      box-shadow: 0px 4px 4px 0px #00000026;
       cursor: pointer;
       border-radius: 8px;
       border: 1.4px solid #706fe5;
       font-size: 12px;
-      color: rgba(106, 95, 255, 1);
-      background: #00000026;
+      color: #ffff;
+      
     }
     .i {
       width: 7.89px;

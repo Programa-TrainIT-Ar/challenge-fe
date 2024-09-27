@@ -13,14 +13,13 @@ export class NewPagesComponent {
 
   ngOnInit(): void {
     this.selectHeaderForm = this.formsBuilder.group({
+      nombreQuiz :['', Validators.required],
+      descripcion: ['', Validators.required],
       modulo: ['', Validators.required],
       celula: ['', Validators.required],
       level: ['', Validators.required],
     });
-    this.titleForm = this.formsBuilder.group({
-      nombreQuiz :[''],
-      descripcion: [''],
-    })
+
   }
 
   questionTypes: string[] = [
@@ -61,12 +60,13 @@ export class NewPagesComponent {
     } else if (selectedType == 'Casilla') {
       this.isTrueFalseQuestion = false;
       this.showPlus = true;
+      this.showSubmits = true;
+      this.inputType = 'radio';
       this.options = [
         'Opción 1.',
         'Opción 2.',
       ]; /* haciendo distinto el valor funciona */
-      this.showSubmits = true;
-      this.inputType = 'radio';
+      /* Pero al agregar un campo el problema vuelve a surgir */
     }
   }
 
@@ -105,7 +105,6 @@ export class NewPagesComponent {
     const formSection = form.value;
     console.log(formSection);
     console.log(formHeader);
-    console.log(this.titleForm.value);
     
   }
   // Crear una nueva pregunta

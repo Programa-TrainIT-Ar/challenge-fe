@@ -5,59 +5,73 @@
 
 <div class="normal-container">
   <div class="transparent">
-    <form [formGroup]="titleForm" class="header-inputs-container">
-      <div>
-        <input type="text" class="input-name" placeholder="Nombre del Quiz" formControlName="nombreQuiz"/>
-      </div>
-      <div>
-        <textarea class="text-description" placeholder="Descripción" formControlName="descripcion"></textarea>
-      </div>
-    </form>
-    <form [formGroup]="selectHeaderForm" (submit)="send()" class="content">
-      <div class="content-1">
-        <div class="input-container">
-          <h4>Módulo</h4>
-          <select
-            formControlName="modulo"
-            class="form-select option-select"
-            aria-label="Default select example">
-            <option class="option" selected>Desarrollo</option>
-            <option class="option" value="1">Marketing</option>
-            <option class="option" value="2">Sistemas</option>
-          </select>
+    <form [formGroup]="selectHeaderForm" (submit)="send()">
+      <div class="header-inputs-container">
+        <div>
+          <input
+            type="text"
+            class="input-name"
+            placeholder="Nombre del Quiz"
+            formControlName="nombreQuiz" />
         </div>
-
-        <div class="input-container">
-          <h4>Célula</h4>
-          <select
-            formControlName="celula"
-            class="form-select option-select"
-            aria-label="Default select example">
-            <option class="option" selected>Selecciona la Célula</option>
-            <option class="option diseño-ux-ui" value="1">Diseño UX/UI</option>
-            <option class="option qa-tester" value="2">QA Tester</option>
-            <option class="option frontend" value="3">Front end</option>
-            <option class="option backend" value="4">Back end</option>
-            <option class="option pm" value="5">PM</option>
-            <option class="option scrum-master" value="6">Scrum Master</option>
-            <option class="option trainee" value="7">Trainee</option>
-            <option class="option junior" value="8">Junior</option>
-            <option class="option semi-sr" value="9">Semi Sr</option>
-            <option class="option senior" value="10">Senior</option>
-          </select>
+        <div>
+          <textarea
+            class="text-description"
+            placeholder="Descripción"
+            formControlName="descripcion"></textarea>
         </div>
+      </div>
 
-        <div class="input-container">
-          <h4>Seniority / Nivel</h4>
-          <select
-            class="form-select option-select"
-            formControlName="level"
-            aria-label="Default select example">
-            <option class="option trainee" value="3">Trainee</option>
-            <option class="option junior" value="3">Junior</option>
-            <option class="option semi-sr" value="3">Semi Sr</option>
-            <option class="option senior" value="3">Senior</option>
-          </select>
+      <div class="content">
+        <div class="content-1">
+          <div class="input-container">
+            <h4>Módulo</h4>
+            <select
+              formControlName="modulo"
+              class="form-select option-select"
+              aria-label="Default select example">
+              <option class="option" selected>Desarrollo</option>
+              <option class="option" value="1">Marketing</option>
+              <option class="option" value="2">Sistemas</option>
+            </select>
+          </div>
+
+          <div class="input-container">
+            <h4>Célula</h4>
+            <select
+              formControlName="celula"
+              class="form-select option-select"
+              aria-label="Default select example">
+              <option class="option" selected>Selecciona la Célula</option>
+              <option class="option diseño-ux-ui" value="1">
+                Diseño UX/UI
+              </option>
+              <option class="option qa-tester" value="2">QA Tester</option>
+              <option class="option frontend" value="3">Front end</option>
+              <option class="option backend" value="4">Back end</option>
+              <option class="option pm" value="5">PM</option>
+              <option class="option scrum-master" value="6">
+                Scrum Master
+              </option>
+              <option class="option trainee" value="7">Trainee</option>
+              <option class="option junior" value="8">Junior</option>
+              <option class="option semi-sr" value="9">Semi Sr</option>
+              <option class="option senior" value="10">Senior</option>
+            </select>
+          </div>
+
+          <div class="input-container">
+            <h4>Seniority / Nivel</h4>
+            <select
+              class="form-select option-select"
+              formControlName="level"
+              aria-label="Default select example">
+              <option class="option trainee" value="3">Trainee</option>
+              <option class="option junior" value="3">Junior</option>
+              <option class="option semi-sr" value="3">Semi Sr</option>
+              <option class="option senior" value="3">Senior</option>
+            </select>
+          </div>
         </div>
       </div>
     </form>
@@ -65,8 +79,8 @@
     <!-- componente agus -->
 
     <!-- <div class="content-2"> -->
-       <div *ngIf="selectHeaderForm.valid" class="content-2">  
-      <h3 class>Define la pregunta</h3>
+    <div *ngIf="selectHeaderForm.valid" class="content-2">
+      <h3 class="question-title">Define la pregunta 1/5</h3>
 
       <!-- Formulario Angular con ngForm -->
       <form #questionForm="ngForm" (ngSubmit)="onSubmit(questionForm)" class>
@@ -130,6 +144,7 @@
                   [value]="option"
                   [ngModel]="selection"
                   (ngModelChange)="answerChoice(i, inputType)" />
+                  
               </div>
               <!-- input del check -->
               <input
@@ -157,8 +172,8 @@
           </div>
         </div>
 
-         <div *ngIf="showSubmits" class="d-flex justify-content-around"> 
-        <!-- <div class="d-flex justify-content-around"> -->
+        <div *ngIf="showSubmits" class="d-flex justify-content-around">
+          <!-- <div class="d-flex justify-content-around"> -->
           <button type="submit" class="custom-btn-submit">
             Guardar Pregunta
           </button>
