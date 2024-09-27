@@ -29,7 +29,7 @@ export class NewPagesComponent {
   ];
 
   
-
+  showCelula: boolean = false
   options: string[] = [];
   selection: string[] = [''];
   array: string[] = [''];

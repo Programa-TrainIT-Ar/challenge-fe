@@ -31,7 +31,7 @@
           <h4>Célula</h4>
           <select
             formControlName="celula"
-            class="form-select option-select"
+            class="form-select option-select celula-select"
             aria-label="Default select example">
             <option class="option" selected>Selecciona la Célula</option>
             <option class="option diseño-ux-ui" value="1">Diseño UX/UI</option>
@@ -45,6 +45,19 @@
             <option class="option semi-sr" value="9">Semi Sr</option>
             <option class="option senior" value="10">Senior</option>
           </select>
+          
+          <div *ngIf="showCelula" ngClass="option-floating">
+            <button class="floating diseño-ux-ui" value="1">Diseño UX/UI</button>
+            <button class="floating qa-tester" value="2">QA Tester</button>
+            <button class="floating frontend" value="3">Front end</button>
+            <button class="floating backend" value="4">Back end</button>
+            <button class="floating pm" value="5">PM</button>
+            <button class="floating scrum-master" value="6">Scrum Master</button>
+            <button class="floating trainee" value="7">Trainee</button>
+            <button class="floating junior" value="8">Junior</button>
+            <button class="floating semi-sr" value="9">Semi Sr</button>
+            <button class="floating senior" value="10">Senior</button>
+          </div>
         </div>
 
         <div class="input-container">
