@@ -3,218 +3,225 @@
     <h1 class="new-title">Nombre del Quiz</h1>
 </div> -->
 
-<div class="normal-container">
-  <div class="transparent">
-    <form [formGroup]="selectHeaderForm">
-      <div class="header-inputs-container">
+<div class="normal-container transparent">
+  <form [formGroup]="selectHeaderForm">
+    <div class="header-inputs-container">
+      <div>
+        <input
+          type="text"
+          class="input-name"
+          placeholder="Nombre del Quiz"
+          formControlName="nombreQuiz" />
+      </div>
+      <div>
+        <textarea
+          class="text-description"
+          placeholder="Descripción"
+          formControlName="descripcion"></textarea>
+      </div>
+    </div>
+
+    <div class="content">
+      <div class="content-1">
+        <div class="input-container">
+          <h4>Módulo</h4>
+          <select
+            formControlName="modulo"
+            class="form-select option-select"
+            aria-label="Default select example">
+            <option class="option" selected>Desarrollo</option>
+            <option class="option" value="1">Marketing</option>
+            <option class="option" value="2">Sistemas</option>
+          </select>
+        </div>
+
+        <div class="input-container">
+          <h4>Célula</h4>
+          <div
+            *ngIf="showCelula"
+            ngClass="option-floating"
+            (click)="isShowCelula()"
+            >
+            <!-- para recorrerlo tiene que ser array, CORREGIR -->
+            <!-- <div *ngFor="let element of questionCategory">{{element}}</div> -->
+            <button class="floating diseño-ux-ui" (click)="pushQuestionCategory('modulo','UX-UI')">
+              Diseño UX/UI
+            </button>
+            <button
+              class="floating qa-tester"
+              (click)="pushQuestionCategory('modulo', 'QA')">
+              QA Tester
+            </button>
+            <button
+              class="floating frontend"
+              (click)="pushQuestionCategory('modulo', 'Front End')">
+              Front end
+            </button>
+            <button
+              class="floating backend"
+              (click)="pushQuestionCategory('modulo', 'Back End')">
+              Back end
+            </button>
+            <button
+              class="floating pm"
+              (click)="pushQuestionCategory('modulo', 'PM')">
+              PM
+            </button>
+            <button
+              class="floating scrum-master"
+              (click)="pushQuestionCategory('modulo', 'Scrum Master')">
+              Scrum Master
+            </button>
+            <button class="floating trainee" (click)="pushQuestionCategory('seniority','Trainee')">Trainee</button>
+            <button class="floating junior" (click)="pushQuestionCategory('seniority','Junior')">Junior</button>
+            <button class="floating semi-sr" (click)="pushQuestionCategory('seniority','Semi Sr')">Semi Sr</button>
+            <button class="floating senior" (click)="pushQuestionCategory('seniority','Senior')">Senior</button>
+          </div>
+          <!-- formControlName="celula" -->
+          <div
+            (click)="isShowCelula()"
+            class="form-select option-select"
+            aria-label="Default select example"></div>
+
+          <!-- Adaptacion UI -->
+        </div>
+
+        <div class="input-container">
+          <h4>Seniority / Nivel</h4>
+          <select
+            class="form-select option-select"
+            formControlName="level"
+            aria-label="Default select example">
+            <option class="option trainee" value="3">Trainee</option>
+            <option class="option junior" value="3">Junior</option>
+            <option class="option semi-sr" value="3">Semi Sr</option>
+            <option class="option senior" value="3">Senior</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </form>
+
+  <!-- componente agus -->
+
+  <!-- <div class="content-2"> -->
+  <div *ngIf="selectHeaderForm.valid" class="content-2">
+    <h3 class>Define la pregunta 1/5</h3>
+
+    <!-- Formulario Angular con ngForm -->
+    <form #questionForm="ngForm" (ngSubmit)="onSubmit(questionForm)" class>
+      <div class="question-container mb-3">
         <div>
+          <label for="questionType" class="custom-label"
+            >Tipo de Pregunta</label
+          >
+
+          <!-- Seleccion de opcion -->
+
+          <select
+            class="custom-select"
+            id="questionType"
+            name="questionType"
+            [(ngModel)]="selectedOption"
+            (ngModelChange)="onQuestionTypeChange($event)"
+            required>
+            <option value="" disabled selected>Selecciona una opción</option>
+            <option
+              *ngFor="let type of questionTypes"
+              class="custom-select"
+              [value]="type">
+              {{ type }}
+            </option>
+          </select>
+        </div>
+        <div class="custom-label">
+          <div class="label-input">
+            <label
+              for="questionText"
+              class="custom-label d-flex justify-content-end"
+              >Escribe una pregunta</label
+            >
+          </div>
+
+          <!-- Pregunta -->
+
           <input
             type="text"
-            class="input-name"
-            placeholder="Nombre del Quiz"
-            formControlName="nombreQuiz" />
-        </div>
-        <div>
-          <textarea
-            class="text-description"
-            placeholder="Descripción"
-            formControlName="descripcion"></textarea>
+            id="questionText"
+            class="custom-input"
+            name="questionText"
+            ngModel
+            placeholder="Escribe una pregunta"
+            required />
         </div>
       </div>
 
-      <div class="content">
-        <div class="content-1">
-          <div class="input-container">
-            <h4>Módulo</h4>
-            <select
-              formControlName="modulo"
-              class="form-select option-select"
-              aria-label="Default select example">
-              <option class="option" selected>Desarrollo</option>
-              <option class="option" value="1">Marketing</option>
-              <option class="option" value="2">Sistemas</option>
-            </select>
-          </div>
+      <!-- opciones: Opcion 1 Opcion 2 con bucle -->
 
-          <div class="input-container">
-            <h4>Célula</h4>
-            <select
-              formControlName="celula"
-              class="form-select option-select celula-select"
-              aria-label="Default select example">
-              <option class="option" selected>Selecciona la Célula</option>
-              <option class="option diseño-ux-ui" value="1">
-                Diseño UX/UI
-              </option>
-              <option class="option qa-tester" value="2">QA Tester</option>
-              <option class="option frontend" value="3">Front end</option>
-              <option class="option backend" value="4">Back end</option>
-              <option class="option pm" value="5">PM</option>
-              <option class="option scrum-master" value="6">
-                Scrum Master
-              </option>
-              <option class="option trainee" value="7">Trainee</option>
-              <option class="option junior" value="8">Junior</option>
-              <option class="option semi-sr" value="9">Semi Sr</option>
-              <option class="option senior" value="10">Senior</option>
-            </select>
-
-            <div *ngIf="showCelula" ngClass="option-floating">
-              <button class="floating diseño-ux-ui" value="1">
-                Diseño UX/UI
-              </button>
-              <button class="floating qa-tester" value="2">QA Tester</button>
-              <button class="floating frontend" value="3">Front end</button>
-              <button class="floating backend" value="4">Back end</button>
-              <button class="floating pm" value="5">PM</button>
-              <button class="floating scrum-master" value="6">
-                Scrum Master
-              </button>
-              <button class="floating trainee" value="7">Trainee</button>
-              <button class="floating junior" value="8">Junior</button>
-              <button class="floating semi-sr" value="9">Semi Sr</button>
-              <button class="floating senior" value="10">Senior</button>
+      <div class="form-group">
+        <div class="option-row">
+          <div *ngFor="let option of options; let i = index" class="mb-3 row">
+            <!-- check -->
+            <div class="checkbox-container">
+              <input
+                type="{{ inputType }}"
+                class="checkbox-input"
+                name="solution"
+                [value]="option"
+                [ngModel]="selection"
+                (ngModelChange)="answerChoice(i, inputType)" />
             </div>
-          </div>
-
-          <div class="input-container">
-            <h4>Seniority / Nivel</h4>
-            <select
-              class="form-select option-select"
-              formControlName="level"
-              aria-label="Default select example">
-              <option class="option trainee" value="3">Trainee</option>
-              <option class="option junior" value="3">Junior</option>
-              <option class="option semi-sr" value="3">Semi Sr</option>
-              <option class="option senior" value="3">Senior</option>
-            </select>
-          </div>
-        </div>
-      </div>
-    </form>
-
-    <!-- componente agus -->
-
-    <!-- <div class="content-2"> -->
-    <div *ngIf="selectHeaderForm.valid" class="content-2">
-      <h3 class>Define la pregunta</h3>
-
-      <!-- Formulario Angular con ngForm -->
-      <form #questionForm="ngForm" (ngSubmit)="onSubmit(questionForm)" class>
-        <div class="question-container mb-3">
-          <div>
-            <label for="questionType" class="custom-label"
-              >Tipo de Pregunta</label
-            >
-
-            <!-- Seleccion de opcion -->
-
-            <select
-              class="custom-select"
-              id="questionType"
-              name="questionType"
-              [(ngModel)]="selectedOption"
-              (ngModelChange)="onQuestionTypeChange($event)"
-              required>
-              <option value="" disabled selected>Selecciona una opción</option>
-              <option
-                *ngFor="let type of questionTypes"
-                class="custom-select"
-                [value]="type">
-                {{ type }}
-              </option>
-            </select>
-          </div>
-          <div class="custom-label">
-            <div class="label-input">
-              <label
-                for="questionText"
-                class="custom-label d-flex justify-content-end"
-                >Escribe una pregunta</label
-              >
-            </div>
-
-            <!-- Pregunta -->
-
+            <!-- input del check -->
             <input
               type="text"
-              id="questionText"
-              class="custom-input"
-              name="questionText"
-              ngModel
-              placeholder="Escribe una pregunta"
+              class="custom-option-input"
+              [(ngModel)]="options[i]"
+              name="option{{ i }}"
+              placeholder="Opción"
+              [readonly]="isTrueFalseQuestion"
               required />
           </div>
-        </div>
 
-        <!-- opciones: Opcion 1 Opcion 2 con bucle -->
+          <!-- add options -->
 
-        <div class="form-group">
-          <div class="option-row">
-            <div *ngFor="let option of options; let i = index" class="mb-3 row">
-              <!-- check -->
-              <div class="checkbox-container">
-                <input
-                  type="{{ inputType }}"
-                  class="checkbox-input"
-                  name="solution"
-                  [value]="option"
-                  [ngModel]="selection"
-                  (ngModelChange)="answerChoice(i, inputType)" />
-              </div>
-              <!-- input del check -->
-              <input
-                type="text"
-                class="custom-option-input"
-                [(ngModel)]="options[i]"
-                name="option{{ i }}"
-                placeholder="Opción"
-                [readonly]="isTrueFalseQuestion"
-                required />
+          <div *ngIf="showPlus" class="row">
+            <div class="checkbox-container">
+              <i class="bi bi-plus-circle" (click)="addOption()"></i>
             </div>
+            <input
+              type="text"
+              class="custom-option-input"
+              name="agregate"
+              placeholder="Añadir una nueva opción" />
+          </div>
 
-            <!-- add options -->
-
-            <div *ngIf="showPlus" class="row">
-              <div class="checkbox-container">
-                <i class="bi bi-plus-circle" (click)="addOption()"></i>
-              </div>
-              <input
-                type="text"
-                class="custom-option-input"
-                name="agregate"
-                placeholder="Añadir una nueva opción" />
+          <!-- add options 2 -->
+          <div *ngIf="showPlus2" class="row">
+            <div class="checkbox-container">
+              <i class="bi bi-plus-circle" (click)="addOption2()"></i>
             </div>
-
-            <!-- add options 2 -->
-            <div *ngIf="showPlus2" class="row">
-              <div class="checkbox-container">
-                <i class="bi bi-plus-circle" (click)="addOption2()"></i>
-              </div>
-              <input
-                type="text"
-                class="custom-option-input"
-                name="agregate"
-                placeholder="Añadir una nueva opción" />
-            </div>
+            <input
+              type="text"
+              class="custom-option-input"
+              name="agregate"
+              placeholder="Añadir una nueva opción" />
           </div>
         </div>
+      </div>
 
-         <div *ngIf="showSubmits" class="d-flex justify-content-around"> 
-        
-          <button type="submit" class="custom-btn-submit">
-            Guardar Pregunta
-          </button>
+      <div *ngIf="showSubmits" class="d-flex justify-content-around">
+        <button type="submit" class="custom-btn-submit">
+          Guardar Pregunta
+        </button>
 
-          <button
-            type="button"
-            class="custom-btn-new-question"
-            (click)="addNewQuestion(questionForm)"
-            [disabled]="!questionForm.valid">
-            Nueva Pregunta
-          </button>
-        </div>
-      </form>
-    </div>
+        <button
+          type="button"
+          class="custom-btn-new-question"
+          (click)="addNewQuestion(questionForm)"
+          [disabled]="!questionForm.valid">
+          Nueva Pregunta
+        </button>
+      </div>
+    </form>
   </div>
 </div>

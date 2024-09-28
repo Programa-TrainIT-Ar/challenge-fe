@@ -12,13 +12,17 @@ export class NewPagesComponent {
 
   ngOnInit(): void {
     this.selectHeaderForm = this.formsBuilder.group({
-      nombreQuiz :['' , Validators.required], /* Validators.required */
-      descripcion: ['', Validators.required], /* Validators.required */
-      modulo: ['', Validators.required], /* Validators.required */
-      celula: ['', Validators.required], /* Validators.required */
-      level: ['', Validators.required], /* Validators.required */
+      /* nombreQuiz :['' , Validators.required],  */
+      /* descripcion: ['', Validators.required],  */
+      /* modulo: ['', Validators.required],  */
+      /* celula: ['', Validators.required],  */
+      /* level: ['', Validators.required],  */
+      nombreQuiz: [''],
+      descripcion: [''],
+      modulo: [''],
+      celula: [''],
+      level: [''],
     });
-
   }
 
   questionTypes: string[] = [
@@ -27,20 +31,31 @@ export class NewPagesComponent {
     'Verdadero o falso',
   ];
 
-  
-  showCelula: boolean = false
+
+  questionCategory : any ={modulo: ''}
+  showCelula: boolean = false;
   options: string[] = [];
   selection: string[] = [''];
   array: string[] = [''];
   selectedOption: string | null = null;
-
+  
   isTrueFalseQuestion: boolean = false;
   showPlus: boolean = false;
   showPlus2: boolean = false;
   showSubmits: boolean = false;
   inputType: string = '';
 
+  pushQuestionCategory(m:any,s:any){
+this.questionCategory[m]=s
+console.log(this.questionCategory);
+
+  }
+
+  isShowCelula(){
+  this.showCelula = !this.showCelula
+  }
   onQuestionTypeChange(selectedType: string) {
+    
     this.array =
       []; /* <--- este array se crea porque no permite hacer push a selection directamente */
     this.selection =
@@ -81,11 +96,9 @@ export class NewPagesComponent {
         []; /* <--- 'DEBERIA' limpiar el array, pero en modo 'CASILLA' no se limpia */
       this.array.push(this.options[i]);
       this.selection = this.array;
-      
     } else if (this.array.includes(this.options[i])) {
       this.array = this.array.filter(el => el != this.options[i]);
       this.selection = this.array;
-      
     } else {
       this.array = this.array.filter(el => el != 'Verdadero');
       this.array = this.array.filter(el => el != 'Falso');
@@ -102,7 +115,7 @@ export class NewPagesComponent {
     this.options.push(`Opción ${this.options.length + 1}`);
   }
   addOption2() {
-    this.options.push(`Opción ${this.options.length + 1+'.'}`);
+    this.options.push(`Opción ${this.options.length + 1 + '.'}`);
   }
 
   // enviar el formulario
@@ -111,7 +124,6 @@ export class NewPagesComponent {
     const formSection = form.value;
     console.log(formSection);
     console.log(formHeader);
-    
   }
   // Crear una nueva pregunta
   addNewQuestion(form: any) {
