@@ -31,8 +31,9 @@ export class NewPagesComponent {
     'Verdadero o falso',
   ];
 
-
-  questionCategory : any ={modulo: ''}
+questionClass: string = ''
+  
+  questionCategory : any = [{modulo: ''}]
   showCelula: boolean = false;
   options: string[] = [];
   selection: string[] = [''];
@@ -45,9 +46,10 @@ export class NewPagesComponent {
   showSubmits: boolean = false;
   inputType: string = '';
 
-  pushQuestionCategory(m:any,s:any){
-this.questionCategory[m]=s
-console.log(this.questionCategory);
+  pushQuestionCategory(prop:string,val:string){
+this.questionCategory[0][prop]=val
+this.questionClass = this.questionCategory[0][prop]
+console.log(this.questionClass);
 
   }
 

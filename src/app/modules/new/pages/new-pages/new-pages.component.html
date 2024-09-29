@@ -1,8 +1,3 @@
-<!-- Mensaje de saludo -->
-<!-- <div class="container">
-    <h1 class="new-title">Nombre del Quiz</h1>
-</div> -->
-
 <div class="normal-container transparent">
   <form [formGroup]="selectHeaderForm">
     <div class="header-inputs-container">
@@ -37,51 +32,75 @@
 
         <div class="input-container">
           <h4>Célula</h4>
+
           <div
             *ngIf="showCelula"
             ngClass="option-floating"
-            (click)="isShowCelula()"
-            >
+            (click)="isShowCelula()">
             <!-- para recorrerlo tiene que ser array, CORREGIR -->
-            <!-- <div *ngFor="let element of questionCategory">{{element}}</div> -->
-            <button class="floating diseño-ux-ui" (click)="pushQuestionCategory('modulo','UX-UI')">
+            <button
+              class="floating diseño-ux-ui"
+              (click)="pushQuestionCategory('modulo', 'diseño-ux-ui')">
               Diseño UX/UI
             </button>
             <button
               class="floating qa-tester"
-              (click)="pushQuestionCategory('modulo', 'QA')">
+              (click)="pushQuestionCategory('modulo', 'qa-tester')">
               QA Tester
             </button>
             <button
               class="floating frontend"
-              (click)="pushQuestionCategory('modulo', 'Front End')">
+              (click)="pushQuestionCategory('modulo', 'frontend')">
               Front end
             </button>
             <button
               class="floating backend"
-              (click)="pushQuestionCategory('modulo', 'Back End')">
+              (click)="pushQuestionCategory('modulo', 'backend')">
               Back end
             </button>
             <button
               class="floating pm"
-              (click)="pushQuestionCategory('modulo', 'PM')">
+              (click)="pushQuestionCategory('modulo', 'pm')">
               PM
             </button>
             <button
               class="floating scrum-master"
-              (click)="pushQuestionCategory('modulo', 'Scrum Master')">
+              (click)="pushQuestionCategory('modulo', 'scrum-master')">
               Scrum Master
             </button>
-            <button class="floating trainee" (click)="pushQuestionCategory('seniority','Trainee')">Trainee</button>
-            <button class="floating junior" (click)="pushQuestionCategory('seniority','Junior')">Junior</button>
-            <button class="floating semi-sr" (click)="pushQuestionCategory('seniority','Semi Sr')">Semi Sr</button>
-            <button class="floating senior" (click)="pushQuestionCategory('seniority','Senior')">Senior</button>
+            <button
+              class="floating trainee"
+              (click)="pushQuestionCategory('seniority', 'Trainee')">
+              Trainee
+            </button>
+            <button
+              class="floating junior"
+              (click)="pushQuestionCategory('seniority', 'Junior')">
+              Junior
+            </button>
+            <button
+              class="floating semi-sr"
+              (click)="pushQuestionCategory('seniority', 'Semi Sr')">
+              Semi Sr
+            </button>
+            <button
+              class="floating senior"
+              (click)="pushQuestionCategory('seniority', 'Senior')">
+              Senior
+            </button>
           </div>
           <!-- formControlName="celula" -->
           <div
             (click)="isShowCelula()"
             class="form-select option-select"
-            aria-label="Default select example"></div>
+            aria-label="Default select example">
+            <span
+            [ngClass]="[questionClass, 'floating']"  
+            
+              *ngFor="let element of questionCategory"
+              >{{ element?.modulo }}</span
+            >
+          </div>
 
           <!-- Adaptacion UI -->
         </div>
