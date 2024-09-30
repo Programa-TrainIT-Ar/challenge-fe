@@ -1,5 +1,5 @@
 .welcome-container {
-  /* background-color: pink; */
+   background-color: pink; 
   width: 1034px;
   display: flex;
   justify-content: space-between;
@@ -8,8 +8,8 @@
 }
 
 .column-tasks {
-  width: 60px;
-  height: 623px;
+  width: 8vh;
+  height: 95vh;
   border-radius: 12px;
   padding: 24px 8px 8px 8px;
   background-color: #212121;
@@ -26,8 +26,8 @@
 }
 
 .active-column {
-  width: 60px;
-  height: 623px;
+  width: 8vh;
+  height: 95vh;
   border-radius: 12px;
   padding: 24px 8px 8px 8px;
   background-color: #212121;
@@ -72,8 +72,8 @@
 }
 
 .btn-plus {
-  width: 40px;
-  height: 40px;
+  width: 3rem;
+  height: 3rem;
   border-radius: 8px;
   padding: 8px;
   gap: 8px;
@@ -104,8 +104,8 @@
 }
 
 .wall {
-  height: 623px;
-  width: 1034px;
+  height: 95vh;
+  width: 170vh;
   display: flex;
   flex-direction: row-reverse;
   justify-content: space-between;

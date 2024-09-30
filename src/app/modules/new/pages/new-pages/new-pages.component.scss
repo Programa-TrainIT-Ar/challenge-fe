@@ -50,8 +50,8 @@ $spacing: 20px;
 
 .transparent {
   background-color: #2121217a;
-  width: 869px;
-  height: 623px;
+  /* width: 170vh; */
+  height: 95vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -61,8 +61,8 @@ $spacing: 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 869px;
-  height: 623px;
+  width: 148vh;
+  height: 95vh;
 
   background-color: #212121;
   padding: $spacing;
