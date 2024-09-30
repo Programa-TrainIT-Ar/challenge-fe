@@ -89,9 +89,24 @@ $spacing: 20px;
   justify-content: space-between;
 }
 
+.seniority-container {
+  position: absolute;
+  top: 245px;
+  width: 224px;
+  height: 58px;
+  background-color: #303030;
+  display: flex;
+  flex-wrap: wrap;
+  /* justify-content: center; */
+  gap: 9px;
+  align-items: center;
+  padding: 8px;
+  border-radius: 8px;
+}
+
 .option-floating {
   position: absolute;
-  bottom: 280px;
+  top: 245px;
   width: 251.33px;
   background-color: #303030;
   display: flex;
@@ -133,6 +148,8 @@ h4 {
   background-color: #202020;
   width: 251.33px;
   height: 28px;
+  display: flex;
+  align-items: center;
 }
 
 .option {
@@ -180,17 +197,17 @@ h4 {
 .junior {
   border-radius: 20px;
   background-color: #5856d6;
-  color: #795f3a;
+  color: #57462e;
 }
 .semi-sr {
   border-radius: 20px;
   background-color: #af52de;
-  color: #795f3a;
+  color: #5e4b30;
 }
 .senior {
   border-radius: 20px;
   background-color: #ff2d55;
-  color: #795f3a;
+  color: #423420;
 }
 
 .form-group {

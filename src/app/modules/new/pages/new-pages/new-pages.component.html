@@ -35,9 +35,8 @@
 
           <div
             *ngIf="showCelula"
-            ngClass="option-floating"
+            class="option-floating"
             (click)="isShowCelula()">
-            <!-- para recorrerlo tiene que ser array, CORREGIR -->
             <button
               class="floating diseño-ux-ui"
               (click)="pushQuestionCategory('modulo', 'diseño-ux-ui')">
@@ -68,38 +67,15 @@
               (click)="pushQuestionCategory('modulo', 'scrum-master')">
               Scrum Master
             </button>
-            <button
-              class="floating trainee"
-              (click)="pushQuestionCategory('seniority', 'Trainee')">
-              Trainee
-            </button>
-            <button
-              class="floating junior"
-              (click)="pushQuestionCategory('seniority', 'Junior')">
-              Junior
-            </button>
-            <button
-              class="floating semi-sr"
-              (click)="pushQuestionCategory('seniority', 'Semi Sr')">
-              Semi Sr
-            </button>
-            <button
-              class="floating senior"
-              (click)="pushQuestionCategory('seniority', 'Senior')">
-              Senior
-            </button>
           </div>
           <!-- formControlName="celula" -->
           <div
             (click)="isShowCelula()"
             class="form-select option-select"
             aria-label="Default select example">
-            <span
-            [ngClass]="[questionClass, 'floating']"  
-            
-              *ngFor="let element of questionCategory"
-              >{{ element?.modulo }}</span
-            >
+            <span [ngClass]="[questionCategory?.modulo, 'floating']">{{
+              questionCategory?.modulo
+            }}</span>
           </div>
 
           <!-- Adaptacion UI -->
@@ -107,15 +83,37 @@
 
         <div class="input-container">
           <h4>Seniority / Nivel</h4>
-          <select
+          <div class="seniority-container" *ngIf="showSeniority"
+          (click)="isShowSeniority()"
+          >
+            <button
+              class="floating trainee"
+              (click)="pushQuestionCategory('seniority', 'trainee')">
+              Trainee
+            </button>
+            <button
+              class="floating junior"
+              (click)="pushQuestionCategory('seniority', 'junior')">
+              Junior
+            </button>
+            <button
+              class="floating semi-sr"
+              (click)="pushQuestionCategory('seniority', 'semi-sr')">
+              Semi Sr
+            </button>
+            <button
+              class="floating senior"
+              (click)="pushQuestionCategory('seniority', 'senior')">
+              Senior
+            </button>
+          </div>
+          <div
+            (click)="isShowSeniority()"
             class="form-select option-select"
-            formControlName="level"
             aria-label="Default select example">
-            <option class="option trainee" value="3">Trainee</option>
-            <option class="option junior" value="3">Junior</option>
-            <option class="option semi-sr" value="3">Semi Sr</option>
-            <option class="option senior" value="3">Senior</option>
-          </select>
+            <span [ngClass]="[questionCategory?.seniority, 'floating']">{{
+              questionCategory?.seniority
+            }}</span></div>
         </div>
       </div>
     </div>

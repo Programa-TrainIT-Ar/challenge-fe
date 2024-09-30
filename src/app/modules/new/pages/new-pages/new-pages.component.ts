@@ -12,16 +12,9 @@ export class NewPagesComponent {
 
   ngOnInit(): void {
     this.selectHeaderForm = this.formsBuilder.group({
-      /* nombreQuiz :['' , Validators.required],  */
-      /* descripcion: ['', Validators.required],  */
-      /* modulo: ['', Validators.required],  */
-      /* celula: ['', Validators.required],  */
-      /* level: ['', Validators.required],  */
-      nombreQuiz: [''],
-      descripcion: [''],
+      nombreQuiz: ['', Validators.required],
+      descripcion: ['', Validators.required],
       modulo: [''],
-      celula: [''],
-      level: [''],
     });
   }
 
@@ -31,33 +24,35 @@ export class NewPagesComponent {
     'Verdadero o falso',
   ];
 
-questionClass: string = ''
-  
-  questionCategory : any = [{modulo: ''}]
+  questionClass: string = '';
+
+  questionCategory: any = { modulo: '', seniority: '' };
   showCelula: boolean = false;
+  showSeniority: boolean = false;
   options: string[] = [];
   selection: string[] = [''];
   array: string[] = [''];
   selectedOption: string | null = null;
-  
+
   isTrueFalseQuestion: boolean = false;
   showPlus: boolean = false;
   showPlus2: boolean = false;
   showSubmits: boolean = false;
   inputType: string = '';
 
-  pushQuestionCategory(prop:string,val:string){
-this.questionCategory[0][prop]=val
-this.questionClass = this.questionCategory[0][prop]
-console.log(this.questionClass);
-
+  pushQuestionCategory(prop: string, val: string) {
+    this.questionCategory[prop] = val;
+    console.log(this.questionCategory);
+    
   }
 
-  isShowCelula(){
-  this.showCelula = !this.showCelula
+  isShowCelula() {
+    this.showCelula = !this.showCelula;
+  }
+  isShowSeniority() {
+    this.showSeniority = !this.showSeniority;
   }
   onQuestionTypeChange(selectedType: string) {
-    
     this.array =
       []; /* <--- este array se crea porque no permite hacer push a selection directamente */
     this.selection =
