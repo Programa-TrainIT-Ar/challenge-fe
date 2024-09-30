@@ -13,7 +13,7 @@
 <div>
   <div [ngClass]="isExpanded2 ? 'd-flex order-item' : 'd-flex'" [ngClass]="isExpanded1 ? 'd-flex order-item' : 'd-flex'">
 
-    <div [ngClass]="isExpanded1 ? 'active-column order-1' : 'column-tasks'" (click)="toggleExpand1()">
+    <div [ngClass]="isExpanded1 ? 'active-column ' : 'column-tasks'" (click)="toggleExpand1()">
       <button class="column-btn">
         <span class="span-linear">Todos</span>
       </button>
@@ -21,8 +21,8 @@
 
     <div
       class="column-tasks"
-      [@expandState1]="isExpanded1 ? 'expanded order-2' : 'collapsed'">
-      <app-all-page class=""></app-all-page>
+      [@expandState1]="isExpanded1 ? 'expanded' : 'collapsed'">
+      <app-all-page *ngIf="isExpanded1"></app-all-page>
     </div>
 
     <div [ngClass]="isExpanded2 ? 'active-column order-1' : 'column-tasks'" [ngClass]="isExpanded1 ? 'column-tasks order-3' : 'column-tasks'" (click)="toggleExpand2()">
@@ -32,6 +32,7 @@
     </div>
     <div [@expandState2]="isExpanded2 ? 'expanded' : 'collapsed'" >
        <app-new-pages *ngIf="isExpanded2"></app-new-pages> 
+       
      </div>
 
 
