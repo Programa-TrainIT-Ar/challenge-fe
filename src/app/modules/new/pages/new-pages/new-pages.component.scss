@@ -23,7 +23,7 @@ $spacing: 20px;
 }
 
 .text-description {
-  width: 804px;
+  width: 135vh;
   height: 76px;
   margin: 0;
   padding-top: 8px;
@@ -38,14 +38,11 @@ $spacing: 20px;
 }
 
 .header-inputs-container {
-  width: 820px;
-  height: 140px;
-
-  padding: 8px;
+  padding: 0 1rem 1 rem 0;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  margin-bottom: 16px;
+  margin-bottom: 2.2rem;
 }
 
 .transparent {
@@ -61,11 +58,11 @@ $spacing: 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 148vh;
+  /* width: 148vh; */
   height: 95vh;
 
   background-color: #212121;
-  padding: $spacing;
+  padding: 1.5rem;
   border-radius: $border-radius;
   box-shadow: 0 6px 15px rgba(0, 0, 0, 0.9);
   background-color: #212121;
@@ -130,8 +127,8 @@ $spacing: 20px;
 
   display: flex;
   justify-content: space-between;
-  width: 804px;
-  height: 68px;
+  width: 135vh;
+  height: 10.5vh;
   border-radius: 12px;
   padding: 8px;
 }
