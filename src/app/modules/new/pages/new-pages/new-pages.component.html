@@ -24,7 +24,7 @@
             formControlName="modulo"
             class="form-select option-select"
             aria-label="Default select example">
-            <option class="option" selected>Desarrollo</option>
+            <option value="" disabled selected>Desarrollo</option>
             <option class="option" value="1">Marketing</option>
             <option class="option" value="2">Sistemas</option>
           </select>
@@ -40,7 +40,7 @@
             aria-label="Default select example">
             <span [ngClass]="[questionCategory?.modulo, 'floating']">{{
               questionCategory?.modulo
-            }}</span>
+            }} Selecciona la célula</span>
 
             <div
               *ngIf="showCelula"
@@ -90,7 +90,7 @@
             aria-label="Default select example">
             <span [ngClass]="[questionCategory?.seniority, 'floating']">{{
               questionCategory?.seniority
-            }}</span>
+            }} Seniority</span>
 
             <!-- absolute -->
             <div
