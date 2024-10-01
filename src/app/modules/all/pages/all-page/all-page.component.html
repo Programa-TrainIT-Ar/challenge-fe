@@ -3,34 +3,34 @@
   <div class="search-container">
     <input type="text" placeholder="Buscar"  />
   </div>
-  <div class="col-12">
+  <div >
 
   <table class="quiz-table">
     <thead>
-      <tr>
-        <th>Nombre Q.</th>
-        <th>Seniority</th>
-        <th>Fec. Creación</th>
-        <th>Creador</th>
-        <th>Módulo</th>
-        <th>Célula</th>
-        <th>Estado</th>
-        <th>Acciones</th>
+      <tr class="table-sup">
+        <td>Nombre Q.</td>
+        <td>Seniority</td>
+        <td>Fec. Creación</td>
+        <td>Creador</td>
+        <td>Módulo</td>
+        <td>Célula</td>
+        <td>Estado</td>
+        <td>Acciones</td>
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let quiz of filteredQuizzes()">
-        <td>{{ quiz.name }}</td>
+      <tr  *ngFor="let quiz of filteredQuizzes()">
+        <td class="table-int">{{ quiz.name }}</td>
         <td>{{ quiz.seniority }}</td>
-        <td>{{ quiz.creationDate }}</td>
+        <td class="table-int">{{ quiz.creationDate }}</td>
         <td>{{ quiz.creator }}</td>
         <td>{{ quiz.module }}</td>
         <td>{{ quiz.cell }}</td>
         <td><span class="status" [ngClass]="quiz.status">{{ quiz.status }}</span></td>
         <td class="actions">
-          <button (click)="viewQuiz(quiz)">👁️</button>
-          <button (click)="editQuiz(quiz)">✏️</button>
-          <button (click)="deleteQuiz(quiz)">🗑️</button>
+          <button (click)="viewQuiz(quiz)"><i class="bi bi-eye"></i></button>
+          <button (click)="editQuiz(quiz)"><i class="bi bi-pencil-square"></i></button>
+          <button (click)="deleteQuiz(quiz)"><i class="bi bi-trash"></i></button>
         </td>
       </tr>
     </tbody>
