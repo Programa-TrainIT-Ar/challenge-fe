@@ -5,28 +5,18 @@
 
 .sidebar-container {
   background: #212121;
-
   box-shadow: 0px 4px 4px 0px #00000040;
   height: 95vh;
   width: 28vh;
   border-radius: 0px 12px 12px 0px;
   padding: 24px 8px 8px 8px;
-  gap: 47px;
 }
 
-.home-container {
-  /* background-color: rgb(38, 184, 135); */
+.container-fluid {
   background-color: #121212;
   min-height: 100vh;
   display: flex;
   align-items: center;
 }
 
-.display-container {
-  display: flex;
-  align-items: center;
-  /* background-color: orange; */
-  width: 1034px;
-  
-  margin-left: 16px;
-}
+

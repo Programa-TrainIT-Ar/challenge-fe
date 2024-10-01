@@ -12,8 +12,8 @@ export class NewPagesComponent {
 
   ngOnInit(): void {
     this.selectHeaderForm = this.formsBuilder.group({
-      nombreQuiz: ['', Validators.required],
-      descripcion: ['', Validators.required],
+      nombreQuiz: [''],
+      descripcion: [''],
       modulo: [''],
     });
   }

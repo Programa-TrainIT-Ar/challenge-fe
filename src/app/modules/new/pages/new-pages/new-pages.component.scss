@@ -55,12 +55,6 @@ $spacing: 20px;
 }
 
 .normal-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  /* width: 148vh; */
-  height: 95vh;
-
   background-color: #212121;
   padding: 1.5rem;
   border-radius: $border-radius;
@@ -78,75 +72,59 @@ $spacing: 20px;
   align-items: center;
   margin-bottom: 30px;
 }
+
+.content-1 {
+  background-color: #353434;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  width: 135vh;
+  
+  border-radius: 12px;
+  padding: .8rem;
+}
+
 .input-container {
-  width: 251.33px;
-  height: 52px;
+  width: 41vh;
+  height: 9vh;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 }
 
-.seniority-container {
-  position: absolute;
-  top: 245px;
-  width: 224px;
-  height: 58px;
-  background-color: #303030;
-  display: flex;
-  flex-wrap: wrap;
-  /* justify-content: center; */
-  gap: 9px;
-  align-items: center;
-  padding: 8px;
-  border-radius: 8px;
-}
-
 .option-floating {
   position: absolute;
-  top: 245px;
-  width: 251.33px;
+  width: 41vh;
   background-color: #303030;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 9px;
+  gap: .8rem;
   align-items: center;
-  padding: 8px;
+  padding: .8rem;
   border-radius: 8px;
 }
 
 .floating {
   border: none;
-  padding-left: 8px;
-  padding-right: 8px;
+  padding-left: .8rem;
+  padding-right: .8rem;
   font-size: 12px;
 }
 
-.content-1 {
-  background-color: #353434;
 
-  display: flex;
-  justify-content: space-between;
-  width: 135vh;
-  height: 10.5vh;
-  border-radius: 12px;
-  padding: 8px;
-}
 h4 {
   margin: 0;
   font-size: 16px;
 }
 
 .option-select {
-  position: relative;
+   position: relative; 
   border: 2px solid #fff;
   border: none;
   color: #c2bbbb99;
   background-color: #202020;
-  width: 251.33px;
-  height: 28px;
-  display: flex;
-  align-items: center;
+  height: 2.5rem;
 }
 
 .option {
