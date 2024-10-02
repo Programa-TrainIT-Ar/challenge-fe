@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router'; 
 
 interface Quiz {
   name: string;
@@ -17,6 +18,7 @@ interface Quiz {
 })
 export class AllPageComponent {
   searchText: string = '';
+  constructor(private router: Router) { }
 
   quizzes: Quiz[] = [
     { name: 'UI Jr Quiz', seniority: 'Junior', creationDate: '30/08/2024', creator: 'Oscar A.', module: 'Desarrollo', cell: 'Diseño UX/UI', status: 'Activo' },
@@ -41,7 +43,10 @@ export class AllPageComponent {
   }
 
   editQuiz(quiz: Quiz) {
-    alert(`Editando el quiz: ${quiz.name}`);
+    alert(`Editando el quiz: ${quiz.name}`),
+    this.router.navigate(['/edit', quiz.name]);  // Redirecciona con el nombre del quiz o un ID único
+
+    
   }
 
   deleteQuiz(quiz: Quiz) {
