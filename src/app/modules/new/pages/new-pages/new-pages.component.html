@@ -6,13 +6,13 @@
           type="text"
           class="input-name mb-2"
           placeholder="Nombre del Quiz"
-          formControlName="nombreQuiz" />
+           />
       </div>
       <div>
-        <textarea
+        <div
           class="text-description"
           placeholder="Descripción"
-          formControlName="descripcion"></textarea>
+          >Descripción</div>
       </div>
     </div>
 
@@ -21,7 +21,7 @@
         <div class="input-container">
           <h4>Módulo</h4>
           <select
-            formControlName="modulo"
+            
             class="form-select option-select"
             aria-label="Default select example">
             <option value="" disabled selected>Desarrollo</option>
@@ -33,7 +33,7 @@
         <div class="input-container">
           <h4>Célula</h4>
 
-          <!-- formControlName="celula" -->
+          
           <div
             (click)="isShowCelula()"
             class="form-select option-select"
@@ -126,8 +126,8 @@
 
   <!-- componente agus -->
 
-  <!-- <div class="content-2"> -->
-  <div *ngIf="selectHeaderForm.valid" class="content-2">
+  
+  <div *ngIf="showForm" class="content-2">
     <h3 class>Define la pregunta 1/5</h3>
 
     <!-- Formulario Angular con ngForm -->
@@ -138,30 +138,29 @@
             >Tipo de Pregunta</label
           >
           <!-- Seleccion de opcion -->
-           <div class="d-flex">
-             <select
-             class="custom-input"
-             id="questionType"
-             name="questionType"
-             [(ngModel)]="selectedOption"
-             (ngModelChange)="onQuestionTypeChange($event)"
-            required>
-            <option value="" disabled selected>Selecciona una opción</option>
-            <option
-            *ngFor="let type of questionTypes"
-            class="custom-select"
-            [value]="type">
-            {{ type }}
-          </option>
-        </select>
-        <div class="checkbox-container">
-          <input
-            type="checkbox"
-            class=""
-            name="select"
-           />
-        </div>
-        </div>
+          <div class="d-flex">
+
+            <select
+              class="custom-input"
+              id="questionType"
+              name="questionType"
+              [(ngModel)]="selectedOption"
+              (ngModelChange)="onQuestionTypeChange($event)"
+              required>
+              <option value="" disabled selected>Selecciona una opción</option>
+              <option
+                *ngFor="let type of questionTypes"
+                class="custom-select"
+                [value]="type">
+                {{ type }}
+              </option>
+            </select>
+
+            <div class="checkbox-container-1">
+              <p>v</p>
+            </div>
+
+          </div>
         </div>
         <div class="custom-label">
           <div class="label-input">
@@ -241,14 +240,6 @@
       <div *ngIf="showSubmits" class="d-flex justify-content-around">
         <button type="submit" class="custom-btn-submit">
           Guardar Pregunta
-        </button>
-
-        <button
-          type="button"
-          class="custom-btn-new-question"
-          (click)="addNewQuestion(questionForm)"
-          [disabled]="!questionForm.valid">
-          Nueva Pregunta
         </button>
       </div>
     </form>

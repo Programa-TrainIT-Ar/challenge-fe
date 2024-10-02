@@ -16,7 +16,7 @@ export class NewPagesComponent {
       descripcion: [''],
       modulo: [''],
     });
-    this.showCelula=false
+    this.showCelula = false;
   }
 
   questionTypes: string[] = [
@@ -26,9 +26,13 @@ export class NewPagesComponent {
   ];
 
   questionClass: string = '';
-  questionCategory: any = { modulo: 'Selecciona la célula', seniority: 'Seniority' };
+  questionCategory: any = {
+    modulo: 'Selecciona la célula',
+    seniority: 'Seniority',
+  };
   showCelula: boolean = false;
   showSeniority: boolean = false;
+  showForm: boolean = false;
   options: string[] = [];
   selection: string[] = [''];
   array: string[] = [''];
@@ -41,8 +45,13 @@ export class NewPagesComponent {
 
   pushQuestionCategory(prop: string, val: string) {
     this.questionCategory[prop] = val;
-    this.closeInputs()
-    console.log(this.showCelula);
+    this.closeInputs();
+    if (
+      this.questionCategory.modulo != 'Selecciona la célula' &&
+      this.questionCategory.seniority != 'Seniority'
+    ) {
+      this.showForm = true;
+    }
   }
 
   isShowCelula() {
@@ -53,7 +62,7 @@ export class NewPagesComponent {
     this.showSeniority = !this.showSeniority;
     this.showCelula = false;
   }
-  closeInputs(){
+  closeInputs() {
     this.showCelula = false;
     this.showSeniority = false;
   }

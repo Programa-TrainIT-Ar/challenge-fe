@@ -233,13 +233,13 @@ h4 {
 }
 .custom-input {
   width: 60vh;
-  height: 28px;
+  height: 4vh;
   border: none;
   gap: 0px;
   padding: 0px 0px 0px 8px;
   opacity: 0px;
   background: rgba(32, 32, 32, 1);
-  border-radius: 8px;
+  border-radius: 8px 0 0 8px;
 }
 
 .custom-option-group {
@@ -256,19 +256,29 @@ h4 {
 
 .custom-option-input {
   width: 60vh;
-  height: 28px;
+  height: 4vh;
   border-radius: 8px;
   background-color: #202020;
   border: none;
   color: gray;
   border-radius: 0 8px 8px 0px;
+  cursor: pointer;
 }
 
 .checkbox-container {
-  width: 28px;
-  height: 28px;
+  width: 4vh;
+  height: 4vh;
   background-color: #303030;
   border-radius: 8px 0 0 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.checkbox-container-1 {
+  width: 4vh;
+  height: 4vh;
+  background-color: #303030;
+  border-radius: 0 8px 8px 0;
   display: flex;
   justify-content: center;
   align-items: center;
