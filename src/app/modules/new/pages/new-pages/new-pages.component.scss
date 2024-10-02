@@ -104,6 +104,7 @@ $spacing: 20px;
   align-items: center;
   padding: .8rem;
   border-radius: 8px;
+  cursor: pointer;
 }
 
 .floating {
@@ -120,7 +121,7 @@ h4 {
 }
 
 .option-select {
-
+  cursor: pointer;
   border: 2px solid #fff;
   border: none;
   color: #c2bbbb99;
@@ -133,34 +134,34 @@ h4 {
   white-space: nowrap;
 }
 
-.diseño-ux-ui {
+.Diseño-UX-UI {
   background-color: #ffcc00;
   color: #795f3a;
   border-radius: 10px;
   white-space: nowrap;
 }
 
-.qa-tester {
+.QA-Tester {
   border-radius: 20px;
   background-color: #ff9500;
   color: #795f3a;
 }
-.frontend {
+.Frontend {
   border-radius: 20px;
   background-color: #34c759;
   color: #795f3a;
 }
-.backend {
+.Backend {
   border-radius: 20px;
   background-color: #00c7be;
   color: #795f3a;
 }
-.pm {
+.PM {
   border-radius: 20px;
   background-color: #30b0c7;
   color: #795f3a;
 }
-.scrum-master {
+.Scrum-Master {
   border-radius: 20px;
   background-color: #32ade6;
   color: #795f3a;
@@ -187,10 +188,11 @@ h4 {
 }
 
 .form-group {
+
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
-  width: 772px;
+  width: 130vh;
 }
 
 .content-2 {
@@ -205,7 +207,7 @@ h4 {
   box-shadow: 0px -3px 12.8px 0px rgba(241, 121, 197, 1);
 }
 .question-container {
-  width: 772px;
+  width: 130vh;
   height: 52px;
   display: flex;
   align-items: center;
@@ -230,7 +232,7 @@ h4 {
   color: rgba(194, 187, 187, 0.6);
 }
 .custom-input {
-  width: 377.5px;
+  width: 60vh;
   height: 28px;
   border: none;
   gap: 0px;
@@ -245,14 +247,15 @@ h4 {
 }
 
 .option-row {
-  width: 804px;
+  
+  width: 130vh;
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
 }
 
 .custom-option-input {
-  width: 350px;
+  width: 60vh;
   height: 28px;
   border-radius: 8px;
   background-color: #202020;
@@ -272,9 +275,8 @@ h4 {
 }
 
 .checkbox-input {
-  height: 29px;
   background-color: red;
-  border: none;
+  
 }
 
 .custom-radio {
@@ -283,7 +285,7 @@ h4 {
 }
 
 .custom-add-option-btn {
-  width: 350px;
+  width: 60vh;
   gap: 5px;
   border-radius: 8px;
   padding: 5px;

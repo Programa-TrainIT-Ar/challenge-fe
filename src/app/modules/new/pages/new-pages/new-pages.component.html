@@ -40,40 +40,40 @@
             aria-label="Default select example">
             <span [ngClass]="[questionCategory?.modulo, 'floating']">{{
               questionCategory?.modulo
-            }} Selecciona la célula</span>
+            }}</span>
 
             <div
               *ngIf="showCelula"
               class="option-floating"
               (click)="isShowCelula()">
               <button
-                class="floating diseño-ux-ui"
-                (click)="pushQuestionCategory('modulo', 'diseño-ux-ui')">
+                class="floating Diseño-UX-UI"
+                (click)="pushQuestionCategory('modulo', 'Diseño-UX-UI')">
                 Diseño UX/UI
               </button>
               <button
-                class="floating qa-tester"
-                (click)="pushQuestionCategory('modulo', 'qa-tester')">
+                class="floating QA-Tester"
+                (click)="pushQuestionCategory('modulo', 'QA-Tester')">
                 QA Tester
               </button>
               <button
-                class="floating frontend"
-                (click)="pushQuestionCategory('modulo', 'frontend')">
+                class="floating Frontend"
+                (click)="pushQuestionCategory('modulo', 'Frontend')">
                 Front end
               </button>
               <button
-                class="floating backend"
-                (click)="pushQuestionCategory('modulo', 'backend')">
+                class="floating Backend"
+                (click)="pushQuestionCategory('modulo', 'Backend')">
                 Back end
               </button>
               <button
-                class="floating pm"
-                (click)="pushQuestionCategory('modulo', 'pm')">
+                class="floating PM"
+                (click)="pushQuestionCategory('modulo', 'PM')">
                 PM
               </button>
               <button
-                class="floating scrum-master"
-                (click)="pushQuestionCategory('modulo', 'scrum-master')">
+                class="floating Scrum-Master"
+                (click)="pushQuestionCategory('modulo', 'Scrum-Master')">
                 Scrum Master
               </button>
             </div>
@@ -88,9 +88,9 @@
             (click)="isShowSeniority()"
             class="form-select option-select"
             aria-label="Default select example">
-            <span [ngClass]="[questionCategory?.seniority, 'floating']">{{
-              questionCategory?.seniority
-            }} Seniority</span>
+            <span [ngClass]="[questionCategory?.seniority, 'floating']"
+              >{{ questionCategory?.seniority }}
+            </span>
 
             <!-- absolute -->
             <div
@@ -137,24 +137,31 @@
           <label for="questionType" class="custom-label"
             >Tipo de Pregunta</label
           >
-
           <!-- Seleccion de opcion -->
-
-          <select
-            class="custom-select"
-            id="questionType"
-            name="questionType"
-            [(ngModel)]="selectedOption"
-            (ngModelChange)="onQuestionTypeChange($event)"
+           <div class="d-flex">
+             <select
+             class="custom-input"
+             id="questionType"
+             name="questionType"
+             [(ngModel)]="selectedOption"
+             (ngModelChange)="onQuestionTypeChange($event)"
             required>
             <option value="" disabled selected>Selecciona una opción</option>
             <option
-              *ngFor="let type of questionTypes"
-              class="custom-select"
-              [value]="type">
-              {{ type }}
-            </option>
-          </select>
+            *ngFor="let type of questionTypes"
+            class="custom-select"
+            [value]="type">
+            {{ type }}
+          </option>
+        </select>
+        <div class="checkbox-container">
+          <input
+            type="checkbox"
+            class=""
+            name="select"
+           />
+        </div>
+        </div>
         </div>
         <div class="custom-label">
           <div class="label-input">
