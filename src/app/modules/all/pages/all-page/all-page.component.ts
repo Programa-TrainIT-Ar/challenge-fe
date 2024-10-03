@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router'; 
+import { Router } from '@angular/router';
 
 interface Quiz {
   name: string;
@@ -14,12 +14,10 @@ interface Quiz {
 @Component({
   selector: 'app-all-page',
   templateUrl: './all-page.component.html',
-  styleUrl: './all-page.component.scss',
+  styleUrls: ['./all-page.component.scss'], // Cambiado a styleUrls para usar un array
 })
 export class AllPageComponent {
-  searchText: string = '';
-  constructor(private router: Router) { }
-
+  searchText: string = '';  // Campo de búsqueda
   quizzes: Quiz[] = [
     { name: 'UI Jr Quiz', seniority: 'Junior', creationDate: '30/08/2024', creator: 'Oscar A.', module: 'Desarrollo', cell: 'Diseño UX/UI', status: 'Activo' },
     { name: 'QA Sr Quiz', seniority: 'Senior', creationDate: '30/08/2024', creator: 'Thamy G.', module: 'Desarrollo', cell: 'QA', status: 'Activo' },
@@ -31,28 +29,39 @@ export class AllPageComponent {
     { name: 'UI Jr Quiz 1', seniority: 'Junior', creationDate: '30/08/2024', creator: 'Oscar A.', module: 'Desarrollo', cell: 'Diseño UX/UI', status: 'Activo' }
   ];
 
-  filteredQuizzes() {
+  constructor(private router: Router) { }
+
+  // Método para filtrar quizzes según el texto de búsqueda
+  filteredQuizzes(): Quiz[] {
+    const search = this.searchText.toLowerCase(); // Convertir a minúsculas para hacer la búsqueda insensible a mayúsculas/minúsculas
+
+    // Retornar los quizzes filtrados
     return this.quizzes.filter(quiz => 
-      quiz.name.toLowerCase().includes(this.searchText.toLowerCase()) ||
-      quiz.creator.toLowerCase().includes(this.searchText.toLowerCase())
+      quiz.name.toLowerCase().includes(search) || 
+      quiz.seniority.toLowerCase().includes(search) || 
+      quiz.creator.toLowerCase().includes(search) || 
+      quiz.module.toLowerCase().includes(search) || 
+      quiz.cell.toLowerCase().includes(search) || 
+      quiz.status.toLowerCase().includes(search)
     );
   }
 
+  // Método para ver los detalles de un quiz
   viewQuiz(quiz: Quiz) {
     alert(`Viendo el quiz: ${quiz.name}`);
   }
 
+  // Método para editar un quiz
   editQuiz(quiz: Quiz) {
-    alert(`Editando el quiz: ${quiz.name}`),
-    this.router.navigate(['/edit', quiz.name]);  // Redirecciona con el nombre del quiz o un ID único
-
-    
+    alert(`Editando el quiz: ${quiz.name}`);
+    this.router.navigate(['/edit', quiz.name]);  // Redirigir al editar usando el nombre del quiz
   }
 
+  // Método para eliminar un quiz
   deleteQuiz(quiz: Quiz) {
     if (confirm(`¿Estás seguro de eliminar el quiz: ${quiz.name}?`)) {
+      // Eliminar el quiz del array
       this.quizzes = this.quizzes.filter(q => q !== quiz);
     }
   }
-
 }

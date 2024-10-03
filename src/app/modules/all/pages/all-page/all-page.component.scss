@@ -11,6 +11,8 @@ $spacing: 20px;
   padding: 20px;
   background-color: #1e1e1e;
   color: #fff;
+  height: 95vh;
+  width: 150vh;
 }
 .table-sup{
   font-family: Poppins;
@@ -22,7 +24,7 @@ $spacing: 20px;
 
 }
 .table-int{ 
-  text-align: center;
+ margin: 0 auto;
 
 }
 h2 {

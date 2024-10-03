@@ -1,39 +1,42 @@
 <div class="quiz-dashboard">
   <h2>Todos los Quiz</h2>
   <div class="search-container">
-    <input type="text" placeholder="Buscar"  />
+    <!-- Input para buscar, enlazado con ngModel -->
+    <input type="text" placeholder="Buscar" [(ngModel)]="searchText" />
   </div>
-  <div >
-
-  <table class="quiz-table">
-    <thead>
-      <tr class="table-sup">
-        <td>Nombre Q.</td>
-        <td>Seniority</td>
-        <td>Fec. Creación</td>
-        <td>Creador</td>
-        <td>Módulo</td>
-        <td>Célula</td>
-        <td>Estado</td>
-        <td>Acciones</td>
-      </tr>
-    </thead>
-    <tbody>
-      <tr  *ngFor="let quiz of filteredQuizzes()">
-        <td class="table-int">{{ quiz.name }}</td>
-        <td>{{ quiz.seniority }}</td>
-        <td class="table-int">{{ quiz.creationDate }}</td>
-        <td>{{ quiz.creator }}</td>
-        <td>{{ quiz.module }}</td>
-        <td>{{ quiz.cell }}</td>
-        <td><span class="status" [ngClass]="quiz.status">{{ quiz.status }}</span></td>
-        <td class="actions">
-          <button (click)="viewQuiz(quiz)"><i class="bi bi-eye"></i></button>
-          <button (click)="editQuiz(quiz)"><i class="bi bi-pencil-square"></i></button>
-          <button (click)="deleteQuiz(quiz)"><i class="bi bi-trash"></i></button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</div>
+  <div>
+    <table class="quiz-table">
+      <thead>
+        <tr class="table-sup">
+          <td>Nombre Q.</td>
+          <td>Seniority</td>
+          <td>Fec. Creación</td>
+          <td>Creador</td>
+          <td>Módulo</td>
+          <td>Célula</td>
+          <td>Estado</td>
+          <td>Acciones</td>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Mostrar solo los quizzes filtrados -->
+        <tr *ngFor="let quiz of filteredQuizzes()">
+          <td class="table-int">{{ quiz.name }}</td>
+          <td class="table-int">{{ quiz.seniority }}</td>
+          <td class="table-int">{{ quiz.creationDate }}</td>
+          <td class="table-int">{{ quiz.creator }}</td>
+          <td class="table-int">{{ quiz.module }}</td>
+          <td class="table-int">{{ quiz.cell }}</td>
+          <td class="table-int">
+            <span class="status" [ngClass]="quiz.status">{{ quiz.status }}</span>
+          </td>
+          <td class="actions">
+            <button (click)="viewQuiz(quiz)"><i class="bi bi-eye"></i></button>
+            <button (click)="editQuiz(quiz)"><i class="bi bi-pencil-square"></i></button>
+            <button (click)="deleteQuiz(quiz)"><i class="bi bi-trash"></i></button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>
