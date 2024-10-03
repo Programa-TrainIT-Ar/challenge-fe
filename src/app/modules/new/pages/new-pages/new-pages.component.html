@@ -156,9 +156,7 @@
               </option>
             </select>
 
-            <div class="checkbox-container-1">
-              <p>v</p>
-            </div>
+            
 
           </div>
         </div>
@@ -188,9 +186,9 @@
 
       <div class="form-group">
         <div class="option-row">
-          <div *ngFor="let option of options; let i = index" class="mb-3 row">
+          <div *ngFor="let option of options; let i = index" class=" row ">
             <!-- check -->
-            <div class="checkbox-container">
+            <div class="checkbox-container mb-3">
               <input
                 type="{{ inputType }}"
                 class="checkbox-input"
@@ -202,7 +200,7 @@
             <!-- input del check -->
             <input
               type="text"
-              class="custom-option-input"
+              class="custom-option-input mb-3"
               [(ngModel)]="options[i]"
               name="option{{ i }}"
               placeholder="Opción"

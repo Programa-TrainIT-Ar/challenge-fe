@@ -32,7 +32,7 @@ export class NewPagesComponent {
   };
   showCelula: boolean = false;
   showSeniority: boolean = false;
-  showForm: boolean = false;
+  showForm: boolean = true;
   options: string[] = [];
   selection: string[] = [''];
   array: string[] = [''];

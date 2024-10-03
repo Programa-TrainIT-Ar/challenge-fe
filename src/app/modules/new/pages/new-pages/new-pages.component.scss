@@ -126,7 +126,7 @@ h4 {
   border: none;
   color: #c2bbbb99;
   background-color: #202020;
-  height: 2.5rem;
+  height: 4vh;
 }
 
 .option {
@@ -211,7 +211,7 @@ h4 {
   height: 52px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: space-around;
 }
 
 .custom-label {
@@ -222,7 +222,7 @@ h4 {
 }
 
 .custom-select {
-  width: 377.5px;
+  width: 63.5vh;
   height: 28px;
   border: none;
   opacity: 0px;
@@ -232,14 +232,15 @@ h4 {
   color: rgba(194, 187, 187, 0.6);
 }
 .custom-input {
-  width: 60vh;
+  width: 64vh;
   height: 4vh;
   border: none;
   gap: 0px;
-  padding: 0px 0px 0px 8px;
+  padding: 0px 8px 0px 8px;
   opacity: 0px;
   background: rgba(32, 32, 32, 1);
-  border-radius: 8px 0 0 8px;
+  border-radius: 8px ;
+
 }
 
 .custom-option-group {
@@ -250,8 +251,9 @@ h4 {
   
   width: 130vh;
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   flex-wrap: wrap;
+  
 }
 
 .custom-option-input {
@@ -269,20 +271,13 @@ h4 {
   width: 4vh;
   height: 4vh;
   background-color: #303030;
-  border-radius: 8px 0 0 8px;
+  border-radius: 8px 0 0 8px; 
   display: flex;
   justify-content: center;
   align-items: center;
+  padding: 0
 }
-.checkbox-container-1 {
-  width: 4vh;
-  height: 4vh;
-  background-color: #303030;
-  border-radius: 0 8px 8px 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
+
 
 .checkbox-input {
   background-color: red;
