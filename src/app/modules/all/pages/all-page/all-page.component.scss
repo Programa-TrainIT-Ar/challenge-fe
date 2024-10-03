@@ -12,7 +12,12 @@ $spacing: 20px;
   background-color: #1e1e1e;
   color: #fff;
   height: 95vh;
-  width: 150vh;
+  width: 150vh; 
+  border-radius: 12px;
+  padding: 24px 8px 8px 8px;
+  gap: 47px;  
+  opacity: 0px;
+
 }
 .table-sup{
   font-family: Poppins;
@@ -25,6 +30,9 @@ $spacing: 20px;
 }
 .table-int{ 
  margin: 0 auto;
+ flex: auto;
+ 
+ 
 
 }
 h2 {
@@ -107,10 +115,15 @@ h2 {
 
 .quiz-table th {
   background-color: #333;
+  
 }
 
 .quiz-table td {
   background-color: #222;
+  text-align: center; // Centrar el texto horizontalmente
+    padding: 12px; // Espacio alrededor del texto    
+    font-family: "Poppins";
+    
 }
 
 .actions button {
