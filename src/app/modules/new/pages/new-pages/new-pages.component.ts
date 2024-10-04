@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-new-pages',
@@ -7,17 +6,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   styleUrls: ['./new-pages.component.scss'],
 })
 export class NewPagesComponent {
-  public selectHeaderForm: FormGroup;
-  constructor(private formsBuilder: FormBuilder) {}
+  constructor() {}
 
-  ngOnInit(): void {
-    this.selectHeaderForm = this.formsBuilder.group({
-      nombreQuiz: [''],
-      descripcion: [''],
-      modulo: [''],
-    });
-    this.showCelula = false;
-  }
+  ngOnInit(): void {}
 
   questionTypes: string[] = [
     'Selección mutiple',
@@ -25,14 +16,14 @@ export class NewPagesComponent {
     'Verdadero o falso',
   ];
 
+
   questionClass: string = '';
   questionCategory: any = {
     modulo: 'Selecciona la célula',
     seniority: 'Seniority',
   };
-  showCelula: boolean = false;
-  showSeniority: boolean = false;
-  showForm: boolean = true;
+  
+  showForm: any = false;
   options: string[] = [];
   selection: string[] = [''];
   array: string[] = [''];
@@ -43,29 +34,6 @@ export class NewPagesComponent {
   showSubmits: boolean = false;
   inputType: string = '';
 
-  pushQuestionCategory(prop: string, val: string) {
-    this.questionCategory[prop] = val;
-    this.closeInputs();
-    if (
-      this.questionCategory.modulo != 'Selecciona la célula' &&
-      this.questionCategory.seniority != 'Seniority'
-    ) {
-      this.showForm = true;
-    }
-  }
-
-  isShowCelula() {
-    this.showCelula = !this.showCelula;
-    this.showSeniority = false;
-  }
-  isShowSeniority() {
-    this.showSeniority = !this.showSeniority;
-    this.showCelula = false;
-  }
-  closeInputs() {
-    this.showCelula = false;
-    this.showSeniority = false;
-  }
   onQuestionTypeChange(selectedType: string) {
     this.array =
       []; /* <--- este array se crea porque no permite hacer push a selection directamente */
@@ -98,6 +66,16 @@ export class NewPagesComponent {
       /* Pero al agregar un campo el problema vuelve a surgir */
     }
   }
+  recibirDatos(datos: any) {
+    if (
+      datos.modulo != 'Selecciona la célula' &&
+      datos.seniority != 'Seniority'
+    ) {
+      this.showForm = true;
+    }
+    console.log(datos);
+    
+  }
 
   answerChoice(i: number, type: string, form: any) {
     if (type === 'radio') {
@@ -118,12 +96,14 @@ export class NewPagesComponent {
     }
   }
 
-  send(): any {
-    console.log(this.selectHeaderForm.value);
-  }
-
   addOption() {
-    this.options.push(`Opción ${this.options.length + 1}`);
+    if (this.options.length < 5) {
+      this.options.push(`Opción ${this.options.length + 1}`);
+    } else {
+      this.options.push(`Opción ${this.options.length + 1}`);
+      this.showPlus = false;
+      this.showPlus2 = false;
+    }
   }
   addOption2() {
     this.options.push(`Opción ${this.options.length + 1 + '.'}`);
@@ -131,10 +111,8 @@ export class NewPagesComponent {
 
   // enviar el formulario
   onSubmit(form: any) {
-    const formHeader = this.selectHeaderForm.value;
     const formSection = form.value;
     console.log(formSection);
-    console.log(formHeader);
   }
   // Crear una nueva pregunta
   addNewQuestion(form: any) {
