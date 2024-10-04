@@ -7,6 +7,34 @@
   align-items: center;
 }
 
+.header-inputs-container {
+  padding: 0 1rem 1 rem 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-bottom: 2.2rem;
+}
+
+.input-name {
+  width: 384px;
+  height: 40px;
+}
+
+.text-description {
+  width: 135vh;
+  height: 76px;
+  margin: 0;
+  padding-top: 8px;
+}
+.input-name,
+.text-description {
+  border-radius: 8px;
+  border: 1px solid #333232;
+  background-color: #1b1b1b;
+  padding-left: 16px;
+  font-size: 14px;
+}
+
 .normal-container {
   background-color: #212121;
   padding: 1.5rem;

@@ -19,7 +19,7 @@ export class HeaderPageComponent {
     });
     this.showCelula = false;
   }
-  showForm: boolean = false;
+  
   showCelula: boolean = false;
   showSeniority: boolean = false;
   questionCategory: any = {
