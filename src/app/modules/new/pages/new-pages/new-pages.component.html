@@ -1,25 +1,36 @@
 <div class="normal-container transparent">
   <div class="header-inputs-container">
     <div>
-      <input
-        type="text"
-        class="input-name mb-2"
-        placeholder="Nombre del Quiz"
-         />
-    </div>
-    <div>
-      <div
-        class="text-description"
-        placeholder="Descripción"
-        >Descripción</div>
+      <div [ngClass]="showForm ? 'quiz-container-true' : 'quiz-container-false'">
+        <div class="flex-b">
+
+          <div>
+            <input
+            type="text"
+            class="input-name mb-2"
+            placeholder="Nombre del Quiz" />
+          </div>
+          <div [ngClass]="showForm ? '' : 'd-none'">
+            <button class="btn-plus">
+              <span class="circle"><i class="bi bi-plus"></i></span>
+            </button>
+          </div>
+        </div>
+        <div>
+          <input
+            type="text"
+            [ngClass]="showForm ? 'd-none' : 'input-description'"
+            placeholder="Descripción" />
+        </div>
+        <app-header-page
+        [ngClass]="showForm ? '' : 'absolute-true'"
+          (datosParaPadre)="recibirDatos($event)"></app-header-page>
+      </div>
     </div>
   </div>
-  <app-header-page (datosParaPadre)="recibirDatos($event)"></app-header-page>
- 
 
   <!-- componente agus -->
 
-  
   <div *ngIf="showForm" class="content-2">
     <h3 class>Define la pregunta 1/5</h3>
     <!-- Formulario Angular con ngForm -->
@@ -31,7 +42,6 @@
           >
           <!-- Seleccion de opcion -->
           <div class="d-flex">
-
             <select
               class="custom-input"
               id="questionType"
@@ -47,9 +57,6 @@
                 {{ type }}
               </option>
             </select>
-
-            
-
           </div>
         </div>
         <div class="custom-label">
@@ -78,7 +85,7 @@
 
       <div class="form-group">
         <div class="option-row">
-          <div *ngFor="let option of options; let i = index" class=" row ">
+          <div *ngFor="let option of options; let i = index" class="row">
             <!-- check -->
             <div class="checkbox-container mb-3">
               <input
