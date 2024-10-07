@@ -11,8 +11,8 @@
             placeholder="Nombre del Quiz" />
           </div>
           <div [ngClass]="showForm ? '' : 'd-none'">
-            <button class="btn-plus">
-              <span class="circle"><i class="bi bi-plus"></i></span>
+            <button class="btn-plus" (click)="editQuiz()">
+              <span><i class="fa-regular fa-pen-to-square"></i></span>
             </button>
           </div>
         </div>
@@ -28,6 +28,11 @@
       </div>
     </div>
   </div>
+  <div *ngIf="showButton">
+    
+  <button  (click)="createQuiz()" class="custom-btn-save">Guardar</button>
+</div>
+    
 
   <!-- componente agus -->
 

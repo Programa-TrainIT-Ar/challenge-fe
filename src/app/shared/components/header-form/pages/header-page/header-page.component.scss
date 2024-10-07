@@ -65,6 +65,7 @@
 
 .option-floating {
   position: absolute;
+  top: 11vh;
   width: 41vh;
   background-color: #303030;
   display: flex;
@@ -75,6 +76,16 @@
   padding: .8rem;
   border-radius: 8px;
   cursor: pointer;
+}
+
+.floating-seniority {
+  position: absolute;
+  right: 1.6vh;
+}
+
+.floating-cell {
+  position: absolute;
+  right: 47vh;
 }
 
 .floating {

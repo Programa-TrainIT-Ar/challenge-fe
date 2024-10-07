@@ -16,14 +16,14 @@ export class NewPagesComponent {
     'Verdadero o falso',
   ];
 
-
   questionClass: string = '';
   questionCategory: any = {
     modulo: 'Selecciona la célula',
     seniority: 'Seniority',
   };
-  
-  showForm: any = false;
+
+  showButton: boolean = false;
+  showForm: boolean = false;
   options: string[] = [];
   selection: string[] = [''];
   array: string[] = [''];
@@ -71,12 +71,19 @@ export class NewPagesComponent {
       datos.modulo != 'Selecciona la célula' &&
       datos.seniority != 'Seniority'
     ) {
-      this.showForm = true;
+      this.showButton = true;
     }
     console.log(datos);
+  }
+  createQuiz(): void{
+    this.showForm = true
+    this.showButton = false
+    console.log('dale')
+  }
+  editQuiz():void{
+    this.showForm = false
     
   }
-
   answerChoice(i: number, type: string, form: any) {
     if (type === 'radio') {
       this.array =
@@ -106,7 +113,13 @@ export class NewPagesComponent {
     }
   }
   addOption2() {
+    if (this.options.length < 5) {
     this.options.push(`Opción ${this.options.length + 1 + '.'}`);
+  } else {
+      this.options.push(`Opción ${this.options.length + 1 + '.'}`);
+      this.showPlus = false;
+      this.showPlus2 = false;
+    }
   }
 
   // enviar el formulario
