@@ -29,12 +29,12 @@
         <tr *ngFor="let quiz of filteredQuizzes()">
           <td class="table-int">{{ quiz.name }}</td>
           <td class="table-int">{{ quiz.seniority }}</td>
-          <td class="table-int">{{ quiz.creationDate }}</td>
-          <td class="table-int">{{ quiz.creator }}</td>
-          <td class="table-int">{{ quiz.module }}</td>
-          <td class="table-int">{{ quiz.cell }}</td>
+          <td class="table-int">{{ quiz.created_at | date:'yyyy-MM-dd'}}</td>
+          <td class="table-int">{{ quiz.created_by.first_name }}</td>
+          <td class="table-int">{{ quiz.cell.module.name }}</td>
+          <td class="table-int">{{ quiz.cell.name }}</td>
           <td class="table-int">
-            <span class="status" [ngClass]="quiz.status">{{ quiz.status }}</span>
+            <span class="status" [ngClass]="quiz.status">{{ quiz.is_active ? 'Activo' : 'Inactivo' }}</span>
           </td>
           <td class="actions">
             <button (click)="viewQuiz(quiz)"><i class="bi bi-eye"></i></button>

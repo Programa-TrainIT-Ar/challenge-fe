@@ -1,14 +1,14 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 interface Quiz {
   name: string;
-  seniority: string;
-  creationDate: string;
-  creator: string;
+  seniority: string;  
+  created_at: string;
+  created_by:string
   module: string;
   cell: string;
-  status: string;
+  is_active: string;
 }
 
 @Component({
@@ -16,33 +16,57 @@ interface Quiz {
   templateUrl: './all-page.component.html',
   styleUrls: ['./all-page.component.scss'], // Cambiado a styleUrls para usar un array
 })
-export class AllPageComponent {
+export class AllPageComponent implements OnInit {
   searchText: string = '';  // Campo de búsqueda
-  quizzes: Quiz[] = [
-    { name: 'UI Jr Quiz', seniority: 'Junior', creationDate: '30/08/2024', creator: 'Oscar A.', module: 'Desarrollo', cell: 'Diseño UX/UI', status: 'Activo' },
-    { name: 'QA Sr Quiz', seniority: 'Senior', creationDate: '30/08/2024', creator: 'Thamy G.', module: 'Desarrollo', cell: 'QA', status: 'Activo' },
-    { name: 'FS Trainee Quiz', seniority: 'Trainee', creationDate: '30/08/2024', creator: 'Javier B.', module: 'Desarrollo', cell: 'Back End', status: 'Activo' },
-    { name: 'FS Jr Quiz', seniority: 'Junior', creationDate: '30/08/2024', creator: 'Brayan C.', module: 'Desarrollo', cell: 'Back End', status: 'Activo' },
-    { name: 'Diseñador Jr.', seniority: 'Junior', creationDate: '30/08/2024', creator: 'Rafael B.', module: 'Marketing', cell: 'Diseño', status: 'Activo' },
-    { name: 'BE Trainee Quiz', seniority: 'Trainee', creationDate: '30/08/2024', creator: 'Brayan C.', module: 'Sistemas', cell: 'Python', status: 'Activo' },
-    { name: 'BE Jr Quiz', seniority: 'Junior', creationDate: '30/08/2024', creator: 'Brayan C.', module: 'Sistemas', cell: 'Python', status: 'Activo' },
-    { name: 'UI Jr Quiz 1', seniority: 'Junior', creationDate: '30/08/2024', creator: 'Oscar A.', module: 'Desarrollo', cell: 'Diseño UX/UI', status: 'Activo' }
-  ];
+  quizzes: Quiz[] = [];  // Inicializa el array de quizzes
+  
 
   constructor(private router: Router) { }
 
+  ngOnInit(): void {
+    // Llama al método para obtener todos los quizzes al iniciar el componente
+    this.fetchAllQuizzes();
+  }
+
+  // Método para obtener todos los quizzes desde la API
+async fetchAllQuizzes() {
+  try {
+      const response = await fetch('https://challenge-be-development-99e1.onrender.com/quiz');
+
+      if (!response.ok) { // Verifica si la respuesta fue exitosa
+          throw new Error('Error en la consulta: ' + response.status);
+      }
+
+      // Lee el cuerpo de la respuesta solo una vez
+      const data = await response.json(); // Renombrado a 'data' para reflejar que es un objeto
+      console.log("Datos recibidos de la API:", data); // Inspecciona la estructura de la respuesta
+
+      // Asegúrate de que quizData es un array antes de asignarlo
+      this.quizzes = Array.isArray(data.quizzes) ? data.quizzes : []; // Accede al array 'quizzes' dentro del objeto
+
+      console.log("Quizzes recibidos:", this.quizzes);
+      
+  } catch (error) {
+      // Manejo de errores
+      console.error("Error al obtener los quizzes:", error);
+  }
+}
+
+
+
   // Método para filtrar quizzes según el texto de búsqueda
-  filteredQuizzes(): Quiz[] {
+  filteredQuizzes(): Quiz[]  {
     const search = this.searchText.toLowerCase(); // Convertir a minúsculas para hacer la búsqueda insensible a mayúsculas/minúsculas
 
     // Retornar los quizzes filtrados
     return this.quizzes.filter(quiz => 
       quiz.name.toLowerCase().includes(search) || 
       quiz.seniority.toLowerCase().includes(search) || 
-      quiz.creator.toLowerCase().includes(search) || 
-      quiz.module.toLowerCase().includes(search) || 
-      quiz.cell.toLowerCase().includes(search) || 
-      quiz.status.toLowerCase().includes(search)
+      quiz.created_at.toLowerCase().includes(search) ||  // fecha 
+      quiz.created_by.toLowerCase().includes(search) ||
+      quiz.module.toLowerCase().includes(search) ||  //modulo
+      quiz.cell.toLowerCase().includes(search) ||  
+      quiz.is_active.toLowerCase().includes(search)
     );
   }
 
@@ -64,4 +88,6 @@ export class AllPageComponent {
       this.quizzes = this.quizzes.filter(q => q !== quiz);
     }
   }
+
+  
 }
