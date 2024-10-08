@@ -9,8 +9,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 export class NewPagesComponent {
   constructor(private formsBuilder: FormBuilder) {}
   public selectNameForm = this.formsBuilder.group({
-    name: ['']
-  })
+    name: [''],
+  });
 
   ngOnInit(): void {}
 
@@ -80,21 +80,46 @@ export class NewPagesComponent {
     console.log(datos);
   }
   async createQuiz() {
-    let fetchs = await fetch(
-      'https://challenge-be-development-99e1.onrender.com/quiz'
-    );
-    fetchs = await fetchs.json();
-    this.showForm = true
-    this.showButton = false
-    console.log("this.questionCategory")
-    console.log(fetchs);
+    try {
+      this.showForm = true;
+      this.showButton = false;
+      this.questionCategory.name = this.selectNameForm.value.name;
+
+      const prueba = {
+        created_by: "f0f41d59-fca3-4266-b24e-042aafce6a6a",
+        "name": "string",
+        "description": "string",
+        "cell_id": "string",
+        "seniority": "trainee",
+        "challenge_type": "immediate",
+        
+        "created_by_id": "string",
+        "is_active": true
+      }
+      const response = await fetch(
+        'https://challenge-be-development-99e1.onrender.com/quiz',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(prueba),
+        }
+      );
+      if (!response.ok) {
+        throw new Error(`Error: ${response.status}`);
+      }
+      
+      const data = await response.json();
+      console.log(data);
+      
+    } catch (error) {
+      console.error('Error creating quiz:', error);
+    }
   }
 
-  
-  
-
-  editQuiz():void{
-    this.showForm = false
+  editQuiz(): void {
+    this.showForm = false;
   }
   answerChoice(i: number, type: string) {
     if (type === 'radio') {
@@ -126,8 +151,8 @@ export class NewPagesComponent {
   }
   addOption2() {
     if (this.options.length < 5) {
-    this.options.push(`Opción ${this.options.length + 1 + '.'}`);
-  } else {
+      this.options.push(`Opción ${this.options.length + 1 + '.'}`);
+    } else {
       this.options.push(`Opción ${this.options.length + 1 + '.'}`);
       this.showPlus = false;
       this.showPlus2 = false;
