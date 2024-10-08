@@ -1,15 +1,16 @@
 <div class="normal-container transparent">
   <div class="header-inputs-container">
     <div>
-      <div [ngClass]="showForm ? 'quiz-container-true' : 'quiz-container-false'">
+      <div
+        [ngClass]="showForm ? 'quiz-container-true' : 'quiz-container-false'">
         <div class="flex-b">
-
-          <div>
+          <form [formGroup]="selectNameForm">
             <input
-            type="text"
-            class="input-name mb-2"
-            placeholder="Nombre del Quiz" />
-          </div>
+              type="text"
+              class="input-name mb-2"
+              placeholder="Nombre del Quiz"
+              formControlName="name" />
+          </form>
           <div [ngClass]="showForm ? '' : 'd-none'">
             <button class="btn-plus" (click)="editQuiz()">
               <span><i class="fa-regular fa-pen-to-square"></i></span>
@@ -23,16 +24,14 @@
             placeholder="Descripción" />
         </div>
         <app-header-page
-        [ngClass]="showForm ? '' : 'absolute-true'"
+          [ngClass]="showForm ? '' : 'absolute-true'"
           (datosParaPadre)="recibirDatos($event)"></app-header-page>
       </div>
     </div>
   </div>
   <div *ngIf="showButton">
-    
-  <button  (click)="createQuiz()" class="custom-btn-save">Guardar</button>
-</div>
-    
+    <button (click)="createQuiz()" class="custom-btn-save">Guardar</button>
+  </div>
 
   <!-- componente agus -->
 

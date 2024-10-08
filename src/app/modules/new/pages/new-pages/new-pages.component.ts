@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-new-pages',
@@ -6,7 +7,10 @@ import { Component } from '@angular/core';
   styleUrls: ['./new-pages.component.scss'],
 })
 export class NewPagesComponent {
-  constructor() {}
+  constructor(private formsBuilder: FormBuilder) {}
+  public selectNameForm = this.formsBuilder.group({
+    name: ['']
+  })
 
   ngOnInit(): void {}
 
@@ -22,17 +26,17 @@ export class NewPagesComponent {
     seniority: 'Seniority',
   };
 
-  showButton: boolean = false;
-  showForm: boolean = false;
   options: string[] = [];
   selection: string[] = [''];
   array: string[] = [''];
   selectedOption: string = '';
+  inputType: string = '';
+  showButton: boolean = false;
+  showForm: boolean = false;
   isTrueFalseQuestion: boolean = false;
   showPlus: boolean = false;
   showPlus2: boolean = false;
   showSubmits: boolean = false;
-  inputType: string = '';
 
   onQuestionTypeChange(selectedType: string) {
     this.array =
@@ -66,7 +70,7 @@ export class NewPagesComponent {
       /* Pero al agregar un campo el problema vuelve a surgir */
     }
   }
-  recibirDatos(datos: any) {
+  recibirDatos(datos: any): void {
     if (
       datos.modulo != 'Selecciona la célula' &&
       datos.seniority != 'Seniority'
@@ -78,13 +82,13 @@ export class NewPagesComponent {
   createQuiz(): void{
     this.showForm = true
     this.showButton = false
-    console.log('dale')
+    console.log(this.selectNameForm.value)
+    console.log(this.questionCategory)
   }
   editQuiz():void{
     this.showForm = false
-    
   }
-  answerChoice(i: number, type: string, form: any) {
+  answerChoice(i: number, type: string) {
     if (type === 'radio') {
       this.array =
         []; /* <--- este array se crea porque no permite hacer push a selection directamente */

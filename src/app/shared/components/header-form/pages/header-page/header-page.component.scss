@@ -9,8 +9,6 @@
   font-size: 22px;
 }
 
-
-
 .text-description {
   width: 135vh;
   height: 76px;
@@ -49,13 +47,12 @@
   flex-wrap: wrap;
   justify-content: space-between;
   width: 135vh;
-  
+
   border-radius: 12px;
-  padding: .8rem;
+  padding: 0.8rem;
 }
 
 .input-container {
-  
   width: 41vh;
   height: 9vh;
   display: flex;
@@ -71,9 +68,9 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: .8rem;
+  gap: 0.8rem;
   align-items: center;
-  padding: .8rem;
+  padding: 0.8rem;
   border-radius: 8px;
   cursor: pointer;
 }
@@ -90,11 +87,10 @@
 
 .floating {
   border: none;
-  padding-left: .8rem;
-  padding-right: .8rem;
+  padding-left: 0.8rem;
+  padding-right: 0.8rem;
   font-size: 12px;
 }
-
 
 h4 {
   margin: 0;
@@ -169,4 +165,3 @@ h4 {
   background-color: #ff2d55;
   color: #423420;
 }
-
