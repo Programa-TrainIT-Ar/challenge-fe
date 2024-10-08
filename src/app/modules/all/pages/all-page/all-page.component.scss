@@ -110,7 +110,16 @@ h2 {
   border-collapse: collapse;
   margin-top: 10px;
 }
+.activo {
+  color:rgba(151, 71, 255, 1);
+  ; /* Color para activo */
+  font-weight: bold; /* Puedes ajustar el estilo como desees */
+}
 
+.inactivo {
+  color: red; /* Color para inactivo */
+  font-weight: normal; /* Estilo normal para inactivo */
+}
 .quiz-table th, .quiz-table td {
   padding: 10px;
   text-align: left;

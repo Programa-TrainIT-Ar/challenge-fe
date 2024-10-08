@@ -1,14 +1,26 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
+interface User {
+  first_name: string;
+}
+
+interface Module {
+  name: string;
+}
+
+interface Cell {
+  name: string;
+}
+
 interface Quiz {
   name: string;
   seniority: string;  
   created_at: string;
-  created_by:string
-  module: string;
-  cell: string;
-  is_active: string;
+  created_by: User; // Cambiado a objeto
+  module: Module; // Cambiado a objeto
+  cell: Cell; // Cambiado a objeto
+  is_active: boolean;
 }
 
 @Component({
@@ -20,7 +32,6 @@ export class AllPageComponent implements OnInit {
   searchText: string = '';  // Campo de búsqueda
   quizzes: Quiz[] = [];  // Inicializa el array de quizzes
   
-
   constructor(private router: Router) { }
 
   ngOnInit(): void {
@@ -29,8 +40,8 @@ export class AllPageComponent implements OnInit {
   }
 
   // Método para obtener todos los quizzes desde la API
-async fetchAllQuizzes() {
-  try {
+  async fetchAllQuizzes() {
+    try {
       const response = await fetch('https://challenge-be-development-99e1.onrender.com/quiz');
 
       if (!response.ok) { // Verifica si la respuesta fue exitosa
@@ -46,13 +57,11 @@ async fetchAllQuizzes() {
 
       console.log("Quizzes recibidos:", this.quizzes);
       
-  } catch (error) {
+    } catch (error) {
       // Manejo de errores
       console.error("Error al obtener los quizzes:", error);
+    }
   }
-}
-
-
 
   // Método para filtrar quizzes según el texto de búsqueda
   filteredQuizzes(): Quiz[]  {
@@ -63,11 +72,32 @@ async fetchAllQuizzes() {
       quiz.name.toLowerCase().includes(search) || 
       quiz.seniority.toLowerCase().includes(search) || 
       quiz.created_at.toLowerCase().includes(search) ||  // fecha 
-      quiz.created_by.toLowerCase().includes(search) ||
-      quiz.module.toLowerCase().includes(search) ||  //modulo
-      quiz.cell.toLowerCase().includes(search) ||  
-      quiz.is_active.toLowerCase().includes(search)
+      quiz.created_by.first_name.toLowerCase().includes(search) ||  // creador
+      quiz.module.name.toLowerCase().includes(search) ||  //modulo
+      quiz.cell.name.toLowerCase().includes(search) ||   //celula
+      (quiz.is_active ? 'Activo' : 'Inactivo').toLowerCase().includes(search) // esta activo
     );
+  }
+
+  // Método para alternar el estado de is_active
+  async toggleActive(quiz: Quiz) {
+    quiz.is_active = !quiz.is_active; // Alterna el valor de is_active
+
+    try {
+      const response = await fetch(`https://challenge-be-development-99e1.onrender.com/quiz/${quiz.name}`, { // Asegúrate de usar un identificador correcto
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ is_active: quiz.is_active }), // Envía el nuevo estado
+      });
+
+      if (!response.ok) {
+        throw new Error('Error al actualizar el estado del quiz: ' + response.status);
+      }
+    } catch (error) {
+      console.error("Error al actualizar el estado del quiz:", error);
+    }
   }
 
   // Método para ver los detalles de un quiz
@@ -88,6 +118,4 @@ async fetchAllQuizzes() {
       this.quizzes = this.quizzes.filter(q => q !== quiz);
     }
   }
-
-  
 }

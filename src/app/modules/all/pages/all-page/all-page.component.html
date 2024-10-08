@@ -34,7 +34,11 @@
           <td class="table-int">{{ quiz.cell.module.name }}</td>
           <td class="table-int">{{ quiz.cell.name }}</td>
           <td class="table-int">
-            <span class="status" [ngClass]="quiz.status">{{ quiz.is_active ? 'Activo' : 'Inactivo' }}</span>
+            <span class="status" 
+            [ngClass]="{'activo': quiz.is_active, 'inactivo': !quiz.is_active}" 
+            (click)="toggleActive(quiz)">
+        {{ quiz.is_active ? 'Activo' : 'Inactivo' }}
+      </span>
           </td>
           <td class="actions">
             <button (click)="viewQuiz(quiz)"><i class="bi bi-eye"></i></button>
