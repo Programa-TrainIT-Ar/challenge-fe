@@ -79,12 +79,20 @@ export class NewPagesComponent {
     }
     console.log(datos);
   }
-  createQuiz(): void{
+  async createQuiz() {
+    let fetchs = await fetch(
+      'https://challenge-be-development-99e1.onrender.com/quiz'
+    );
+    fetchs = await fetchs.json();
     this.showForm = true
     this.showButton = false
-    console.log(this.selectNameForm.value)
-    console.log(this.questionCategory)
+    console.log("this.questionCategory")
+    console.log(fetchs);
   }
+
+  
+  
+
   editQuiz():void{
     this.showForm = false
   }
