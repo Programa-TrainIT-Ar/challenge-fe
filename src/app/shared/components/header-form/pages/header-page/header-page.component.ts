@@ -17,31 +17,35 @@ export class HeaderPageComponent {
       descripcion: [''],
       modulo: [''],
     });
-    this.showCelula = false;
   }
-  
+
+  showModulo: boolean = false;
   showCelula: boolean = false;
   showSeniority: boolean = false;
   questionCategory: any = {
-    modulo: 'Selecciona la célula',
+    modulo: 'Selecciona el modulo',
+    celula: 'Selecciona la célula',
     seniority: 'Seniority',
   };
 
+  isShowModulo() {
+    this.showModulo = !this.showModulo;
+    this.showCelula = false;
+    this.showSeniority = false;
+  }
   isShowCelula() {
     this.showCelula = !this.showCelula;
     this.showSeniority = false;
+    this.showModulo = false;
   }
   isShowSeniority() {
     this.showSeniority = !this.showSeniority;
     this.showCelula = false;
+    this.showModulo = false;
   }
   pushQuestionCategory(prop: string, val: string): void {
     this.questionCategory[prop] = val;
-    this.closeInputs();
+   
     this.datosParaPadre.emit(this.questionCategory);
-  }
-  closeInputs() {
-    this.showCelula = false;
-    this.showSeniority = false;
   }
 }

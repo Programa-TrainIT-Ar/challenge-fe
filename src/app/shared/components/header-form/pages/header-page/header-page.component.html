@@ -1,108 +1,101 @@
 <form [formGroup]="selectHeaderForm">
-    <div class="content">
-      <div class="content-1">
-        <div class="input-container">
-          <h4>Módulo</h4>
-          <select
-            
-            class="form-select option-select"
-            aria-label="Default select example">
-            <option value="" disabled selected>Desarrollo</option>
-            <option class="option" value="1">Marketing</option>
-            <option class="option" value="2">Sistemas</option>
-          </select>
-        </div>
+  <div class="content">
+    <div class="content-1">
 
-        <div class="input-container">
-          <h4>Célula</h4>
-
-          
-          <div
-            (click)="isShowCelula()"
-            class="form-select option-select"
-            aria-label="Default select example">
-            <span [ngClass]="[questionCategory?.modulo, 'floating']">{{
-              questionCategory?.modulo
-            }}</span>
-
-            <div
-              *ngIf="showCelula"
-              class="option-floating floating-cell"
-              (click)="isShowCelula()">
-              <button
-                class="floating Diseño-UX-UI"
-                (click)="pushQuestionCategory('modulo', 'Diseño-UX-UI')">
-                Diseño UX/UI
-              </button>
-              <button
-                class="floating QA-Tester"
-                (click)="pushQuestionCategory('modulo', 'QA-Tester')">
-                QA Tester
-              </button>
-              <button
-                class="floating Frontend"
-                (click)="pushQuestionCategory('modulo', 'Frontend')">
-                Front end
-              </button>
-              <button
-                class="floating Backend"
-                (click)="pushQuestionCategory('modulo', 'Backend')">
-                Back end
-              </button>
-              <button
-                class="floating PM"
-                (click)="pushQuestionCategory('modulo', 'PM')">
-                PM
-              </button>
-              <button
-                class="floating Scrum-Master"
-                (click)="pushQuestionCategory('modulo', 'Scrum-Master')">
-                Scrum Master
-              </button>
-            </div>
+      <div class="input-container">
+        <h4>Módulo</h4>
+        <div class="form-select option-select"
+        (click)="isShowModulo()">
+          <span [ngClass]="[questionCategory?.modulo, 'floating']"
+            >{{questionCategory?.modulo}}</span>
+          <div *ngIf="showModulo" class="option-floating floating-module">
+            <button class="module-option" (click)="pushQuestionCategory('modulo', 'Desarrollo')">Desarrollo</button>
+            <button class="module-option" (click)="pushQuestionCategory('modulo', 'Marketing')">Marketing</button>
+            <button class="module-option" (click)="pushQuestionCategory('modulo', 'Sistemas')">Sistemas</button>
           </div>
-
-          <!-- Adaptacion UI -->
         </div>
-        <!-- senñority -->
-        <div class="input-container">
-          <h4>Seniority / Nivel</h4>
-          <div
-            (click)="isShowSeniority()"
-            class="form-select option-select"
-            aria-label="Default select example">
-            <span [ngClass]="[questionCategory?.seniority, 'floating']"
-              >{{ questionCategory?.seniority }}
-            </span>
+      </div>
 
-            <!-- absolute -->
-            <div
-              class="option-floating floating-seniority"
-              *ngIf="showSeniority"
-              (click)="isShowSeniority()">
-              <button
-                class="floating trainee"
-                (click)="pushQuestionCategory('seniority', 'trainee')">
-                Trainee
-              </button>
-              <button
-                class="floating junior"
-                (click)="pushQuestionCategory('seniority', 'junior')">
-                Junior
-              </button>
-              <button
-                class="floating semi-sr"
-                (click)="pushQuestionCategory('seniority', 'semi-sr')">
-                Semi Sr
-              </button>
-              <button
-                class="floating senior"
-                (click)="pushQuestionCategory('seniority', 'senior')">
-                Senior
-              </button>
-            </div>
+      <div class="input-container">
+        <h4>Célula</h4>
+        <div class="form-select option-select"
+        (click)="isShowCelula()">
+          <span [ngClass]="[questionCategory?.celula, 'floating']"
+            >{{questionCategory?.celula}}</span>
+          <div *ngIf="showCelula" class="option-floating floating-cell">
+            <button
+              class="floating Diseño-UX-UI"
+              (click)="pushQuestionCategory('celula', 'Diseño-UX-UI')">
+              Diseño UX/UI
+            </button>
+            <button
+              class="floating QA-Tester"
+              (click)="pushQuestionCategory('celula', 'QA-Tester')">
+              QA Tester
+            </button>
+            <button
+              class="floating Frontend"
+              (click)="pushQuestionCategory('celula', 'Frontend')">
+              Front end
+            </button>
+            <button
+              class="floating Backend"
+              (click)="pushQuestionCategory('celula', 'Backend')">
+              Back end
+            </button>
+            <button
+              class="floating PM"
+              (click)="pushQuestionCategory('celula', 'PM')">
+              PM
+            </button>
+            <button
+              class="floating Scrum-Master"
+              (click)="pushQuestionCategory('celula', 'Scrum-Master')">
+              Scrum Master
+            </button>
+          </div>
+        </div>
+
+        <!-- Adaptacion UI -->
+      </div>
+      <!-- senñority -->
+      <div class="input-container">
+        <h4>Seniority / Nivel</h4>
+        <div
+          (click)="isShowSeniority()"
+          class="form-select option-select">
+          <span [ngClass]="[questionCategory?.seniority, 'floating']"
+            >{{ questionCategory?.seniority }}
+          </span>
+
+          <!-- absolute -->
+          <div
+            class="option-floating floating-seniority"
+            *ngIf="showSeniority"
+            >
+            <button
+              class="floating trainee"
+              (click)="pushQuestionCategory('seniority', 'trainee')">
+              Trainee
+            </button>
+            <button
+              class="floating junior"
+              (click)="pushQuestionCategory('seniority', 'junior')">
+              Junior
+            </button>
+            <button
+              class="floating semi-sr"
+              (click)="pushQuestionCategory('seniority', 'semi-sr')">
+              Semi Sr
+            </button>
+            <button
+              class="floating senior"
+              (click)="pushQuestionCategory('seniority', 'senior')">
+              Senior
+            </button>
           </div>
         </div>
       </div>
     </div>
-  </form>
+  </div>
+</form>

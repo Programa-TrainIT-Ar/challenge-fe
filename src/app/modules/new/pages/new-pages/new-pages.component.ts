@@ -86,7 +86,7 @@ export class NewPagesComponent {
       this.questionCategory.name = this.selectNameForm.value.name;
 
       const prueba = {
-        "name": "string2",
+        "name": this.questionCategory.name,
         "description": "string2",
         "cell_id": "8840a9c4-a1b1-472e-84e1-5c6506f257f1",
         "seniority": "trainee",
