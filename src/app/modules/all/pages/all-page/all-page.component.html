@@ -5,10 +5,11 @@
   <div class="search-container">
     <h2>Todos los Quiz</h2>
     <!-- Input para buscar, enlazado con ngModel -->
-    <button> 
-    <i class="bi bi-search"></i>
-  </button>
-    <input type="text" placeholder="Buscar" [(ngModel)]="searchText" />
+    <div class="input-wrapper">
+      <i class="bi bi-search"></i>
+      <input type="text" placeholder="Buscar" [(ngModel)]="searchText" />
+    </div>
+    
   </div>
   <div>
     <table class="quiz-table">
