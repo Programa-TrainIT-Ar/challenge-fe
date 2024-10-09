@@ -27,13 +27,14 @@ export class NewPagesComponent {
     seniority: 'Seniority',
   };
 
+  questions: any = [];
   options: string[] = [];
   selection: string[] = [''];
   array: string[] = [''];
   selectedOption: string = '';
   inputType: string = '';
-  showButton: boolean = false;
-  showForm: boolean = false;
+  showButton: boolean = true; /* pasar a false */
+  showForm: boolean = true; /* pasar a false */
   isTrueFalseQuestion: boolean = false;
   showPlus: boolean = false;
   showPlus2: boolean = false;
@@ -69,16 +70,23 @@ export class NewPagesComponent {
         'Opción 2.',
       ]; /* haciendo distinto el valor funciona */
       /* Pero al agregar un campo el problema vuelve a surgir */
+    } else {
+      this.isTrueFalseQuestion = false;
+      this.options = [];
+      this.showPlus = false;
+      this.showPlus2 = false;
+      this.showSubmits = false;
+      this.inputType = 'radio';
+      selectedType = 'Tipo de Pregunta'
     }
   }
-
 
   recibirDatos(datos: any): void {
     if (
       this.selectNameForm.valid &&
       datos.celula != 'Selecciona la célula' &&
       datos.modulo != 'Selecciona el modulo' &&
-      datos.seniority != 'Seniority' 
+      datos.seniority != 'Seniority'
     ) {
       this.showButton = true;
     }
@@ -90,17 +98,17 @@ export class NewPagesComponent {
       this.showButton = false;
       this.questionCategory.name = this.selectNameForm.value.name;
       this.questionCategory.description = this.selectNameForm.value.description;
-console.log(this.questionCategory);
+      console.log(this.questionCategory);
 
       const prueba = {
-        "name": this.questionCategory.name,
-        "description": "string2",
-        "cell_id": "8840a9c4-a1b1-472e-84e1-5c6506f257f1",
-        "seniority": "trainee",
-        "challenge_type": "immediate",
-        "created_by_id": "f0f41d59-fca3-4266-b24e-042aafce6a6a",
-        "is_active": true
-      }
+        name: this.questionCategory.name,
+        description: 'string2',
+        cell_id: '8840a9c4-a1b1-472e-84e1-5c6506f257f1',
+        seniority: 'trainee',
+        challenge_type: 'immediate',
+        created_by_id: 'f0f41d59-fca3-4266-b24e-042aafce6a6a',
+        is_active: true,
+      };
       const response = await fetch(
         'https://challenge-be-development-99e1.onrender.com/quiz',
         {
@@ -111,13 +119,12 @@ console.log(this.questionCategory);
           body: JSON.stringify(prueba),
         }
       );
-       if (!response.ok) {
+      if (!response.ok) {
         throw new Error(`Error: ${response.status}`);
-      } 
-      
+      }
+
       const data = await response.json();
       console.log(data);
-      
     } catch (error) {
       console.error('Error creating quiz:', error);
     }
@@ -163,11 +170,18 @@ console.log(this.questionCategory);
       this.showPlus2 = false;
     }
   }
-
-  // enviar el formulario
-  onSubmit(form: any) {
+eleccion:string = "Tipo de Pregunta"
+  createQuestion(form: any) {
     const formSection = form.value;
-    console.log(formSection);
+    if (this.questions.length < 6) {
+      this.questions.push(formSection);
+      console.log(form.value);
+
+      /* reinicio */
+      this.onQuestionTypeChange('otro')
+      this.eleccion = "Tipo de Pregunta"
+    } 
+    /* else cambiar boton por cargar, y hacer el POST */
   }
   // Crear una nueva pregunta
   addNewQuestion(form: any) {

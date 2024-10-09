@@ -38,9 +38,9 @@
   <!-- componente agus -->
 
   <div *ngIf="showForm" class="content-2">
-    <h3 class>Define la pregunta 1/5</h3>
+    <h3 class>Define la pregunta {{questions.length+1}}/5</h3>
     <!-- Formulario Angular con ngForm -->
-    <form #questionForm="ngForm" (ngSubmit)="onSubmit(questionForm)" class>
+    <form #questionForm="ngForm" (ngSubmit)="createQuestion(questionForm)" class>
       <div class="question-container mb-3">
         <div>
           <label for="questionType" class="custom-label"
