@@ -86,14 +86,12 @@ export class NewPagesComponent {
       this.questionCategory.name = this.selectNameForm.value.name;
 
       const prueba = {
-        created_by: "f0f41d59-fca3-4266-b24e-042aafce6a6a",
-        "name": "string",
-        "description": "string",
-        "cell_id": "string",
+        "name": "string2",
+        "description": "string2",
+        "cell_id": "8840a9c4-a1b1-472e-84e1-5c6506f257f1",
         "seniority": "trainee",
         "challenge_type": "immediate",
-        
-        "created_by_id": "string",
+        "created_by_id": "f0f41d59-fca3-4266-b24e-042aafce6a6a",
         "is_active": true
       }
       const response = await fetch(
@@ -106,9 +104,9 @@ export class NewPagesComponent {
           body: JSON.stringify(prueba),
         }
       );
-      if (!response.ok) {
+       if (!response.ok) {
         throw new Error(`Error: ${response.status}`);
-      }
+      } 
       
       const data = await response.json();
       console.log(data);
