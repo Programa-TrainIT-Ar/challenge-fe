@@ -3,26 +3,28 @@
     <div>
       <div
         [ngClass]="showForm ? 'quiz-container-true' : 'quiz-container-false'">
-        <div class="flex-b">
-          <form [formGroup]="selectNameForm">
+        <form [formGroup]="selectNameForm">
+            <div class="flex-b">
             <input
               type="text"
               class="input-name mb-2"
               placeholder="Nombre del Quiz"
               formControlName="name" />
+              <div [ngClass]="showForm ? '' : 'd-none'">
+                <button class="btn-plus" (click)="editQuiz()">
+                  <span><i class="fa-regular fa-pen-to-square"></i></span>
+                </button>
+              </div>
+            </div>
+            <div>
+              <input
+              type="text"
+              [ngClass]="showForm ? 'd-none' : 'input-description'"
+              placeholder="Descripción" 
+              formControlName="description"/>
+            </div>
+            
           </form>
-          <div [ngClass]="showForm ? '' : 'd-none'">
-            <button class="btn-plus" (click)="editQuiz()">
-              <span><i class="fa-regular fa-pen-to-square"></i></span>
-            </button>
-          </div>
-        </div>
-        <div>
-          <input
-            type="text"
-            [ngClass]="showForm ? 'd-none' : 'input-description'"
-            placeholder="Descripción" />
-        </div>
         <app-header-page
           [ngClass]="showForm ? '' : 'absolute-true'"
           (datosParaPadre)="recibirDatos($event)"></app-header-page>

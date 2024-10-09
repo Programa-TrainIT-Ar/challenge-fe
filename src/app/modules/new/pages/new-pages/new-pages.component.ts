@@ -9,7 +9,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 export class NewPagesComponent {
   constructor(private formsBuilder: FormBuilder) {}
   public selectNameForm = this.formsBuilder.group({
-    name: [''],
+    name: ['', Validators.required],
+    description: ['', Validators.required],
   });
 
   ngOnInit(): void {}
@@ -70,10 +71,14 @@ export class NewPagesComponent {
       /* Pero al agregar un campo el problema vuelve a surgir */
     }
   }
+
+
   recibirDatos(datos: any): void {
     if (
-      datos.modulo != 'Selecciona la célula' &&
-      datos.seniority != 'Seniority'
+      this.selectNameForm.valid &&
+      datos.celula != 'Selecciona la célula' &&
+      datos.modulo != 'Selecciona el modulo' &&
+      datos.seniority != 'Seniority' 
     ) {
       this.showButton = true;
     }
@@ -84,6 +89,8 @@ export class NewPagesComponent {
       this.showForm = true;
       this.showButton = false;
       this.questionCategory.name = this.selectNameForm.value.name;
+      this.questionCategory.description = this.selectNameForm.value.description;
+console.log(this.questionCategory);
 
       const prueba = {
         "name": this.questionCategory.name,
