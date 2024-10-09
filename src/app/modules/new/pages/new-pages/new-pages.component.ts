@@ -33,8 +33,8 @@ export class NewPagesComponent {
   array: string[] = [''];
   selectedOption: string = '';
   inputType: string = '';
-  showButton: boolean = true; /* pasar a false */
-  showForm: boolean = true; /* pasar a false */
+  showButton: boolean = false; /* pasar a false */
+  showForm: boolean = false; /* pasar a false */
   isTrueFalseQuestion: boolean = false;
   showPlus: boolean = false;
   showPlus2: boolean = false;
