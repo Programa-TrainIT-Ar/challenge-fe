@@ -39,6 +39,7 @@ export class NewPagesComponent {
   showPlus: boolean = false;
   showPlus2: boolean = false;
   showSubmits: boolean = false;
+  quizID: number | string = '';
 
   onQuestionTypeChange(selectedType: string) {
     this.array =
@@ -77,7 +78,7 @@ export class NewPagesComponent {
       this.showPlus2 = false;
       this.showSubmits = false;
       this.inputType = 'radio';
-      selectedType = 'Tipo de Pregunta'
+      selectedType = 'Tipo de Pregunta';
     }
   }
 
@@ -101,6 +102,8 @@ export class NewPagesComponent {
       console.log(this.questionCategory);
 
       const prueba = {
+        /* añadir ID */
+        id: '1',
         name: this.questionCategory.name,
         description: 'string2',
         cell_id: '8840a9c4-a1b1-472e-84e1-5c6506f257f1',
@@ -124,10 +127,23 @@ export class NewPagesComponent {
       }
 
       const data = await response.json();
+      this.quizID = data.id; /* aca hago global el ID del quiz */
       console.log(data);
     } catch (error) {
       console.error('Error creating quiz:', error);
     }
+  }
+
+  async createQuestion(form: any) {
+    const formSection = form.value;
+    if (this.questions.length <= 10) {
+      this.questions.push(formSection);
+      console.log(form.value);
+      /* hacer post de formaSection con id como objeto */
+      /* reinicio */
+      this.onQuestionTypeChange('otro');
+    }
+    /* else cambiar boton por cargar, y hacer el POST */
   }
 
   editQuiz(): void {
@@ -170,19 +186,7 @@ export class NewPagesComponent {
       this.showPlus2 = false;
     }
   }
-eleccion:string = "Tipo de Pregunta"
-  createQuestion(form: any) {
-    const formSection = form.value;
-    if (this.questions.length < 6) {
-      this.questions.push(formSection);
-      console.log(form.value);
 
-      /* reinicio */
-      this.onQuestionTypeChange('otro')
-      this.eleccion = "Tipo de Pregunta"
-    } 
-    /* else cambiar boton por cargar, y hacer el POST */
-  }
   // Crear una nueva pregunta
   addNewQuestion(form: any) {
     console.log('Nueva pregunta agregada');
