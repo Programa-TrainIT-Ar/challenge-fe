@@ -23,10 +23,17 @@ export class HeaderPageComponent {
   showCelula: boolean = false;
   showSeniority: boolean = false;
   questionCategory: any = {
-    modulo: 'Selecciona el modulo',
-    celula: 'Selecciona la célula',
+    module: 'Selecciona el modulo guacho',
+    cell: 'Selecciona la célula',
     seniority: 'Seniority',
   };
+
+  pushQuestionCategory(prop: string, val: string, id:string): void {
+    this.questionCategory[prop] = val;
+    this.questionCategory[id] = id;
+   
+    this.datosParaPadre.emit(this.questionCategory);
+  }
 
   isShowModulo() {
     this.showModulo = !this.showModulo;
@@ -43,10 +50,5 @@ export class HeaderPageComponent {
     this.showCelula = false;
     this.showModulo = false;
   }
-  pushQuestionCategory(prop: string, val: string, id:string): void {
-    this.questionCategory[prop] = val;
-    this.questionCategory[id] = id;
-   
-    this.datosParaPadre.emit(this.questionCategory);
-  }
+
 }

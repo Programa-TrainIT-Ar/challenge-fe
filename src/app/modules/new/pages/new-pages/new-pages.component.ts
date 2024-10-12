@@ -23,7 +23,7 @@ export class NewPagesComponent {
 
   questionClass: string = '';
   questionCategory: any = {
-    modulo: 'Selecciona la célula',
+    module: 'Selecciona la célula',
     seniority: 'Seniority',
   };
 
@@ -92,7 +92,38 @@ export class NewPagesComponent {
     ) {
       this.showButton = true;
     }
-    this.quizData = datos
+
+    /* modulo */
+    if(datos.module == 'Desarrollo'){
+      this.quizData.module = 'ID DE DESARROLLO'
+    } else if (datos.module == 'Marketing'){
+      this.quizData.module = 'ID DE MARKETING'
+    } else if (datos.module == 'Sistemas'){
+      this.quizData.module = '84c66f03-c98f-47f1-a461-589cfb3dbf1f'
+    }
+
+    /* celula */
+
+    if(datos.cell == 'Diseño-UX-UI'){
+      this.quizData.cell = '03f5d507-5116-4561-be80-51283bbc9af6'
+    } else if (datos.cell == 'QA-Tester'){
+      this.quizData.cell = '8da491e5-1524-4d3e-bb64-5aaff31bfdf9'
+    } else if (datos.cell == 'Frontend'){
+      this.quizData.cell = '7165ac32-abb2-46ce-a9b7-1b1cd325026b'
+    } else if (datos.cell == 'Backend'){
+      this.quizData.cell = 'c98b1012-5992-4b70-b704-d1964e9c7a52'
+    } else if (datos.cell == 'PM'){
+      this.quizData.cell = '4c807a63-ae60-4935-bef7-89ad7391205c'
+    } else if (datos.cell == 'Scrum-Master'){
+      this.quizData.cell = '84c66f03-c98f-47f1-a461-589cfb3dbf1f'
+    }
+
+    /* seniority */
+if(datos.seniority){
+this.quizData.seniority = datos.seniority
+}
+    console.log(this.quizData);
+    
   }
   async createQuiz() {
     try {
@@ -100,15 +131,15 @@ export class NewPagesComponent {
       this.showButton = false;
       this.questionCategory.name = this.selectNameForm.value.name;
       this.questionCategory.description = this.selectNameForm.value.description;
-      console.log(this.selectNameForm);
+      console.log(this.quizData);
 
       const prueba = {
-        /* añadir ID */
-
+        
         name: this.selectNameForm.value.name,
         description: this.selectNameForm.value.description,
-        "cell_id": "8da491e5-1524-4d3e-bb64-5aaff31bfdf9",
-        "seniority": "junior",
+        
+        "cell_id": this.quizData.cell,
+        "seniority": this.quizData.seniority,
         "challenge_type": "immediate",
         "created_by_id": "00ff40f6-8f8f-433f-8306-0abb0001cf08",
         "is_active": true

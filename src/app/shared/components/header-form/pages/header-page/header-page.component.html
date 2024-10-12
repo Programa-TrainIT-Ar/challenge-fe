@@ -6,12 +6,12 @@
         <h4>Módulo</h4>
         <div class="form-select option-select"
         (click)="isShowModulo()">
-          <span [ngClass]="[questionCategory?.modulo, 'floating']"
-            >{{questionCategory?.modulo}}</span>
+          <span [ngClass]="[questionCategory?.module, 'floating']"
+            >{{questionCategory?.module}}</span>
           <div *ngIf="showModulo" class="option-floating floating-module">
-            <button class="module-option" (click)="pushQuestionCategory('modulo', 'Desarrollo')">Desarrollo</button>
-            <button class="module-option" (click)="pushQuestionCategory('modulo', 'Marketing')">Marketing</button>
-            <button class="module-option" (click)="pushQuestionCategory('modulo', 'Sistemas')">Sistemas</button>
+            <button class="module-option" (click)="pushQuestionCategory('module', 'Desarrollo')">Desarrollo</button>
+            <button class="module-option" (click)="pushQuestionCategory('module', 'Marketing')">Marketing</button>
+            <button class="module-option" (click)="pushQuestionCategory('module', 'Sistemas')">Sistemas</button>
           </div>
         </div>
       </div>
@@ -20,37 +20,37 @@
         <h4>Célula</h4>
         <div class="form-select option-select"
         (click)="isShowCelula()">
-          <span [ngClass]="[questionCategory?.celula, 'floating']"
-            >{{questionCategory?.celula}}</span>
+          <span [ngClass]="[questionCategory?.cell, 'floating']"
+            >{{questionCategory?.cell}}</span>
           <div *ngIf="showCelula" class="option-floating floating-cell">
             <button
               class="floating Diseño-UX-UI"
-              (click)="pushQuestionCategory('celula', 'Diseño-UX-UI')">
+              (click)="pushQuestionCategory('cell', 'Diseño-UX-UI')">
               Diseño UX/UI
             </button>
             <button
               class="floating QA-Tester"
-              (click)="pushQuestionCategory('celula', 'QA-Tester')">
+              (click)="pushQuestionCategory('cell', 'QA-Tester')">
               QA Tester
             </button>
             <button
               class="floating Frontend"
-              (click)="pushQuestionCategory('celula', 'Frontend')">
+              (click)="pushQuestionCategory('cell', 'Frontend')">
               Front end
             </button>
             <button
               class="floating Backend"
-              (click)="pushQuestionCategory('celula', 'Backend')">
+              (click)="pushQuestionCategory('cell', 'Backend')">
               Back end
             </button>
             <button
               class="floating PM"
-              (click)="pushQuestionCategory('celula', 'PM')">
+              (click)="pushQuestionCategory('cell', 'PM')">
               PM
             </button>
             <button
               class="floating Scrum-Master"
-              (click)="pushQuestionCategory('celula', 'Scrum-Master')">
+              (click)="pushQuestionCategory('cell', 'Scrum-Master')">
               Scrum Master
             </button>
           </div>
