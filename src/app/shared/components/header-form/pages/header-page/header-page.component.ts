@@ -43,8 +43,9 @@ export class HeaderPageComponent {
     this.showCelula = false;
     this.showModulo = false;
   }
-  pushQuestionCategory(prop: string, val: string): void {
+  pushQuestionCategory(prop: string, val: string, id:string): void {
     this.questionCategory[prop] = val;
+    this.questionCategory[id] = id;
    
     this.datosParaPadre.emit(this.questionCategory);
   }
