@@ -40,7 +40,7 @@ export class NewPagesComponent {
   showPlus2: boolean = false;
   showSubmits: boolean = false;
   quizID: number | string = '';
-  quizData: any = {}
+  quizData: any = {};
 
   onQuestionTypeChange(selectedType: string) {
     this.array =
@@ -94,36 +94,35 @@ export class NewPagesComponent {
     }
 
     /* modulo */
-    if(datos.module == 'Desarrollo'){
-      this.quizData.module = 'ID DE DESARROLLO'
-    } else if (datos.module == 'Marketing'){
-      this.quizData.module = 'ID DE MARKETING'
-    } else if (datos.module == 'Sistemas'){
-      this.quizData.module = '84c66f03-c98f-47f1-a461-589cfb3dbf1f'
+    if (datos.module == 'Desarrollo') {
+      this.quizData.module = 'ID DE DESARROLLO';
+    } else if (datos.module == 'Marketing') {
+      this.quizData.module = 'ID DE MARKETING';
+    } else if (datos.module == 'Sistemas') {
+      this.quizData.module = '84c66f03-c98f-47f1-a461-589cfb3dbf1f';
     }
 
     /* celula */
 
-    if(datos.cell == 'Diseño-UX-UI'){
-      this.quizData.cell = '03f5d507-5116-4561-be80-51283bbc9af6'
-    } else if (datos.cell == 'QA-Tester'){
-      this.quizData.cell = '8da491e5-1524-4d3e-bb64-5aaff31bfdf9'
-    } else if (datos.cell == 'Frontend'){
-      this.quizData.cell = '7165ac32-abb2-46ce-a9b7-1b1cd325026b'
-    } else if (datos.cell == 'Backend'){
-      this.quizData.cell = 'c98b1012-5992-4b70-b704-d1964e9c7a52'
-    } else if (datos.cell == 'PM'){
-      this.quizData.cell = '4c807a63-ae60-4935-bef7-89ad7391205c'
-    } else if (datos.cell == 'Scrum-Master'){
-      this.quizData.cell = '84c66f03-c98f-47f1-a461-589cfb3dbf1f'
+    if (datos.cell == 'Diseño-UX-UI') {
+      this.quizData.cell = '03f5d507-5116-4561-be80-51283bbc9af6';
+    } else if (datos.cell == 'QA-Tester') {
+      this.quizData.cell = '8da491e5-1524-4d3e-bb64-5aaff31bfdf9';
+    } else if (datos.cell == 'Frontend') {
+      this.quizData.cell = '7165ac32-abb2-46ce-a9b7-1b1cd325026b';
+    } else if (datos.cell == 'Backend') {
+      this.quizData.cell = 'c98b1012-5992-4b70-b704-d1964e9c7a52';
+    } else if (datos.cell == 'PM') {
+      this.quizData.cell = '4c807a63-ae60-4935-bef7-89ad7391205c';
+    } else if (datos.cell == 'Scrum-Master') {
+      this.quizData.cell = '84c66f03-c98f-47f1-a461-589cfb3dbf1f';
     }
 
     /* seniority */
-if(datos.seniority){
-this.quizData.seniority = datos.seniority
-}
+    if (datos.seniority) {
+      this.quizData.seniority = datos.seniority;
+    }
     console.log(this.quizData);
-    
   }
   async createQuiz() {
     try {
@@ -134,16 +133,15 @@ this.quizData.seniority = datos.seniority
       console.log(this.quizData);
 
       const prueba = {
-        
         name: this.selectNameForm.value.name,
         description: this.selectNameForm.value.description,
-        
-        "cell_id": this.quizData.cell,
-        "seniority": this.quizData.seniority,
-        "challenge_type": "immediate",
-        "created_by_id": "00ff40f6-8f8f-433f-8306-0abb0001cf08",
-        "is_active": true
-      }
+
+        cell_id: this.quizData.cell,
+        seniority: this.quizData.seniority,
+        challenge_type: 'immediate',
+        created_by_id: '00ff40f6-8f8f-433f-8306-0abb0001cf08',
+        is_active: true,
+      };
       const response = await fetch(
         'https://challenge-be-development-99e1.onrender.com/quiz',
         {
@@ -167,15 +165,46 @@ this.quizData.seniority = datos.seniority
   }
 
   async createQuestion(form: any) {
-    const formSection = form.value;
-    if (this.questions.length <= 10) {
-      this.questions.push(formSection);
-      console.log(form.value);
-      /* hacer post de formaSection con id como objeto */
-      /* reinicio */
-      this.onQuestionTypeChange('otro');
+    try {
+      const formSection = form.value;
+
+      console.log(formSection.questionType);
+      let question = {
+        question: formSection.questionText,
+        seniority: 'junior',
+        type: 'multiple_choice', // formSection.typeOfQuestion
+        options: ['string'],
+        correct_option: [2], //<---ponerr formSection.solution
+        explanation: 'string',
+        link: 'string',
+        is_active: true,
+        quiz_id: this.quizID,
+      };
+      if (this.questions.length <= 5) {
+        this.questions.push(formSection);
+        console.log(form.value);
+        this.onQuestionTypeChange('otro');
+
+        const response = await fetch(
+          'https://challenge-be-development-99e1.onrender.com/question',
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(question),
+          }
+        );
+
+        const data = await response.json();
+
+        console.log(data);
+      } else {
+        console.log('estan las 5');
+      }
+    } catch (error) {
+      console.error('Error creating question:', error);
     }
-    /* else cambiar boton por cargar, y hacer el POST */
   }
 
   editQuiz(): void {
