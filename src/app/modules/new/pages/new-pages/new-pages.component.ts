@@ -9,8 +9,10 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 export class NewPagesComponent {
   constructor(private formsBuilder: FormBuilder) {}
   public selectNameForm = this.formsBuilder.group({
-    name: ['', Validators.required],
-    description: ['', Validators.required],
+    /*     name: ['', Validators.required],
+    description: ['', Validators.required], */
+    name: [''],
+    description: [''],
   });
 
   ngOnInit(): void {}
@@ -168,13 +170,26 @@ export class NewPagesComponent {
     try {
       const formSection = form.value;
 
-      console.log(formSection.questionType);
+      if (formSection.questionType == 'Selección mutiple') {
+        formSection.questionType = 'multiple_choice';
+      } else if (formSection.questionType == 'Verdadero o falso') {
+        formSection.questionType = 'true_false';
+      } else if (formSection.questionType == 'Casilla') {
+        formSection.questionType = 'simple_choice';
+      }
+      formSection.solution = formSection.solution.map(element => {
+        if (element.includes('.')) {
+          return (element = parseInt(element[element.length - 2]));
+        }
+        return (element = parseInt(element[element.length - 1]));
+      });
+      console.log(formSection.solution);
       let question = {
         question: formSection.questionText,
         seniority: 'junior',
-        type: 'multiple_choice', // formSection.typeOfQuestion
+        type: formSection.questionType,
         options: ['string'],
-        correct_option: [2], //<---ponerr formSection.solution
+        correct_option: formSection.solution, 
         explanation: 'string',
         link: 'string',
         is_active: true,

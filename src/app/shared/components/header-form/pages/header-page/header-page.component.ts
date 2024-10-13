@@ -23,7 +23,7 @@ export class HeaderPageComponent {
   showCelula: boolean = false;
   showSeniority: boolean = false;
   questionCategory: any = {
-    module: 'Selecciona el modulo guacho',
+    module: 'Selecciona el modulo',
     cell: 'Selecciona la célula',
     seniority: 'Seniority',
   };
