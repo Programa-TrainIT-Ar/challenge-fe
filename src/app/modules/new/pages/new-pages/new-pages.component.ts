@@ -184,7 +184,7 @@ export class NewPagesComponent {
         quiz_id: this.quizID,
       };
       if (this.questions.length <= 10) {
-        
+        this.questions.push(formSection);
         console.log(form.value);
         /* this.onQuestionTypeChange('otro', 0);  */
 
@@ -204,7 +204,6 @@ export class NewPagesComponent {
         if (!response.ok) {
           throw new Error(`Error: ${response.status}`);
         }
-        this.questions.push(formSection);
         console.log(data);
         form.reset();
         this.options= []
