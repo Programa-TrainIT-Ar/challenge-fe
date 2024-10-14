@@ -25,6 +25,7 @@ export class NewPagesComponent {
 
   questionClass: string = '';
   questionCategory: any = {
+
     module: 'Selecciona la célula',
     seniority: 'Seniority',
   };
@@ -32,7 +33,7 @@ export class NewPagesComponent {
   questions: any = [];
   options: string[] = [];
   selection: string[] = [''];
-  array: string[] = [''];
+  array: any = [''];
   selectedOption: string = '';
   inputType: string = '';
   showButton: boolean = false; /* pasar a false */
@@ -45,6 +46,7 @@ export class NewPagesComponent {
   quizData: any = {};
 
   onQuestionTypeChange(selectedType: string) {
+    
     this.array =
       []; /* <--- este array se crea porque no permite hacer push a selection directamente */
     this.selection =
@@ -195,7 +197,7 @@ export class NewPagesComponent {
         is_active: true,
         quiz_id: this.quizID,
       };
-      if (this.questions.length <= 5) {
+      if (this.questions.length <= 10) {
         this.questions.push(formSection);
         console.log(form.value);
         this.onQuestionTypeChange('otro');
@@ -213,10 +215,17 @@ export class NewPagesComponent {
 
         const data = await response.json();
 
+
+        if (!response.ok) {
+          throw new Error(`Error: ${response.status}`);
+        }
         console.log(data);
+        form.reset()
       } else {
-        console.log('estan las 5');
+        console.log('estan las 10');
       }
+
+      
     } catch (error) {
       console.error('Error creating question:', error);
     }
@@ -231,9 +240,9 @@ export class NewPagesComponent {
         []; /* <--- este array se crea porque no permite hacer push a selection directamente */
       this.selection =
         []; /* <--- 'DEBERIA' limpiar el array, pero en modo 'CASILLA' no se limpia */
-      this.array.push(this.options[i]);
+      this.array.push(i);
       this.selection = this.array;
-    } else if (this.array.includes(this.options[i])) {
+    } else if (this.array.includes(i)) {
       this.array = this.array.filter(el => el != this.options[i]);
       this.selection = this.array;
     } else {
