@@ -170,13 +170,8 @@ export class NewPagesComponent {
       } else if (formSection.questionType == 'Casilla') {
         formSection.questionType = 'simple_choice';
       }
-/*       formSection.solution = formSection.solution.map(element => {
-        if (element.includes('.')) {
-          return (element = parseInt(element[element.length - 2]));
-        }
-        return (element = parseInt(element[element.length - 1]));
-      });
- */      console.log(formSection.solution);
+
+      console.log(formSection.solution);
       let question = {
         question: formSection.questionText,
         seniority: 'junior',
@@ -189,7 +184,7 @@ export class NewPagesComponent {
         quiz_id: this.quizID,
       };
       if (this.questions.length <= 10) {
-        this.questions.push(formSection);
+        
         console.log(form.value);
         /* this.onQuestionTypeChange('otro', 0);  */
 
@@ -209,11 +204,13 @@ export class NewPagesComponent {
         if (!response.ok) {
           throw new Error(`Error: ${response.status}`);
         }
+        this.questions.push(formSection);
         console.log(data);
         form.reset();
         this.options= []
       } else {
         console.log('estan las 10');
+        window.location.reload();
       }
     } catch (error) {
       console.error('Error creating question:', error);
