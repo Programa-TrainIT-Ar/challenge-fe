@@ -53,7 +53,7 @@
               id="questionType"
               name="questionType"
               [(ngModel)]="selectedOption"
-              (ngModelChange)="onQuestionTypeChange($event)"
+              (ngModelChange)="onQuestionTypeChange($event, questionForm)"
               required>
               <option value="" disabled selected>Selecciona una opción</option>
               <option

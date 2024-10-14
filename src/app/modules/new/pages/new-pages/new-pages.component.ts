@@ -15,17 +15,13 @@ export class NewPagesComponent {
     description: [''],
   });
 
-  ngOnInit(): void {}
-
   questionTypes: string[] = [
     'Selección mutiple',
     'Casilla',
     'Verdadero o falso',
   ];
 
-  questionClass: string = '';
   questionCategory: any = {
-
     module: 'Selecciona la célula',
     seniority: 'Seniority',
   };
@@ -45,12 +41,9 @@ export class NewPagesComponent {
   quizID: number | string = '';
   quizData: any = {};
 
-  onQuestionTypeChange(selectedType: string) {
-    
-    this.array =
-      []; /* <--- este array se crea porque no permite hacer push a selection directamente */
-    this.selection =
-      []; /* <--- 'DEBERIA' limpiar el array, pero en modo 'CASILLA' no se limpia */
+  onQuestionTypeChange(selectedType: string, form: any) {
+    this.array = []; /* <--- este array se crea porque no permite hacer push a selection directamente */
+    this.selection = []; /* <--- 'DEBERIA' limpiar el array, pero en modo 'CASILLA' no se limpia */
     if (selectedType === 'Verdadero o falso') {
       this.isTrueFalseQuestion = true;
       this.options = ['Verdadero', 'Falso'];
@@ -71,10 +64,7 @@ export class NewPagesComponent {
       this.showPlus2 = true;
       this.showSubmits = true;
       this.inputType = 'radio';
-      this.options = [
-        'Opción 1.',
-        'Opción 2.',
-      ]; /* haciendo distinto el valor funciona */
+      this.options = ['Opción 1.','Opción 2.',]; /* haciendo distinto el valor funciona */
       /* Pero al agregar un campo el problema vuelve a surgir */
     } else {
       this.isTrueFalseQuestion = false;
@@ -84,6 +74,7 @@ export class NewPagesComponent {
       this.showSubmits = false;
       this.inputType = 'radio';
       selectedType = 'Tipo de Pregunta';
+      
     }
   }
 
@@ -179,19 +170,19 @@ export class NewPagesComponent {
       } else if (formSection.questionType == 'Casilla') {
         formSection.questionType = 'simple_choice';
       }
-      formSection.solution = formSection.solution.map(element => {
+/*       formSection.solution = formSection.solution.map(element => {
         if (element.includes('.')) {
           return (element = parseInt(element[element.length - 2]));
         }
         return (element = parseInt(element[element.length - 1]));
       });
-      console.log(formSection.solution);
+ */      console.log(formSection.solution);
       let question = {
         question: formSection.questionText,
         seniority: 'junior',
         type: formSection.questionType,
         options: ['string'],
-        correct_option: formSection.solution, 
+        correct_option: formSection.solution,
         explanation: 'string',
         link: 'string',
         is_active: true,
@@ -200,7 +191,7 @@ export class NewPagesComponent {
       if (this.questions.length <= 10) {
         this.questions.push(formSection);
         console.log(form.value);
-        this.onQuestionTypeChange('otro');
+        /* this.onQuestionTypeChange('otro', 0);  */
 
         const response = await fetch(
           'https://challenge-be-development-99e1.onrender.com/question',
@@ -215,17 +206,15 @@ export class NewPagesComponent {
 
         const data = await response.json();
 
-
         if (!response.ok) {
           throw new Error(`Error: ${response.status}`);
         }
         console.log(data);
-        form.reset()
+        form.reset();
+        this.options= []
       } else {
         console.log('estan las 10');
       }
-
-      
     } catch (error) {
       console.error('Error creating question:', error);
     }
@@ -235,22 +224,14 @@ export class NewPagesComponent {
     this.showForm = false;
   }
   answerChoice(i: number, type: string) {
-    if (type === 'radio') {
+    if (true) {
       this.array =
         []; /* <--- este array se crea porque no permite hacer push a selection directamente */
       this.selection =
         []; /* <--- 'DEBERIA' limpiar el array, pero en modo 'CASILLA' no se limpia */
       this.array.push(i);
       this.selection = this.array;
-    } else if (this.array.includes(i)) {
-      this.array = this.array.filter(el => el != this.options[i]);
-      this.selection = this.array;
-    } else {
-      this.array = this.array.filter(el => el != 'Verdadero');
-      this.array = this.array.filter(el => el != 'Falso');
-      this.array.push(this.options[i]);
-      this.selection = this.array;
-    }
+    } 
   }
 
   addOption() {
@@ -270,12 +251,5 @@ export class NewPagesComponent {
       this.showPlus = false;
       this.showPlus2 = false;
     }
-  }
-
-  // Crear una nueva pregunta
-  addNewQuestion(form: any) {
-    console.log('Nueva pregunta agregada');
-    form.resetForm();
-    this.options = ['Opción 1']; // Reiniciar las opciones
   }
 }
