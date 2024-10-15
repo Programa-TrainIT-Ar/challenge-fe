@@ -41,9 +41,15 @@ export class NewPagesComponent {
   quizID: number | string = '';
   quizData: any = {};
 
-  onQuestionTypeChange(selectedType: string, form: any) {
-    this.array = []; /* <--- este array se crea porque no permite hacer push a selection directamente */
-    this.selection = []; /* <--- 'DEBERIA' limpiar el array, pero en modo 'CASILLA' no se limpia */
+  trackByFn(index: number, item: any): any {
+    return index; // Puedes usar el índice como identificador único
+  }
+
+  onQuestionTypeChange(selectedType: string) {
+    this.array =
+      []; /* <--- este array se crea porque no permite hacer push a selection directamente */
+    this.selection =
+      []; /* <--- 'DEBERIA' limpiar el array, pero en modo 'CASILLA' no se limpia */
     if (selectedType === 'Verdadero o falso') {
       this.isTrueFalseQuestion = true;
       this.options = ['Verdadero', 'Falso'];
@@ -64,7 +70,10 @@ export class NewPagesComponent {
       this.showPlus2 = true;
       this.showSubmits = true;
       this.inputType = 'radio';
-      this.options = ['Opción 1.','Opción 2.',]; /* haciendo distinto el valor funciona */
+      this.options = [
+        'Opción 1.',
+        'Opción 2.',
+      ]; /* haciendo distinto el valor funciona */
       /* Pero al agregar un campo el problema vuelve a surgir */
     } else {
       this.isTrueFalseQuestion = false;
@@ -74,7 +83,6 @@ export class NewPagesComponent {
       this.showSubmits = false;
       this.inputType = 'radio';
       selectedType = 'Tipo de Pregunta';
-      
     }
   }
 
@@ -89,28 +97,42 @@ export class NewPagesComponent {
     }
 
     /* modulo */
-    if (datos.module == 'Desarrollo') {
-      this.quizData.module = 'ID DE DESARROLLO';
-    } else if (datos.module == 'Marketing') {
-      this.quizData.module = 'ID DE MARKETING';
-    } else if (datos.module == 'Sistemas') {
-      this.quizData.module = '84c66f03-c98f-47f1-a461-589cfb3dbf1f';
+    switch (datos.module) {
+      case 'Desarrollo':
+        this.quizData.module = 'ID DE DESARROLLO';
+        break;
+      case 'Marketing':
+        this.quizData.module = 'ID DE MARKETING';
+        break;
+      case 'Sistemas':
+        this.quizData.module = '84c66f03-c98f-47f1-a461-589cfb3dbf1f';
+        break;
     }
 
     /* celula */
 
-    if (datos.cell == 'Diseño-UX-UI') {
-      this.quizData.cell = '03f5d507-5116-4561-be80-51283bbc9af6';
-    } else if (datos.cell == 'QA-Tester') {
-      this.quizData.cell = '8da491e5-1524-4d3e-bb64-5aaff31bfdf9';
-    } else if (datos.cell == 'Frontend') {
-      this.quizData.cell = '7165ac32-abb2-46ce-a9b7-1b1cd325026b';
-    } else if (datos.cell == 'Backend') {
-      this.quizData.cell = 'c98b1012-5992-4b70-b704-d1964e9c7a52';
-    } else if (datos.cell == 'PM') {
-      this.quizData.cell = '4c807a63-ae60-4935-bef7-89ad7391205c';
-    } else if (datos.cell == 'Scrum-Master') {
-      this.quizData.cell = '84c66f03-c98f-47f1-a461-589cfb3dbf1f';
+    switch (datos.cell) {
+      case 'Diseño-UX-UI':
+        this.quizData.cell = '97928084-2555-405c-b6fa-c8fcbd47c3d5';
+        break;
+      case 'QA-Tester':
+        this.quizData.cell = '5901518b-f699-49ce-a034-5d0fe2609345';
+        break;
+      case 'Frontend':
+        this.quizData.cell = '305e2fc8-b898-48f7-b5ea-75fcdb52b17f';
+        break;
+      case 'Backend':
+        this.quizData.cell = 'fe378504-4a60-4de9-8204-e42ca27167d3';
+        break;
+      case 'PM':
+        this.quizData.cell = '989d898a-3ca8-453c-ab2e-1cc4f9510b8c';
+        break;
+      case 'Scrum-Master':
+        this.quizData.cell = 'c4d33b62-b4a4-46b3-ad4f-15471b7fd456';
+        break;
+      case 'Fullstack':
+        this.quizData.cell = '6c88f9e9-ee68-423f-bbf9-cb8af183924f';
+        break;
     }
 
     /* seniority */
@@ -134,7 +156,7 @@ export class NewPagesComponent {
         cell_id: this.quizData.cell,
         seniority: this.quizData.seniority,
         challenge_type: 'immediate',
-        created_by_id: '00ff40f6-8f8f-433f-8306-0abb0001cf08',
+        created_by_id: '224742e8-731b-40bf-b05f-a7547270746c',
         is_active: true,
       };
       const response = await fetch(
@@ -163,20 +185,31 @@ export class NewPagesComponent {
     try {
       const formSection = form.value;
 
-      if (formSection.questionType == 'Selección mutiple') {
-        formSection.questionType = 'multiple_choice';
-      } else if (formSection.questionType == 'Verdadero o falso') {
-        formSection.questionType = 'true_false';
-      } else if (formSection.questionType == 'Casilla') {
-        formSection.questionType = 'simple_choice';
+      switch (formSection.questionType) {
+        case 'Selección mutiple':
+          formSection.questionType = 'multiple_choice';
+          break;
+        case 'Verdadero o falso':
+          formSection.questionType = 'true_false';
+          break;
+        case 'Casilla':
+          formSection.questionType = 'simple_choice';
+          break;
       }
 
-      console.log(formSection.solution);
+      console.log(formSection);
       let question = {
         question: formSection.questionText,
         seniority: 'junior',
         type: formSection.questionType,
-        options: ['string'],
+        options: [
+          formSection?.option0,
+          formSection?.option1,
+          formSection?.option2,
+          formSection?.option3,
+          formSection?.option4,
+          formSection?.option5,
+        ].filter(option => option !== undefined && option !== null),
         correct_option: formSection.solution,
         explanation: 'string',
         link: 'string',
@@ -206,7 +239,7 @@ export class NewPagesComponent {
         }
         console.log(data);
         form.reset();
-        this.options= []
+        this.options = [];
       } else {
         console.log('estan las 10');
         window.location.reload();
@@ -227,7 +260,7 @@ export class NewPagesComponent {
         []; /* <--- 'DEBERIA' limpiar el array, pero en modo 'CASILLA' no se limpia */
       this.array.push(i);
       this.selection = this.array;
-    } 
+    }
   }
 
   addOption() {

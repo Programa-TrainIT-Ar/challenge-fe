@@ -91,14 +91,13 @@
 
       <div class="form-group">
         <div class="option-row">
-          <div *ngFor="let option of options; let i = index" class="row">
+          <div *ngFor="let option of options; let i = index trackBy: trackByFn" class="row">
             <!-- check -->
             <div class="checkbox-container mb-3">
               <input
                 type="{{ inputType }}"
                 class="checkbox-input"
                 name="solution"
-                [value]="option"
                 [ngModel]="selection"
                 (ngModelChange)="answerChoice(i, inputType)" />
             </div>
@@ -108,7 +107,6 @@
               class="custom-option-input mb-3"
               [(ngModel)]="options[i]"
               name="option{{ i }}"
-              placeholder="Opción"
               [readonly]="isTrueFalseQuestion"
               required />
           </div>
