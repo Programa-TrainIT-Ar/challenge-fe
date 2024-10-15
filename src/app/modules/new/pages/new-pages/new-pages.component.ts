@@ -235,16 +235,19 @@ export class NewPagesComponent {
         const data = await response.json();
 
         if (!response.ok) {
+          alert(response.status)
           throw new Error(`Error: ${response.status}`);
         }
         console.log(data);
         form.reset();
         this.options = [];
-      } else {
-        console.log('estan las 10');
+      }
+      if (this.questions.length == 10) {
+      alert('10 preguntas cargadas con exito')
         window.location.reload();
       }
     } catch (error) {
+      alert(error)
       console.error('Error creating question:', error);
     }
   }
@@ -252,7 +255,7 @@ export class NewPagesComponent {
   editQuiz(): void {
     this.showForm = false;
   }
-  answerChoice(i: number, type: string) {
+  answerChoice(i: number) {
     if (true) {
       this.array =
         []; /* <--- este array se crea porque no permite hacer push a selection directamente */
