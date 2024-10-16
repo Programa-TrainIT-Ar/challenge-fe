@@ -136,6 +136,36 @@ h2 {
   transform: translateY(-50%);
   color: #aaa; 
 }
+.custom-popup {
+  background-color: #1f1f1f; /* Fondo oscuro similar al de la imagen */
+  color: #fff;               /* Texto en blanco */
+  border-radius: 15px;       /* Bordes redondeados */
+}
+
+.custom-title {
+  font-size: 20px; /* Tamaño de fuente del título */
+  font-weight: bold;
+  color: #fff;     /* Color del texto del título */
+}
+
+.custom-content {
+  font-size: 14px;  /* Tamaño de fuente del contenido */
+  color: #cccccc;   /* Color del texto del contenido */
+}
+
+.custom-confirm-btn {
+  background-color: #6c63ff; /* Color del botón de confirmación */
+  border-radius: 10px;       /* Bordes redondeados en el botón */
+  color: #fff;               /* Texto en blanco */
+  padding: 10px 20px;        /* Espaciado en el botón */
+}
+
+.custom-cancel-btn {
+  background-color: #4e4e4e; /* Color del botón de cancelación */
+  border-radius: 10px;
+  color: #fff;
+  padding: 10px 20px;
+}
 
 .input-wrapper input {
   padding-left: 35px; 

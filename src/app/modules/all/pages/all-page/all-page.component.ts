@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import Swal from 'sweetalert2';
 
 interface User {
   first_name: string;
@@ -122,27 +123,46 @@ export class AllPageComponent implements OnInit {
 
   // Método para eliminar un quiz
   async deleteQuiz(quiz: any) {
-     
-
     try {
-      if (confirm(`¿Estás seguro de eliminar el quiz: ${quiz.name}?`)) {
-      
+      const result = await Swal.fire({
+        title: '¿Deseas eliminar el registro?',
+        text: 'Una vez eliminado no se podrá recuperar',        
+        showCancelButton: true,
+        confirmButtonColor: '#6c63ff', // Color del botón de confirmación
+        cancelButtonColor: '#4e4e4e', // Color del botón de cancelación
+        confirmButtonText: 'Eliminar',
+        cancelButtonText: 'Cancelar',
+        customClass: {
+          popup: 'custom-popup',      // Clase para el fondo y bordes
+          title: 'custom-title',      // Clase para el título
+          confirmButton: 'custom-confirm-btn',  // Clase para el botón de confirmación
+          cancelButton: 'custom-cancel-btn'     // Clase para el botón de cancelación
+        }
+      });
+      ;
+  
+      if (result.isConfirmed) {
         let response = await fetch(
           `https://challenge-be-development-99e1.onrender.com/quiz/${quiz.id}`,
           {
             method: 'DELETE',
             headers: {
               'Content-Type': 'application/json',
-            },
+            }
           }
         );
-        console.log(await response.json());
+  
         if (response.ok) {
-        this.quizzes = this.quizzes.filter(q => q !== quiz);
+          Swal.fire('Eliminado', 'El quiz ha sido eliminado.', 'success');
+          this.quizzes = this.quizzes.filter(q => q !== quiz);
+        } else {
+          Swal.fire('Error', 'Hubo un error al eliminar el quiz.', 'error');
         }
-    }
+      }
     } catch (error) {
       console.error('Error en la solicitud:', error);
+      Swal.fire('Error', 'Hubo un error en la solicitud.', 'error');
     }
   }
+  
 }
