@@ -35,8 +35,8 @@ export class NewPagesComponent {
   array: any = [''];
   selectedOption: string = '';
   inputType: string = '';
-  showButton: boolean = false; /* pasar a false */
-  showForm: boolean = false; /* pasar a false */
+  showButton: boolean = false; 
+  showForm: boolean = false; 
   isTrueFalseQuestion: boolean = false;
   showPlus: boolean = false;
   showPlus2: boolean = false;
@@ -44,9 +44,9 @@ export class NewPagesComponent {
   quizID: number | string = '';
   quizData: any = {};
 
-  trackByFn(index: number, item: any): any {
-    return index; // Puedes usar el índice como identificador único
-  }
+  trackByFn(index: number): any {
+    return index; 
+    }
 
   onQuestionTypeChange(selectedType: string) {
     this.array =
