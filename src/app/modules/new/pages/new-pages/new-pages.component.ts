@@ -9,11 +9,14 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 export class NewPagesComponent {
   constructor(private formsBuilder: FormBuilder) {}
   public selectNameForm = this.formsBuilder.group({
-    /*     name: ['', Validators.required],
-    description: ['', Validators.required], */
-    name: [''],
-    description: [''],
+    name: ['', Validators.required],
+    description: ['', Validators.required],
   });
+
+  isFieldInvalid(field: string): boolean {
+    const control = this.selectNameForm.get(field);
+    return control?.invalid && (control.dirty || control.touched);
+  }
 
   questionTypes: string[] = [
     'Selección mutiple',
@@ -32,8 +35,8 @@ export class NewPagesComponent {
   array: any = [''];
   selectedOption: string = '';
   inputType: string = '';
-  showButton: boolean = false; /* pasar a false */
-  showForm: boolean = false; /* pasar a false */
+  showButton: boolean = false; 
+  showForm: boolean = false; 
   isTrueFalseQuestion: boolean = false;
   showPlus: boolean = false;
   showPlus2: boolean = false;
@@ -41,9 +44,9 @@ export class NewPagesComponent {
   quizID: number | string = '';
   quizData: any = {};
 
-  trackByFn(index: number, item: any): any {
-    return index; // Puedes usar el índice como identificador único
-  }
+  trackByFn(index: number): any {
+    return index; 
+    }
 
   onQuestionTypeChange(selectedType: string) {
     this.array =
@@ -235,7 +238,7 @@ export class NewPagesComponent {
         const data = await response.json();
 
         if (!response.ok) {
-          alert(response.status)
+          alert(response.status);
           throw new Error(`Error: ${response.status}`);
         }
         console.log(data);
@@ -243,11 +246,11 @@ export class NewPagesComponent {
         this.options = [];
       }
       if (this.questions.length == 10) {
-      alert('10 preguntas cargadas con exito')
+        alert('10 preguntas cargadas con exito');
         window.location.reload();
       }
     } catch (error) {
-      alert(error)
+      alert(error);
       console.error('Error creating question:', error);
     }
   }

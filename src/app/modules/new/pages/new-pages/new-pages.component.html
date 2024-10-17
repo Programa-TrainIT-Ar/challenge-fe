@@ -4,27 +4,31 @@
       <div
         [ngClass]="showForm ? 'quiz-container-true' : 'quiz-container-false'">
         <form [formGroup]="selectNameForm">
-            <div class="flex-b">
+          <div class="flex-b">
             <input
               type="text"
               class="input-name mb-2"
-              placeholder="Nombre del Quiz"
-              formControlName="name" />
-              <div [ngClass]="showForm ? '' : 'd-none'">
-                <button class="btn-plus" (click)="editQuiz()">
-                  <span><i class="fa-regular fa-pen-to-square"></i></span>
-                </button>
-              </div>
+              [placeholder]="isFieldInvalid('name') ? '* El nombre es requerido' : 'Nombre del Quiz'"
+              formControlName="name"
+              [ngClass]="{'notice': isFieldInvalid('name')}" />
+            <div [ngClass]="showForm ? '' : 'd-none'">
+              <button class="btn-plus" (click)="editQuiz()">
+                <span><i class="fa-regular fa-pen-to-square"></i></span>
+              </button>
             </div>
-            <div>
-              <input
+          </div>
+        
+          <div>
+            <input
               type="text"
+              class="input-description"
+              [ngClass]="{'notice': isFieldInvalid('description')}"
               [ngClass]="showForm ? 'd-none' : 'input-description'"
-              placeholder="Descripción" 
+              [placeholder]="isFieldInvalid('description') ? '* La descripcón es requerida' : 'Descripción'"
               formControlName="description"/>
-            </div>
-            
-          </form>
+          </div>
+        </form>
+        
         <app-header-page
           [ngClass]="showForm ? '' : 'absolute-true'"
           (datosParaPadre)="recibirDatos($event)"></app-header-page>
