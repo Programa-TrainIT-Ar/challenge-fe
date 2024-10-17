@@ -89,7 +89,7 @@ export class NewPagesComponent {
     }
   }
 
-  recibirDatos(datos: any): void {
+  async recibirDatos(datos: any) {
     if (
       this.selectNameForm.valid &&
       datos.celula != 'Selecciona la célula' &&
@@ -98,23 +98,31 @@ export class NewPagesComponent {
     ) {
       this.showButton = true;
     }
-
+    
+    
+    
     /* modulo */
     switch (datos.module) {
       case 'Desarrollo':
         this.quizData.module = 'ID DE DESARROLLO';
         break;
-      case 'Marketing':
-        this.quizData.module = 'ID DE MARKETING';
-        break;
-      case 'Sistemas':
-        this.quizData.module = '84c66f03-c98f-47f1-a461-589cfb3dbf1f';
-        break;
-    }
+        case 'Marketing':
+          this.quizData.module = 'ID DE MARKETING';
+          break;
+          case 'Sistemas':
+            this.quizData.module = '84c66f03-c98f-47f1-a461-589cfb3dbf1f';
+            break;
+          }
+          
+          /* celula */
+  let cell: any = await fetch('https://challenge-be-development-99e1.onrender.com/cells')
+  cell = await cell.json()
+      
+      const findModule  = cell.find((element)=>element.name == datos.cell) 
+     console.log(findModule)
+     this.quizData.cell = findModule.id
 
-    /* celula */
-
-    switch (datos.cell) {
+/*     switch (datos.cell) {
       case 'Diseño-UX-UI':
         this.quizData.cell = '97928084-2555-405c-b6fa-c8fcbd47c3d5';
         break;
@@ -136,7 +144,7 @@ export class NewPagesComponent {
       case 'Fullstack':
         this.quizData.cell = '6c88f9e9-ee68-423f-bbf9-cb8af183924f';
         break;
-    }
+    } */
 
     /* seniority */
     if (datos.seniority) {
