@@ -1,0 +1,21 @@
+<div class="container my-4">
+  <h2>Detalles del Quiz: {{ quizDetails?.name }}</h2> <!-- Cambié 'quiz' por 'quizDetails' -->
+  <div class="card bg-dark text-light p-3">
+    <div class="card-body">
+      <p><strong>Módulo:</strong> {{ quizDetails?.cell?.module?.name }}</p> 
+      <p><strong>Célula:</strong> {{ quizDetails?.cell?.name }}</p> 
+      <p><strong>Seniority:</strong> {{ quizDetails?.seniority }}</p> 
+      <p><strong>Fecha de Creación:</strong> {{ quizDetails?.created_at | date:'dd-MM-yyyy' }}</p> 
+      <p><strong>Creador:</strong> {{ quizDetails?.created_by?.first_name }}</p> 
+      <p><strong>Estado:</strong> {{ quizDetails?.is_active ? 'Activo' : 'Inactivo' }}</p> 
+
+      
+      <h4>Preguntas:</h4>
+      <ul>
+        <li *ngFor="let question of quizDetails?.questions"> <!-- Cambié 'quiz' por 'quizDetails' -->
+          {{ question.text }} 
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

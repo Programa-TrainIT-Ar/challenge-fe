@@ -15,6 +15,7 @@ interface Cell {
 }
 
 interface Quiz {
+  id: string;
   name: string;
   seniority: string;
   created_at: string;
@@ -32,6 +33,7 @@ interface Quiz {
 export class AllPageComponent implements OnInit {
   searchText: string = ''; // Campo de búsqueda
   quizzes: Quiz[] = []; // Inicializa el array de quizzes
+  selectedQuiz: Quiz | null = null; // Define selectedQuiz aquí
 
   constructor(private router: Router) {}
 
@@ -112,7 +114,9 @@ export class AllPageComponent implements OnInit {
 
   // Método para ver los detalles de un quiz
   viewQuiz(quiz: Quiz) {
-    alert(`Viendo el quiz: ${quiz.name}`);
+    this.selectedQuiz = quiz; // Establece el quiz seleccionado
+    // Redirige a la ruta de visualización si es necesario
+    this.router.navigate(['/view-quiz', quiz.id]); // Cambia según tu configuración de rutas
   }
 
   // Método para editar un quiz
