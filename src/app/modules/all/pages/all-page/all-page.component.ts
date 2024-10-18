@@ -112,11 +112,11 @@ export class AllPageComponent implements OnInit {
     }
   }
 
-  // Método para ver los detalles de un quiz
+  
   viewQuiz(quiz: Quiz) {
-    this.selectedQuiz = quiz; // Establece el quiz seleccionado
-    // Redirige a la ruta de visualización si es necesario
-    this.router.navigate(['/view-quiz', quiz.id]); // Cambia según tu configuración de rutas
+    this.selectedQuiz = quiz; 
+    
+    this.router.navigate(['/view-quiz', quiz.id]); 
   }
 
   // Método para editar un quiz
