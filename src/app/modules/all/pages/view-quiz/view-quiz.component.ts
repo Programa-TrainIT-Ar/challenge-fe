@@ -22,7 +22,19 @@ interface Quiz {
   module: Module;
   cell: Cell;
   is_active: boolean;
+  questions: Question[]; 
 }
+interface Question {
+  id: string;
+  question: string;
+  options: string[];
+  correct_option: number[];
+  explanation: string;
+  link: string;
+  type: string;
+  is_active: boolean;
+}
+
 
 @Component({
   selector: 'app-view-quiz',
