@@ -11,7 +11,7 @@ import {
 @Component({
   selector: 'app-welcome-page',
   templateUrl: './welcome-page.component.html',
-  styleUrl: './welcome-page.component.scss',
+  styleUrls: ['./welcome-page.component.scss'],
   animations: [
     trigger('expandState1', [
       state(
@@ -33,8 +33,7 @@ import {
       state(
         'collapsed',
         style({
-          width: "0px",
-          
+          width: '0px',
         })
       ),
       state(
@@ -66,9 +65,11 @@ import {
 })
 export class WelcomePageComponent {
   constructor(private router: Router) {}
-  isExpanded1 = false;
-  isExpanded2 = false;
-  isExpanded3 = false;
+
+  isExpanded1 = false; // Controla la expansión de la columna de "Todos"
+  isExpanded2 = false; // Controla la expansión de la columna de "Nuevo"
+  isExpanded3 = false; // Controla la expansión de la columna de "Editar"
+  selectedQuiz: any = null; // Almacena el quiz seleccionado
 
   toggleExpand1() {
     this.isExpanded1 = !this.isExpanded1;
@@ -83,17 +84,34 @@ export class WelcomePageComponent {
   }
 
   toggleExpand3() {
-    this.isExpanded1 = !this.isExpanded3;
-    this.isExpanded2 = false;
-    this.isExpanded3 = false;
+    this.isExpanded3 = !this.isExpanded3; // Cambia el estado de expansión
   }
+
+  // Navegación existente
   goToAll() {
     this.router.navigate(['/all']);
   }
+
   goToCreate() {
     this.router.navigate(['/create']);
   }
+
   goToEdit() {
     this.router.navigate(['/edit']);
+  }
+
+  // Método para recibir el quiz seleccionado desde 'all-page'
+  onQuizSelected(quiz: any) {
+    this.selectedQuiz = quiz;
+    this.isExpanded3 = true;  // Expande la columna de edición
+    this.isExpanded1 = false;  // Colapsa la columna de "Todos"
+    this.isExpanded2 = false;  // Colapsa la columna de "Nuevo"
+  }
+
+  // Método para cerrar la edición
+  closeEdit() {
+    this.isExpanded3 = false; // Colapsa la columna de edición
+    this.selectedQuiz = null;
+    this.toggleExpand1();  // Limpia el quiz seleccionado
   }
 }

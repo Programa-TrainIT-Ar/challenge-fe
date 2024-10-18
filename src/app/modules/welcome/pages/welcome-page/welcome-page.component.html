@@ -2,6 +2,20 @@
   <!-- Botones -->
   <div>
     <div [ngClass]="isExpanded2 ? 'd-flex flex-row-reverse' : 'd-flex '">
+      <!-- EDIT -->
+      <div
+        *ngIf="selectedQuiz" 
+        [ngClass]="isExpanded3 ? 'active-column ' : 'column-tasks'"
+        (click)="toggleExpand3()">
+        <button class="column-btn">
+          <span class="span-linear">Editar</span>
+        </button>
+      </div>
+
+      <!-- Contenido de EDIT -->
+      <div [@expandState3]="isExpanded3 ? 'expanded' : 'collapsed'">
+        <app-edit-pages *ngIf="isExpanded3" [quiz]="selectedQuiz" (close)="closeEdit()"></app-edit-pages>
+      </div>
 
       <!-- TODOS -->
       <div
@@ -13,41 +27,26 @@
       </div>
 
       <!-- Contenido de TODOS -->
-      <div
-        class=""
-        [@expandState1]="isExpanded1 ? 'expanded' : 'collapsed'">
-        <app-all-page *ngIf="isExpanded1"></app-all-page>
+      <div [@expandState1]="isExpanded1 ? 'expanded' : 'collapsed'">
+        <app-all-page (quizSelected)="onQuizSelected($event)" *ngIf="isExpanded1"></app-all-page>
       </div>
-
 
       <!-- NUEVO -->
       <div
         [ngClass]="isExpanded2 ? 'active-column order-1' : 'column-tasks'"
-        
         (click)="toggleExpand2()">
         <button class="column-btn">
           <span class="span-linear">Nuevo</span>
         </button>
       </div>
 
-      <!-- Contenido de NUVO -->
-       
-       <div [@expandState2]="isExpanded2 ? 'expanded' : 'collapsed'">
+      <!-- Contenido de NUEVO -->
+      <div [@expandState2]="isExpanded2 ? 'expanded' : 'collapsed'">
         <app-new-pages *ngIf="isExpanded2"></app-new-pages>
-      </div> 
-      <!-- <div [@expandState2]="isExpanded2 ? 'expanded' : 'expanded'">
-        <app-new-pages></app-new-pages>
-      </div> -->
+      </div>
 
+      
       
     </div>
   </div>
-
-  <!-- + -->
-  <!-- <div class="" (click)="toggleExpand2()">
-    <button class="btn-plus">
-      <span class="circle"><i class="bi bi-plus"></i></span>
-    </button>
-  </div> -->
-  
 </div>

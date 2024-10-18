@@ -1,36 +1,48 @@
+<!-- Botón de Toggle -->
+<button class="toggle-sidebar d-md-none" (click)="toggleSidebar()">
+  <i class="bi bi-list"></i>
+</button>
+
 <!-- Sidebar -->
-<div class="mb-5 side-img">
-  <img src="assets/layout/images/logo.svg" class="" alt="logo" />
-</div>
-
-<div class="sidebar-btns-container">
-  <div class="gestion-btns">
-    <div class="">
-      <button class="sidebar-btns active-btn">
-        <i class="bi bi-card-checklist"></i>
-        <span class="sidebar-font-btn">Gestión Quiz</span>
-      </button>
-    </div>
-
-    <div class="">
-      <button class="sidebar-btns">
-        <i class="bi bi-boxes"></i>
-        <span class="sidebar-font-btn">Gestión Challenge</span>
-      </button>
-    </div>
-
-    <div class="">
-      <button class="sidebar-btns">
-        <i class="bi bi-people"></i>
-        <div class="sidebar-font-btn">Gestionar Candidatos</div>
-      </button>
-    </div>
+<div class="sidebar" [ngClass]="{'active': isSidebarOpen}">
+  <div class="mb-5 side-img">
+    <img src="assets/layout/images/logo.svg" class="" alt="logo" />
   </div>
 
-  <div class="config-btn">
-    <button class="sidebar-btns">
-      <i class="bi bi-gear"></i>
-      <span class="sidebar-font-btn">Configuración</span>
-    </button>
+  <div class="sidebar-btns-container">
+    <div class="gestion-btns">
+      <div>
+        <button class="sidebar-btns active-btn">
+          <i class="bi bi-card-checklist"></i>
+          <span class="sidebar-font-btn">Gestión Quiz</span>
+        </button>
+      </div>
+
+      <div>
+        <button class="sidebar-btns">
+          <i class="bi bi-boxes"></i>
+          <span class="sidebar-font-btn">Gestión Challenge</span>
+        </button>
+      </div>
+
+      <div>
+        <button class="sidebar-btns">
+          <i class="bi bi-people"></i>
+          <div class="sidebar-font-btn">Gestionar Candidatos</div>
+        </button>
+      </div>
+    </div>
+
+    <div class="config-btn">
+      <button class="sidebar-btns">
+        <i class="bi bi-gear"></i>
+        <span class="sidebar-font-btn">Configuración</span>
+      </button>
+      <button
+            class="sidebar-btns text-white mt-3"
+            (click)="logout()">
+            salir
+        </button>
+    </div>
   </div>
 </div>

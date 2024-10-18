@@ -50,4 +50,9 @@
       </tbody>
     </table>
   </div>
+  
+
+  <div *ngIf="isExpanded3" class="edit-column" [@expandState3]="isExpanded3 ? 'expanded' : 'collapsed'">
+    <app-edit-pages [quiz]="selectedQuiz" (close)="closeEdit()"></app-edit-pages>
+  </div>
 </div>

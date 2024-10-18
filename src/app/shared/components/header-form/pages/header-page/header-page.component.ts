@@ -7,7 +7,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   styleUrl: './header-page.component.scss',
 })
 export class HeaderPageComponent {
-  @Output() datosParaPadre = new EventEmitter<boolean>();
+  @Output() datosParaPadre = new EventEmitter<any>();// cambie a any
   public selectHeaderForm: FormGroup;
   constructor(private formsBuilder: FormBuilder) {}
 

@@ -1,22 +1,26 @@
-<div
-  class="d-flex justify-content-center flex-column align-items-center vh-100">
-  <div>
-    <img
-      src="https://media.licdn.com/dms/image/v2/D4D0BAQG_-mK5wwyzUg/company-logo_200_200/company-logo_200_200/0/1692227250793/programatrainit_logo?e=2147483647&v=beta&t=lF-73wxu99J0svzqOHS0_DD6Gz6Tf5uvTEbPHj0KoA4"
-      alt="" />
-  </div>
-  <h2 class="mb-5">Registrate para comenzar la aventura</h2>
-  <div class="d-flex flex-column mb-3">
-    <div class="mb-3 input-w">
-      <input type="text" />
+<body>
+  <div
+    class="d-flex justify-content-center flex-column align-items-center vh-100">
+    <div>
+      <img
+        src="https://s3-alpha-sig.figma.com/img/f7a8/8725/1e99a6f11657f950883b92c6e88bc5dd?Expires=1729468800&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=afNUQ4ogRLgTi5Eu6BRP2k19~MFQs8PV6cc2W1m0NGsyK~wZpGhwyQEUyDLhNZeAfmVX-LVUbFcYCvtj28uyLxrvxg~QtDNU2yNun72RLkjReSz5LxpX5QcqhwzSLAlZaN5oWg00unNTkpkeGS71pZkR2j7bLz7kuBfIZNRdFIX1ZtolDX0iHp0V6eGIBjCXEmC-bQ1VjLaH9mxA4KcJs3WqPmUAPhq-7rWvkcHqFeckfB4bSpCzT6AfOUZBs4NmaOFS4wtwCxwxx~GjG3-BqW4eD13RiMRqdt3K6n5NM6HSRrvel10EzERDktrFmsOQeWSOLxUGzYMQ2Sk190iQ9Q__"
+        alt="logo" />
     </div>
-    <div class="mb-3 input-w">
-      <input type="text mb-3" />
+    <h2 class="mb-5">Regístrate para comenzar la aventura</h2>
+    <div class="d-flex flex-column mb-3">
+      <div class="mb-3 input-w">
+        <input type="text" placeholder="Nombre" />
+      </div>
+      <div class="mb-3 input-w">
+        <input type="text" placeholder="Email" />
+      </div>
+      <button class="btn btn-primary btn-li">REGISTRARME</button>
     </div>
-
-    <button class="btn btn-primary btn-li">REGISTRARME</button>
+    <span class="mb-3">o</span>
+    <button class="btn btn-google mb-3" (click)="login()">
+      <img src="https://th.bing.com/th/id/R.7e557f1c0864829c54c300d15bee69f4?rik=fjZN1AYH30vXIw&riu=http%3a%2f%2fpngimg.com%2fuploads%2fgoogle%2fgoogle_PNG19635.png&ehk=ZmsumEtoeJQhKoUzQTZO2TEbYPBu0%2b7EFdjmJ3qljls%3d&risl=&pid=ImgRaw&r=0" alt="Google Logo" style="width:20px; height:20px; margin-right:8px;">
+      Regístrate con Google
+    </button>
+    <span style="cursor: pointer;" (click)="login()">¿Ya tienes una cuenta? Inicia sesión</span>
   </div>
-  <span class="mb-3">o</span>
-  <button class="btn btn-primary mb-3">Registrate con Google</button>
-  <span>Ya tiene una cuenta? Inicia sesion</span>
-</div>
+</body>

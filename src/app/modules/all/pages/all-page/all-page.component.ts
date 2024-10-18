@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { trigger, style, transition, animate, state } from '@angular/animations';
+import { Output, EventEmitter } from '@angular/core';
 
 interface User {
   first_name: string;
@@ -27,12 +29,24 @@ interface Quiz {
   selector: 'app-all-page',
   templateUrl: './all-page.component.html',
   styleUrls: ['./all-page.component.scss'], // Cambiado a styleUrls para usar un array
+
+  animations: [
+    trigger('expandState3', [
+      state('collapsed', style({ display: 'none' })),
+      state('expanded', style({ maxWidth: '150vh' })),
+      transition('collapsed => expanded', [animate('300ms ease-out')]),
+      transition('expanded => collapsed', [animate('300ms ease-in')]),
+    ]),
+  ],
 })
 export class AllPageComponent implements OnInit {
+  @Output() quizSelected = new EventEmitter<any>();
   searchText: string = '';  // Campo de búsqueda
   quizzes: Quiz[] = [];  // Inicializa el array de quizzes
+  selectedQuiz: any;
   
   constructor(private router: Router) { }
+  
 
   ngOnInit(): void {
     // Llama al método para obtener todos los quizzes al iniciar el componente
@@ -106,10 +120,10 @@ export class AllPageComponent implements OnInit {
   }
 
   // Método para editar un quiz
-  editQuiz(quiz: Quiz) {
-    alert(`Editando el quiz: ${quiz.name}`);
-    this.router.navigate(['/edit', quiz.name]);  // Redirigir al editar usando el nombre del quiz
-  }
+  // editQuiz(quiz: Quiz) {
+  //   alert(`Editando el quiz: ${quiz.name}`);
+  //   this.router.navigate(['/edit', quiz.name]);  // Redirigir al editar usando el nombre del quiz
+  // }
 
   // Método para eliminar un quiz
   deleteQuiz(quiz: Quiz) {
@@ -117,5 +131,19 @@ export class AllPageComponent implements OnInit {
       // Eliminar el quiz del array
       this.quizzes = this.quizzes.filter(q => q !== quiz);
     }
+  }
+  
+  isExpanded3: boolean = false;
+  showEdit: boolean = false;
+   
+
+  editQuiz(quiz: any) {
+    this.selectedQuiz = quiz; // Almacena el quiz seleccionado para editar
+    this.quizSelected.emit(quiz); // Expande la columna de edición
+  }
+  
+  // Cuando se cierra la edición
+  closeEdit() {
+    this.isExpanded3 = false; // Oculta la columna de edición
   }
 }
