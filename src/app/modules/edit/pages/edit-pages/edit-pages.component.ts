@@ -34,9 +34,11 @@ export class EditPagesComponent {
   }
 
   ngOnInit() {
-    // this.selectNameForm.patchValue({
-    //   name: this.quiz.name,
-    // });
+    this.selectNameForm.patchValue({
+      name: this.quiz.name,
+    });
+    console.log(this.quiz)
+    
 
     this.populateQuestions(this.quiz.questions);
     this.questionCategory = { 
@@ -45,6 +47,7 @@ export class EditPagesComponent {
       seniority: this.quiz.seniority || ''
     };
   }
+  
 
   private populateQuestions(questions: any[]) {
     this.questionCategory.questions = this.formBuilder.array(questions.map(question => {
@@ -62,6 +65,7 @@ export class EditPagesComponent {
   get questions(): FormArray {
     return this.questionCategory.questions as FormArray;
   }
+  
 
   createQuiz() {
     const updatedQuiz = {

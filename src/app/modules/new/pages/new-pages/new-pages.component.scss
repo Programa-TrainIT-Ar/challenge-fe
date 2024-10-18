@@ -266,3 +266,13 @@ i {
   display: flex;
   justify-content: flex-start;
 }
+
+.notice {
+  border: 1px solid  rgba(241, 121, 197, 1); /* Rojo intenso para indicar error */
+  box-shadow: 0 0 5px 2px rgba(231, 60, 160, 0.5); /* Sombra roja */
+  outline: none;
+}
+
+.notice:focus {
+  box-shadow: 0 0 8px 2px rgba(203, 60, 231, 0.8); /* Sombra más fuerte al hacer foco */
+}

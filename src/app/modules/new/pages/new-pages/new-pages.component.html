@@ -4,27 +4,31 @@
       <div
         [ngClass]="showForm ? 'quiz-container-true' : 'quiz-container-false'">
         <form [formGroup]="selectNameForm">
-            <div class="flex-b">
+          <div class="flex-b">
             <input
               type="text"
               class="input-name mb-2"
-              placeholder="Nombre del Quiz"
-              formControlName="name" />
-              <div [ngClass]="showForm ? '' : 'd-none'">
-                <button class="btn-plus" (click)="editQuiz()">
-                  <span><i class="fa-regular fa-pen-to-square"></i></span>
-                </button>
-              </div>
+              [placeholder]="isFieldInvalid('name') ? '* El nombre es requerido' : 'Nombre del Quiz'"
+              formControlName="name"
+              [ngClass]="{'notice': isFieldInvalid('name')}" />
+            <div [ngClass]="showForm ? '' : 'd-none'">
+              <button class="btn-plus" (click)="editQuiz()">
+                <span><i class="fa-regular fa-pen-to-square"></i></span>
+              </button>
             </div>
-            <div>
-              <input
+          </div>
+        
+          <div>
+            <input
               type="text"
+              class="input-description"
+              [ngClass]="{'notice': isFieldInvalid('description')}"
               [ngClass]="showForm ? 'd-none' : 'input-description'"
-              placeholder="Descripción" 
+              [placeholder]="isFieldInvalid('description') ? '* La descripcón es requerida' : 'Descripción'"
               formControlName="description"/>
-            </div>
-            
-          </form>
+          </div>
+        </form>
+        
         <app-header-page
           [ngClass]="showForm ? '' : 'absolute-true'"
           (datosParaPadre)="recibirDatos($event)"></app-header-page>
@@ -38,7 +42,7 @@
   <!-- componente agus -->
 
   <div *ngIf="showForm" class="content-2">
-    <h3 class>Define la pregunta {{questions.length+1}}/5</h3>
+    <h3 class>Define la pregunta {{questions.length+1}}/10</h3>
     <!-- Formulario Angular con ngForm -->
     <form #questionForm="ngForm" (ngSubmit)="createQuestion(questionForm)" class>
       <div class="question-container mb-3">
@@ -53,7 +57,7 @@
               id="questionType"
               name="questionType"
               [(ngModel)]="selectedOption"
-              (ngModelChange)="onQuestionTypeChange($event)"
+              (ngModelChange)="onQuestionTypeChange($event, questionForm)"
               required>
               <option value="" disabled selected>Selecciona una opción</option>
               <option
@@ -91,14 +95,13 @@
 
       <div class="form-group">
         <div class="option-row">
-          <div *ngFor="let option of options; let i = index" class="row">
+          <div *ngFor="let option of options; let i = index trackBy: trackByFn" class="row">
             <!-- check -->
             <div class="checkbox-container mb-3">
               <input
                 type="{{ inputType }}"
                 class="checkbox-input"
                 name="solution"
-                [value]="option"
                 [ngModel]="selection"
                 (ngModelChange)="answerChoice(i, inputType)" />
             </div>
@@ -108,7 +111,6 @@
               class="custom-option-input mb-3"
               [(ngModel)]="options[i]"
               name="option{{ i }}"
-              placeholder="Opción"
               [readonly]="isTrueFalseQuestion"
               required />
           </div>
