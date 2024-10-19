@@ -113,6 +113,7 @@
   padding-left: 0.8rem;
   padding-right: 0.8rem;
   font-size: 12px;
+  border-radius: 20px;
 }
 
 h4 {
@@ -140,7 +141,6 @@ h4 {
   background-color: #ffcc00;
   color: #795f3a;
   border-radius: 10px;
-  white-space: nowrap;
 }
 
 .QA {
@@ -187,4 +187,9 @@ h4 {
   border-radius: 20px;
   background-color: #ff2d55;
   color: #423420;
+}
+
+.Fullstack {
+  background-color: #007AFF;
+  color: #34567B
 }

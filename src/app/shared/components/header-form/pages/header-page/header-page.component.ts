@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-header-page',
@@ -16,6 +17,7 @@ export class HeaderPageComponent {
       nombreQuiz: [''],
       descripcion: [''],
       modulo: [''],
+      
     });
   }
 
@@ -27,6 +29,17 @@ export class HeaderPageComponent {
     cell: 'Selecciona la célula',
     seniority: 'Seniority',
   };
+  options: any = ['','']
+
+  async getCells(){
+    let response = await fetch(`${environment.url}'cells'`)
+    response = await response.json()
+    
+    this.options.push(response)
+    console.log(this.options);
+    
+  }
+  
 
   pushQuestionCategory(prop: string, val: string, id:string): void {
     this.questionCategory[prop] = val;
@@ -41,6 +54,9 @@ export class HeaderPageComponent {
     this.showSeniority = false;
   }
   isShowCelula() {
+    
+    console.log(this.options);
+    
     this.showCelula = !this.showCelula;
     this.showSeniority = false;
     this.showModulo = false;
