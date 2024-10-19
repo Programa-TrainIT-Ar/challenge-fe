@@ -129,7 +129,7 @@ export class AllPageComponent implements OnInit {
   viewQuiz(quiz: Quiz) {
     this.selectedQuiz = quiz; 
     
-    this.router.navigate(['/view-quiz', quiz.id]); 
+    this.router.navigate(['home/view-quiz', quiz.id]); 
   }
 
   // Método para editar un quiz

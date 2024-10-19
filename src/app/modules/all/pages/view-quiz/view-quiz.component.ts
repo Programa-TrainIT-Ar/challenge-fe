@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { environment } from 'src/environments/environment';
 
 interface User {
   first_name: string;
@@ -42,32 +43,32 @@ interface Question {
   styleUrls: ['./view-quiz.component.scss'],
 })
 export class ViewQuizComponent implements OnInit {
-  quizId: string = ''; // Para almacenar el ID del quiz
-  quizDetails: Quiz | null = null; // Aquí se guardarán los detalles del quiz usando la interfaz
+  quizId: string = ''; 
+  quizDetails: Quiz | null = null; 
 
   constructor(private route: ActivatedRoute) {}
 
   ngOnInit(): void {
-    // Obtén el ID del quiz desde la ruta
+    
     this.quizId = this.route.snapshot.paramMap.get('id') || '';
 
-    // Asegúrate de que el quizId no tenga comillas
+    
     this.quizId = this.quizId.replace(/['"]+/g, '');
 
-    console.log('ID del quiz sin comillas:', this.quizId); // Verifica si el ID es correcto
+    console.log('ID del quiz sin comillas:', this.quizId); 
 
-    // Llama al método para obtener detalles del quiz
+    
     this.fetchQuizDetails();
   }
 
   async fetchQuizDetails() {
     try {
-      console.log(`Realizando solicitud a la API con ID: ${this.quizId}`); // Log para verificar el endpoint
+      console.log(`Realizando solicitud a la API con ID: ${this.quizId}`); 
       const response = await fetch(`https://challenge-be-development-99e1.onrender.com/quiz/${this.quizId}`);
       if (response.ok) {
         const data: Quiz = await response.json();
         this.quizDetails = data;
-        console.log('Detalles del quiz:', this.quizDetails); // Verifica si los datos son correctos
+        console.log('Detalles del quiz:', this.quizDetails); 
       } else {
         console.error('Error al obtener detalles del quiz, respuesta no OK.');
       }
