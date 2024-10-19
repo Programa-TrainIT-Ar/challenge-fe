@@ -104,12 +104,6 @@ export class NewPagesComponent {
 
     /* modulo */
     switch (datos.module) {
-      case 'Desarrollo':
-        this.quizData.module = 'ID DE DESARROLLO';
-        break;
-      case 'Marketing':
-        this.quizData.module = 'ID DE MARKETING';
-        break;
       case 'Sistemas':
         this.quizData.module = '84c66f03-c98f-47f1-a461-589cfb3dbf1f';
         break;
@@ -117,37 +111,17 @@ export class NewPagesComponent {
 
     /* celula */
 
-    let response: any = await fetch(`${environment.url}/cells`)
+    let response: any = await fetch(`${environment.url}cells`)
     response = await response.json()
+console.log(response);
 
-    response = response.find((element)=>datos.cell == element.name)
+    response = response.find((element)=>datos.cell == element.name) 
     
 
+    console.log(response)  
     response ? this.quizData.cell = response.id : ''
     console.log(this.quizData)  
-/*     switch (datos.cell) {
-      case 'Diseño-UX-UI':
-        this.quizData.cell = '97928084-2555-405c-b6fa-c8fcbd47c3d5';
-        break;
-      case 'QA-Tester':
-        this.quizData.cell = '5901518b-f699-49ce-a034-5d0fe2609345';
-        break;
-      case 'Frontend':
-        this.quizData.cell = '305e2fc8-b898-48f7-b5ea-75fcdb52b17f';
-        break;
-      case 'Backend':
-        this.quizData.cell = 'fe378504-4a60-4de9-8204-e42ca27167d3';
-        break;
-      case 'PM':
-        this.quizData.cell = '989d898a-3ca8-453c-ab2e-1cc4f9510b8c';
-        break;
-      case 'Scrum-Master':
-        this.quizData.cell = 'c4d33b62-b4a4-46b3-ad4f-15471b7fd456';
-        break;
-      case 'Fullstack':
-        this.quizData.cell = '6c88f9e9-ee68-423f-bbf9-cb8af183924f';
-        break;
-    } */
+
 
     /* seniority */
     if (datos.seniority) {
@@ -157,12 +131,6 @@ export class NewPagesComponent {
   }
   async createQuiz() {
     try {
-      this.showForm = true;
-      this.showButton = false;
-      this.questionCategory.name = this.selectNameForm.value.name;
-      this.questionCategory.description = this.selectNameForm.value.description;
-      console.log(this.quizData);
-
       const prueba = {
         name: this.selectNameForm.value.name,
         description: this.selectNameForm.value.description,
@@ -174,7 +142,7 @@ export class NewPagesComponent {
         is_active: true,
       };
       const response = await fetch(
-        `${environment.url}/quiz`,
+        `${environment.url}quiz`,
         {
           method: 'POST',
           headers: {
@@ -186,6 +154,11 @@ export class NewPagesComponent {
       if (!response.ok) {
         throw new Error(`Error: ${response.status}`);
       }
+      this.showForm = true;
+      this.showButton = false;
+      this.questionCategory.name = this.selectNameForm.value.name;
+      this.questionCategory.description = this.selectNameForm.value.description;
+      console.log(this.quizData);
 
       const data = await response.json();
       this.quizID = data.id; /* aca hago global el ID del quiz */
@@ -236,7 +209,7 @@ export class NewPagesComponent {
         /* this.onQuestionTypeChange('otro', 0);  */
 
         const response = await fetch(
-          `${environment.url}/question`,
+          `${environment.url}question`,
           {
             method: 'POST',
             headers: {
