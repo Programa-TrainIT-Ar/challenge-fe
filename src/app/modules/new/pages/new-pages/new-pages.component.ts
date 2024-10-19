@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {environment} from '../../../../../environments/environment'
 
 @Component({
   selector: 'app-new-pages',
@@ -12,6 +13,8 @@ export class NewPagesComponent {
     name: ['', Validators.required],
     description: ['', Validators.required],
   });
+
+  
 
   isFieldInvalid(field: string): boolean {
     const control = this.selectNameForm.get(field);
@@ -114,7 +117,7 @@ export class NewPagesComponent {
 
     /* celula */
 
-    let response: any = await fetch('https://challenge-be-development-99e1.onrender.com/cells')
+    let response: any = await fetch(`${environment.url}/cells`)
     response = await response.json()
 
     response = response.find((element)=>datos.cell == element.name)
@@ -150,7 +153,7 @@ export class NewPagesComponent {
     if (datos.seniority) {
       this.quizData.seniority = datos.seniority;
     }
-    console.log(this.quizData);
+    
   }
   async createQuiz() {
     try {
@@ -171,7 +174,7 @@ export class NewPagesComponent {
         is_active: true,
       };
       const response = await fetch(
-        'https://challenge-be-development-99e1.onrender.com/quiz',
+        `${environment.url}/quiz`,
         {
           method: 'POST',
           headers: {
@@ -228,12 +231,12 @@ export class NewPagesComponent {
         quiz_id: this.quizID,
       };
       if (this.questions.length <= 10) {
-        this.questions.push(formSection);
+        
         console.log(form.value);
         /* this.onQuestionTypeChange('otro', 0);  */
 
         const response = await fetch(
-          'https://challenge-be-development-99e1.onrender.com/question',
+          `${environment.url}/question`,
           {
             method: 'POST',
             headers: {
@@ -249,6 +252,7 @@ export class NewPagesComponent {
           alert(response.status);
           throw new Error(`Error: ${response.status}`);
         }
+        this.questions.push(formSection);
         console.log(data);
         form.reset();
         this.options = [];
