@@ -89,7 +89,7 @@ export class NewPagesComponent {
     }
   }
 
-  recibirDatos(datos: any): void {
+  async recibirDatos(datos: any) {
     if (
       this.selectNameForm.valid &&
       datos.celula != 'Selecciona la célula' &&
@@ -114,7 +114,15 @@ export class NewPagesComponent {
 
     /* celula */
 
-    switch (datos.cell) {
+    let response: any = await fetch('https://challenge-be-development-99e1.onrender.com/cells')
+    response = await response.json()
+
+    response = response.find((element)=>datos.cell == element.name)
+    
+
+    response ? this.quizData.cell = response.id : ''
+    console.log(this.quizData)  
+/*     switch (datos.cell) {
       case 'Diseño-UX-UI':
         this.quizData.cell = '97928084-2555-405c-b6fa-c8fcbd47c3d5';
         break;
@@ -136,7 +144,7 @@ export class NewPagesComponent {
       case 'Fullstack':
         this.quizData.cell = '6c88f9e9-ee68-423f-bbf9-cb8af183924f';
         break;
-    }
+    } */
 
     /* seniority */
     if (datos.seniority) {
