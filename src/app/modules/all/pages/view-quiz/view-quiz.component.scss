@@ -1,28 +1,47 @@
-/* General */
 body {
-    font-family: 'Roboto', sans-serif;
+    font-family: 'popi';
     background-color: #141414;
     color: #fff;
     margin: 0;
     padding: 0;
     line-height: 1.6;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .container {
     margin: 0 auto;
-    max-width: 900px;
+    max-width: 90%;
+    height: 90%;
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative; /* Para el logo */
 }
 
 h2 {
     color: #fff;
-    font-size: 26px;
+    font-size: 28px;
     margin-bottom: 20px;
+    text-align: center;
 }
 
-/* Card */
+/* Logo centrado */
+.logo-centrado {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 250px;
+    opacity: 0.1;
+    z-index: 0;
+}
+
 .card {
     background-color: #1d1d1d;
     border-radius: 8px;
@@ -31,35 +50,46 @@ h2 {
     box-shadow: 0 0 15px rgba(115, 102, 255, 0.2);
     position: relative;
     overflow: hidden;
+    flex-grow: 1;
+    z-index: 1; /* El contenido está por encima del logo */
 }
 
-/* Contenedores */
+.container-sup {
+     display: flex;
+     justify-content: space-between;
+     gap: 20px;
+
+}
+
 .container-sup p {
-    margin: 0 0 10px;
-    font-size: 16px;
+    margin: 0;
+    font-size: 18px;
+    flex: 1;
 }
 
 h4 {
     color: #f0f0f0;
-    font-size: 20px;
+    font-size: 22px;
     margin-bottom: 10px;
+    text-align: left;
 }
 
-/* Listas de preguntas */
 ul {
     list-style-type: none;
     padding: 0;
+    margin-top: 10px;
 }
 
 li {
     background-color: #292929;
-    padding: 10px;
-    margin-bottom: 10px;
-    border-radius: 5px;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 8px;
 }
 
 li p {
     margin: 0;
+    font-size: 16px;
 }
 
 li strong {
@@ -77,11 +107,10 @@ li ul li {
     margin-bottom: 5px;
 }
 
-/* Estilos adicionales */
 .noQuestions {
     text-align: center;
     padding: 10px;
     background-color: #292929;
     border-radius: 5px;
+    font-size: 16px;
 }
-
