@@ -8,13 +8,13 @@
             questionCategory?.module
           }}</span>
           <div *ngIf="showModulo" class="option-floating floating-module">
-            <!--     <button class="module-option" (click)="pushQuestionCategory('module', 'Desarrollo')">Desarrollo</button>
-            <button class="module-option" (click)="pushQuestionCategory('module', 'Marketing')">Marketing</button> -->
-            <button
-              class="module-option"
-              (click)="pushQuestionCategory('module', 'Sistemas')">
-              Sistemas
-            </button>
+            <span *ngFor="let element of opModules; let i = index">
+              <button
+                class="module-option"
+                (click)="pushQuestionCategory('module', element.name)">
+                {{ element.name }}
+              </button>
+            </span>
           </div>
         </div>
       </div>
@@ -22,19 +22,20 @@
       <div class="input-container">
         <h4>Célula</h4>
         <div class="form-select option-select" (click)="isShowCelula()">
-          <span class="floating" [style.background-color]="questionCategory?.colorCell">{{
-            questionCategory?.cell
-          }}</span>
+          <span
+            class="floating"
+            [style.background-color]="questionCategory?.colorCell"
+            >{{ questionCategory?.cell }}</span
+          >
           <div *ngIf="showCelula" class="option-floating floating-cell">
-             <span *ngFor="let option of options; let i = index"> 
-               <button
-                [ngClass]="['floating']"
-                 (click)="pushQuestionCategory('cell', option.name, colors[i])"
-                 [style.background-color]="colors[i]">
-                 {{option.name}}
-               </button>
-
-              </span>
+            <span *ngFor="let element of opCells; let i = index">
+              <button
+                class="floating"
+                (click)="pushQuestionCategory('cell', element.name, colorsCells[i])"
+                [style.background-color]="colorsCells[i]">
+                {{ element.name }}
+              </button>
+            </span>
           </div>
         </div>
 

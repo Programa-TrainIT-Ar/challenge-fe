@@ -8,7 +8,7 @@ import { environment } from 'src/environments/environment';
   styleUrl: './header-page.component.scss',
 })
 export class HeaderPageComponent {
-  @Output() datosParaPadre = new EventEmitter<any>();// cambie a any
+  @Output() datosParaPadre = new EventEmitter<any>(); // cambie a any
   public selectHeaderForm: FormGroup;
   constructor(private formsBuilder: FormBuilder) {}
 
@@ -17,10 +17,23 @@ export class HeaderPageComponent {
       nombreQuiz: [''],
       descripcion: [''],
       modulo: [''],
-      
     });
   }
-  colors: string[] = ['#ffcc00', '#ff9500', '#34c759', '#00c7be', '#30b0c7', '#32ade6', '#007aff'];
+  colorsCells: string[] = [
+    '#ffcc00',
+    '#ff9500',
+    '#34c759',
+    '#00c7be',
+    '#30b0c7',
+    '#32ade6',
+    '#007aff',
+    '#007AFF',
+    '#ff2d55',
+    '#af52de',
+    '#5856d6',
+    '#007aff',
+  ];
+  colorsSeniority: string[] = ['#ff2d55', '#af52de', '#5856d6', '#007aff'];
   showModulo: boolean = false;
   showCelula: boolean = false;
   showSeniority: boolean = false;
@@ -28,46 +41,49 @@ export class HeaderPageComponent {
     module: 'Selecciona el modulo',
     cell: 'Selecciona la célula',
     seniority: 'Seniority',
-    colorCell: ''
+    colorCell: '',
   };
-  options: any = []
-  
-  async getCells(){
-    let response = await fetch(`${environment.url}/cells`)
-    response = await response.json()
-    this.options = response
-    console.log(response)
-    console.log(this.options);
-    
-  }
-  
+  opModules: any = [];
+  opCells: any = [];
 
-  pushQuestionCategory(prop: string, val: string, colorCell: string): void {
+  async getModule() {
+    let response = await fetch(`${environment.url}/modules`);
+    response = await response.json();
+    this.opModules = response
+  }
+  async getCells() { /* no pude reutilizar fn anterior con parametros */
+    let response = await fetch(`${environment.url}/cells`);
+    response = await response.json();
+    this.opCells = response
+  }
+
+  pushQuestionCategory(prop: string, val: string, color: string): void {
     this.questionCategory[prop] = val;
-    if(prop=='cell'){
-   this.questionCategory.colorCell = colorCell}
-   
+    if (prop == 'cell') {
+      this.questionCategory.colorCell = color;
+    }
+
     this.datosParaPadre.emit(this.questionCategory);
   }
 
   isShowModulo() {
+    this.getModule(); 
     this.showModulo = !this.showModulo;
     this.showCelula = false;
     this.showSeniority = false;
+    console.log(this.opModules);
   }
   isShowCelula() {
-    console.log(environment.url)
-    
-    this.getCells()
-    
+    this.getCells();
+
     this.showCelula = !this.showCelula;
     this.showSeniority = false;
     this.showModulo = false;
+    console.log(this.opCells);
   }
   isShowSeniority() {
     this.showSeniority = !this.showSeniority;
     this.showCelula = false;
     this.showModulo = false;
   }
-
 }
