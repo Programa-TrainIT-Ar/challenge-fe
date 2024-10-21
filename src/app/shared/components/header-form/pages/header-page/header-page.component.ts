@@ -20,7 +20,7 @@ export class HeaderPageComponent {
       
     });
   }
-
+  colors: string[] = ['#ffcc00', '#ff9500', '#34c759', '#00c7be', '#30b0c7', '#32ade6', '#007aff'];
   showModulo: boolean = false;
   showCelula: boolean = false;
   showSeniority: boolean = false;
@@ -28,22 +28,24 @@ export class HeaderPageComponent {
     module: 'Selecciona el modulo',
     cell: 'Selecciona la célula',
     seniority: 'Seniority',
+    colorCell: ''
   };
-  options: any = ['','']
-
+  options: any = []
+  
   async getCells(){
-    let response = await fetch(`${environment.url}'cells'`)
+    let response = await fetch(`${environment.url}/cells`)
     response = await response.json()
-    
-    this.options.push(response)
+    this.options = response
+    console.log(response)
     console.log(this.options);
     
   }
   
 
-  pushQuestionCategory(prop: string, val: string, id:string): void {
+  pushQuestionCategory(prop: string, val: string, colorCell: string): void {
     this.questionCategory[prop] = val;
-    this.questionCategory[id] = id;
+    if(prop=='cell'){
+   this.questionCategory.colorCell = colorCell}
    
     this.datosParaPadre.emit(this.questionCategory);
   }
@@ -54,8 +56,9 @@ export class HeaderPageComponent {
     this.showSeniority = false;
   }
   isShowCelula() {
+    console.log(environment.url)
     
-    console.log(this.options);
+    this.getCells()
     
     this.showCelula = !this.showCelula;
     this.showSeniority = false;

@@ -8,5 +8,5 @@ export const environment = {
         redirect_uri: 'http://localhost:4200',
       },
     },
-    url: 'https://challenge-be-testing.onrender.com/'
+    url: 'https://challenge-be-testing.onrender.com'
   };

@@ -22,48 +22,19 @@
       <div class="input-container">
         <h4>Célula</h4>
         <div class="form-select option-select" (click)="isShowCelula()">
-          <span [ngClass]="[questionCategory?.cell, 'floating']">{{
+          <span class="floating" [style.background-color]="questionCategory?.colorCell">{{
             questionCategory?.cell
           }}</span>
           <div *ngIf="showCelula" class="option-floating floating-cell">
-            <!-- <div *ngFor="let option of options"> -->
+             <span *ngFor="let option of options; let i = index"> 
+               <button
+                [ngClass]="['floating']"
+                 (click)="pushQuestionCategory('cell', option.name, colors[i])"
+                 [style.background-color]="colors[i]">
+                 {{option.name}}
+               </button>
 
-              <button
-                class="floating UX-UI"
-                (click)="pushQuestionCategory('cell', 'UX/UI')">
-                QA Tester
-              </button>
-              <button
-                class="floating QA"
-                (click)="pushQuestionCategory('cell', 'QA')">
-                QA Tester
-              </button>
-              <button
-                class="floating frontend"
-                (click)="pushQuestionCategory('cell', 'frontend')">
-                Front end
-              </button>
-              <button
-                class="floating backend"
-                (click)="pushQuestionCategory('cell', 'backend')">
-                Back end
-              </button>
-              <button
-                class="floating PM"
-                (click)="pushQuestionCategory('cell', 'PM')">
-                PM
-              </button>
-              <button
-                class="floating scrum"
-                (click)="pushQuestionCategory('cell', 'scrum')">
-                Scrum Master
-              </button>
-              <button
-                class="floating fullstack"
-                (click)="pushQuestionCategory('cell', 'Fullstack Development')">
-                Fullstack
-              </button>
-            <!-- </div> -->
+              </span>
           </div>
         </div>
 

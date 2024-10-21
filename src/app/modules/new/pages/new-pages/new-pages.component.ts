@@ -111,7 +111,7 @@ export class NewPagesComponent {
 
     /* celula */
 
-    let response: any = await fetch(`${environment.url}cells`)
+    let response: any = await fetch(`${environment.url}/cells`)
     response = await response.json()
 console.log(response);
 
@@ -142,7 +142,7 @@ console.log(response);
         is_active: true,
       };
       const response = await fetch(
-        `${environment.url}quiz`,
+        `${environment.url}/quiz`,
         {
           method: 'POST',
           headers: {
@@ -209,7 +209,7 @@ console.log(response);
         /* this.onQuestionTypeChange('otro', 0);  */
 
         const response = await fetch(
-          `${environment.url}question`,
+          `${environment.url}/question`,
           {
             method: 'POST',
             headers: {
