@@ -103,11 +103,13 @@ export class NewPagesComponent {
     }
 
     /* modulo */
-    switch (datos.module /* hacer dinamico */) {
-      case 'Sistemas':
-        this.quizData.module = '84c66f03-c98f-47f1-a461-589cfb3dbf1f';
-        break;
-    }
+    
+    let responseModule: any = await fetch(`${environment.url}/modules`)
+    responseModule = await responseModule.json()
+
+    responseModule = responseModule.find((element)=>element.name == datos.module )
+    console.log(responseModule)
+    this.quizData.module = responseModule.id
 
     /* celula */
 
