@@ -1,83 +1,142 @@
+/* Contenedor principal centrado */
 .contenedor {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-  }
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-family: Poppins;
+}
+
+/* Contenedor normal con fondo oscuro, borde redondeado y sombra */
+.normal-container {
+  background-color: #212121;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.9);
+  background-color: #212121;
+  background-image: url('../../../../../assets/layout/images/logo.svg') !important;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 180px;
+  box-shadow: 0px -3px 12.8px 0px rgba(241, 121, 197, 1);
+
+}
+
+/* Estilos base para el componente custom-select-static */
+.custom-select-static {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  background: rgba(32, 32, 32, 1);
+
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 8px;
+  font-size: 14px;
+  color: #333;
+}
+
+/* Estilos base para las opciones dentro del custom select */
+.custom-option {
+  padding: 6px 12px;
+  font-family: Poppins;
+  font-size: 10px;
+  font-weight: 300;
+  line-height: 11.68px;
+  text-align: left;
+  color: var(--Grays-White, rgba(255, 255, 255, 1));
+
+
+}
+
+
+.content-1 {
+  background-color: #353434;
+  display: flex;
+  justify-content: space-between;
+  width: 135vh;
+  border-radius: 12px;
+  padding: 0.8rem;
+}
+
+/* Contenedor individual de inputs */
+.input-container {
+  width: 38vh;
+  display: flex;
+  flex-direction: column;
+  font-family: Poppins;
+  font-size: 10px;
+  font-weight: 300;
+  line-height: 11.68px;
+  text-align: left;
   
-  .content-1 {
-    background-color: #353434;
-    display: flex;
-    justify-content: space-between;
-    width: 135vh;
-    border-radius: 12px;
-    padding: 0.8rem;
-  }
-  
-  .input-container {
-    width: 38vh;
-    display: flex;
-    flex-direction: column;
-  }
-  
-  h4 {
-    color: #f0f0f0;
-    font-size: 16px;
-    margin-bottom: 5px;
-  }
-  
-  select {
-    background-color: #202020;
-    color: #8e8e8e;
-    border: none;
-    border-radius: 5px;
-    padding: 0.8rem;
-    font-size: 12px;
-    outline: none;
-    appearance: none;
-    width: 100%;
-  }
-  
-  select:hover {
-    background-color: #303030;
-  }
-  
-  .module-option,
-  .cell-option,
-  .seniority-option {
-    background-color: #202020;
-    color: rgb(142, 142, 142);
-    border: none;
-    border-radius: 0.5rem;
-    padding: 0.8rem;
-    font-size: 12px;
-  }
-  
-  .logo-centrado {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 250px;
-    opacity: 0.1;
-    z-index: 0;
-  }
-  
-  .card {
-    background-color: #1d1d1d;
-    border-radius: 8px;
-    padding: 20px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 0 15px rgba(115, 102, 255, 0.2);
-    position: relative;
-    overflow: hidden;
-    flex-grow: 1;
-    z-index: 1;
-  }
-  
-  .container-sup {
-    display: flex;
-    justify-content: space-between;
-    gap: 20px;
-  }
-  
+
+}
+
+/* Estilos base para los títulos */
+h4 {
+  color: #f0f0f0;
+  font-size: 16px;
+  margin-bottom: 5px;
+}
+
+/* Estilos base para select */
+select {
+  background-color: #202020;
+  color: #8e8e8e;
+  border: none;
+  border-radius: 5px;
+  padding: 0.8rem;
+  font-size: 12px;
+  outline: none;
+  appearance: none;
+  width: 100%;
+}
+
+/* Hover para el select */
+select:hover {
+  background-color: #303030;
+}
+
+/* Estilos para las opciones de Módulo, Célula y Seniority */
+.module-option,
+.cell-option,
+.seniority-option {
+  background-color: #202020;
+  color: rgb(142, 142, 142);
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.8rem;
+  font-size: 12px;
+}
+
+/* Estilo para el logo centrado */
+.logo-centrado {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 250px;
+  opacity: 0.1;
+  z-index: 0;
+}
+
+/* Estilos para la tarjeta (card) con fondo oscuro, sombra y borde */
+.card {
+  background-color: #1d1d1d;
+  border-radius: 8px;
+  padding: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 0 15px rgba(115, 102, 255, 0.2);
+  position: relative;
+  overflow: hidden;
+  flex-grow: 1;
+  z-index: 1;
+}
+
+/* Contenedor superior */
+.container-sup {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+}

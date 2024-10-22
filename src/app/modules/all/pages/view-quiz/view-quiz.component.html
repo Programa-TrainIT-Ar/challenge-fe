@@ -1,6 +1,6 @@
-<div class="container my-4">
+<div class="container my-4 normal-container">
   <h2>Detalles del Quiz: {{ quizDetails?.name }}</h2>
-  <img src="assets/layout/images/logo.svg" alt="Logo" class="logo-centrado"> 
+  
 
   <div class="card bg-dark text-light p-3">
     <div class="contenedor">
@@ -8,56 +8,44 @@
         <!-- Módulo -->
         <div class="input-container">
           <h4>Módulo</h4>
-          <div class="module-container">
-            <select class="module-option">
-              <option>{{quizDetails?.cell?.module?.name}} </option>
-              
-             
-            </select>
+          <div class="module-container custom-select-static">
+            <div class="custom-option styled-static">{{quizDetails?.cell?.module?.name}}</div>
           </div>
         </div>
 
         <!-- Célula -->
         <div class="input-container">
           <h4>Célula</h4>
-          <div class="cell-container">
-            <select class="cell-option">
-              
-              <option> {{quizDetails?.cell?.name}} </option>
-             
-            </select>
+          <div class="cell-container custom-select-static">
+            <div class="custom-option styled-static">{{quizDetails?.cell?.name}}</div>
           </div>
         </div>
 
         <!-- Seniority / Nivel -->
         <div class="input-container">
           <h4>Seniority / Nivel</h4>
-          <div class="seniority-container">
-            <select class="seniority-option">
-              <option>{{quizDetails?.seniority}} </option>
-             
-             
-            </select>
+          <div class="seniority-container custom-select-static">
+            <div class="custom-option styled-static">{{quizDetails?.seniority}}</div>
           </div>
         </div>
       </div>
     </div>
 
     <h4>Preguntas:</h4>
-    <ul>
-      <li>
-        <p><strong>Pregunta:</strong> </p>
+    <ul *ngIf="quizDetails?.questions?.length > 0; else noQuestions">
+      <li *ngFor="let question of quizDetails?.questions">
+        <p><strong>Pregunta:</strong> {{ question.question }}</p>
         <p><strong>Opciones:</strong></p>
         <ul>
-          <li></li>
-         
+          <li *ngFor="let option of question.options">{{ option }}</li>
         </ul>
-        <p><strong>Tipo:</strong> </p>
-        <p><strong>Explicación:</strong> </p>
+        <p><strong>Tipo:</strong> {{ question.type }}</p>
+        <p><strong>Explicación:</strong> {{ question.explanation }}</p>
       </li>
-      <!-- Aquí puedes agregar más preguntas -->
     </ul>
 
-    <p>No hay preguntas disponibles para este quiz.</p>
+    <ng-template #noQuestions>
+      <p>No hay preguntas disponibles para este quiz.</p>
+    </ng-template>
   </div>
 </div>

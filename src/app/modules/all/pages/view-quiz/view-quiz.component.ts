@@ -64,7 +64,7 @@ export class ViewQuizComponent implements OnInit {
   async fetchQuizDetails() {
     try {
       console.log(`Realizando solicitud a la API con ID: ${this.quizId}`); 
-      const response = await fetch(`https://challenge-be-development-99e1.onrender.com/quiz/${this.quizId}`);
+      const response = await fetch(`${environment.url}/quiz/${this.quizId}`);
       if (response.ok) {
         const data: Quiz = await response.json();
         this.quizDetails = data;
