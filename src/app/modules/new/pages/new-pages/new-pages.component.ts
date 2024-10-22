@@ -45,6 +45,7 @@ export class NewPagesComponent {
   quizID: number | string = '';
   quizData: any = {};
   createOrEdit: boolean = true;
+  toggle: boolean = true;
 
   trackByFn(index: number): any {
     return index;
@@ -102,7 +103,7 @@ export class NewPagesComponent {
     }
 
     /* modulo */
-    switch (datos.module) {
+    switch (datos.module /* hacer dinamico */) {
       case 'Sistemas':
         this.quizData.module = '84c66f03-c98f-47f1-a461-589cfb3dbf1f';
         break;
@@ -147,6 +148,7 @@ export class NewPagesComponent {
       if (!response.ok) {
         throw new Error(`Error: ${response.status}`);
       }
+      this.toggle = false;
       this.showForm = true;
       this.showButton = false;
       this.questionCategory.name = this.selectNameForm.value.name;
@@ -162,7 +164,12 @@ export class NewPagesComponent {
   }
 
   async updateQuiz() {
-    const update = { name: 'nuevo name desde el front ->'+this.quizID };
+    const update = {
+      name: this.selectNameForm.value.name,
+      description: this.selectNameForm.value.description,
+      cell_id: this.quizData.cell,
+      seniority: this.quizData.seniority,
+    };
     let response = await fetch(`${environment.url}/quiz/${this.quizID}`, {
       method: 'PUT',
       headers: {
@@ -171,6 +178,10 @@ export class NewPagesComponent {
       body: JSON.stringify(update),
     });
     response = await response.json();
+
+    this.showForm = true;
+    this.questionCategory.name = this.selectNameForm.value.name;
+    this.questionCategory.description = this.selectNameForm.value.description;
 
     console.log(response);
   }
@@ -245,7 +256,8 @@ export class NewPagesComponent {
 
   editQuiz(): void {
     this.showForm = false;
-    this.createOrEdit = false
+    this.createOrEdit = false;
+    this.toggle = true;
   }
   answerChoice(i: number) {
     if (true) {
