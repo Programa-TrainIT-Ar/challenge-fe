@@ -8,5 +8,5 @@ export const environment = {
       redirect_uri: '${process.env.REDIRECT_URL}',
     },
   },
-  url: '${process.env.URL}'
+  url: '${process.env.API_URL}'
 };
