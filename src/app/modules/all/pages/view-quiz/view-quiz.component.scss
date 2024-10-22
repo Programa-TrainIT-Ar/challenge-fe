@@ -155,7 +155,8 @@ select:hover {
 
 /* Estilos para la tarjeta (card) con fondo oscuro, sombra y borde */
 .card {
-  background-color: #1d1d1d;
+  background: rgba(56, 53, 53, 1);
+
   border-radius: 8px;
   padding: 20px;
   border: 1px solid rgba(255, 255, 255, 0.1);
