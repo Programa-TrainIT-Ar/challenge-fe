@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { trigger, style, transition, animate, state } from '@angular/animations';
 import { Output, EventEmitter } from '@angular/core';
 import Swal from 'sweetalert2';
+import { environment } from '@environments/environment';
 
 interface User {
   first_name: string;
@@ -59,7 +60,7 @@ export class AllPageComponent implements OnInit {
   async fetchAllQuizzes() {
     try {
       const response = await fetch(
-        'https://challenge-be-development-99e1.onrender.com/quiz'
+        `${environment.url}/quiz`
       );
 
       if (!response.ok) {
@@ -104,7 +105,7 @@ export class AllPageComponent implements OnInit {
 
     try {
       const response = await fetch(
-        `https://challenge-be-development-99e1.onrender.com/quiz/${quiz.name}`,
+        `${environment.url}/quiz/${quiz.name}`,
         {
           // Asegúrate de usar un identificador correcto
           method: 'PUT',
@@ -160,7 +161,7 @@ export class AllPageComponent implements OnInit {
   
       if (result.isConfirmed) {
         let response = await fetch(
-          `https://challenge-be-development-99e1.onrender.com/quiz/${quiz.id}`,
+          `${environment.url}/quiz/${quiz.id}`,
           {
             method: 'DELETE',
             headers: {

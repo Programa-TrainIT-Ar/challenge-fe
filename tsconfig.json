@@ -19,7 +19,10 @@
     "target": "ESNext",
     "module": "ESNext",
     "useDefineForClassFields": false,
-    "lib": ["ES2022", "dom"]
+    "lib": ["ES2022", "dom"],
+    "paths": {
+      "@environments/*":["src/environments/*"]
+    }
   },
   "exclude": ["node_modules", "**/node_modules/*"],
   "angularCompilerOptions": {

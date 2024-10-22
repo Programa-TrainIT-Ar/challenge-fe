@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { AuthService } from '@auth0/auth0-angular';
 import { Router } from '@angular/router';
+import { environment } from '@environments/environment';
 
 @Component({
   selector: 'app-auth-page',
@@ -30,7 +31,7 @@ export class AuthPageComponent {
                 password: 'defaultPassword', 
               };
 
-              fetch('http://localhost:3000/user', {
+              fetch(`${environment.url}/user`, {
                 method: 'POST',
                 headers: {
                   'Content-Type': 'application/json',

@@ -66,15 +66,7 @@ import {
 export class WelcomePageComponent {
     constructor(private router: Router) { }
 
-    goToAll() {
-        this.router.navigate(['/all']);
-    }
-    goToCreate() {
-        this.router.navigate(['/create']);
-    }
-    goToEdit() {
-        this.router.navigate(['/edit']);
-    }
+    
 
   isExpanded1 = false; // Controla la expansión de la columna de "Todos"
   isExpanded2 = false; // Controla la expansión de la columna de "Nuevo"
