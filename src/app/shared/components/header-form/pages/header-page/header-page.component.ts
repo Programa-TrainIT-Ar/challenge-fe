@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { environment } from 'src/environments/environment';
 
@@ -8,11 +8,13 @@ import { environment } from 'src/environments/environment';
   styleUrl: './header-page.component.scss',
 })
 export class HeaderPageComponent {
+  @Input() mode: boolean = true;
   @Output() datosParaPadre = new EventEmitter<any>(); // cambie a any
   public selectHeaderForm: FormGroup;
   constructor(private formsBuilder: FormBuilder) {}
 
   ngOnInit(): void {
+    console.log(this.mode);
     this.selectHeaderForm = this.formsBuilder.group({
       nombreQuiz: [''],
       descripcion: [''],
@@ -49,12 +51,13 @@ export class HeaderPageComponent {
   async getModule() {
     let response = await fetch(`${environment.url}/modules`);
     response = await response.json();
-    this.opModules = response
+    this.opModules = response;
   }
-  async getCells() { /* no pude reutilizar fn anterior con parametros */
+  async getCells() {
+    /* no pude reutilizar fn anterior con parametros */
     let response = await fetch(`${environment.url}/cells`);
     response = await response.json();
-    this.opCells = response
+    this.opCells = response;
   }
 
   pushQuestionCategory(prop: string, val: string, color: string): void {
@@ -67,23 +70,31 @@ export class HeaderPageComponent {
   }
 
   isShowModulo() {
-    this.getModule(); 
-    this.showModulo = !this.showModulo;
-    this.showCelula = false;
-    this.showSeniority = false;
+    /* if(mode){
+
+    } */ if (this.mode) {
+      this.getModule();
+      this.showModulo = !this.showModulo;
+      this.showCelula = false;
+      this.showSeniority = false;
+    }
     console.log(this.opModules);
   }
   isShowCelula() {
-    this.getCells();
+    if (this.mode) {
+      this.getCells();
 
-    this.showCelula = !this.showCelula;
-    this.showSeniority = false;
-    this.showModulo = false;
+      this.showCelula = !this.showCelula;
+      this.showSeniority = false;
+      this.showModulo = false;
+    }
     console.log(this.opCells);
   }
   isShowSeniority() {
-    this.showSeniority = !this.showSeniority;
-    this.showCelula = false;
-    this.showModulo = false;
+    if (this.mode) {
+      this.showSeniority = !this.showSeniority;
+      this.showCelula = false;
+      this.showModulo = false;
+    }
   }
 }

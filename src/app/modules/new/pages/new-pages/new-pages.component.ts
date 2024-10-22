@@ -8,6 +8,7 @@ import {environment} from '../../../../../environments/environment'
   styleUrls: ['./new-pages.component.scss'],
 })
 export class NewPagesComponent {
+  
   constructor(private formsBuilder: FormBuilder) {}
   public selectNameForm = this.formsBuilder.group({
     name: ['', Validators.required],
@@ -46,6 +47,7 @@ export class NewPagesComponent {
   showSubmits: boolean = false;
   quizID: number | string = '';
   quizData: any = {};
+  toggle : boolean = true
 
   trackByFn(index: number): any {
     return index; 
@@ -103,7 +105,7 @@ export class NewPagesComponent {
     }
 
     /* modulo */
-    switch (datos.module) {
+    switch (datos.module) { /* hacer dinamico */
       case 'Sistemas':
         this.quizData.module = '84c66f03-c98f-47f1-a461-589cfb3dbf1f';
         break;
@@ -154,6 +156,7 @@ console.log(response);
       if (!response.ok) {
         throw new Error(`Error: ${response.status}`);
       }
+      this.toggle = false;
       this.showForm = true;
       this.showButton = false;
       this.questionCategory.name = this.selectNameForm.value.name;
@@ -242,6 +245,7 @@ console.log(response);
 
   editQuiz(): void {
     this.showForm = false;
+    this.toggle = true
   }
   answerChoice(i: number) {
     if (true) {

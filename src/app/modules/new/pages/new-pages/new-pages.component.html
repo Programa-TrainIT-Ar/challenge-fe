@@ -31,7 +31,9 @@
         
         <app-header-page
           [ngClass]="showForm ? '' : 'absolute-true'"
-          (datosParaPadre)="recibirDatos($event)"></app-header-page>
+          (datosParaPadre)="recibirDatos($event)"
+          [mode]="toggle"
+          ></app-header-page>
       </div>
     </div>
   </div>
