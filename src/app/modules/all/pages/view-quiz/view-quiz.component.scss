@@ -7,6 +7,38 @@
   font-family: Poppins;
 }
 
+.checkbox-container {
+  width: 4vh;
+  height: 4vh;
+  background-color: #303030;
+  border-radius: 8px 0 0 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+}
+.question-container {
+  display: flex;
+  flex-direction: column; /* Asegura que los elementos hijos se apilen verticalmente */
+  gap: 10px; /* Espaciado entre las preguntas */
+}
+.btn-circle {
+  width: 40px; /* Ajusta el tamaño según tus preferencias */
+  height: 40px;
+  border-radius: 50%; /* Crea el círculo */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px; /* Ajusta el tamaño del ícono */
+  background: rgba(0, 0, 0, 1);
+
+  color: white; /* Color del ícono */
+  border: none;
+  cursor: pointer;
+  
+ 
+}
+
 /* Contenedor normal con fondo oscuro, borde redondeado y sombra */
 .normal-container {
   background-color: #212121;
