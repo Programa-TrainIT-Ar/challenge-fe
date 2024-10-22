@@ -1,28 +1,52 @@
-<!-- Mensaje de saludo -->
-<div class="welcome-container">
-    <h1 class="h3">Bienvenido "User"</h1>
-    <div class>
-        <button class="btn-plus">
-            <i class="bi bi-plus"></i>
+<div class="wall">
+  <!-- Botones -->
+  <div>
+    <div [ngClass]="isExpanded2 ? 'd-flex flex-row-reverse' : 'd-flex '">
+      <!-- EDIT -->
+      <div
+        *ngIf="selectedQuiz" 
+        [ngClass]="isExpanded3 ? 'active-column ' : 'column-tasks'"
+        (click)="toggleExpand3()">
+        <button class="column-btn">
+          <span class="span-linear">Editar</span>
         </button>
-    </div>
-</div>
+      </div>
 
-<!-- Botones -->
+      <!-- Contenido de EDIT -->
+      <div [@expandState3]="isExpanded3 ? 'expanded' : 'collapsed'">
+        <app-edit-pages *ngIf="isExpanded3" [quiz]="selectedQuiz" (close)="closeEdit()"></app-edit-pages>
+      </div>
 
-<div class="d-flex">
-    <div class="column-tasks">
-        <button class="column-btn" (click)="goToAll()"><span
-                class="span-linear">Todos</span></button>
-    </div>
+      <!-- TODOS -->
+      <div
+        [ngClass]="isExpanded1 ? 'active-column ' : 'column-tasks'"
+        (click)="toggleExpand1()">
+        <button class="column-btn">
+          <span class="span-linear">Todos</span>
+        </button>
+      </div>
 
-    <div class="column-tasks">
-        <button class="column-btn" (click)="goToCreate()"><span
-                class="span-linear">Nuevo</span></button>
-    </div>
+      <!-- Contenido de TODOS -->
+      <div [@expandState1]="isExpanded1 ? 'expanded' : 'collapsed'">
+        <app-all-page (quizSelected)="onQuizSelected($event)" *ngIf="isExpanded1"></app-all-page>
+      </div>
 
-    <div class="column-tasks">
-        <button class="column-btn" (click)="goToEdit()"><span
-                class="span-linear">Editar</span></button>
+      <!-- NUEVO -->
+      <div
+        [ngClass]="isExpanded2 ? 'active-column order-1' : 'column-tasks'"
+        (click)="toggleExpand2()">
+        <button class="column-btn">
+          <span class="span-linear">Nuevo</span>
+        </button>
+      </div>
+
+      <!-- Contenido de NUEVO -->
+      <div [@expandState2]="isExpanded2 ? 'expanded' : 'collapsed'">
+        <app-new-pages *ngIf="isExpanded2"></app-new-pages>
+      </div>
+
+      
+      
     </div>
+  </div>
 </div>

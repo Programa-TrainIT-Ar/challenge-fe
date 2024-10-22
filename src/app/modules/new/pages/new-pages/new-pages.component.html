@@ -1,55 +1,152 @@
-<!-- Mensaje de saludo -->
-<div class="container">
-    <h1 class="new-title">Nombre del Quizz</h1>
-</div>
-
-<div class="normal-container">
-    <div class="content">
-        <div class="content-1">
-            <div class="container">
-                <h4>Modulo</h4>
-                <select class="form-select" aria-label="Default select example">
-                    <option selected>Desarrollo</option>
-                    <option value="1">Marketing</option>
-                    <option value="2">Sistemas</option>
-                    <!-- <option value="3">Desarrollo</option> -->
-                </select>
+<div class="normal-container transparent">
+  <div class="header-inputs-container">
+    <div>
+      <div
+        [ngClass]="showForm ? 'quiz-container-true' : 'quiz-container-false'">
+        <form [formGroup]="selectNameForm">
+          <div class="flex-b">
+            <input
+              type="text"
+              class="input-name mb-2"
+              [placeholder]="isFieldInvalid('name') ? '* El nombre es requerido' : 'Nombre del Quiz'"
+              formControlName="name"
+              [ngClass]="{'notice': isFieldInvalid('name')}" />
+            <div [ngClass]="showForm ? '' : 'd-none'">
+              <button class="btn-plus" (click)="editQuiz()">
+                <span><i class="fa-regular fa-pen-to-square"></i></span>
+              </button>
             </div>
-            <div class="container">
-                <h4>Célula</h4>
-                <select class="form-select" aria-label="Default select example">
-                    <option selected>Selecciona la Célula</option>
-                    <option value="1">Marketing</option>
-                    <option value="2">Sistemas</option>
-                    <option value="3">Desarrollo</option>
-                </select>
-            </div>
-            <div class="container">
-                <h4>Seniority / Nivel</h4>
-                <select class="form-select" aria-label="Default select example">
-                    <option selected>Seniority</option>
-                    <option value="1">Seniority1</option>
-                    <option value="2">Seniority2</option>
-                    <option value="3">Seniority3</option>
-                </select>
-            </div>
-        </div>
-
-        <div class="container">
-            <div class="content-2">
-                <select class="form-select" aria-label="Default select example">
-                    <option selected>Desarrollo</option>
-                    <option value="1">Marketing</option>
-                    <option value="2">Sistemas</option>
-                    <option value="3">Desarrollo</option>
-                </select>
-            </div>
-        </div>
-
-        <div class="content-img">
-            <img src="assets/layout/images/logo.svg" class="new-img"
-                alt="logo" />
-        </div>
+          </div>
+        
+          <div>
+            <input
+              type="text"
+              class="input-description"
+              [ngClass]="{'notice': isFieldInvalid('description')}"
+              [ngClass]="showForm ? 'd-none' : 'input-description'"
+              [placeholder]="isFieldInvalid('description') ? '* La descripcón es requerida' : 'Descripción'"
+              formControlName="description"/>
+          </div>
+        </form>
+        
+        <app-header-page
+          [ngClass]="showForm ? '' : 'absolute-true'"
+          (datosParaPadre)="recibirDatos($event)"></app-header-page>
+      </div>
     </div>
+  </div>
+  <div *ngIf="showButton">
+    <button (click)="createQuiz()" class="custom-btn-save">Guardar</button>
+  </div>
 
+  <!-- componente agus -->
+
+  <div *ngIf="showForm" class="content-2">
+    <h3 class>Define la pregunta {{questions.length+1}}/10</h3>
+    <!-- Formulario Angular con ngForm -->
+    <form #questionForm="ngForm" (ngSubmit)="createQuestion(questionForm)" class>
+      <div class="question-container mb-3">
+        <div>
+          <label for="questionType" class="custom-label"
+            >Tipo de Pregunta</label
+          >
+          <!-- Seleccion de opcion -->
+          <div class="d-flex">
+            <select
+              class="custom-input"
+              id="questionType"
+              name="questionType"
+              [(ngModel)]="selectedOption"
+              (ngModelChange)="onQuestionTypeChange($event, questionForm)"
+              required>
+              <option value="" disabled selected>Selecciona una opción</option>
+              <option
+                *ngFor="let type of questionTypes"
+                class="custom-select"
+                [value]="type">
+                {{ type }}
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="custom-label">
+          <div class="label-input">
+            <label
+              for="questionText"
+              class="custom-label d-flex justify-content-end"
+              >Escribe una pregunta</label
+            >
+          </div>
+
+          <!-- Pregunta -->
+
+          <input
+            type="text"
+            id="questionText"
+            class="custom-input"
+            name="questionText"
+            ngModel
+            placeholder="Escribe una pregunta"
+            required />
+        </div>
+      </div>
+
+      <!-- opciones: Opcion 1 Opcion 2 con bucle -->
+
+      <div class="form-group">
+        <div class="option-row">
+          <div *ngFor="let option of options; let i = index trackBy: trackByFn" class="row">
+            <!-- check -->
+            <div class="checkbox-container mb-3">
+              <input
+                type="{{ inputType }}"
+                class="checkbox-input"
+                name="solution"
+                [ngModel]="selection"
+                (ngModelChange)="answerChoice(i, inputType)" />
+            </div>
+            <!-- input del check -->
+            <input
+              type="text"
+              class="custom-option-input mb-3"
+              [(ngModel)]="options[i]"
+              name="option{{ i }}"
+              [readonly]="isTrueFalseQuestion"
+              required />
+          </div>
+
+          <!-- add options -->
+
+          <div *ngIf="showPlus" class="row">
+            <div class="checkbox-container">
+              <i class="bi bi-plus-circle" (click)="addOption()"></i>
+            </div>
+            <input
+              type="text"
+              class="custom-option-input"
+              name="agregate"
+              placeholder="Añadir una nueva opción" />
+          </div>
+
+          <!-- add options 2 -->
+          <div *ngIf="showPlus2" class="row">
+            <div class="checkbox-container">
+              <i class="bi bi-plus-circle" (click)="addOption2()"></i>
+            </div>
+            <input
+              type="text"
+              class="custom-option-input"
+              name="agregate"
+              placeholder="Añadir una nueva opción" />
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="showSubmits" class="d-flex justify-content-around">
+        <button type="submit" class="custom-btn-submit">
+          Guardar Pregunta
+        </button>
+      </div>
+    </form>
+  </div>
 </div>

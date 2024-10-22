@@ -1,1 +1,58 @@
-<p>Soy el all page</p>
+<div *ngIf="!selectedQuiz" class="quiz-dashboard">
+  <app-header-page></app-header-page>
+  <div class="search-container">
+    <h2>Todos los Quiz</h2>
+    <div class="input-wrapper">
+      <i class="bi bi-search"></i>
+      <input type="text" placeholder="Buscar" [(ngModel)]="searchText" />
+    </div>
+  </div>
+  <div>
+    <table class="quiz-table">
+      <thead>
+        <tr class="table-sup">
+          <td>Nombre Q.</td>
+          <td>Seniority</td>
+          <td>Fec. Creación</td>
+          <td>Creador</td>
+          <td>Módulo</td>
+          <td>Célula</td>
+          <td>Estado</td>
+          <td>Acciones</td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let quiz of filteredQuizzes()">
+          <td class="table-int">{{ quiz.name }}</td>
+          <td class="table-int">{{ quiz.seniority }}</td>
+          <td class="table-int">{{ quiz.created_at | date:'dd-MM-yyyy' }}</td>
+          <td class="table-int">{{ quiz.created_by.first_name }}</td>
+          <td class="table-int">{{ quiz.cell.module.name }}</td>
+          <td class="table-int">{{ quiz.cell.name }}</td>
+          <td class="table-int">
+            <span class="status" 
+                  [ngClass]="{'activo': quiz.is_active, 'inactivo': !quiz.is_active}" 
+                  (click)="toggleActive(quiz)">
+              {{ quiz.is_active ? 'Activo' : 'Inactivo' }}
+            </span>
+          </td>
+          <td class="actions">
+            <button (click)="viewQuiz(quiz)"><i class="bi bi-eye"></i></button>
+            <button (click)="editQuiz(quiz)"><i class="bi bi-pencil-square"></i></button>
+            <button (click)="deleteQuiz(quiz)"><i class="bi bi-trash"></i></button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  
+
+  <div *ngIf="isExpanded3" class="edit-column" [@expandState3]="isExpanded3 ? 'expanded' : 'collapsed'">
+    <app-edit-pages [quiz]="selectedQuiz" (close)="closeEdit()"></app-edit-pages>
+  </div>
+</div>
+
+<!-- Mostrar los detalles del quiz seleccionado -->
+<div *ngIf="selectedQuiz">
+  <app-view-quiz [quiz]="selectedQuiz"></app-view-quiz>
+</div>

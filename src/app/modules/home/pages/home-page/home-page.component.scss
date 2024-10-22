@@ -3,30 +3,33 @@
   margin: 0;
 }
 
-.sidebar-container {
-  background: #212121;
-
-  box-shadow: 0px 4px 4px 0px #00000040;
-  height: 623px;
-  width: 196px;
-  border-radius: 0px 12px 12px 0px;
-  padding: 24px 8px 8px 8px;
-  gap: 47px;
-}
-
-.home-container {
-  /* background-color: rgb(38, 184, 135); */
+.container-fluid {
   background-color: #121212;
   min-height: 100vh;
   display: flex;
-  align-items: center;
+  /* Asegura que los elementos ocupen el alto completo */
 }
 
-.display-container {
-  display: flex;
-  align-items: center;
-  /* background-color: orange; */
-  width: 1034px;
-  
-  margin-left: 16px;
+.sidebar-container {
+  // background: #212121;
+  box-shadow: 0px 4px 4px 0px #00000040;
+  height: 100vh;
+  width: 250px; /* Ancho fijo para pantallas grandes */
+  border-radius: 0px 12px 12px 0px;
+  z-index: 9999;
+
+  transition: width 0.3s ease; /* Suaviza la transición */
 }
+
+@media (max-width: 767px) {
+  .sidebar-container {
+    width: auto; /* Ancho del sidebar en pantallas pequeñas */
+    height: auto; /* Permite que la altura se ajuste al contenido */
+  }
+
+  router-outlet {
+    margin-top: 20px; /* Agrega margen superior si el sidebar se oculta */
+  }
+}
+
+

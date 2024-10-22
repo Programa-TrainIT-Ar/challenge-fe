@@ -1,0 +1,213 @@
+$background-color: #2a2a2a;
+$shadow-color: rgba(0, 217, 255, 0.4);
+$input-bg-color: #333;
+$text-color: #fff;
+$border-radius: 12px;
+$transition-time: 0.3s;
+$spacing: 20px;
+
+
+.quiz-dashboard {
+  padding: 20px;
+  background-color: #1e1e1e;
+  color: #fff;
+  height: 95vh;
+  width: 150vh; 
+  border-radius: 12px;
+  padding: 24px 8px 8px 8px;
+  gap: 47px;  
+  opacity: 0px;
+  overflow: auto; 
+}
+.table-sup{
+  font-family: Poppins;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  letter-spacing: 0.20000000298023224px;
+  text-align: center;
+
+}
+.table-int{ 
+ margin: 0 auto;
+ flex: auto;
+ 
+ 
+
+}
+h2 {
+  color: #fff;
+  font-size: 1.5rem;
+  margin: 0;
+
+   
+}
+
+.filters {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.filters select {
+  background-color: #333;
+  border: 1px solid #444;
+  padding: 10px;
+  color: #fff;
+  border-radius: 5px;
+  width: 30%;
+}
+
+.search-container {  
+  top: 0;
+  background-color: #1e1e1e;
+  padding: 10px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 1000;
+}
+
+.search-container input {
+  background-color: #333;
+  border: 1px solid #444;
+  padding: 8px;
+  color: #fff;
+  border-radius: 5px;
+  width: 200px;
+}
+
+.table-and-button {
+  display: flex;
+  justify-content: space-between;
+}
+
+.table-container {
+  width: 85%;
+}
+
+.new-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 15%;
+}
+
+.new-button button {
+  background-color: #6200ea;
+  border: none;
+  padding: 10px 20px;
+  color: white;
+  font-size: 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.new-button button:hover {
+  background-color: #4500b5;
+}
+
+.quiz-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+.activo {
+  color:rgba(151, 71, 255, 1);
+  ; /* Color para activo */
+  font-weight: bold; /* Puedes ajustar el estilo como desees */
+}
+
+.inactivo {
+  color: red; /* Color para inactivo */
+  font-weight: normal; /* Estilo normal para inactivo */
+}
+
+.input-wrapper {
+  position: relative;
+  display: inline-block;
+  border-radius: 32px;
+}
+
+.input-wrapper i {
+  position: absolute;
+  left: 10px; 
+  top: 50%;
+  transform: translateY(-50%);
+  color: #aaa; 
+}
+.custom-popup {
+  background-color: #1f1f1f; /* Fondo oscuro similar al de la imagen */
+  color: #fff;               /* Texto en blanco */
+  border-radius: 15px;       /* Bordes redondeados */
+}
+
+.custom-title {
+  font-size: 20px; /* Tamaño de fuente del título */
+  font-weight: bold;
+  color: #fff;     /* Color del texto del título */
+}
+
+.custom-content {
+  font-size: 14px;  /* Tamaño de fuente del contenido */
+  color: #cccccc;   /* Color del texto del contenido */
+}
+
+.custom-confirm-btn {
+  background-color: #6c63ff; /* Color del botón de confirmación */
+  border-radius: 10px;       /* Bordes redondeados en el botón */
+  color: #fff;               /* Texto en blanco */
+  padding: 10px 20px;        /* Espaciado en el botón */
+}
+
+.custom-cancel-btn {
+  background-color: #4e4e4e; /* Color del botón de cancelación */
+  border-radius: 10px;
+  color: #fff;
+  padding: 10px 20px;
+}
+
+.input-wrapper input {
+  padding-left: 35px; 
+  width: 100%; 
+}
+
+.quiz-table th, .quiz-table td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #444;
+}
+
+.quiz-table th {
+  background-color: #333;
+  
+}
+
+.quiz-table td {
+  background-color: #222;
+  text-align: center; // Centrar el texto horizontalmente
+  padding: 12px; // Espacio alrededor del texto    
+  font-family: "Poppins";
+    
+}
+
+.actions button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #aaa;
+  margin-right: 5px;
+}
+
+.status {
+  font-weight: bold;
+}
+
+.status.Activo {
+  color: rgba(151, 71, 255, 1);
+  ;
+}
+
+.status.Inactivo {
+  color: #ff0000;
+}

@@ -1,0 +1,32 @@
+<div class="container my-4">
+  <h2>Detalles del Quiz: {{ quizDetails?.name }}</h2> 
+  <div class="card bg-dark text-light p-3">
+    <div class="contenedor">
+      <div class="container-sup">
+        <p><strong>Módulo:</strong> {{ quizDetails?.cell?.module?.name }}</p>
+        <p><strong>Célula:</strong> {{ quizDetails?.cell?.name }}</p>
+        <p><strong>Seniority:</strong> {{ quizDetails?.seniority }}</p>
+      </div>
+
+      <h4>Preguntas:</h4>
+      <ul *ngIf="quizDetails?.questions?.length > 0; else noQuestions">
+        <li *ngFor="let question of quizDetails?.questions">
+          <p><strong>Pregunta:</strong> {{ question.question }}</p>
+          <p><strong>Opciones:</strong></p>
+          <ul>
+            <li *ngFor="let option of question.options">
+              {{ option }}
+            </li>
+          </ul>
+          <p><strong>Tipo:</strong> {{ question.type }}</p>
+          <p><strong>Explicación:</strong> {{ question.explanation }}</p>
+          
+        </li>
+      </ul>
+
+      <ng-template #noQuestions>
+        <p>No hay preguntas disponibles para este quiz.</p>
+      </ng-template>
+    </div>
+  </div>
+</div>

@@ -1,1 +1,48 @@
-<p>Soy el edit page</p>
+<div class="body">
+  <div class="tittle">
+    <a (click)="close.emit()">
+      <i class="fa-solid fa-circle-chevron-left"></i>volver al listado
+    </a>
+    <div>
+      <h1  (click)="isEditing = true" >{{quiz.name}}</h1>
+      <input 
+        type="text"
+        [(ngModel)]="quiz.name"
+        class="quiz-name-input"
+        placeholder="Nombre del Quiz" />
+    </div>
+  </div>
+
+  <div class="content-1">
+    <app-header-page></app-header-page> <!-- Permite cambiar el modelo, celula y seniority -->
+
+    <div class="form-group">
+      <h3>Preguntas del Quiz</h3>
+      <div *ngFor="let question of questions; let i = index" class="question-container">
+        <label>Pregunta {{ i + 1 }}</label>
+        <input
+          type="text"
+          [(ngModel)]="question.text"
+          class="custom-option-input"
+          placeholder="Escribe la pregunta" />
+        
+        <div>
+          <div *ngIf="question.type === 'Verdadero o falso'">
+            <input type="radio" [(ngModel)]="question.answer" [value]="'Verdadero'" /> Verdadero
+            <input type="radio" [(ngModel)]="question.answer" [value]="'Falso'" /> Falso
+          </div>
+          <div *ngIf="question.type === 'Selección múltiple'">
+            <div *ngFor="let option of question.options; let j = index">
+              <input
+                type="checkbox"
+                [(ngModel)]="option.selected" />
+              {{ option.text }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <button type="submit" (click)="createQuiz()" class="btn btn-primary">Guardar Cambios</button>
+  </div>
+</div>
