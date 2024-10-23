@@ -121,6 +121,12 @@
             },
             "development": {
               "buildTarget": "challenge:build:development"
+            },
+            "testing": {
+            "buildTarget": "challenge:build:testing"
+            },
+            "dev": {
+              "buildTarget": "challenge:build:dev"
             }
           },
           "defaultConfiguration": "development"
