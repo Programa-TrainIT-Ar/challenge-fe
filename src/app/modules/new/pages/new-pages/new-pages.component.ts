@@ -14,8 +14,6 @@ export class NewPagesComponent {
     description: ['', Validators.required],
   });
 
-  
-
   isFieldInvalid(field: string): boolean {
     const control = this.selectNameForm.get(field);
     return control?.invalid && (control.dirty || control.touched);
@@ -38,18 +36,20 @@ export class NewPagesComponent {
   array: any = [''];
   selectedOption: string = '';
   inputType: string = '';
-  showButton: boolean = false; 
-  showForm: boolean = false; 
+  showButton: boolean = false;
+  showForm: boolean = false;
   isTrueFalseQuestion: boolean = false;
   showPlus: boolean = false;
   showPlus2: boolean = false;
   showSubmits: boolean = false;
   quizID: number | string = '';
   quizData: any = {};
+  createOrEdit: boolean = true;
+  toggle: boolean = true;
 
   trackByFn(index: number): any {
-    return index; 
-    }
+    return index;
+  }
 
   onQuestionTypeChange(selectedType: string) {
     this.array =
@@ -103,31 +103,30 @@ export class NewPagesComponent {
     }
 
     /* modulo */
-    switch (datos.module) {
-      case 'Sistemas':
-        this.quizData.module = '84c66f03-c98f-47f1-a461-589cfb3dbf1f';
-        break;
-    }
+    
+    let responseModule: any = await fetch(`${environment.url}/modules`)
+    responseModule = await responseModule.json()
+
+    responseModule = responseModule.find((element)=>element.name == datos.module )
+    console.log(responseModule)
+    this.quizData.module = responseModule.id
 
     /* celula */
 
-    let response: any = await fetch(`${environment.url}/cells`)
-    response = await response.json()
-console.log(response);
+    let response: any = await fetch(`${environment.url}/cells`);
+    response = await response.json();
+    console.log(response);
 
-    response = response.find((element)=>datos.cell == element.name) 
-    
+    response = response.find(element => datos.cell == element.name);
 
-    console.log(response)  
-    response ? this.quizData.cell = response.id : ''
-    console.log(this.quizData)  
-
+    console.log(response);
+    response ? (this.quizData.cell = response.id) : '';
+    console.log(this.quizData);
 
     /* seniority */
     if (datos.seniority) {
       this.quizData.seniority = datos.seniority;
     }
-    
   }
   async createQuiz() {
     try {
@@ -141,19 +140,17 @@ console.log(response);
         created_by_id: '224742e8-731b-40bf-b05f-a7547270746c',
         is_active: true,
       };
-      const response = await fetch(
-        `${environment.url}/quiz`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(prueba),
-        }
-      );
+      const response = await fetch(`${environment.url}/quiz`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(prueba),
+      });
       if (!response.ok) {
         throw new Error(`Error: ${response.status}`);
       }
+      this.toggle = false;
       this.showForm = true;
       this.showButton = false;
       this.questionCategory.name = this.selectNameForm.value.name;
@@ -166,6 +163,29 @@ console.log(response);
     } catch (error) {
       console.error('Error creating quiz:', error);
     }
+  }
+
+  async updateQuiz() {
+    const update = {
+      name: this.selectNameForm.value.name,
+      description: this.selectNameForm.value.description,
+      cell_id: this.quizData.cell,
+      seniority: this.quizData.seniority,
+    };
+    let response = await fetch(`${environment.url}/quiz/${this.quizID}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(update),
+    });
+    response = await response.json();
+
+    this.showForm = true;
+    this.questionCategory.name = this.selectNameForm.value.name;
+    this.questionCategory.description = this.selectNameForm.value.description;
+
+    console.log(response);
   }
 
   async createQuestion(form: any) {
@@ -204,20 +224,16 @@ console.log(response);
         quiz_id: this.quizID,
       };
       if (this.questions.length <= 10) {
-        
         console.log(form.value);
         /* this.onQuestionTypeChange('otro', 0);  */
 
-        const response = await fetch(
-          `${environment.url}/question`,
-          {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(question),
-          }
-        );
+        const response = await fetch(`${environment.url}/question`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(question),
+        });
 
         const data = await response.json();
 
@@ -242,6 +258,8 @@ console.log(response);
 
   editQuiz(): void {
     this.showForm = false;
+    this.createOrEdit = false;
+    this.toggle = true;
   }
   answerChoice(i: number) {
     if (true) {

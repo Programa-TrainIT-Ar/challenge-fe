@@ -1,32 +1,77 @@
-<div class="container my-4">
-  <h2>Detalles del Quiz: {{ quizDetails?.name }}</h2> 
+<div class=" normal-container">
+  
+  
   <div class="card bg-dark text-light p-3">
-    <div class="contenedor">
-      <div class="container-sup">
-        <p><strong>Módulo:</strong> {{ quizDetails?.cell?.module?.name }}</p>
-        <p><strong>Célula:</strong> {{ quizDetails?.cell?.name }}</p>
-        <p><strong>Seniority:</strong> {{ quizDetails?.seniority }}</p>
-      </div>
-
-      <h4>Preguntas:</h4>
-      <ul *ngIf="quizDetails?.questions?.length > 0; else noQuestions">
-        <li *ngFor="let question of quizDetails?.questions">
-          <p><strong>Pregunta:</strong> {{ question.question }}</p>
-          <p><strong>Opciones:</strong></p>
-          <ul>
-            <li *ngFor="let option of question.options">
-              {{ option }}
-            </li>
-          </ul>
-          <p><strong>Tipo:</strong> {{ question.type }}</p>
-          <p><strong>Explicación:</strong> {{ question.explanation }}</p>
-          
-        </li>
-      </ul>
-
-      <ng-template #noQuestions>
-        <p>No hay preguntas disponibles para este quiz.</p>
-      </ng-template>
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-circle" (click)="goBack()">
+        <!-- SVG para el ícono "X" en un círculo -->
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" class="bi bi-x" viewBox="0 0 16 16">
+          <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+        </svg>
+      </button>
     </div>
+    <div class="contenedor">
+      <div class="content-1">
+        <!-- Módulo -->
+        <div class="input-container">
+          <h4>Módulo</h4>
+          <div class="module-container custom-select-static">
+            <div class="custom-option styled-static">{{quizDetails?.cell?.module?.name}}</div>
+          </div>
+        </div>
+
+        <!-- Célula -->
+        <div class="input-container">
+          <h4>Célula</h4>
+          <div class="cell-container custom-select-static">
+            <div class="custom-option styled-static">{{quizDetails?.cell?.name}}</div>
+          </div>
+        </div>
+
+        <!-- Seniority / Nivel -->
+        <div class="input-container">
+          <h4>Seniority / Nivel</h4>
+          <div class="seniority-container custom-select-static">
+            <div class="custom-option styled-static">{{quizDetails?.seniority}}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h4>Preguntas:</h4>
+    <ul *ngIf="quizDetails?.questions?.length > 0; else noQuestions" class="question-container">
+      <li *ngFor="let question of quizDetails?.questions; let questionIndex = index">
+        <h4>Pregunta: {{ question.question }}</h4>
+        <p><strong>Opciones:</strong></p>
+        <ul class="option-row d-flex justify-content-between flex-wrap">
+          <li *ngFor="let option of question.options; let i = index" class="d-flex align-items-center option-item">
+            <!-- Checkbox y opción alineados -->
+            <div class="d-flex align-items-center me-3">
+              <!-- Checkbox -->
+              <div class="checkbox-container me-2">
+                <input
+                  type="checkbox"
+                  class="checkbox-input"
+                  name="solution"
+                  [checked]="question.correct_option.includes(i)" 
+                  disabled />
+              </div>
+              <!-- Texto de la opción -->
+              <input
+                type="text"
+                class="custom-option-input"
+                [(ngModel)]="question.options[i]"
+                name="option{{ i }}"
+                [readonly]="isTrueFalseQuestion"
+                required />
+            </div>
+          </li>
+        </ul>
+      </li>
+    </ul>
+
+    <ng-template #noQuestions>
+      <p>No hay preguntas disponibles para este quiz.</p>
+    </ng-template>
   </div>
 </div>
