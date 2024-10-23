@@ -71,7 +71,7 @@ export class ViewQuizComponent implements OnInit {
     }
   }
 
-  goBack(): void {
+  /* goBack(): void {
     this.location.back();
-  }
+  } */
 }
