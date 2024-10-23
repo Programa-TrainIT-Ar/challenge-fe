@@ -14,17 +14,17 @@ import { EditPagesComponent } from './modules/edit/pages/edit-pages/edit-pages.c
     RouterModule.forRoot(
       [
         {
-          path: '',
+          path: 'home',
           component: HomePageComponent,
-          // canActivate: [AuthGuard,RoleGuard],
-          // data: { expectedRole: 'admin' },
+          canActivate: [AuthGuard,RoleGuard],
+          data: { expectedRole: 'admin' },
           loadChildren: () =>
             import('./modules/home/home.module').then(m => m.HomeModule),
         },
         // { path: 'edit', component: EditPagesComponent },
         // { path: 'edit/:name', component: EditPagesComponent },
         {
-          path: 'auth',
+          path: '',
           component: AuthPageComponent,
           loadChildren: () =>
             import('./modules/auth/auth.module').then(m => m.AuthModule),
