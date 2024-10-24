@@ -1,7 +1,5 @@
-<div class=" normal-container">
-  
-  
-  <div class="card bg-dark text-light p-3">
+<div class="normal-container">
+  <div class="bg-dark text-light p-3 ">
     <div class="d-flex justify-content-end">
       <button class="btn btn-circle" (click)="goBack()">
         <!-- SVG para el ícono "X" en un círculo -->
@@ -10,13 +8,14 @@
         </svg>
       </button>
     </div>
+
     <div class="contenedor">
       <div class="content-1">
         <!-- Módulo -->
         <div class="input-container">
           <h4>Módulo</h4>
           <div class="module-container custom-select-static">
-            <div class="custom-option styled-static">{{quizDetails?.cell?.module?.name}}</div>
+            <div class="styled-static">{{quizDetails?.cell?.module?.name}}</div>
           </div>
         </div>
 
@@ -24,7 +23,7 @@
         <div class="input-container">
           <h4>Célula</h4>
           <div class="cell-container custom-select-static">
-            <div class="custom-option styled-static">{{quizDetails?.cell?.name}}</div>
+            <div class="styled-static">{{quizDetails?.cell?.name}}</div>
           </div>
         </div>
 
@@ -32,46 +31,48 @@
         <div class="input-container">
           <h4>Seniority / Nivel</h4>
           <div class="seniority-container custom-select-static">
-            <div class="custom-option styled-static">{{quizDetails?.seniority}}</div>
+            <div class="styled-static">{{quizDetails?.seniority}}</div>
           </div>
         </div>
       </div>
     </div>
 
-    <h4>Preguntas:</h4>
-    <ul *ngIf="quizDetails?.questions?.length > 0; else noQuestions" class="question-container">
-      <li *ngFor="let question of quizDetails?.questions; let questionIndex = index">
-        <h4>Pregunta: {{ question.question }}</h4>
-        <p><strong>Opciones:</strong></p>
-        <ul class="option-row d-flex justify-content-between flex-wrap">
-          <li *ngFor="let option of question.options; let i = index" class="d-flex align-items-center option-item">
-            <!-- Checkbox y opción alineados -->
-            <div class="d-flex align-items-center me-3">
-              <!-- Checkbox -->
-              <div class="checkbox-container me-2">
+    <div class="form-group">
+      <h4>Preguntas:</h4>
+      <ul *ngIf="quizDetails?.questions?.length > 0; else noQuestions" class="question-container">
+        <li *ngFor="let question of quizDetails?.questions; let questionIndex = index">
+          <h4>Pregunta: {{ question.question }}</h4>
+          <p><strong>Opciones:</strong></p>
+          <ul class="option-row d-flex flex-wrap">
+            <li *ngFor="let option of question.options; let i = index" class="option-item">
+              <!-- Checkbox y opción alineados -->
+              <div class="d-flex align-items-center me-3 option-box">
+                <!-- Checkbox -->
+                <div class="checkbox-container me-2">
+                  <input
+                    type="checkbox"
+                    class="checkbox-input"
+                    name="solution"
+                    [checked]="question.correct_option.includes(i)"
+                    disabled />
+                </div>
+                <!-- Texto de la opción -->
                 <input
-                  type="checkbox"
-                  class="checkbox-input"
-                  name="solution"
-                  [checked]="question.correct_option.includes(i)" 
-                  disabled />
+                  type="text"
+                  class="custom-option-input"
+                  [(ngModel)]="question.options[i]"
+                  name="option{{ i }}"
+                  readonly />
               </div>
-              <!-- Texto de la opción -->
-              <input
-                type="text"
-                class="custom-option-input"
-                [(ngModel)]="question.options[i]"
-                name="option{{ i }}"
-                [readonly]="isTrueFalseQuestion"
-                required />
-            </div>
-          </li>
-        </ul>
-      </li>
-    </ul>
+            </li>
+          </ul>
+        </li>
+      </ul>
+      
 
     <ng-template #noQuestions>
       <p>No hay preguntas disponibles para este quiz.</p>
     </ng-template>
   </div>
+</div>
 </div>
