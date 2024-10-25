@@ -8,11 +8,15 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AuthModule } from '@auth0/auth0-angular';
 import { environment } from 'src/environments/environment';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { BrowserModule } from '@angular/platform-browser';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
     declarations: [AppComponent],
     imports: [
         AppRoutingModule,
+        BrowserModule,
+        CommonModule,
         AppLayoutModule,
         HttpClientModule,
         BrowserAnimationsModule,

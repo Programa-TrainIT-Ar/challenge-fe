@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { environment } from '@environments/environment';
+import { Location } from '@angular/common';
 
 interface User {
   first_name: string;
@@ -71,7 +72,7 @@ export class ViewQuizComponent implements OnInit {
     }
   }
 
-  /* goBack(): void {
+   goBack(): void {
     this.location.back();
-  } */
+  } 
 }
