@@ -193,11 +193,14 @@ h2 {
 }
 
 .actions button {
+  display: flexbox;
   background: none;
   border: none;
   cursor: pointer;
-  color: #aaa;
-  margin-right: 5px;
+  color: white;
+  
+ 
+  
 }
 
 .status {
