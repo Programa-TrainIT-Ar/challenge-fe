@@ -1,12 +1,12 @@
 export const environment = {
   production: true,
   auth: {
-    domain: '${process.env.DOMAIN}',
-    clientId: '${process.env.CLIENT_ID}',
+    domain: "dev-hwbroc2d1yqqr04v.us.auth0.com",
+    clientId: "TTVpH09MQpHbU6oHQjXAVt4I66h9f2Hk",
     authorizationParams: {
-      audience: '${process.env.AUDIENCE}',
-      redirect_uri: '${process.env.REDIRECT_URL}',
+      audience: 'https://api.miaplicacion.com',
+      redirect_uri: 'https://challenge-fe-production.netlify.app',
     },
   },
-  url: '${process.env.API_URL}'
+  url: 'https://challenge-be-production.onrender.com'
 };

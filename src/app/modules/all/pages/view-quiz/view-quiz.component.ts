@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Location } from '@angular/common';
-import { environment } from 'src/environments/environment';
+import { environment } from '@environments/environment';
 
 interface User {
   first_name: string;
@@ -58,7 +57,7 @@ export class ViewQuizComponent implements OnInit {
 
   async fetchQuizDetails() {
     try {
-      console.log(`Realizando solicitud a la API con ID: ${this.quizId}`);
+      console.log(`Realizando solicitud a la API con ID: ${this.quizId}`); 
       const response = await fetch(`${environment.url}/quiz/${this.quizId}`);
       if (response.ok) {
         const data: Quiz = await response.json();
@@ -72,7 +71,7 @@ export class ViewQuizComponent implements OnInit {
     }
   }
 
-  goBack(): void {
+  /* goBack(): void {
     this.location.back();
-  }
+  } */
 }

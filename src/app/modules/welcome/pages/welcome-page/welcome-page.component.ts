@@ -64,7 +64,9 @@ import {
   ],
 })
 export class WelcomePageComponent {
-  constructor(private router: Router) {}
+    constructor(private router: Router) { }
+
+    
 
   isExpanded1 = false; // Controla la expansión de la columna de "Todos"
   isExpanded2 = false; // Controla la expansión de la columna de "Nuevo"

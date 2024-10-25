@@ -62,7 +62,7 @@
 
 .option-floating {
   position: absolute;
-
+z-index: 100000;
   width: 41vh;
   background-color: #303030;
   display: flex;

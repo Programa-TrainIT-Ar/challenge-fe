@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { trigger, style, transition, animate, state } from '@angular/animations';
 import { Output, EventEmitter } from '@angular/core';
 import Swal from 'sweetalert2';
-import { environment } from 'src/environments/environment';
+import { environment } from '@environments/environment';
 
 interface User {
   first_name: string;
