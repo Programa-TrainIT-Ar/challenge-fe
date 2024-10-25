@@ -17,22 +17,25 @@ interface Cell {
   name: string;
 }
 
+interface Seniority {
+  name: string;
+}
+
 interface Quiz {
   id: string;
   name: string;
-  seniority: string;
+  seniority: Seniority;
   created_at: string;
-  created_by: User; // Cambiado a objeto
-  module: Module; // Cambiado a objeto
-  cell: Cell; // Cambiado a objeto
+  created_by: User;
+  module: Module;
+  cell: Cell;
   is_active: boolean;
 }
 
 @Component({
   selector: 'app-all-page',
   templateUrl: './all-page.component.html',
-  styleUrls: ['./all-page.component.scss'], // Cambiado a styleUrls para usar un array
-
+  styleUrls: ['./all-page.component.scss'],
   animations: [
     trigger('expandState3', [
       state('collapsed', style({ display: 'none' })),
@@ -44,132 +47,125 @@ interface Quiz {
 })
 export class AllPageComponent implements OnInit {
   @Output() quizSelected = new EventEmitter<any>();
-  searchText: string = '';  // Campo de búsqueda
-  quizzes: Quiz[] = [];  // Inicializa el array de quizzes
+  searchText: string = '';
+  seniority: string = '';
+  module: string = '';
+  cell: string = '';
+  quizzes: Quiz[] = [];
   selectedQuiz: any;
-  
-  constructor(private router: Router) { }
-  
+  isExpanded3: boolean = false;
+  showEdit: boolean = false;
+
+  constructor(private router: Router) {}
 
   ngOnInit(): void {
-    // Llama al método para obtener todos los quizzes al iniciar el componente
     this.fetchAllQuizzes();
   }
 
-  // Método para obtener todos los quizzes desde la API
+  // Método para obtener quizzes de la API con búsqueda dinámica
   async fetchAllQuizzes() {
     try {
-      const response = await fetch(
-        `${environment.url}/quiz`
-      );
-
+      const params = new URLSearchParams();
+  
+      // Solo agregar el parámetro 'search' si se está buscando por nombre del quiz
+      if (this.searchText) {
+        params.append('search', this.searchText.toLowerCase());
+        console.log(`Buscando por: ${this.searchText.toLowerCase()}`);
+      }
+  
+      // Agregar parámetros solo si existen
+      if (this.seniority) {
+        params.append('seniority', this.seniority.toLowerCase());
+        console.log(`Filtrando por seniority: ${this.seniority.toLowerCase()}`);
+      }
+      if (this.module) {
+        params.append('module', this.module.toLowerCase());
+        console.log(`Filtrando por módulo: ${this.module.toLowerCase()}`);
+      }
+      if (this.cell) {
+        params.append('cell', this.cell.toLowerCase());
+        console.log(`Filtrando por célula: ${this.cell.toLowerCase()}`);
+      }
+  
+      // Construir la URL
+      const url = `${environment.url}/quiz${params.toString() ? '?' + params.toString() : ''}`;
+      console.log(`URL construida para la consulta: ${url}`);
+  
+      // Realizar la consulta
+      const response = await fetch(url, { method: 'GET' });
       if (!response.ok) {
-        // Verifica si la respuesta fue exitosa
         throw new Error('Error en la consulta: ' + response.status);
       }
-
-      // Lee el cuerpo de la respuesta solo una vez
-      const data = await response.json(); // Renombrado a 'data' para reflejar que es un objeto
-      console.log('Datos recibidos de la API:', data); // Inspecciona la estructura de la respuesta
-
-      // Asegúrate de que quizData es un array antes de asignarlo
-      this.quizzes = Array.isArray(data.quizzes) ? data.quizzes : []; // Accede al array 'quizzes' dentro del objeto
-
-      console.log('Quizzes recibidos:', this.quizzes);
+  
+      // Procesar la respuesta
+      const data = await response.json();
+      this.quizzes = Array.isArray(data.quizzes) ? data.quizzes : [];
+      console.log('Quizzes filtrados recibidos:', this.quizzes);
+  
     } catch (error) {
-      // Manejo de errores
       console.error('Error al obtener los quizzes:', error);
     }
   }
+  
+  
+  
 
-  // Método para filtrar quizzes según el texto de búsqueda
-  filteredQuizzes(): Quiz[] {
-    const search = this.searchText.toLowerCase(); // Convertir a minúsculas para hacer la búsqueda insensible a mayúsculas/minúsculas
-
-    // Retornar los quizzes filtrados
-    return this.quizzes.filter(
-      quiz =>
-        quiz.name.toLowerCase().includes(search) ||
-        quiz.seniority.toLowerCase().includes(search) ||
-        quiz.created_at.toLowerCase().includes(search) || // fecha
-        quiz.created_by.first_name.toLowerCase().includes(search) || // creador
-        quiz.module.name.toLowerCase().includes(search) || //modulo
-        quiz.cell.name.toLowerCase().includes(search) || //celula
-        (quiz.is_active ? 'Activo' : 'Inactivo').toLowerCase().includes(search) // esta activo
-    );
+  // Método para actualizar los resultados de la búsqueda al cambiar el texto
+  onSearchChange() {
+    this.fetchAllQuizzes();
   }
 
-  // Método para alternar el estado de is_active
   async toggleActive(quiz: Quiz) {
-    quiz.is_active = !quiz.is_active; // Alterna el valor de is_active
+    quiz.is_active = !quiz.is_active;
 
     try {
-      const response = await fetch(
-        `${environment.url}/quiz/${quiz.name}`,
-        {
-          // Asegúrate de usar un identificador correcto
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ is_active: quiz.is_active }), // Envía el nuevo estado
-        }
-      );
+      const response = await fetch(`${environment.url}/quiz/${quiz.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ is_active: quiz.is_active }),
+      });
 
       if (!response.ok) {
-        throw new Error(
-          'Error al actualizar el estado del quiz: ' + response.status
-        );
+        throw new Error('Error al actualizar el estado del quiz: ' + response.status);
       }
     } catch (error) {
       console.error('Error al actualizar el estado del quiz:', error);
     }
   }
 
-  
   viewQuiz(quiz: Quiz) {
-    this.selectedQuiz = quiz; 
-    
-    this.router.navigate(['home/view-quiz', quiz.id]); 
+    this.selectedQuiz = quiz;
+    this.router.navigate(['home/view-quiz', quiz.id]);
   }
 
-  // Método para editar un quiz
-  // editQuiz(quiz: Quiz) {
-  //   alert(`Editando el quiz: ${quiz.name}`);
-  //   this.router.navigate(['/edit', quiz.name]);  // Redirigir al editar usando el nombre del quiz
-  // }
-
-  // Método para eliminar un quiz
   async deleteQuiz(quiz: any) {
     try {
       const result = await Swal.fire({
         title: '¿Deseas eliminar el registro?',
-        text: 'Una vez eliminado no se podrá recuperar',        
+        text: 'Una vez eliminado no se podrá recuperar',
         showCancelButton: true,
-        confirmButtonColor: '#6c63ff', // Color del botón de confirmación
-        cancelButtonColor: '#4e4e4e', // Color del botón de cancelación
+        confirmButtonColor: '#6c63ff',
+        cancelButtonColor: '#4e4e4e',
         confirmButtonText: 'Eliminar',
         cancelButtonText: 'Cancelar',
         customClass: {
-          popup: 'custom-popup',      // Clase para el fondo y bordes
-          title: 'custom-title',      // Clase para el título
-          confirmButton: 'custom-confirm-btn',  // Clase para el botón de confirmación
-          cancelButton: 'custom-cancel-btn'     // Clase para el botón de cancelación
+          popup: 'custom-popup',
+          title: 'custom-title',
+          confirmButton: 'custom-confirm-btn',
+          cancelButton: 'custom-cancel-btn'
         }
       });
-      ;
-  
+
       if (result.isConfirmed) {
-        let response = await fetch(
-          `${environment.url}/quiz/${quiz.id}`,
-          {
-            method: 'DELETE',
-            headers: {
-              'Content-Type': 'application/json',
-            }
+        let response = await fetch(`${environment.url}/quiz/${quiz.id}`, {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
           }
-        );
-  
+        });
+
         if (response.ok) {
           Swal.fire('Eliminado', 'El quiz ha sido eliminado.', 'success');
           this.quizzes = this.quizzes.filter(q => q !== quiz);
@@ -182,18 +178,13 @@ export class AllPageComponent implements OnInit {
       Swal.fire('Error', 'Hubo un error en la solicitud.', 'error');
     }
   }
-  
-  isExpanded3: boolean = false;
-  showEdit: boolean = false;
-   
 
   editQuiz(quiz: any) {
-    this.selectedQuiz = quiz; // Almacena el quiz seleccionado para editar
-    this.quizSelected.emit(quiz); // Expande la columna de edición
+    this.selectedQuiz = quiz;
+    this.quizSelected.emit(quiz);
   }
-  
-  // Cuando se cierra la edición
+
   closeEdit() {
-    this.isExpanded3 = false; // Oculta la columna de edición
+    this.isExpanded3 = false;
   }
 }
