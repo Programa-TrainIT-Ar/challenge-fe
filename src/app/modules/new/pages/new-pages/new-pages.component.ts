@@ -51,7 +51,8 @@ export class NewPagesComponent {
     return index;
   }
 
-  onQuestionTypeChange(selectedType: string) {
+  onQuestionTypeChange(selectedType: string, form: any) {
+    
     this.array =
       []; /* <--- este array se crea porque no permite hacer push a selection directamente */
     this.selection =
@@ -257,7 +258,7 @@ this.quizData.seniority == 'semi-sr'?this.quizData.seniority= 'middle':this.quiz
 
         const data = await response.json();
         if (!response.ok) {
-          alert(response.status);
+          alert(response);
           throw new Error(`Error: ${response.status}`);
         }
 
@@ -271,9 +272,10 @@ this.quizData.seniority == 'semi-sr'?this.quizData.seniority= 'middle':this.quiz
         alert('10 preguntas cargadas con exito');
         window.location.reload();
       }
+      console.log(formSection)
     } catch (error) {
       alert(error);
-      console.error('Error creating question:', error);
+      console.error(error);
     }
   }
 
@@ -283,14 +285,14 @@ this.quizData.seniority == 'semi-sr'?this.quizData.seniority= 'middle':this.quiz
     this.toggle = true;
   }
   answerChoice(i: number) {
-    if (true) {
+    
       this.array =
         []; /* <--- este array se crea porque no permite hacer push a selection directamente */
       this.selection =
         []; /* <--- 'DEBERIA' limpiar el array, pero en modo 'CASILLA' no se limpia */
       this.array.push(i);
       this.selection = this.array;
-    }
+    
   }
 
   addOption() {
