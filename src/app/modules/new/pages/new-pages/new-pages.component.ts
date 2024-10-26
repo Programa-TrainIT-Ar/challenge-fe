@@ -92,13 +92,20 @@ export class NewPagesComponent {
     }
   }
 
+  validarDatos(){
+    
+  }
+
   async recibirDatos(datos: any) {
+    
     if (
+      this.selectNameForm.value.description &&
       this.selectNameForm.valid &&
       datos.celula != 'Selecciona la célula' &&
       datos.modulo != 'Selecciona el modulo' &&
       datos.seniority != 'Seniority'
     ) {
+
       this.showButton = true;
     }
 
@@ -108,38 +115,42 @@ export class NewPagesComponent {
     responseModule = await responseModule.json()
 
     responseModule = responseModule.find((element)=>element.name == datos.module )
-    console.log(responseModule)
+   
     this.quizData.module = responseModule.id
 
     /* celula */
 
     let response: any = await fetch(`${environment.url}/cells`);
     response = await response.json();
-    console.log(response);
+    
 
     response = response.find(element => datos.cell == element.name);
 
-    console.log(response);
+    
     response ? (this.quizData.cell = response.id) : '';
-    console.log(this.quizData);
+    
 
     /* seniority */
     if (datos.seniority) {
       this.quizData.seniority = datos.seniority;
     }
   }
+
   async createQuiz() {
     try {
+this.quizData.seniority == 'semi-sr'?this.quizData.seniority= 'middle':this.quizData 
+
       const prueba = {
         name: this.selectNameForm.value.name,
         description: this.selectNameForm.value.description,
-
         cell_id: this.quizData.cell,
         seniority: this.quizData.seniority,
         challenge_type: 'immediate',
         created_by_id: '224742e8-731b-40bf-b05f-a7547270746c',
         is_active: true,
       };
+
+      if (this.selectNameForm.value.description && this.selectNameForm.value.name){
       const response = await fetch(`${environment.url}/quiz`, {
         method: 'POST',
         headers: {
@@ -147,19 +158,27 @@ export class NewPagesComponent {
         },
         body: JSON.stringify(prueba),
       });
-      if (!response.ok) {
-        throw new Error(`Error: ${response.status}`);
+        if (!response.ok ) {
+          alert(response.status);
+          throw new Error(`Error: ${response.status}`);
+        }
+        const data = await response.json();
+        this.quizID = data.id; 
+        this.showForm = true;
+        this.toggle = false;
+        this.showButton = false;
+        this.questionCategory.name = this.selectNameForm.value.name;
+        this.questionCategory.description = this.selectNameForm.value.description;
+        console.log(this.questionCategory.description);
+      } else{
+        alert('complete los datos requeridos')
+        this.showButton = false
       }
-      this.toggle = false;
-      this.showForm = true;
-      this.showButton = false;
-      this.questionCategory.name = this.selectNameForm.value.name;
-      this.questionCategory.description = this.selectNameForm.value.description;
-      console.log(this.quizData);
+      
+      
 
-      const data = await response.json();
-      this.quizID = data.id; /* aca hago global el ID del quiz */
-      console.log(data);
+      
+      
     } catch (error) {
       console.error('Error creating quiz:', error);
     }
@@ -185,7 +204,7 @@ export class NewPagesComponent {
     this.questionCategory.name = this.selectNameForm.value.name;
     this.questionCategory.description = this.selectNameForm.value.description;
 
-    console.log(response);
+    
   }
 
   async createQuestion(form: any) {
@@ -204,7 +223,7 @@ export class NewPagesComponent {
           break;
       }
 
-      console.log(formSection);
+      
       let question = {
         question: formSection.questionText,
         seniority: 'junior',
@@ -223,9 +242,10 @@ export class NewPagesComponent {
         is_active: true,
         quiz_id: this.quizID,
       };
-      if (this.questions.length <= 10) {
-        console.log(form.value);
+    
+        
         /* this.onQuestionTypeChange('otro', 0);  */
+        if(this.selectNameForm.value.description.length > 0){
 
         const response = await fetch(`${environment.url}/question`, {
           method: 'POST',
@@ -236,16 +256,17 @@ export class NewPagesComponent {
         });
 
         const data = await response.json();
-
         if (!response.ok) {
           alert(response.status);
           throw new Error(`Error: ${response.status}`);
         }
-        this.questions.push(formSection);
-        console.log(data);
-        form.reset();
-        this.options = [];
-      }
+
+          this.questions.push(formSection);
+          
+          form.reset();
+          this.options = [];
+        } else {alert('complete los campos requeridos')}
+      
       if (this.questions.length == 10) {
         alert('10 preguntas cargadas con exito');
         window.location.reload();
