@@ -51,6 +51,18 @@ export class NewPagesComponent {
     return index;
   }
 
+  answerChoice(i: number, form: any) {
+    this.array =
+    []; /* <--- este array se crea porque no permite hacer push a selection directamente */
+  this.selection =
+    []; /* <--- 'DEBERIA' limpiar el array, pero en modo 'CASILLA' no se limpia */
+      this.array.push(i);
+      this.selection = this.array;
+
+    console.log(this.array); 
+
+  }
+
   onQuestionTypeChange(selectedType: string, form: any) {
     console.log(form.value)
     this.array =
@@ -83,10 +95,6 @@ export class NewPagesComponent {
       ]; /* haciendo distinto el valor funciona */
       /* Pero al agregar un campo el problema vuelve a surgir */
     } 
-  }
-
-  validarDatos(){
-    
   }
 
   async recibirDatos(datos: any) {
@@ -137,6 +145,7 @@ this.quizData.seniority == 'semi-sr'?this.quizData.seniority= 'middle':this.quiz
         created_by_id: '224742e8-731b-40bf-b05f-a7547270746c',
         is_active: true,
       };
+      
 
       if (this.selectNameForm.value.description && this.selectNameForm.value.name){
       const response = await fetch(`${environment.url}/quiz`, {
@@ -205,6 +214,11 @@ this.quizData.seniority == 'semi-sr'?this.quizData.seniority= 'middle':this.quiz
           break;
       }
          
+
+      
+      if(!form.value.solution){
+        form.value.solution = this.selection
+      }
       if(formSection.solution && formSection.questionText){
           let question = {
             question: formSection.questionText,
@@ -238,7 +252,8 @@ this.quizData.seniority == 'semi-sr'?this.quizData.seniority= 'middle':this.quiz
           alert(response);
           throw new Error(`Error: ${response.status}`);
         }
-
+        
+        console.log(data)
           this.questions.push(formSection);
           
           form.reset();
@@ -260,16 +275,6 @@ this.quizData.seniority == 'semi-sr'?this.quizData.seniority= 'middle':this.quiz
     this.showForm = false;
     this.createOrEdit = false;
     this.toggle = true;
-  }
-  answerChoice(i: number) {
-    this.array =
-    []; /* <--- este array se crea porque no permite hacer push a selection directamente */
-  this.selection =
-    []; /* <--- 'DEBERIA' limpiar el array, pero en modo 'CASILLA' no se limpia */
-      this.array.push(i);
-      this.selection = this.array;
-    console.log(this.array);
-    
   }
 
   addOption() {
