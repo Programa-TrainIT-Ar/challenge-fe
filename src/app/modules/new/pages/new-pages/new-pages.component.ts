@@ -52,7 +52,7 @@ export class NewPagesComponent {
   }
 
   onQuestionTypeChange(selectedType: string, form: any) {
-    
+    console.log(form.value)
     this.array =
       []; /* <--- este array se crea porque no permite hacer push a selection directamente */
     this.selection =
@@ -82,15 +82,7 @@ export class NewPagesComponent {
         'Opción 2.',
       ]; /* haciendo distinto el valor funciona */
       /* Pero al agregar un campo el problema vuelve a surgir */
-    } else {
-      this.isTrueFalseQuestion = false;
-      this.options = [];
-      this.showPlus = false;
-      this.showPlus2 = false;
-      this.showSubmits = false;
-      this.inputType = 'radio';
-      selectedType = 'Tipo de Pregunta';
-    }
+    } 
   }
 
   validarDatos(){
@@ -123,14 +115,9 @@ export class NewPagesComponent {
 
     let response: any = await fetch(`${environment.url}/cells`);
     response = await response.json();
-    
-
     response = response.find(element => datos.cell == element.name);
-
-    
     response ? (this.quizData.cell = response.id) : '';
     
-
     /* seniority */
     if (datos.seniority) {
       this.quizData.seniority = datos.seniority;
@@ -176,10 +163,6 @@ this.quizData.seniority == 'semi-sr'?this.quizData.seniority= 'middle':this.quiz
         this.showButton = false
       }
       
-      
-
-      
-      
     } catch (error) {
       console.error('Error creating quiz:', error);
     }
@@ -204,8 +187,6 @@ this.quizData.seniority == 'semi-sr'?this.quizData.seniority= 'middle':this.quiz
     this.showForm = true;
     this.questionCategory.name = this.selectNameForm.value.name;
     this.questionCategory.description = this.selectNameForm.value.description;
-
-    
   }
 
   async createQuestion(form: any) {
@@ -223,30 +204,26 @@ this.quizData.seniority == 'semi-sr'?this.quizData.seniority= 'middle':this.quiz
           formSection.questionType = 'simple_choice';
           break;
       }
-
-      
-      let question = {
-        question: formSection.questionText,
-        seniority: 'junior',
-        type: formSection.questionType,
-        options: [
-          formSection?.option0,
-          formSection?.option1,
-          formSection?.option2,
-          formSection?.option3,
-          formSection?.option4,
-          formSection?.option5,
-        ].filter(option => option !== undefined && option !== null),
-        correct_option: formSection.solution,
-        explanation: 'string',
-        link: 'string',
-        is_active: true,
-        quiz_id: this.quizID,
-      };
-    
-        
-        /* this.onQuestionTypeChange('otro', 0);  */
-        if(this.selectNameForm.value.description.length > 0){
+         
+      if(formSection.solution && formSection.questionText){
+          let question = {
+            question: formSection.questionText,
+            seniority: 'junior',
+            type: formSection.questionType,
+            options: [
+              formSection?.option0,
+              formSection?.option1,
+              formSection?.option2,
+              formSection?.option3,
+              formSection?.option4,
+              formSection?.option5,
+            ].filter(option => option !== undefined && option !== null),
+            correct_option: formSection.solution,
+            explanation: 'string',
+            link: 'string',
+            is_active: true,
+            quiz_id: this.quizID,
+          };
 
         const response = await fetch(`${environment.url}/question`, {
           method: 'POST',
@@ -266,7 +243,7 @@ this.quizData.seniority == 'semi-sr'?this.quizData.seniority= 'middle':this.quiz
           
           form.reset();
           this.options = [];
-        } else {alert('complete los campos requeridos')}
+        } else {alert('complete los campos requeridos'); console.log(formSection)}
       
       if (this.questions.length == 10) {
         alert('10 preguntas cargadas con exito');
@@ -285,13 +262,13 @@ this.quizData.seniority == 'semi-sr'?this.quizData.seniority= 'middle':this.quiz
     this.toggle = true;
   }
   answerChoice(i: number) {
-    
-      this.array =
-        []; /* <--- este array se crea porque no permite hacer push a selection directamente */
-      this.selection =
-        []; /* <--- 'DEBERIA' limpiar el array, pero en modo 'CASILLA' no se limpia */
+    this.array =
+    []; /* <--- este array se crea porque no permite hacer push a selection directamente */
+  this.selection =
+    []; /* <--- 'DEBERIA' limpiar el array, pero en modo 'CASILLA' no se limpia */
       this.array.push(i);
       this.selection = this.array;
+    console.log(this.array);
     
   }
 
