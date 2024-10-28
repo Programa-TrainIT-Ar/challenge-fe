@@ -59,7 +59,7 @@
               id="questionType"
               name="questionType"
               [(ngModel)]="selectedOption"
-              (ngModelChange)="onQuestionTypeChange($event, questionForm)"
+              (ngModelChange)="onQuestionTypeChange($event)"
               required>
               <option value="" disabled selected>Selecciona una opción</option>
               <option
@@ -105,7 +105,8 @@
                 class="checkbox-input"
                 name="solution"
                 [ngModel]="selection"
-                (ngModelChange)="answerChoice(i, questionForm)" />
+                [checked]="lolo"
+                (ngModelChange)="answerChoice(i)" />
             </div>
             <!-- input del check -->
             <input
@@ -114,8 +115,9 @@
               [(ngModel)]="options[i]"
               name="option{{ i }}"
               [readonly]="isTrueFalseQuestion"
+              
               required />
-          </div>
+          </div >
 
           <!-- add options -->
 

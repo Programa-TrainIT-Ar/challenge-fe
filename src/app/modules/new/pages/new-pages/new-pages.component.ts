@@ -62,14 +62,17 @@ export class NewPagesComponent {
     console.log(this.array); 
 
   }
+  lolo = false
 
   onQuestionTypeChange(selectedType: string, form: any) {
-    console.log(form.value)
+    
     this.array =
       []; /* <--- este array se crea porque no permite hacer push a selection directamente */
-    this.selection =
+      this.selection =
       []; /* <--- 'DEBERIA' limpiar el array, pero en modo 'CASILLA' no se limpia */
-    if (selectedType === 'Verdadero o falso') {
+      if (selectedType === 'Verdadero o falso') {
+
+      this.lolo = false
       this.isTrueFalseQuestion = true;
       this.options = ['Verdadero', 'Falso'];
       this.showPlus = false;
@@ -77,6 +80,7 @@ export class NewPagesComponent {
       this.showSubmits = true;
       this.inputType = 'radio';
     } else if (selectedType === 'Selección mutiple') {
+      this.lolo = false
       this.isTrueFalseQuestion = false;
       this.options = ['Opción 1', 'Opción 2', 'Opción 3'];
       this.showPlus = true;
@@ -84,6 +88,7 @@ export class NewPagesComponent {
       this.showSubmits = true;
       this.inputType = 'checkbox';
     } else if (selectedType == 'Casilla') {
+      this.lolo = false
       this.isTrueFalseQuestion = false;
       this.showPlus = false;
       this.showPlus2 = true;
@@ -198,6 +203,10 @@ this.quizData.seniority == 'semi-sr'?this.quizData.seniority= 'middle':this.quiz
     this.questionCategory.description = this.selectNameForm.value.description;
   }
 
+  isDisabled(index: number): any {
+    return this.selection[index] || false;
+  }
+
   async createQuestion(form: any) {
     try {
       const formSection = form.value;
@@ -213,13 +222,12 @@ this.quizData.seniority == 'semi-sr'?this.quizData.seniority= 'middle':this.quiz
           formSection.questionType = 'simple_choice';
           break;
       }
-         
 
       
       if(!form.value.solution){
         form.value.solution = this.selection
       }
-      if(formSection.solution && formSection.questionText){
+      if(formSection.solution.length !=0 && formSection.questionText){
           let question = {
             question: formSection.questionText,
             seniority: 'junior',
