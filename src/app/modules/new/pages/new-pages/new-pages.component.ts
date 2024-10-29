@@ -46,6 +46,7 @@ export class NewPagesComponent {
   quizData: any = {};
   createOrEdit: boolean = true;
   toggle: boolean = true;
+  isFocused = false;
 
   trackByFn(index: number): any {
     return index;
