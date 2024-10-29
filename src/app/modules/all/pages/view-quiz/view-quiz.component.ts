@@ -73,7 +73,7 @@ export class ViewQuizComponent implements OnInit {
   }
   editQuiz(): void {
     
-    this.router.navigate(['home', ]);
+   
   }
 
 
