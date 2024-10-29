@@ -179,7 +179,7 @@ export class AllPageComponent implements OnInit {
     }
   }
 
-  editQuiz(quiz: any) {
+  editQuiz(quiz: Quiz) {
     this.selectedQuiz = quiz;
     this.quizSelected.emit(quiz);
   }
