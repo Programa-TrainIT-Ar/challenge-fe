@@ -30,6 +30,7 @@ export class NewPagesComponent {
     seniority: 'Seniority',
   };
 
+  questionText: string = '';
   questions: any = [];
   options: string[] = [];
   selection: string[] = [''];
@@ -211,7 +212,7 @@ export class NewPagesComponent {
   async createQuestion(form: any) {
     try {
       const formSection = form.value;
-
+console.log(formSection)
       switch (formSection.questionType) {
         case 'Selección mutiple':
           formSection.questionType = 'multiple_choice';
