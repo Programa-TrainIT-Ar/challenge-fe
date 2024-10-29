@@ -1,41 +1,43 @@
-/* Estilos para el contenedor principal */
 .normal-container {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: flex-start;
   padding: 2rem;
-  width: 100%;
+  width: 90%;  
   max-width: 900px;
-  height: 100vh;
-  background-color: rgba(33, 33, 33, 0.8);
+  height: 90vh;
   border-radius: 12px;
-  box-shadow: 0px -3px 12.8px 0px rgba(241, 121, 197, 1);
+  box-shadow: 0px 0px 12.8px rgba(241, 121, 197, 1);
+  background: rgba(56, 53, 53, 1);
+  border: 2px solid rgba(241, 121, 197, 1);  
   background-image: url('../../../../../assets/layout/images/logo.svg');
   background-repeat: no-repeat;
   background-position: center;
-  background-size: 180px;
-  overflow-y: auto;
-  overflow-x: hidden;
-  border: 2px solid rgba(241, 121, 197, 1);
-  position: relative;   
-    z-index: 1;
-}
-
-/* Centrado del contenedor interno */
-.contenedor {
-  display: flex;
-  flex-direction: column;  
+  background-size: 180px; 
+  z-index: 1;
   font-family: Poppins;
-  width: 100%; /* Alinea el contenido al tamaño del contenedor */
+  margin: auto; 
+  overflow-y: auto;  
+  margin-top: 10px;
+  
 }
 
-/* Estilos adicionales */
+.contenedor {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
 .content-1 {
   background-color: #353434;
   display: flex;
   justify-content: space-between;
   width: 100%;
   padding: 1rem;
+  gap: 5px;
   border-radius: 12px;
 }
 
@@ -60,7 +62,8 @@
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
-  width: 130vh;
+  width: 100%;
+  margin-top: 20px;
 }
 
 .question-container {
@@ -81,12 +84,13 @@
 }
 
 .custom-option-input {
-  width: 100%;
-  padding: 0.8rem;
-  background-color: #202020;
-  border: none;
+  width: 57vh;
+  height: 4vh;
   border-radius: 8px;
-  color: #8e8e8e;
+  border: none;
+  background: rgba(32, 32, 32, 0.8);
+  border-radius: 0 8px 8px 0px;
+  cursor: pointer;
 }
 
 .btn-circle {
@@ -97,7 +101,6 @@
   height: 40px;
   border-radius: 50%;
   background-color: rgba(0, 0, 0, 1);
-  color: white;
-  border: none;
+  color: white;  
   cursor: pointer;
 }
