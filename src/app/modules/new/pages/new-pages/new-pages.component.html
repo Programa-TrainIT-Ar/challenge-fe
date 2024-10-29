@@ -8,45 +8,59 @@
             <input
               type="text"
               class="input-name mb-2"
-              [placeholder]="isFieldInvalid('name') ? '* El nombre es requerido' : 'Nombre del Quiz'"
+              [placeholder]="
+                isFieldInvalid('name')
+                  ? '* El nombre es requerido'
+                  : 'Nombre del Quiz'
+              "
               formControlName="name"
-              [ngClass]="{'notice': isFieldInvalid('name')}" />
+              [ngClass]="{ notice: isFieldInvalid('name') }" />
             <div [ngClass]="showForm ? '' : 'd-none'">
               <button class="btn-plus" (click)="editQuiz()">
                 <span><i class="fa-regular fa-pen-to-square"></i></span>
               </button>
             </div>
           </div>
-        
+
           <div>
             <input
               type="text"
               class="input-description"
-              [ngClass]="{'notice': isFieldInvalid('description')}"
+              [ngClass]="{ notice: isFieldInvalid('description') }"
               [ngClass]="showForm ? 'd-none' : 'input-description'"
-              [placeholder]="isFieldInvalid('description') ? '* La descripción es requerida' : 'Descripción'"
-              formControlName="description"/>
+              [placeholder]="
+                isFieldInvalid('description')
+                  ? '* La descripción es requerida'
+                  : 'Descripción'
+              "
+              formControlName="description" />
           </div>
         </form>
-        
+
         <app-header-page
           [ngClass]="showForm ? '' : 'absolute-true'"
           (datosParaPadre)="recibirDatos($event)"
-          [mode]="toggle"
-          ></app-header-page>
+          [mode]="toggle"></app-header-page>
       </div>
     </div>
   </div>
   <div *ngIf="showButton">
-    <button (click)="createOrEdit?createQuiz():updateQuiz()" class="custom-btn-save">Guardar</button>
+    <button
+      (click)="createOrEdit ? createQuiz() : updateQuiz()"
+      class="custom-btn-save">
+      Guardar
+    </button>
   </div>
 
   <!-- componente agus -->
 
   <div *ngIf="showForm" class="content-2">
-    <h3 class>Define la pregunta {{questions.length+1}}/10</h3>
+    <h3 class>Define la pregunta {{ questions.length + 1 }}/10</h3>
     <!-- Formulario Angular con ngForm -->
-    <form #questionForm="ngForm" (ngSubmit)="createQuestion(questionForm)" class>
+    <form
+      #questionForm="ngForm"
+      (ngSubmit)="createQuestion(questionForm)"
+      class>
       <div class="question-container mb-3">
         <div>
           <label for="questionType" class="custom-label"
@@ -60,8 +74,12 @@
               name="questionType"
               [(ngModel)]="selectedOption"
               (ngModelChange)="onQuestionTypeChange($event)"
+              (focus)="isFocused = true"
+              (blur)="isFocused = false"
               required>
-              <option value="" disabled selected>Selecciona una opción</option>
+              <option value="" [class.hidden]="isFocused" disabled selected>
+                Selecciona una opción
+              </option>
               <option
                 *ngFor="let type of questionTypes"
                 class="custom-select"
@@ -87,8 +105,8 @@
             id="questionText"
             class="custom-input"
             name="questionText"
-            
             placeholder="Escribe una pregunta"
+            [(ngModel)]="questionText"
             required />
         </div>
       </div>
@@ -97,7 +115,9 @@
 
       <div class="form-group">
         <div class="option-row">
-          <div *ngFor="let option of options; let i = index trackBy: trackByFn" class="row">
+          <div
+            *ngFor="let option of options; let i = index; trackBy: trackByFn"
+            class="row">
             <!-- check -->
             <div class="checkbox-container mb-3">
               <input
@@ -114,9 +134,8 @@
               [(ngModel)]="options[i]"
               name="option{{ i }}"
               [readonly]="isTrueFalseQuestion"
-              
               required />
-          </div >
+          </div>
 
           <!-- add options -->
 
