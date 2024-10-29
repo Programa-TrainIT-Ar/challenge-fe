@@ -87,7 +87,7 @@
             id="questionText"
             class="custom-input"
             name="questionText"
-            ngModel
+            
             placeholder="Escribe una pregunta"
             required />
         </div>
@@ -104,8 +104,7 @@
                 type="{{ inputType }}"
                 class="checkbox-input"
                 name="solution"
-                [ngModel]="selection"
-                [checked]="lolo"
+                [(ngModel)]="selections[i]"
                 (ngModelChange)="answerChoice(i)" />
             </div>
             <!-- input del check -->

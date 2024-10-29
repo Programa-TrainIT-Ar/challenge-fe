@@ -53,26 +53,24 @@ export class NewPagesComponent {
 
   answerChoice(i: number, form: any) {
     this.array =
-    []; /* <--- este array se crea porque no permite hacer push a selection directamente */
-  this.selection =
-    []; /* <--- 'DEBERIA' limpiar el array, pero en modo 'CASILLA' no se limpia */
-      this.array.push(i);
-      this.selection = this.array;
+      []; /* <--- este array se crea porque no permite hacer push a selection directamente */
+    this.selection =
+      []; /* <--- 'DEBERIA' limpiar el array, pero en modo 'CASILLA' no se limpia */
+    this.array.push(i);
+    this.selection = this.array;
 
-    console.log(this.array); 
-
+    console.log(this.array);
   }
-  lolo = false
+  selections: boolean[] = []
+
 
   onQuestionTypeChange(selectedType: string, form: any) {
-    
+    this.selections = this.selections.map(() => false);
     this.array =
       []; /* <--- este array se crea porque no permite hacer push a selection directamente */
-      this.selection =
+    this.selection =
       []; /* <--- 'DEBERIA' limpiar el array, pero en modo 'CASILLA' no se limpia */
-      if (selectedType === 'Verdadero o falso') {
-
-      this.lolo = false
+    if (selectedType === 'Verdadero o falso') {
       this.isTrueFalseQuestion = true;
       this.options = ['Verdadero', 'Falso'];
       this.showPlus = false;
@@ -80,7 +78,6 @@ export class NewPagesComponent {
       this.showSubmits = true;
       this.inputType = 'radio';
     } else if (selectedType === 'Selección mutiple') {
-      this.lolo = false
       this.isTrueFalseQuestion = false;
       this.options = ['Opción 1', 'Opción 2', 'Opción 3'];
       this.showPlus = true;
@@ -88,7 +85,6 @@ export class NewPagesComponent {
       this.showSubmits = true;
       this.inputType = 'checkbox';
     } else if (selectedType == 'Casilla') {
-      this.lolo = false
       this.isTrueFalseQuestion = false;
       this.showPlus = false;
       this.showPlus2 = true;
@@ -99,11 +95,10 @@ export class NewPagesComponent {
         'Opción 2.',
       ]; /* haciendo distinto el valor funciona */
       /* Pero al agregar un campo el problema vuelve a surgir */
-    } 
+    }
   }
 
   async recibirDatos(datos: any) {
-    
     if (
       this.selectNameForm.value.description &&
       this.selectNameForm.valid &&
@@ -111,18 +106,19 @@ export class NewPagesComponent {
       datos.modulo != 'Selecciona el modulo' &&
       datos.seniority != 'Seniority'
     ) {
-
       this.showButton = true;
     }
 
     /* modulo */
-    
-    let responseModule: any = await fetch(`${environment.url}/modules`)
-    responseModule = await responseModule.json()
 
-    responseModule = responseModule.find((element)=>element.name == datos.module )
-   
-    this.quizData.module = responseModule.id
+    let responseModule: any = await fetch(`${environment.url}/modules`);
+    responseModule = await responseModule.json();
+
+    responseModule = responseModule.find(
+      element => element.name == datos.module
+    );
+
+    this.quizData.module = responseModule.id;
 
     /* celula */
 
@@ -130,7 +126,7 @@ export class NewPagesComponent {
     response = await response.json();
     response = response.find(element => datos.cell == element.name);
     response ? (this.quizData.cell = response.id) : '';
-    
+
     /* seniority */
     if (datos.seniority) {
       this.quizData.seniority = datos.seniority;
@@ -139,7 +135,9 @@ export class NewPagesComponent {
 
   async createQuiz() {
     try {
-this.quizData.seniority == 'semi-sr'?this.quizData.seniority= 'middle':this.quizData 
+      this.quizData.seniority == 'semi-sr'
+        ? (this.quizData.seniority = 'middle')
+        : this.quizData;
 
       const prueba = {
         name: this.selectNameForm.value.name,
@@ -150,33 +148,35 @@ this.quizData.seniority == 'semi-sr'?this.quizData.seniority= 'middle':this.quiz
         created_by_id: '224742e8-731b-40bf-b05f-a7547270746c',
         is_active: true,
       };
-      
 
-      if (this.selectNameForm.value.description && this.selectNameForm.value.name){
-      const response = await fetch(`${environment.url}/quiz`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(prueba),
-      });
-        if (!response.ok ) {
+      if (
+        this.selectNameForm.value.description &&
+        this.selectNameForm.value.name
+      ) {
+        const response = await fetch(`${environment.url}/quiz`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(prueba),
+        });
+        if (!response.ok) {
           alert(response.status);
           throw new Error(`Error: ${response.status}`);
         }
         const data = await response.json();
-        this.quizID = data.id; 
+        this.quizID = data.id;
         this.showForm = true;
         this.toggle = false;
         this.showButton = false;
         this.questionCategory.name = this.selectNameForm.value.name;
-        this.questionCategory.description = this.selectNameForm.value.description;
+        this.questionCategory.description =
+          this.selectNameForm.value.description;
         console.log(this.questionCategory.description);
-      } else{
-        alert('complete los datos requeridos')
-        this.showButton = false
+      } else {
+        alert('complete los datos requeridos');
+        this.showButton = false;
       }
-      
     } catch (error) {
       console.error('Error creating quiz:', error);
     }
@@ -223,29 +223,28 @@ this.quizData.seniority == 'semi-sr'?this.quizData.seniority= 'middle':this.quiz
           break;
       }
 
-      
-      if(!form.value.solution){
-        form.value.solution = this.selection
+      if (!form.value.solution) {
+        form.value.solution = this.selection;
       }
-      if(formSection.solution.length !=0 && formSection.questionText){
-          let question = {
-            question: formSection.questionText,
-            seniority: 'junior',
-            type: formSection.questionType,
-            options: [
-              formSection?.option0,
-              formSection?.option1,
-              formSection?.option2,
-              formSection?.option3,
-              formSection?.option4,
-              formSection?.option5,
-            ].filter(option => option !== undefined && option !== null),
-            correct_option: formSection.solution,
-            explanation: 'string',
-            link: 'string',
-            is_active: true,
-            quiz_id: this.quizID,
-          };
+      if (formSection.solution.length != 0 && formSection.questionText) {
+        let question = {
+          question: formSection.questionText,
+          seniority: 'junior',
+          type: formSection.questionType,
+          options: [
+            formSection?.option0,
+            formSection?.option1,
+            formSection?.option2,
+            formSection?.option3,
+            formSection?.option4,
+            formSection?.option5,
+          ].filter(option => option !== undefined && option !== null),
+          correct_option: formSection.solution,
+          explanation: 'string',
+          link: 'string',
+          is_active: true,
+          quiz_id: this.quizID,
+        };
 
         const response = await fetch(`${environment.url}/question`, {
           method: 'POST',
@@ -260,19 +259,22 @@ this.quizData.seniority == 'semi-sr'?this.quizData.seniority= 'middle':this.quiz
           alert(response);
           throw new Error(`Error: ${response.status}`);
         }
-        
-        console.log(data)
-          this.questions.push(formSection);
-          
-          form.reset();
-          this.options = [];
-        } else {alert('complete los campos requeridos'); console.log(formSection)}
-      
+
+        console.log(data);
+        this.questions.push(formSection);
+
+        form.reset();
+        this.options = [];
+      } else {
+        alert('complete los campos requeridos');
+        console.log(formSection);
+      }
+
       if (this.questions.length == 10) {
         alert('10 preguntas cargadas con exito');
         window.location.reload();
       }
-      console.log(formSection)
+      console.log(formSection);
     } catch (error) {
       alert(error);
       console.error(error);
