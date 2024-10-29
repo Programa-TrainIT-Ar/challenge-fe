@@ -1,5 +1,9 @@
 <div *ngIf="!selectedQuiz" class="quiz-dashboard">
-  <app-header-page></app-header-page>
+  <app-header-page
+  [ngClass]="showForm ? '' : 'absolute-true'"
+  (datosParaPadre)="recibirDatos($event)"
+  [mode]="toggle"
+  ></app-header-page>
   <div class="search-container">
     <h2>Todos los Quiz</h2>
     <div class="input-wrapper">

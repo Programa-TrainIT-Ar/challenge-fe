@@ -14,7 +14,7 @@ export class HeaderPageComponent {
   constructor(private formsBuilder: FormBuilder) {}
 
   ngOnInit(): void {
-    console.log(this.mode);
+    
     this.selectHeaderForm = this.formsBuilder.group({
       nombreQuiz: [''],
       descripcion: [''],
@@ -70,15 +70,12 @@ export class HeaderPageComponent {
   }
 
   isShowModulo() {
-    /* if(mode){
-
-    } */ if (this.mode) {
+     if (this.mode) {
       this.getModule();
       this.showModulo = !this.showModulo;
       this.showCelula = false;
       this.showSeniority = false;
     }
-    console.log(this.opModules);
   }
   isShowCelula() {
     if (this.mode) {
@@ -88,7 +85,6 @@ export class HeaderPageComponent {
       this.showSeniority = false;
       this.showModulo = false;
     }
-    console.log(this.opCells);
   }
   isShowSeniority() {
     if (this.mode) {

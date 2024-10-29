@@ -1,8 +1,8 @@
-<div class="normal-container">
-  <div class="bg-dark text-light p-3 ">
+<div *ngIf="quizDetails" class="normal-container">
+  <div class="bg-dark text-light p-3">
     <div class="d-flex justify-content-end">
-      <button (click)="goBack()" class="btn btn-circle">
-        <!-- SVG para el ícono "X" en un círculo -->
+      <button class="btn btn-circle" (click)="goBack()">
+        <!-- Ícono "X" en un círculo -->
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" class="bi bi-x" viewBox="0 0 16 16">
           <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
         </svg>
@@ -15,7 +15,7 @@
         <div class="input-container">
           <h4>Módulo</h4>
           <div class="module-container custom-select-static">
-            <div class="styled-static">{{quizDetails?.cell?.module?.name}}</div>
+            <div class="styled-static">{{ quizDetails?.cell?.module?.name }}</div>
           </div>
         </div>
 
@@ -23,7 +23,7 @@
         <div class="input-container">
           <h4>Célula</h4>
           <div class="cell-container custom-select-static">
-            <div class="styled-static">{{quizDetails?.cell?.name}}</div>
+            <div class="styled-static">{{ quizDetails?.cell?.name }}</div>
           </div>
         </div>
 
@@ -31,7 +31,7 @@
         <div class="input-container">
           <h4>Seniority / Nivel</h4>
           <div class="seniority-container custom-select-static">
-            <div class="styled-static">{{quizDetails?.seniority}}</div>
+            <div class="styled-static">{{ quizDetails?.seniority }}</div>
           </div>
         </div>
       </div>
@@ -39,40 +39,37 @@
 
     <div class="form-group">
       <h4>Preguntas:</h4>
-      <ul *ngIf="quizDetails?.questions?.length > 0; else noQuestions" class="question-container">
-        <li *ngFor="let question of quizDetails?.questions; let questionIndex = index">
+      <ul class="question-container">
+        <li *ngFor="let question of quizDetails?.questions" class="question-item">
           <h4>Pregunta: {{ question.question }}</h4>
           <p><strong>Opciones:</strong></p>
           <ul class="option-row d-flex flex-wrap">
             <li *ngFor="let option of question.options; let i = index" class="option-item">
-              <!-- Checkbox y opción alineados -->
               <div class="d-flex align-items-center me-3 option-box">
-                <!-- Checkbox -->
                 <div class="checkbox-container me-2">
                   <input
                     type="checkbox"
                     class="checkbox-input"
-                    name="solution"
                     [checked]="question.correct_option.includes(i)"
-                    disabled />
+                    disabled
+                  />
                 </div>
-                <!-- Texto de la opción -->
                 <input
                   type="text"
                   class="custom-option-input"
-                  [(ngModel)]="question.options[i]"
-                  name="option{{ i }}"
-                  readonly />
+                  [value]="option"
+                  readonly
+                />
               </div>
             </li>
           </ul>
         </li>
       </ul>
-      
+    </div>
 
-    <ng-template #noQuestions>
-      <p>No hay preguntas disponibles para este quiz.</p>
-    </ng-template>
+    <!-- <div class="d-flex justify-content-between mt-4">
+      <button class="btn btn-primary" (click)="editQuiz()">Editar</button>
+      <button class="btn btn-danger" (click)="deleteQuiz()">Eliminar Quiz</button>
+    </div> -->
   </div>
-</div>
 </div>

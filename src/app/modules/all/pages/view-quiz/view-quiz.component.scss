@@ -1,33 +1,35 @@
-/* Centrado del contenedor principal */
-.contenedor {
-  display: flex;
-  flex-direction: column;  
-  
-  font-family: Poppins;
-  
-  
-}
-
-
-
+/* Estilos para el contenedor principal */
 .normal-container {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-  background-color: #212121;
   padding: 2rem;
-  border-radius: 12px;
   width: 100%;
+  max-width: 900px;
+  height: 100vh;
+  background-color: rgba(33, 33, 33, 0.8);
+  border-radius: 12px;
   box-shadow: 0px -3px 12.8px 0px rgba(241, 121, 197, 1);
-  max-width: 1000px;
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.9);
-  background-image: url('../../../../../assets/layout/images/logo.svg') !important;
+  background-image: url('../../../../../assets/layout/images/logo.svg');
   background-repeat: no-repeat;
   background-position: center;
   background-size: 180px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  border: 2px solid rgba(241, 121, 197, 1);
+  position: relative;   
+    z-index: 1;
 }
 
+/* Centrado del contenedor interno */
+.contenedor {
+  display: flex;
+  flex-direction: column;  
+  font-family: Poppins;
+  width: 100%; /* Alinea el contenido al tamaño del contenedor */
+}
+
+/* Estilos adicionales */
 .content-1 {
   background-color: #353434;
   display: flex;
@@ -38,7 +40,7 @@
 }
 
 .input-container {
-  width: 30%; /* Ajustado para que cada campo ocupe un 30% del ancho */
+  width: 30%;
   display: flex;
   flex-direction: column;
   font-family: Poppins;
@@ -55,8 +57,10 @@
 }
 
 .form-group {
-  margin-top: 2rem;
-  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  width: 130vh;
 }
 
 .question-container {
@@ -72,7 +76,7 @@
 }
 
 .option-item {
-  width: 45%; /* Para que cada opción ocupe el 45% del ancho y queden dos por fila */
+  width: 45%;
   margin-bottom: 1rem;
 }
 
@@ -85,7 +89,6 @@
   color: #8e8e8e;
 }
 
-/* Alinear el botón circular de cierre */
 .btn-circle {
   display: flex;
   align-items: center;
