@@ -1,8 +1,12 @@
 <div *ngIf="quizDetails" class="normal-container">
-  <div class="bg-dark text-light p-3">
+  <div>
+    <div>
+      <button class="btn-plus" (click)="editQuiz()">
+        <span><i class="fa-regular fa-pen-to-square"></i></span>
+      </button>
+    </div>
     <div class="d-flex justify-content-end">
       <button class="btn btn-circle" (click)="goBack()">
-        <!-- Ícono "X" en un círculo -->
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" class="bi bi-x" viewBox="0 0 16 16">
           <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
         </svg>
@@ -36,7 +40,7 @@
         </div>
       </div>
     </div>
-
+      
     <div class="form-group">
       <h4>Preguntas:</h4>
       <ul class="question-container">
@@ -66,10 +70,5 @@
         </li>
       </ul>
     </div>
-
-    <!-- <div class="d-flex justify-content-between mt-4">
-      <button class="btn btn-primary" (click)="editQuiz()">Editar</button>
-      <button class="btn btn-danger" (click)="deleteQuiz()">Eliminar Quiz</button>
-    </div> -->
   </div>
 </div>

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { environment } from '@environments/environment';
 import { Location } from '@angular/common';
-
+import { Router } from '@angular/router';
 interface User {
   first_name: string;
 }
@@ -47,7 +47,7 @@ export class ViewQuizComponent implements OnInit {
   quizId: string = '';
   quizDetails: Quiz | null = null;
 
-  constructor(private route: ActivatedRoute, private location: Location) {}
+  constructor(private route: ActivatedRoute, private location: Location, private router: Router ) {}
 
   ngOnInit(): void {
     this.quizId = this.route.snapshot.paramMap.get('id') || '';
@@ -71,6 +71,11 @@ export class ViewQuizComponent implements OnInit {
       console.error('Error en la solicitud:', error);
     }
   }
+  editQuiz(): void {
+    
+    this.router.navigate(['home', ]);
+  }
+
 
    goBack(): void {
     this.location.back();
