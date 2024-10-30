@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { environment } from '@environments/environment';
 import { Location } from '@angular/common';
@@ -46,6 +46,7 @@ interface Question {
 export class ViewQuizComponent implements OnInit {
   quizId: string = '';
   quizDetails: Quiz | null = null;
+  @Output() close = new EventEmitter<void>();
 
   constructor(private route: ActivatedRoute, private location: Location, private router: Router ) {}
 
@@ -78,6 +79,10 @@ export class ViewQuizComponent implements OnInit {
 
 
    goBack(): void {
-    this.location.back();
+    this.close.emit();
+    
+
+    
+    
   } 
 }

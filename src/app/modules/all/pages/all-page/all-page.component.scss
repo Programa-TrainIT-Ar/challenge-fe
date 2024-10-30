@@ -8,8 +8,7 @@ $spacing: 20px;
 
 
 .quiz-dashboard {
-  padding: 20px;
-  background-color: #1e1e1e;
+  padding: 20px;  
   color: #fff;
   height: 95vh;
   width: 150vh; 
@@ -19,6 +18,10 @@ $spacing: 20px;
   opacity: 0px;
   overflow: auto; 
   margin-block: 2.5vh;
+  background-image: url('../../../../../assets/layout/images/logo.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 180px; 
 }
 .table-sup{
   font-family: Poppins;
