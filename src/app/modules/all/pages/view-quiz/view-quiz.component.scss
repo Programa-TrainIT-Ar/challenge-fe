@@ -32,7 +32,7 @@
 }
 
 .content-1 {
-  background-color: #353434;
+  
   display: flex;
   justify-content: space-between;
   width: 100%;
@@ -71,6 +71,25 @@
   flex-direction: column;
   gap: 15px;
 }
+.inline-block {
+  display: inline-block;
+  vertical-align: top;
+  margin-top: 20px; 
+}
+
+
+.descripcion, .namequiz {
+  display: flex;
+  flex-direction: column;
+  width: 384px;
+  height: 40px;
+  border-radius: 8px;
+  border: 1px solid #333232;
+  background-color: #1b1b1b;
+  padding: 1rem;
+  font-size: 14px;
+}
+
 
 .option-row {
   display: flex;
@@ -93,14 +112,22 @@
   cursor: pointer;
 }
 
-.btn-circle {
+.button-container {
   display: flex;
   align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background-color: rgba(0, 0, 0, 1);
-  color: white;  
-  cursor: pointer;
+  justify-content: space-between; /* Para separarlos a cada extremo del contenedor */
+}
+
+.btn-plus {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 8px;
+  padding: 8px;
+  gap: 8px;
+  background: linear-gradient(to right, #6a5fff80, #ff5ea680);
+  border: none;
+}
+
+.btn-circle {
+  margin-left: auto; /* Envía el botón de cerrar a la derecha */
 }

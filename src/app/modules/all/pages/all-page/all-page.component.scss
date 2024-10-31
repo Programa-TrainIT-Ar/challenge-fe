@@ -1,15 +1,5 @@
-$background-color: #2a2a2a;
-$shadow-color: rgba(0, 217, 255, 0.4);
-$input-bg-color: #333;
-$text-color: #fff;
-$border-radius: 12px;
-$transition-time: 0.3s;
-$spacing: 20px;
-
-
 .quiz-dashboard {
-  padding: 20px;
-  background-color: #1e1e1e;
+  padding: 20px;  
   color: #fff;
   height: 95vh;
   width: 150vh; 
@@ -18,7 +8,15 @@ $spacing: 20px;
   gap: 47px;  
   opacity: 0px;
   overflow: auto; 
-  margin-block: 2.5vh;
+  margin-block: 2.5vh;  
+  background-color: rgba(53, 52, 52, 0.5);
+
+
+  border: 2px solid rgba(241, 121, 197, 1);  
+  // background-image: url('../../../../../assets/layout/images/logo.svg');
+  // background-repeat: no-repeat;
+  // background-position: center;
+  // background-size: 180px; 
 }
 .table-sup{
   font-family: Poppins;
@@ -27,12 +25,16 @@ $spacing: 20px;
   line-height: 24px;
   letter-spacing: 0.20000000298023224px;
   text-align: center;
+  background: rgba(27, 27, 27, 0.5);
+
+  
 
 }
 .table-int{ 
  margin: 0 auto;
  flex: auto;
- 
+ background: rgba(27, 27, 27, 0.5);
+
  
 
 }
@@ -51,7 +53,9 @@ h2 {
 }
 
 .filters select {
-  background-color: #333;
+  background-color: rgba(53, 52, 52, 0.5);
+
+
   border: 1px solid #444;
   padding: 10px;
   color: #fff;
@@ -61,7 +65,9 @@ h2 {
 
 .search-container {  
   top: 0;
-  background-color: #1e1e1e;
+  background-color: rgba(53, 52, 52, 0.5);
+
+
   padding: 10px 20px;
   display: flex;
   justify-content: space-between;
@@ -70,7 +76,9 @@ h2 {
 }
 
 .search-container input {
-  background-color: #333;
+  background-color: rgba(53, 52, 52, 0.5);
+
+
   border: 1px solid #444;
   padding: 8px;
   color: #fff;
@@ -112,16 +120,18 @@ h2 {
   width: 100%;
   border-collapse: collapse;
   margin-top: 10px;
+  background: rgba(27, 27, 27, 0.5);
+
 }
+
 .activo {
-  color:rgba(151, 71, 255, 1);
-  ; /* Color para activo */
-  font-weight: bold; /* Puedes ajustar el estilo como desees */
+  color:rgba(151, 71, 255, 1); 
+  
 }
 
 .inactivo {
-  color: red; /* Color para inactivo */
-  font-weight: normal; /* Estilo normal para inactivo */
+  color: red; 
+  font-weight: normal; 
 }
 
 .input-wrapper {
@@ -138,34 +148,36 @@ h2 {
   color: #aaa; 
 }
 .custom-popup {
-  background-color: #1f1f1f; /* Fondo oscuro similar al de la imagen */
-  color: #fff;               /* Texto en blanco */
-  border-radius: 15px;       /* Bordes redondeados */
+  background-color: rgba(53, 52, 52, 0.5) !important;
+
+
+  color: #fff !important;               
+  border-radius: 15px !important ;       
 }
 
 .custom-title {
-  font-size: 20px; /* Tamaño de fuente del título */
-  font-weight: bold;
-  color: #fff;     /* Color del texto del título */
+  font-size: 20px !important; 
+  font-weight: bold !important;
+  color: #fff !important;     
 }
 
 .custom-content {
-  font-size: 14px;  /* Tamaño de fuente del contenido */
-  color: #cccccc;   /* Color del texto del contenido */
+  font-size: 14px !important;  
+  color: #cccccc !important;   
 }
 
 .custom-confirm-btn {
-  background-color: #6c63ff; /* Color del botón de confirmación */
-  border-radius: 10px;       /* Bordes redondeados en el botón */
-  color: #fff;               /* Texto en blanco */
-  padding: 10px 20px;        /* Espaciado en el botón */
+  background-color: #6c63ff !important; 
+  border-radius: 10px !important;       
+  color: #fff !important;               
+  padding: 10px 20px !important;        
 }
 
 .custom-cancel-btn {
-  background-color: #4e4e4e; /* Color del botón de cancelación */
-  border-radius: 10px;
-  color: #fff;
-  padding: 10px 20px;
+  background-color: #4e4e4e !important; 
+  border-radius: 10px !important;
+  color: #fff !important;
+  padding: 10px 20px !important;
 }
 
 .input-wrapper input {
@@ -177,20 +189,14 @@ h2 {
   padding: 10px;
   text-align: left;
   border-bottom: 1px solid #444;
-}
-
-.quiz-table th {
-  background-color: #333;
-  
-}
-
-.quiz-table td {
-  background-color: #222;
+  background-color: rgba(53, 52, 52, 0.5);
   text-align: center; // Centrar el texto horizontalmente
   padding: 12px; // Espacio alrededor del texto    
   font-family: "Poppins";
-    
+  
 }
+
+
 
 .actions button {
   display: flexbox;
