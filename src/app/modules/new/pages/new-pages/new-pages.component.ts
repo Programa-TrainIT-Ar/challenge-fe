@@ -33,12 +33,14 @@ export class NewPagesComponent {
   questionText: string = '';
   questions: any = [];
   options: string[] = [];
-  selection: string[] = [''];
-  array: any = [''];
+  selection: number[] = [];
+  
   selectedOption: string = '';
   inputType: string = '';
   showButton: boolean = false;
+  
   showForm: boolean = false;
+  
   isTrueFalseQuestion: boolean = false;
   showPlus: boolean = false;
   showPlus2: boolean = false;
@@ -47,31 +49,29 @@ export class NewPagesComponent {
   quizData: any = {};
   createOrEdit: boolean = true;
   toggle: boolean = true;
-  isFocused = false;
+  isFocused: boolean = false;
+  correct_option: number[] = [] 
 
   trackByFn(index: number): any {
     return index;
   }
 
   answerChoice(i: number, form: any) {
-    this.array =
-      []; /* <--- este array se crea porque no permite hacer push a selection directamente */
-    this.selection =
-      []; /* <--- 'DEBERIA' limpiar el array, pero en modo 'CASILLA' no se limpia */
-    this.array.push(i);
-    this.selection = this.array;
+    /* hacer condicional si existe o no existe blabla */
+    if(this.correct_option.includes(i)){
+      this.correct_option = this.correct_option.filter((element)=>
+        element!=i)
+    }else {
+      this.correct_option.push(i);
+    }
+     console.log(this.correct_option);
+    }
+  
 
-    console.log(this.array);
-  }
-  selections: boolean[] = []
-
-
-  onQuestionTypeChange(selectedType: string, form: any) {
-    this.selections = this.selections.map(() => false);
-    this.array =
-      []; /* <--- este array se crea porque no permite hacer push a selection directamente */
-    this.selection =
-      []; /* <--- 'DEBERIA' limpiar el array, pero en modo 'CASILLA' no se limpia */
+    
+    onQuestionTypeChange(selectedType: string, form: any) {
+      this.correct_option = []
+      console.log(this.correct_option);
     if (selectedType === 'Verdadero o falso') {
       this.isTrueFalseQuestion = true;
       this.options = ['Verdadero', 'Falso'];
@@ -174,7 +174,6 @@ export class NewPagesComponent {
         this.questionCategory.name = this.selectNameForm.value.name;
         this.questionCategory.description =
           this.selectNameForm.value.description;
-        console.log(this.questionCategory.description);
       } else {
         alert('complete los datos requeridos');
         this.showButton = false;
@@ -212,7 +211,7 @@ export class NewPagesComponent {
   async createQuestion(form: any) {
     try {
       const formSection = form.value;
-console.log(formSection)
+
       switch (formSection.questionType) {
         case 'Selección mutiple':
           formSection.questionType = 'multiple_choice';
@@ -225,10 +224,8 @@ console.log(formSection)
           break;
       }
 
-      if (!form.value.solution) {
-        form.value.solution = this.selection;
-      }
-      if (formSection.solution.length != 0 && formSection.questionText) {
+
+      if ( formSection.questionText && this.correct_option.length != 0) {
         let question = {
           question: formSection.questionText,
           seniority: 'junior',
@@ -241,11 +238,12 @@ console.log(formSection)
             formSection?.option4,
             formSection?.option5,
           ].filter(option => option !== undefined && option !== null),
-          correct_option: formSection.solution,
+          correct_option: this.correct_option,
           explanation: 'string',
           link: 'string',
           is_active: true,
-          quiz_id: this.quizID,
+          /* quiz_id: '168b2a93-7358-48cb-951a-793281c35983', */
+           quiz_id: this.quizID, 
         };
 
         const response = await fetch(`${environment.url}/question`, {
@@ -269,14 +267,14 @@ console.log(formSection)
         this.options = [];
       } else {
         alert('complete los campos requeridos');
-        console.log(formSection);
+        console.log(this.correct_option);
       }
 
-      if (this.questions.length == 10) {
+      if (this.questions.length == 10000) {
         alert('10 preguntas cargadas con exito');
         window.location.reload();
       }
-      console.log(formSection);
+      
     } catch (error) {
       alert(error);
       console.error(error);

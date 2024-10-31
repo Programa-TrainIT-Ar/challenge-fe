@@ -123,9 +123,8 @@
               <input
                 type="{{ inputType }}"
                 class="checkbox-input"
-                name="solution"
-                [(ngModel)]="selections[i]"
-                (ngModelChange)="answerChoice(i)" />
+                
+                (click)="answerChoice(i)" />
             </div>
             <!-- input del check -->
             <input
