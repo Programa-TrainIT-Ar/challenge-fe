@@ -182,9 +182,11 @@ export class AllPageComponent implements OnInit {
   editQuiz(quiz: Quiz) {
     this.selectedQuiz = quiz;
     this.quizSelected.emit(quiz);
+    
   }
 
   closeEdit() {
+    this.selectedQuiz = null;
     this.isExpanded3 = false;
   }
 }

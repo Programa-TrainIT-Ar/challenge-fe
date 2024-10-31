@@ -3,26 +3,32 @@
   flex-direction: column;
   justify-content: center;
   background-color: #1e1e1e;
-  height: 100vh;
+  height: 95vh;
   padding: 20px;
+  border-radius: 15px;
+  margin-block: 2.5vh;
 }
+
 a {
   color: white;
-  flex: 0 0 33.33%; 
-
+  flex: 0 0 33.33%;
 }
+
 a:hover {
   cursor: pointer;
   text-decoration: none;
   color: magenta;
 }
+
 h1 {
   color: magenta;
-  flex: 0 0 33.33%; 
+  flex: 0 0 33.33%;
   text-align: center;
+  top: 0%;
 }
+
 .empty-space {
-  flex: 0 0 33.33%; // El espacio vacío, puede tener una clase o simplemente estar vacío
+  flex: 0 0 33.33%;
 }
 
 .tittle {
@@ -44,6 +50,8 @@ h1 {
   padding: 20px;
   display: flex;
   flex-direction: column;
+  border: 2px solid rgba(241, 121, 197, 1);
+  box-shadow: 0px 0px 12.8px rgba(241, 121, 197, 1);
 }
 
 .question {
@@ -91,6 +99,7 @@ input[type='text'],
 .quiz-name-input:focus {
   border-bottom-color: darkviolet;
 }
+
 button {
   padding: 8px 12px;
   background-color: #444;
@@ -99,15 +108,68 @@ button {
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s;
-  background-color:slateblue;
+  background-color: slateblue;
 }
 
 button:hover {
   background-color: darkviolet;
 }
-.buttons{
+
+.buttons {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 20%;
+}
+
+/* Estilos para la paginación */
+.pagination-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.pagination-buttons button {
+  padding: 10px 20px;
+  background-color: #444;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.pagination-buttons button:hover {
+  background-color: darkviolet;
+}
+
+.pagination-buttons button:disabled {
+  background-color: #888;
+  cursor: not-allowed;
+}
+
+.buttons {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 0; /* Ajusta el padding según sea necesario */
+}
+
+.buttons button {
+  padding: 10px 15px;
+  background-color: #444;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.buttons button:hover {
+  background-color: darkviolet;
+}
+
+.buttons button:disabled {
+  background-color: #888;
+  cursor: not-allowed;
 }

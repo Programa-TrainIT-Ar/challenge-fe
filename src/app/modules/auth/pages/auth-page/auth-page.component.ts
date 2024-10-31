@@ -12,11 +12,11 @@ export class AuthPageComponent implements OnInit {
   constructor(private auth: AuthService, private router: Router) {}
 
   ngOnInit() {
-    this.handleRedirectCallback(); // Maneja la redirección después del inicio de sesión
+    this.handleRedirectCallback(); 
   }
 
   login() {
-    this.auth.loginWithRedirect(); // Cambiado a redirección
+    this.auth.loginWithRedirect(); 
   }
 
   private handleRedirectCallback() {

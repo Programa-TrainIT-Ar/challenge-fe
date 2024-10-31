@@ -7,12 +7,17 @@ import { RouterModule, Routes } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { HeaderFormModule } from 'src/app/shared/components/header-form/header-form.module';
 import { EditModule } from '../edit/edit.module';
+import { EditPagesComponent } from '../edit/pages/edit-pages/edit-pages.component';
 
 
 const routes: Routes = [
   {
     path: 'view-quiz/:id', // Define la ruta con el parámetro 'id'
     component: ViewQuizComponent
+  },
+  {
+    path: 'edit-pages/:id', // Define la ruta con el parámetro 'id'
+    component: EditPagesComponent
   },
 ];
 
