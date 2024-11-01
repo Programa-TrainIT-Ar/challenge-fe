@@ -35,7 +35,6 @@ export class NewPagesComponent {
   questions: any = [];
   options: string[] = [];
   selection: number[] = [];
-  
   selectedOption: string = '';
   inputType: string = '';
   showButton: boolean = false;
@@ -44,7 +43,6 @@ export class NewPagesComponent {
   
   isTrueFalseQuestion: boolean = false;
   showPlus: boolean = false;
-  showPlus2: boolean = false;
   showSubmits: boolean = false;
   quizID: number | string = '';
   quizData: any = {};
@@ -85,30 +83,26 @@ export class NewPagesComponent {
     onQuestionTypeChange(selectedType: string, form: any) {
       this.correct_option = [];
       this.selectedValues = [];
-    
+      this.showSubmits = true;
       if (selectedType === 'Verdadero o falso') {
         this.options = ['Verdadero', 'Falso'];
         this.inputType = 'radio';
         this.isTrueFalseQuestion = true;
         this.showPlus = false;
-        this.showPlus2 = false;
-    
       } else if (selectedType === 'Selección mutiple') {
         this.options = ['Opción 1', 'Opción 2', 'Opción 3'];
         this.inputType = 'checkbox';
         this.isTrueFalseQuestion = false;
         this.showPlus = true;
-        this.showPlus2 = false;
     
       } else if (selectedType === 'Casilla') {
         this.options = ['Opción 1', 'Opción 2'];
         this.inputType = 'radio';
         this.isTrueFalseQuestion = false;
-        this.showPlus = false;
-        this.showPlus2 = true;
+        this.showPlus = true;
       } else {
         this.showPlus = false;
-        this.showPlus2 = false;
+
       }
     
       this.changeInputType();
@@ -164,7 +158,7 @@ export class NewPagesComponent {
         cell_id: this.quizData.cell,
         seniority: this.quizData.seniority,
         challenge_type: 'immediate',
-        created_by_id: '224742e8-731b-40bf-b05f-a7547270746c',
+        created_by_id: this.quizData,
         is_active: true,
       };
 
@@ -185,6 +179,8 @@ export class NewPagesComponent {
         }
         const data = await response.json();
         this.quizID = data.id;
+        console.log(data.id)
+        console.log(this.quizID)
         this.showForm = true;
         this.toggle = false;
         this.showButton = false;
@@ -312,16 +308,7 @@ export class NewPagesComponent {
     } else {
       this.options.push(`Opción ${this.options.length + 1}`);
       this.showPlus = false;
-      this.showPlus2 = false;
     }
   }
-  addOption2() {
-    if (this.options.length < 5) {
-      this.options.push(`Opción ${this.options.length + 1 + '.'}`);
-    } else {
-      this.options.push(`Opción ${this.options.length + 1 + '.'}`);
-      this.showPlus = false;
-      this.showPlus2 = false;
-    }
-  }
+ 
 }
