@@ -97,6 +97,10 @@ export class NewPagesComponent {
         'Opción 2.',
       ]; /* haciendo distinto el valor funciona */
       /* Pero al agregar un campo el problema vuelve a surgir */
+    } else {
+      this.showPlus = false;
+      this.showPlus2 = false;
+      this.showSubmits = false;
     }
   }
 
@@ -264,6 +268,8 @@ export class NewPagesComponent {
         this.questions.push(formSection);
 
         form.reset();
+        this.selectedOption = ''
+        this.isFocused = false
         this.options = [];
       } else {
         alert('complete los campos requeridos');
