@@ -115,16 +115,26 @@
 
       <div class="form-group">
         <div class="option-row">
-          <div
-            *ngFor="let option of options; let i = index; trackBy: trackByFn"
-            class="row">
+          <div *ngFor="let option of options; let i = index; trackBy: trackByFn" class="row">
             <!-- check -->
-            <div class="checkbox-container mb-3">
+            <div *ngIf="showInput" class="checkbox-container mb-3">
               <input
-                type="{{ inputType }}"
+                *ngIf="inputType === 'radio'"
+                type="radio"
                 class="checkbox-input"
-                
-                (click)="answerChoice(i)" />
+                [(ngModel)]="selectedRadio"
+                [value]="option"
+                name="radioGroup"
+                (click)="answerChoice(i)"
+              />
+              <input
+                *ngIf="inputType === 'checkbox'"
+                type="checkbox"
+                class="checkbox-input"
+                [(ngModel)]="selectedValues[i]"
+                (click)="answerChoice(i)"
+                [name]="'checkbox' + i"
+              />
             </div>
             <!-- input del check -->
             <input
@@ -133,8 +143,10 @@
               [(ngModel)]="options[i]"
               name="option{{ i }}"
               [readonly]="isTrueFalseQuestion"
-              required />
+              required
+            />
           </div>
+          
 
           <!-- add options -->
 

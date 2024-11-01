@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { environment } from '@environments/environment';
+import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'app-new-pages',
@@ -8,7 +9,7 @@ import { environment } from '@environments/environment';
   styleUrls: ['./new-pages.component.scss'],
 })
 export class NewPagesComponent {
-  constructor(private formsBuilder: FormBuilder) {}
+  constructor(private formsBuilder: FormBuilder,private cdr: ChangeDetectorRef) {}
   public selectNameForm = this.formsBuilder.group({
     name: ['', Validators.required],
     description: ['', Validators.required],
@@ -51,11 +52,13 @@ export class NewPagesComponent {
   toggle: boolean = true;
   isFocused: boolean = false;
   correct_option: number[] = [] 
+  selectedValues: boolean[] = [];
 
   trackByFn(index: number): any {
     return index;
   }
 
+  
   answerChoice(i: number, form: any) {
     /* hacer condicional si existe o no existe blabla */
     if(this.correct_option.includes(i)){
@@ -66,43 +69,53 @@ export class NewPagesComponent {
     }
      console.log(this.correct_option);
     }
-  
-
+    showInput: boolean = true
+    selectedRadio: string | null = null;
+    changeInputType() {
+      this.selectedValues = Array(this.options.length).fill(false);
+      this.selectedRadio = null; // Reinicia la selección de radio
+      this.showInput = false;
+      setTimeout(() => {
+        this.showInput = true;
+        this.cdr.detectChanges();
+      }, 50);
+    }
+    
     
     onQuestionTypeChange(selectedType: string, form: any) {
-      this.correct_option = []
-      console.log(this.correct_option);
-    if (selectedType === 'Verdadero o falso') {
-      this.isTrueFalseQuestion = true;
-      this.options = ['Verdadero', 'Falso'];
-      this.showPlus = false;
-      this.showPlus2 = false;
-      this.showSubmits = true;
-      this.inputType = 'radio';
-    } else if (selectedType === 'Selección mutiple') {
-      this.isTrueFalseQuestion = false;
-      this.options = ['Opción 1', 'Opción 2', 'Opción 3'];
-      this.showPlus = true;
-      this.showPlus2 = false;
-      this.showSubmits = true;
-      this.inputType = 'checkbox';
-    } else if (selectedType == 'Casilla') {
-      this.isTrueFalseQuestion = false;
-      this.showPlus = false;
-      this.showPlus2 = true;
-      this.showSubmits = true;
-      this.inputType = 'radio';
-      this.options = [
-        'Opción 1.',
-        'Opción 2.',
-      ]; /* haciendo distinto el valor funciona */
-      /* Pero al agregar un campo el problema vuelve a surgir */
-    } else {
-      this.showPlus = false;
-      this.showPlus2 = false;
-      this.showSubmits = false;
+      this.correct_option = [];
+      this.selectedValues = [];
+    
+      if (selectedType === 'Verdadero o falso') {
+        this.options = ['Verdadero', 'Falso'];
+        this.inputType = 'radio';
+        this.isTrueFalseQuestion = true;
+        this.showPlus = false;
+        this.showPlus2 = false;
+    
+      } else if (selectedType === 'Selección mutiple') {
+        this.options = ['Opción 1', 'Opción 2', 'Opción 3'];
+        this.inputType = 'checkbox';
+        this.isTrueFalseQuestion = false;
+        this.showPlus = true;
+        this.showPlus2 = false;
+    
+      } else if (selectedType === 'Casilla') {
+        this.options = ['Opción 1', 'Opción 2'];
+        this.inputType = 'radio';
+        this.isTrueFalseQuestion = false;
+        this.showPlus = false;
+        this.showPlus2 = true;
+      } else {
+        this.showPlus = false;
+        this.showPlus2 = false;
+      }
+    
+      this.changeInputType();
+      this.cdr.detectChanges(); 
     }
-  }
+    
+    
 
   async recibirDatos(datos: any) {
     if (
