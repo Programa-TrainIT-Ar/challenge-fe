@@ -14,6 +14,7 @@
                   : 'Nombre del Quiz'
               "
               formControlName="name"
+              (input)="isValidInput()"
               [ngClass]="{ notice: isFieldInvalid('name') }" />
             <div [ngClass]="showForm ? '' : 'd-none'">
               <button class="btn-plus" (click)="editQuiz()">
@@ -33,7 +34,8 @@
                   ? '* La descripción es requerida'
                   : 'Descripción'
               "
-              formControlName="description" />
+              formControlName="description"
+              (input)="isValidInput()" />
           </div>
         </form>
 
@@ -44,7 +46,7 @@
       </div>
     </div>
   </div>
-  <div *ngIf="showButton">
+  <div *ngIf="showButton && inputsValues">
     <button
       (click)="createOrEdit ? createQuiz() : updateQuiz()"
       class="custom-btn-save">

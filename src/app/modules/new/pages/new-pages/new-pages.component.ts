@@ -51,6 +51,7 @@ export class NewPagesComponent {
   isFocused: boolean = false;
   correct_option: number[] = [] 
   selectedValues: boolean[] = [];
+  inputsValues: boolean = false
 
   trackByFn(index: number): any {
     return index;
@@ -109,12 +110,18 @@ export class NewPagesComponent {
       this.cdr.detectChanges(); 
     }
     
-    
+    isValidInput(){
+      if(this.selectNameForm.value.name && this.selectNameForm.value.description &&
+        this.selectNameForm.valid){
+          this.inputsValues=true
+        } else {
+          this.inputsValues=false
+        }
+    }
 
   async recibirDatos(datos: any) {
     if (
-      this.selectNameForm.value.description &&
-      this.selectNameForm.valid &&
+      
       datos.celula != 'Selecciona la célula' &&
       datos.modulo != 'Selecciona el modulo' &&
       datos.seniority != 'Seniority'
