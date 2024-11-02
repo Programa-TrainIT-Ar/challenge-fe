@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { environment } from '@environments/environment';
+import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'app-new-pages',
@@ -8,7 +9,7 @@ import { environment } from '@environments/environment';
   styleUrls: ['./new-pages.component.scss'],
 })
 export class NewPagesComponent {
-  constructor(private formsBuilder: FormBuilder) {}
+  constructor(private formsBuilder: FormBuilder,private cdr: ChangeDetectorRef) {}
   public selectNameForm = this.formsBuilder.group({
     name: ['', Validators.required],
     description: ['', Validators.required],
@@ -33,72 +34,82 @@ export class NewPagesComponent {
   questionText: string = '';
   questions: any = [];
   options: string[] = [];
-  selection: string[] = [''];
-  array: any = [''];
+  selection: number[] = [];
   selectedOption: string = '';
   inputType: string = '';
   showButton: boolean = false;
+  
   showForm: boolean = false;
+  
   isTrueFalseQuestion: boolean = false;
   showPlus: boolean = false;
-  showPlus2: boolean = false;
   showSubmits: boolean = false;
   quizID: number | string = '';
   quizData: any = {};
   createOrEdit: boolean = true;
   toggle: boolean = true;
-  isFocused = false;
+  isFocused: boolean = false;
+  correct_option: number[] = [] 
+  selectedValues: boolean[] = [];
 
   trackByFn(index: number): any {
     return index;
   }
 
+  
   answerChoice(i: number, form: any) {
-    this.array =
-      []; /* <--- este array se crea porque no permite hacer push a selection directamente */
-    this.selection =
-      []; /* <--- 'DEBERIA' limpiar el array, pero en modo 'CASILLA' no se limpia */
-    this.array.push(i);
-    this.selection = this.array;
-
-    console.log(this.array);
-  }
-  selections: boolean[] = []
-
-
-  onQuestionTypeChange(selectedType: string, form: any) {
-    this.selections = this.selections.map(() => false);
-    this.array =
-      []; /* <--- este array se crea porque no permite hacer push a selection directamente */
-    this.selection =
-      []; /* <--- 'DEBERIA' limpiar el array, pero en modo 'CASILLA' no se limpia */
-    if (selectedType === 'Verdadero o falso') {
-      this.isTrueFalseQuestion = true;
-      this.options = ['Verdadero', 'Falso'];
-      this.showPlus = false;
-      this.showPlus2 = false;
-      this.showSubmits = true;
-      this.inputType = 'radio';
-    } else if (selectedType === 'Selección mutiple') {
-      this.isTrueFalseQuestion = false;
-      this.options = ['Opción 1', 'Opción 2', 'Opción 3'];
-      this.showPlus = true;
-      this.showPlus2 = false;
-      this.showSubmits = true;
-      this.inputType = 'checkbox';
-    } else if (selectedType == 'Casilla') {
-      this.isTrueFalseQuestion = false;
-      this.showPlus = false;
-      this.showPlus2 = true;
-      this.showSubmits = true;
-      this.inputType = 'radio';
-      this.options = [
-        'Opción 1.',
-        'Opción 2.',
-      ]; /* haciendo distinto el valor funciona */
-      /* Pero al agregar un campo el problema vuelve a surgir */
+    /* hacer condicional si existe o no existe blabla */
+    if(this.correct_option.includes(i)){
+      this.correct_option = this.correct_option.filter((element)=>
+        element!=i)
+    }else {
+      this.correct_option.push(i);
     }
-  }
+     console.log(this.correct_option);
+    }
+    showInput: boolean = true
+    selectedRadio: string | null = null;
+    changeInputType() {
+      this.selectedValues = Array(this.options.length).fill(false);
+      this.selectedRadio = null; // Reinicia la selección de radio
+      this.showInput = false;
+      setTimeout(() => {
+        this.showInput = true;
+        this.cdr.detectChanges();
+      }, 50);
+    }
+    
+    
+    onQuestionTypeChange(selectedType: string, form: any) {
+      this.correct_option = [];
+      this.selectedValues = [];
+      this.showSubmits = true;
+      if (selectedType === 'Verdadero o falso') {
+        this.options = ['Verdadero', 'Falso'];
+        this.inputType = 'radio';
+        this.isTrueFalseQuestion = true;
+        this.showPlus = false;
+      } else if (selectedType === 'Selección mutiple') {
+        this.options = ['Opción 1', 'Opción 2', 'Opción 3'];
+        this.inputType = 'checkbox';
+        this.isTrueFalseQuestion = false;
+        this.showPlus = true;
+    
+      } else if (selectedType === 'Casilla') {
+        this.options = ['Opción 1', 'Opción 2'];
+        this.inputType = 'radio';
+        this.isTrueFalseQuestion = false;
+        this.showPlus = true;
+      } else {
+        this.showPlus = false;
+
+      }
+    
+      this.changeInputType();
+      this.cdr.detectChanges(); 
+    }
+    
+    
 
   async recibirDatos(datos: any) {
     if (
@@ -147,7 +158,7 @@ export class NewPagesComponent {
         cell_id: this.quizData.cell,
         seniority: this.quizData.seniority,
         challenge_type: 'immediate',
-        created_by_id: '224742e8-731b-40bf-b05f-a7547270746c',
+        created_by_id: this.quizData,
         is_active: true,
       };
 
@@ -168,13 +179,14 @@ export class NewPagesComponent {
         }
         const data = await response.json();
         this.quizID = data.id;
+        console.log(data.id)
+        console.log(this.quizID)
         this.showForm = true;
         this.toggle = false;
         this.showButton = false;
         this.questionCategory.name = this.selectNameForm.value.name;
         this.questionCategory.description =
           this.selectNameForm.value.description;
-        console.log(this.questionCategory.description);
       } else {
         alert('complete los datos requeridos');
         this.showButton = false;
@@ -212,7 +224,7 @@ export class NewPagesComponent {
   async createQuestion(form: any) {
     try {
       const formSection = form.value;
-console.log(formSection)
+
       switch (formSection.questionType) {
         case 'Selección mutiple':
           formSection.questionType = 'multiple_choice';
@@ -225,10 +237,8 @@ console.log(formSection)
           break;
       }
 
-      if (!form.value.solution) {
-        form.value.solution = this.selection;
-      }
-      if (formSection.solution.length != 0 && formSection.questionText) {
+
+      if ( formSection.questionText && this.correct_option.length != 0) {
         let question = {
           question: formSection.questionText,
           seniority: 'junior',
@@ -241,11 +251,12 @@ console.log(formSection)
             formSection?.option4,
             formSection?.option5,
           ].filter(option => option !== undefined && option !== null),
-          correct_option: formSection.solution,
+          correct_option: this.correct_option,
           explanation: 'string',
           link: 'string',
           is_active: true,
-          quiz_id: this.quizID,
+          /* quiz_id: '168b2a93-7358-48cb-951a-793281c35983', */
+           quiz_id: this.quizID, 
         };
 
         const response = await fetch(`${environment.url}/question`, {
@@ -266,17 +277,19 @@ console.log(formSection)
         this.questions.push(formSection);
 
         form.reset();
+        this.selectedOption = ''
+        this.isFocused = false
         this.options = [];
       } else {
         alert('complete los campos requeridos');
-        console.log(formSection);
+        console.log(this.correct_option);
       }
 
-      if (this.questions.length == 10) {
+      if (this.questions.length == 10000) {
         alert('10 preguntas cargadas con exito');
         window.location.reload();
       }
-      console.log(formSection);
+      
     } catch (error) {
       alert(error);
       console.error(error);
@@ -295,16 +308,7 @@ console.log(formSection)
     } else {
       this.options.push(`Opción ${this.options.length + 1}`);
       this.showPlus = false;
-      this.showPlus2 = false;
     }
   }
-  addOption2() {
-    if (this.options.length < 5) {
-      this.options.push(`Opción ${this.options.length + 1 + '.'}`);
-    } else {
-      this.options.push(`Opción ${this.options.length + 1 + '.'}`);
-      this.showPlus = false;
-      this.showPlus2 = false;
-    }
-  }
+ 
 }
