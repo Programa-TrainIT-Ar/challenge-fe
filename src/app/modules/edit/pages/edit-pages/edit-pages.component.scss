@@ -64,6 +64,7 @@ h1 {
   background-color: #282828;
 }
 
+
 input[type='text'],
 .custom-option-input {
   padding: 10px;
@@ -151,7 +152,7 @@ button:hover {
 .buttons {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content:space-around;
   padding: 20px 0; /* Ajusta el padding según sea necesario */
 }
 
@@ -163,13 +164,41 @@ button:hover {
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s;
+  background-color: rgb(0, 56, 211);
 }
 
 .buttons button:hover {
-  background-color: darkviolet;
+  background-color: rgb(17, 75, 236);
 }
 
 .buttons button:disabled {
   background-color: #888;
-  cursor: not-allowed;
+  
+}
+.option-row {
+  // display: flex;
+  // flex-wrap: wrap; /* Permitir que las opciones se envuelvan */
+  // justify-content: space-between; /* Espacio entre las opciones */
+  margin-top: 15px; /* Espacio entre la pregunta y las opciones */
+  display: inline;
+}
+
+.option-item {
+  display: inline-block;
+  align-items: center; /* Alinear el texto y el input verticalmente */
+  width: 48%; /* Ocupa casi la mitad del contenedor */
+  margin-bottom: 10px; /* Espacio inferior entre las opciones */
+  border: 1px solid #444; /* Borde oscuro */
+  border-radius: 15px; /* Borde redondeado */
+  background-color: #282828; /* Color de fondo */
+  padding: 10px; /* Espacio interno */
+  color: #4f4f4f; /* Color de texto gris oscuro */
+}
+
+.option-label {
+  color: #4f4f4f; /* Color gris oscuro para las etiquetas */
+}
+
+input[type="radio"] {
+  margin-right: 5px; /* Espacio entre el input y el texto */
 }

@@ -1,24 +1,23 @@
 .quiz-dashboard {
-  padding: 20px;  
+  padding: 20px;
   color: #fff;
   height: 95vh;
-  width: 150vh; 
+  width: 150vh;
   border-radius: 12px;
   padding: 24px 8px 8px 8px;
-  gap: 47px;  
+  gap: 47px;
   opacity: 0px;
-  overflow: auto; 
-  margin-block: 2.5vh;  
+  overflow: auto;
+  margin-block: 2.5vh;
   background-color: rgba(53, 52, 52, 0.5);
 
-
-  border: 2px solid rgba(241, 121, 197, 1);  
+  border: 2px solid rgba(241, 121, 197, 1);
   // background-image: url('../../../../../assets/layout/images/logo.svg');
   // background-repeat: no-repeat;
   // background-position: center;
-  // background-size: 180px; 
+  // background-size: 180px;
 }
-.table-sup{
+.table-sup {
   font-family: Poppins;
   font-size: 16px;
   font-weight: 400;
@@ -26,24 +25,16 @@
   letter-spacing: 0.20000000298023224px;
   text-align: center;
   background: rgba(27, 27, 27, 0.5);
-
-  
-
 }
-.table-int{ 
- margin: 0 auto;
- flex: auto;
- background: rgba(27, 27, 27, 0.5);
-
- 
-
+.table-int {
+  margin: 0 auto;
+  flex: auto;
+  background: rgba(27, 27, 27, 0.5);
 }
 h2 {
   color: #fff;
   font-size: 1.5rem;
   margin: 0;
-
-   
 }
 
 .filters {
@@ -55,7 +46,6 @@ h2 {
 .filters select {
   background-color: rgba(53, 52, 52, 0.5);
 
-
   border: 1px solid #444;
   padding: 10px;
   color: #fff;
@@ -63,10 +53,9 @@ h2 {
   width: 30%;
 }
 
-.search-container {  
+.search-container {
   top: 0;
   background-color: rgba(53, 52, 52, 0.5);
-
 
   padding: 10px 20px;
   display: flex;
@@ -77,7 +66,6 @@ h2 {
 
 .search-container input {
   background-color: rgba(53, 52, 52, 0.5);
-
 
   border: 1px solid #444;
   padding: 8px;
@@ -121,17 +109,15 @@ h2 {
   border-collapse: collapse;
   margin-top: 10px;
   background: rgba(27, 27, 27, 0.5);
-
 }
 
 .activo {
-  color:rgba(151, 71, 255, 1); 
-  
+  color: rgba(151, 71, 255, 1);
 }
 
 .inactivo {
-  color: red; 
-  font-weight: normal; 
+  color: red;
+  font-weight: normal;
 }
 
 .input-wrapper {
@@ -142,61 +128,58 @@ h2 {
 
 .input-wrapper i {
   position: absolute;
-  left: 10px; 
+  left: 10px;
   top: 50%;
   transform: translateY(-50%);
-  color: #aaa; 
+  color: #aaa;
 }
 .custom-popup {
   background-color: rgba(53, 52, 52, 0.5) !important;
 
-
-  color: #fff !important;               
-  border-radius: 15px !important ;       
+  color: #fff !important;
+  border-radius: 15px !important ;
 }
 
 .custom-title {
-  font-size: 20px !important; 
+  font-size: 20px !important;
   font-weight: bold !important;
-  color: #fff !important;     
+  color: #fff !important;
 }
 
 .custom-content {
-  font-size: 14px !important;  
-  color: #cccccc !important;   
+  font-size: 14px !important;
+  color: #cccccc !important;
 }
 
 .custom-confirm-btn {
-  background-color: #6c63ff !important; 
-  border-radius: 10px !important;       
-  color: #fff !important;               
-  padding: 10px 20px !important;        
+  background-color: #6c63ff !important;
+  border-radius: 10px !important;
+  color: #fff !important;
+  padding: 10px 20px !important;
 }
 
 .custom-cancel-btn {
-  background-color: #4e4e4e !important; 
+  background-color: #4e4e4e !important;
   border-radius: 10px !important;
   color: #fff !important;
   padding: 10px 20px !important;
 }
 
 .input-wrapper input {
-  padding-left: 35px; 
-  width: 100%; 
+  padding-left: 35px;
+  width: 100%;
 }
 
-.quiz-table th, .quiz-table td {
+.quiz-table th,
+.quiz-table td {
   padding: 10px;
   text-align: left;
   border-bottom: 1px solid #444;
   background-color: rgba(53, 52, 52, 0.5);
   text-align: center; // Centrar el texto horizontalmente
-  padding: 12px; // Espacio alrededor del texto    
-  font-family: "Poppins";
-  
+  padding: 12px; // Espacio alrededor del texto
+  font-family: 'Poppins';
 }
-
-
 
 .actions button {
   display: flexbox;
@@ -204,18 +187,17 @@ h2 {
   border: none;
   cursor: pointer;
   color: white;
-  
- 
-  
 }
 
 .status {
   font-weight: bold;
+  transition: .5s ease-in-out;
 }
-
+.status:hover{
+  cursor: pointer;
+}
 .status.Activo {
   color: rgba(151, 71, 255, 1);
-  ;
 }
 
 .status.Inactivo {

@@ -69,7 +69,7 @@ export class EditPagesComponent implements OnInit, OnChanges {
 
     this.quizService.getQuizWithQuestions(this.quizId).subscribe(
       quizData => {
-        console.log('Respuesta de la API:', quizData); // Verificar respuesta
+        console.log('Respuesta de la API:', quizData);
         this.selectNameForm.patchValue({ name: quizData.name });
         this.populateQuestions(quizData.questions);
       },
@@ -80,20 +80,20 @@ export class EditPagesComponent implements OnInit, OnChanges {
   }
 
   private populateQuestions(questions: any[]) {
-    console.log('Preguntas recibidas:', questions); // Verificar preguntas
+    console.log('Preguntas recibidas:', questions);
 
     const questionForms = questions.map(question =>
       this.formBuilder.group({
         id: [question.id],
-        text: [question.question], 
+        text: [question.question],
         type: [question.type],
-        correct_option: [question.correct_option],
+        correct_option: [question.correct_option[0]], // Ajuste aquí
         options: this.formBuilder.array(
-          question.options.map(option =>
+          question.options.map((optionText, index) => 
             this.formBuilder.group({
-              id: [null], 
-              text: [option], 
-              selected: [false], 
+              id: [index.toString()], // Usar el índice como ID
+              text: [optionText], // Asignar el texto directamente
+              selected: [index === question.correct_option[0]], // Marcar la opción correcta
             })
           )
         ),
@@ -104,7 +104,7 @@ export class EditPagesComponent implements OnInit, OnChanges {
     questionsArray.clear();
     questionForms.forEach(form => questionsArray.push(form));
 
-    console.log('Preguntas pobladas:', this.questions.value); // Verificar preguntas
+    console.log('Preguntas pobladas:', this.questions.value);
   }
 
   get questions(): FormArray {

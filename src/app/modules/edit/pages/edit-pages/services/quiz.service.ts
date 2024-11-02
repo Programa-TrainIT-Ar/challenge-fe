@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { environment } from '@environments/environment';
 import { tap, catchError } from 'rxjs/operators';
 
@@ -18,13 +18,18 @@ export class QuizService {
       tap(response => console.log('Respuesta de la API:', response)),
       catchError(error => {
         console.error('Error al obtener el cuestionario:', error);
-        return error(error);
+        return throwError(error); // Retorna un observable de error
       })
     );
   }
 
   // Método para actualizar un cuestionario
   updateQuiz(id: string, quizData: any): Observable<any> {
-    return this.http.put(`${this.apiUrl}/${id}`, quizData);
+    return this.http.put(`${this.apiUrl}/${id}`, quizData).pipe(
+      catchError(error => {
+        console.error('Error al actualizar el cuestionario:', error);
+        return throwError(error);
+      })
+    );
   }
 }

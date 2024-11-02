@@ -86,7 +86,9 @@ export class WelcomePageComponent {
   }
 
   toggleExpand3() {
-    this.isExpanded3 = !this.isExpanded3; // Cambia el estado de expansión
+    this.isExpanded3 = !this.isExpanded3;
+    this.isExpanded2 = false;
+    this.isExpanded1 = false;
   }
 
   // Navegación existente
