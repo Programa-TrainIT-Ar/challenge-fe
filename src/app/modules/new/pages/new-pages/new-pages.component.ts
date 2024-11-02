@@ -158,7 +158,7 @@ export class NewPagesComponent {
         cell_id: this.quizData.cell,
         seniority: this.quizData.seniority,
         challenge_type: 'immediate',
-        created_by_id: this.quizData,
+        created_by_id: '224742e8-731b-40bf-b05f-a7547270746c',
         is_active: true,
       };
 
@@ -179,8 +179,6 @@ export class NewPagesComponent {
         }
         const data = await response.json();
         this.quizID = data.id;
-        console.log(data.id)
-        console.log(this.quizID)
         this.showForm = true;
         this.toggle = false;
         this.showButton = false;
@@ -211,7 +209,7 @@ export class NewPagesComponent {
       body: JSON.stringify(update),
     });
     response = await response.json();
-
+    this.showButton = false;
     this.showForm = true;
     this.questionCategory.name = this.selectNameForm.value.name;
     this.questionCategory.description = this.selectNameForm.value.description;
