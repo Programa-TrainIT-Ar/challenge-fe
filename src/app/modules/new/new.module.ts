@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { NewPagesComponent } from './pages/new-pages/new-pages.component';
 import { NewRoutingModule } from './new-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { SharedModule } from 'primeng/api';
+import { SharedModule } from 'src/app/shared/shared.module';
 import { HeaderFormModule } from 'src/app/shared/components/header-form/header-form.module';
 
 @NgModule({

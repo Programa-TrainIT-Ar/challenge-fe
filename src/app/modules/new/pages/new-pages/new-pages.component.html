@@ -1,5 +1,7 @@
+
 <div class="normal-container transparent">
   <div class="header-inputs-container">
+    
     <div>
       <div
         [ngClass]="showForm ? 'quiz-container-true' : 'quiz-container-false'">
@@ -43,9 +45,14 @@
           [ngClass]="showForm ? '' : 'absolute-true'"
           (datosParaPadre)="recibirDatos($event)"
           [mode]="toggle"></app-header-page>
+
       </div>
     </div>
   </div>
+  
+    <app-pop-message class="pop-message" *ngIf="pop" [message]="'Cambios guardados correctamente'" (closeEvent)="closeFn()"></app-pop-message>
+  
+  <div>
   <div *ngIf="showButton && inputsValues">
     <button
       (click)="createOrEdit ? createQuiz() : updateQuiz()"

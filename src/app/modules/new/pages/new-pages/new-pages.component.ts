@@ -38,7 +38,7 @@ export class NewPagesComponent {
   selectedOption: string = '';
   inputType: string = '';
   showButton: boolean = false;
-  
+  pop: boolean = false
   showForm: boolean = false;
   
   isTrueFalseQuestion: boolean = false;
@@ -55,6 +55,11 @@ export class NewPagesComponent {
 
   trackByFn(index: number): any {
     return index;
+  }
+
+  closeFn(){
+    this.pop = false
+    console.log('close')
   }
 
   
@@ -127,6 +132,7 @@ export class NewPagesComponent {
       datos.seniority != 'Seniority'
     ) {
       this.showButton = true;
+      
     }
 
     /* modulo */
@@ -189,6 +195,10 @@ export class NewPagesComponent {
         this.showForm = true;
         this.toggle = false;
         this.showButton = false;
+        this.pop= true
+        setTimeout(()=>{
+          this.closeFn()
+        }, 20000)
         this.questionCategory.name = this.selectNameForm.value.name;
         this.questionCategory.description =
           this.selectNameForm.value.description;
@@ -217,6 +227,10 @@ export class NewPagesComponent {
     });
     response = await response.json();
     this.showButton = false;
+    this.pop = true
+    setTimeout(()=>{
+      this.pop = false
+    }, 2000)
     this.showForm = true;
     this.questionCategory.name = this.selectNameForm.value.name;
     this.questionCategory.description = this.selectNameForm.value.description;
