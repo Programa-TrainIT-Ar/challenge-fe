@@ -62,8 +62,7 @@ export class NewPagesComponent {
   }
 
   
-  answerChoice(i: number, form: any) {
-    /* hacer condicional si existe o no existe blabla */
+  answerChoice(i: number) {
     if(this.correct_option.includes(i)){
       this.correct_option = this.correct_option.filter((element)=>
         element!=i)
@@ -320,6 +319,8 @@ export class NewPagesComponent {
     this.showForm = false;
     this.createOrEdit = false;
     this.toggle = true;
+    this.isValidInput()
+    this.showButton = true
   }
 
   addOption() {
