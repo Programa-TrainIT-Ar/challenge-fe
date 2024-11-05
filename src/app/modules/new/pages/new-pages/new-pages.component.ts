@@ -9,7 +9,10 @@ import { ChangeDetectorRef } from '@angular/core';
   styleUrls: ['./new-pages.component.scss'],
 })
 export class NewPagesComponent {
-  constructor(private formsBuilder: FormBuilder,private cdr: ChangeDetectorRef) {}
+  constructor(
+    private formsBuilder: FormBuilder,
+    private cdr: ChangeDetectorRef
+  ) {}
   public selectNameForm = this.formsBuilder.group({
     name: ['', Validators.required],
     description: ['', Validators.required],
@@ -38,7 +41,7 @@ export class NewPagesComponent {
   selectedOption: string = '';
   inputType: string = '';
   showButton: boolean = false;
-  pop: boolean = false
+  pop: boolean = false;
   showForm: boolean = false;
   isTrueFalseQuestion: boolean = false;
   showPlus: boolean = false;
@@ -48,91 +51,86 @@ export class NewPagesComponent {
   createOrEdit: boolean = true;
   toggle: boolean = true;
   isFocused: boolean = false;
-  correct_option: number[] = [] 
+  correct_option: number[] = [];
   selectedValues: boolean[] = [];
-  inputsValues: boolean = false
+  inputsValues: boolean = false;
 
   trackByFn(index: number): any {
     return index;
   }
 
-  closeFn(){
-    this.pop = false
-    console.log('close')
+  closeFn() {
+    this.pop = false;
   }
 
-  
   answerChoice(i: number) {
-    if(this.correct_option.includes(i)){
-      this.correct_option = this.correct_option.filter((element)=>
-        element!=i)
-    }else {
+    if (this.correct_option.includes(i)) {
+      this.correct_option = this.correct_option.filter(element => element != i);
+    } else {
       this.correct_option.push(i);
     }
-     console.log(this.correct_option);
-    }
-    showInput: boolean = true
-    selectedRadio: string | null = null;
-    changeInputType() {
-      this.selectedValues = Array(this.options.length).fill(false);
-      this.selectedRadio = null; // Reinicia la selección de radio
-      this.showInput = false;
-      setTimeout(() => {
-        this.showInput = true;
-        this.cdr.detectChanges();
-      }, 50);
-    }
-    
-    
-    onQuestionTypeChange(selectedType: string, form: any) {
-      this.correct_option = [];
-      this.selectedValues = [];
-      this.showSubmits = true;
-      if (selectedType === 'Verdadero o falso') {
-        this.options = ['Verdadero', 'Falso'];
-        this.inputType = 'radio';
-        this.isTrueFalseQuestion = true;
-        this.showPlus = false;
-      } else if (selectedType === 'Selección mutiple') {
-        this.options = ['Opción 1', 'Opción 2', 'Opción 3'];
-        this.inputType = 'checkbox';
-        this.isTrueFalseQuestion = false;
-        this.showPlus = true;
-    
-      } else if (selectedType === 'Casilla') {
-        this.options = ['Opción 1', 'Opción 2'];
-        this.inputType = 'radio';
-        this.isTrueFalseQuestion = false;
-        this.showPlus = true;
-      } else {
-        this.showPlus = false;
+    console.log(this.correct_option);
+  }
+  showInput: boolean = true;
+  selectedRadio: string | null = null;
+  changeInputType() {
+    this.selectedValues = Array(this.options.length).fill(false);
+    this.selectedRadio = null; // Reinicia la selección de radio
+    this.showInput = false;
+    setTimeout(() => {
+      this.showInput = true;
+      this.cdr.detectChanges();
+    }, 50);
+  }
 
-      }
-    
-      this.changeInputType();
-      this.cdr.detectChanges(); 
+  onQuestionTypeChange(selectedType: string, form: any) {
+    this.correct_option = [];
+    this.selectedValues = [];
+    this.showSubmits = true;
+    if (selectedType === 'Verdadero o falso') {
+      this.options = ['Verdadero', 'Falso'];
+      this.inputType = 'radio';
+      this.isTrueFalseQuestion = true;
+      this.showPlus = false;
+    } else if (selectedType === 'Selección mutiple') {
+      this.options = ['Opción 1', 'Opción 2', 'Opción 3'];
+      this.inputType = 'checkbox';
+      this.isTrueFalseQuestion = false;
+      this.showPlus = true;
+    } else if (selectedType === 'Casilla') {
+      this.options = ['Opción 1', 'Opción 2'];
+      this.inputType = 'radio';
+      this.isTrueFalseQuestion = false;
+      this.showPlus = true;
+    } else {
+      this.showPlus = false;
     }
-    
-    isValidInput(){
-      if(this.selectNameForm.value.name && this.selectNameForm.value.description &&
-        this.selectNameForm.valid){
-          this.inputsValues=true
-        } else {
-          this.inputsValues=false
-        }
+
+    this.changeInputType();
+    this.cdr.detectChanges();
+  }
+
+  isValidInput() {
+    if (
+      this.selectNameForm.value.name &&
+      this.selectNameForm.value.description &&
+      this.selectNameForm.valid
+    ) {
+      this.inputsValues = true;
+    } else {
+      this.inputsValues = false;
     }
+  }
 
   async recibirDatos(datos: any) {
     if (
-      
       datos.celula != 'Selecciona la célula' &&
       datos.modulo != 'Selecciona el modulo' &&
       datos.seniority != 'Seniority'
     ) {
       this.showButton = true;
-      
     } else {
-      this.showButton = false
+      this.showButton = false;
     }
 
     /* modulo */
@@ -187,18 +185,19 @@ export class NewPagesComponent {
           body: JSON.stringify(prueba),
         });
         if (!response.ok) {
-          alert(response.status);
-          throw new Error(`Error: ${response.status}`);
+          alert(response);
+          throw new Error(`Error: ${response}`);
         }
         const data = await response.json();
         this.quizID = data.id;
         this.showForm = true;
         this.toggle = false;
         this.showButton = false;
-        this.pop= true
-        setTimeout(()=>{
-          this.closeFn()
-        }, 2000)
+        this.pop = true;
+
+        setTimeout(() => {
+          this.closeFn();
+        }, 2000);
         this.questionCategory.name = this.selectNameForm.value.name;
         this.questionCategory.description =
           this.selectNameForm.value.description;
@@ -227,10 +226,10 @@ export class NewPagesComponent {
     });
     response = await response.json();
     this.showButton = false;
-    this.pop = true
-    setTimeout(()=>{
-      this.pop = false
-    }, 2000)
+    this.pop = true;
+    setTimeout(() => {
+      this.pop = false;
+    }, 2000);
     this.showForm = true;
     this.questionCategory.name = this.selectNameForm.value.name;
     this.questionCategory.description = this.selectNameForm.value.description;
@@ -256,8 +255,7 @@ export class NewPagesComponent {
           break;
       }
 
-
-      if ( formSection.questionText && this.correct_option.length != 0) {
+      if (formSection.questionText && this.correct_option.length != 0) {
         let question = {
           question: formSection.questionText,
           seniority: 'junior',
@@ -275,7 +273,7 @@ export class NewPagesComponent {
           link: 'string',
           is_active: true,
           /* quiz_id: '168b2a93-7358-48cb-951a-793281c35983', */
-           quiz_id: this.quizID, 
+          quiz_id: this.quizID,
         };
 
         const response = await fetch(`${environment.url}/question`, {
@@ -296,8 +294,8 @@ export class NewPagesComponent {
         this.questions.push(formSection);
 
         form.reset();
-        this.selectedOption = ''
-        this.isFocused = false
+        this.selectedOption = '';
+        this.isFocused = false;
         this.options = [];
       } else {
         alert('complete los campos requeridos');
@@ -308,7 +306,6 @@ export class NewPagesComponent {
         alert('10 preguntas cargadas con exito');
         window.location.reload();
       }
-      
     } catch (error) {
       alert(error);
       console.error(error);
@@ -319,8 +316,8 @@ export class NewPagesComponent {
     this.showForm = false;
     this.createOrEdit = false;
     this.toggle = true;
-    this.isValidInput()
-    this.showButton = true
+    this.isValidInput();
+    this.showButton = true;
   }
 
   addOption() {
@@ -331,5 +328,4 @@ export class NewPagesComponent {
       this.showPlus = false;
     }
   }
- 
 }
