@@ -38,9 +38,8 @@ export class NewPagesComponent {
   selectedOption: string = '';
   inputType: string = '';
   showButton: boolean = false;
-  pop: boolean = false
+  pop: boolean = true
   showForm: boolean = false;
-  
   isTrueFalseQuestion: boolean = false;
   showPlus: boolean = false;
   showSubmits: boolean = false;
@@ -133,6 +132,8 @@ export class NewPagesComponent {
     ) {
       this.showButton = true;
       
+    } else {
+      this.showButton = false
     }
 
     /* modulo */
@@ -198,7 +199,7 @@ export class NewPagesComponent {
         this.pop= true
         setTimeout(()=>{
           this.closeFn()
-        }, 20000)
+        }, 2000)
         this.questionCategory.name = this.selectNameForm.value.name;
         this.questionCategory.description =
           this.selectNameForm.value.description;
