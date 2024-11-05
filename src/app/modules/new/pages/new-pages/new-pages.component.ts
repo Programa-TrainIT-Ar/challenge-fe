@@ -38,7 +38,7 @@ export class NewPagesComponent {
   selectedOption: string = '';
   inputType: string = '';
   showButton: boolean = false;
-  pop: boolean = true
+  pop: boolean = false
   showForm: boolean = false;
   isTrueFalseQuestion: boolean = false;
   showPlus: boolean = false;
