@@ -7,6 +7,10 @@
   background-color: #121212;
   min-height: 100vh;
   display: flex;
+  background-image: url('../../../../../assets/layout/images/logo.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 414px 404px;
   /* Asegura que los elementos ocupen el alto completo */
 }
 
