@@ -1,4 +1,15 @@
 import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-side-bar',
+  templateUrl: './side-bar.component.html',
+  styleUrl: './side-bar.component.scss'
+})
+export class SideBarComponent {
+
+}
+
+/* import { Component } from '@angular/core';
 import { AuthService } from '@auth0/auth0-angular';
 
 @Component({
@@ -8,10 +19,10 @@ import { AuthService } from '@auth0/auth0-angular';
 })
 export class SideBarComponent {
   isSidebarOpen = false;
-  private authService: AuthService; // Add this line
+  private authService: AuthService; 
 
   constructor(authService: AuthService) { 
-    this.authService = authService; // Initialize the property here
+    this.authService = authService; 
   }
 
   toggleSidebar() {
@@ -20,7 +31,7 @@ export class SideBarComponent {
 
   logout() {
     this.authService.logout().subscribe(() => {
-      window.location.href = ''; // Redirect to the login page
+      window.location.href = ''; 
     });
   }
-}
+} */
