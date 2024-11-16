@@ -4,23 +4,21 @@
   align-items: center;
   justify-content: flex-start;
   padding: 2rem;
-  width: 90%;  
-  max-width: 900px;
-  height: 90vh;
+   width: 90%; 
+  max-width: 95vh;
+   height: 90vh; 
   border-radius: 12px;
   box-shadow: 0px 0px 12.8px rgba(241, 121, 197, 1);
   background: rgba(56, 53, 53, 1);
-  border: 2px solid rgba(241, 121, 197, 1);  
+  border: 2px solid rgba(241, 121, 197, 1);
   background-image: url('../../../../../assets/layout/images/logo.svg');
   background-repeat: no-repeat;
   background-position: center;
-  background-size: 180px; 
+  background-size: 180px;
   z-index: 1;
   font-family: Poppins;
-  margin: auto; 
-  overflow-y: auto;  
-  margin-top: 10px;
-  
+  margin: auto;
+  overflow-y: auto;
 }
 .wrapper{
   width: 100%;
@@ -35,7 +33,6 @@
 }
 
 .content-1 {
-  
   display: flex;
   justify-content: space-between;
   width: 100%;
@@ -66,7 +63,6 @@
   justify-content: space-between;
   flex-wrap: wrap;
   width: 100%;
-  margin-top: 20px;
 }
 
 .question-container {
@@ -81,8 +77,8 @@
   width: 100%;
 }
 
-
-.descripcion, .namequiz {
+.descripcion,
+.namequiz {
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -93,7 +89,6 @@
   padding: 1rem;
   font-size: 14px;
 }
-
 
 .option-row {
   display: flex;

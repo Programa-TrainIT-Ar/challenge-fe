@@ -1,5 +1,9 @@
+
 <div class="normal-container transparent">
+  
+  
   <div class="header-inputs-container">
+    
     <div>
       <div
         [ngClass]="showForm ? 'quiz-container-true' : 'quiz-container-false'">
@@ -14,6 +18,7 @@
                   : 'Nombre del Quiz'
               "
               formControlName="name"
+              (input)="isValidInput()"
               [ngClass]="{ notice: isFieldInvalid('name') }" />
             <div [ngClass]="showForm ? '' : 'd-none'">
               <button class="btn-plus" (click)="editQuiz()">
@@ -33,7 +38,8 @@
                   ? '* La descripción es requerida'
                   : 'Descripción'
               "
-              formControlName="description" />
+              formControlName="description"
+              (input)="isValidInput()" />
           </div>
         </form>
 
@@ -41,10 +47,14 @@
           [ngClass]="showForm ? '' : 'absolute-true'"
           (datosParaPadre)="recibirDatos($event)"
           [mode]="toggle"></app-header-page>
+
       </div>
     </div>
   </div>
-  <div *ngIf="showButton">
+  
+   
+  <div>
+  <div *ngIf="showButton && inputsValues">
     <button
       (click)="createOrEdit ? createQuiz() : updateQuiz()"
       class="custom-btn-save">
@@ -183,3 +193,6 @@
     </form>
   </div>
 </div>
+<span *ngIf="pop">
+  <app-pop-message class="pop-message"  [message]="'Cambios guardados correctamente'" (closeEvent)="closeFn()"></app-pop-message>
+</span>
