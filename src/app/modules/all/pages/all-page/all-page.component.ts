@@ -43,7 +43,17 @@ interface Quiz {
       transition('collapsed => expanded', [animate('300ms ease-out')]),
       transition('expanded => collapsed', [animate('300ms ease-in')]),
     ]),
+    trigger('fadeInOut', [
+      transition(':enter', [
+        style({ opacity: 0 }),
+        animate('300ms', style({ opacity: 1 }))
+      ]),
+      transition(':leave', [
+        animate('300ms', style({ opacity: 0 }))
+      ])
+    ])
   ],
+
 })
 export class AllPageComponent implements OnInit {
   @Output() quizSelected = new EventEmitter<any>();
@@ -52,8 +62,10 @@ export class AllPageComponent implements OnInit {
   module: string = '';
   cell: string = '';
   quizzes: Quiz[] = [];
-  selectedQuiz: any;
+  selectedQuiz: Quiz | null = null
   isExpanded3: boolean = false;
+  selectedQuizOnView: Quiz | null = null
+  
   showEdit: boolean = false;
 
   constructor(private router: Router) {}
@@ -136,8 +148,13 @@ export class AllPageComponent implements OnInit {
   }
 
   viewQuiz(quiz: Quiz) {
-    this.selectedQuiz = quiz;
-    this.router.navigate(['home/view-quiz', quiz.id]);
+    this.selectedQuizOnView = quiz; // Esto hace que la ventana emergente se muestre
+    
+    console.log('Quiz seleccionado:', quiz);
+  }
+
+  closeQuiz() {
+    this.selectedQuizOnView = null; // Esto cierra la ventana emergente
   }
 
   async deleteQuiz(quiz: any) {
