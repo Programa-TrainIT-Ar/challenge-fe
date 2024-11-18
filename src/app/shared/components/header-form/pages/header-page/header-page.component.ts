@@ -1,6 +1,7 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { environment } from '@environments/environment';
+import { HeaderPageService } from './header-page.service';
+import { Module, Cell, Seniority } from './header-page.interface';
 
 @Component({
   selector: 'app-header-page',
@@ -12,7 +13,11 @@ export class HeaderPageComponent {
   @Output() datosParaPadre = new EventEmitter<any>(); // cambie a any
   public selectHeaderForm: FormGroup;
   constructor(private formsBuilder: FormBuilder) {}
-
+  
+  private headerPageService = inject(HeaderPageService)
+  modules: Module[] = []
+  cells: Cell[] = []
+  
   ngOnInit(): void {
     
     this.selectHeaderForm = this.formsBuilder.group({
@@ -20,6 +25,10 @@ export class HeaderPageComponent {
       descripcion: [''],
       modulo: [''],
     });
+    //Consulta los modulos y las celullas que tiene anidadas
+    this.headerPageService.getModules().subscribe(( response: any) => {
+      this.modules= response
+    })
   }
   colorsCells: string[] = [
     '#ffcc00',
@@ -35,43 +44,47 @@ export class HeaderPageComponent {
     '#5856d6',
     '#007aff',
   ];
-  colorsSeniority: string[] = ['#ff2d55', '#af52de', '#5856d6', '#007aff'];
+  
   showModulo: boolean = false;
   showCelula: boolean = false;
   showSeniority: boolean = false;
-  questionCategory: any = {
-    module: 'Selecciona el modulo',
-    cell: 'Selecciona la célula',
-    seniority: 'Seniority',
+  
+  quizCategory: any = {
+    module: '',
+    cell: '',
+    seniority: '',
     colorCell: '',
   };
-  opModules: any = [];
-  opCells: any = [];
+  
+  seniorities: Seniority[]=[
+    {class: 'trainee', name: 'Trainee'},
+    {class: 'junior', name: 'Junior'},
+    {class: 'middle', name: 'Middle'},
+    {class: 'senior', name: 'Senior'},
+    ]
 
-  async getModule() {
-    let response = await fetch(`${environment.url}/modules`);
-    response = await response.json();
-    this.opModules = response;
+  selectModule(module: Module) {
+    this.quizCategory.module = module.name
+    this.cells = module.cell;
+    this.quizCategory.cell= ''
+    this.showModulo = false;
+    this.datosParaPadre.emit(this.quizCategory);
+
   }
-  async getCells() {
-    /* no pude reutilizar fn anterior con parametros */
-    let response = await fetch(`${environment.url}/cells`);
-    response = await response.json();
-    this.opCells = response;
+  selectCell(cell: Cell, colorCell: string) {
+    this.quizCategory.cell = cell.name
+    this.quizCategory.colorCell = colorCell
+    this.showCelula = false;
+    this.datosParaPadre.emit(this.quizCategory);
   }
-
-  pushQuestionCategory(prop: string, val: string, color: string): void {
-    this.questionCategory[prop] = val;
-    if (prop == 'cell') {
-      this.questionCategory.colorCell = color;
-    }
-
-    this.datosParaPadre.emit(this.questionCategory);
+  selectSeniority(seniority: string) {
+    this.quizCategory.seniority= seniority;
+    this.showSeniority = false;
+    this.datosParaPadre.emit(this.quizCategory);
   }
 
   isShowModulo() {
      if (this.mode) {
-      this.getModule();
       this.showModulo = !this.showModulo;
       this.showCelula = false;
       this.showSeniority = false;
@@ -79,8 +92,6 @@ export class HeaderPageComponent {
   }
   isShowCelula() {
     if (this.mode) {
-      this.getCells();
-
       this.showCelula = !this.showCelula;
       this.showSeniority = false;
       this.showModulo = false;
@@ -92,5 +103,9 @@ export class HeaderPageComponent {
       this.showCelula = false;
       this.showModulo = false;
     }
+  }
+  getSelectedSeniorityClass(): string{
+    const selected = this.seniorities.find(s => s.name ===this.quizCategory?.seniority)
+    return selected?.class || ''
   }
 }
