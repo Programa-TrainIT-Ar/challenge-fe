@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { environment } from '@environments/environment';
 import { ChangeDetectorRef } from '@angular/core';
+import { firstValueFrom } from 'rxjs';
+import { AuthService } from '@auth0/auth0-angular';
 
 @Component({
   selector: 'app-new-pages',
@@ -11,7 +13,9 @@ import { ChangeDetectorRef } from '@angular/core';
 export class NewPagesComponent {
   constructor(
     private formsBuilder: FormBuilder,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private auth:AuthService
+    
   ) {}
   public selectNameForm = this.formsBuilder.group({
     name: ['', Validators.required],
@@ -159,56 +163,89 @@ export class NewPagesComponent {
 
   async createQuiz() {
     try {
-      this.quizData.seniority == 'semi-sr'
-        ? (this.quizData.seniority = 'middle')
-        : this.quizData;
-
-      const prueba = {
+      // Ajustamos la seniority si es necesario
+      this.quizData.seniority = this.quizData.seniority === 'semi-sr' ? 'middle' : this.quizData.seniority;
+  
+      // Obtener el email del usuario autenticado
+      const user = await firstValueFrom(this.auth.user$);
+  
+      if (!user?.email) {
+        throw new Error('No se encontró el email del usuario autenticado');
+      }
+  
+      // Obtener el ID del usuario desde el backend usando el email
+      const userResponse = await fetch(`${environment.url}/user/findByEmail?email=${user.email}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+  
+      if (!userResponse.ok) {
+        throw new Error('Error al obtener el usuario desde el backend');
+      }
+  
+      const userData = await userResponse.json();
+      
+      if (!userData?.id) {
+        throw new Error('No se encontró el ID del usuario en la base de datos');
+      }
+  
+      // Crear el objeto del quiz con el ID del usuario obtenido
+      const quizData = {
         name: this.selectNameForm.value.name,
         description: this.selectNameForm.value.description,
         cell_id: this.quizData.cell,
         seniority: this.quizData.seniority,
         challenge_type: 'immediate',
-        created_by_id: '224742e8-731b-40bf-b05f-a7547270746c',
+        created_by_id: userData.id, // Usamos el ID obtenido dinámicamente
         is_active: true,
       };
-
-      if (
-        this.selectNameForm.value.description &&
-        this.selectNameForm.value.name
-      ) {
-        const response = await fetch(`${environment.url}/quiz`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(prueba),
-        });
-        if (!response.ok) {
-          alert(response);
-          throw new Error(`Error: ${response}`);
-        }
-        const data = await response.json();
-        this.quizID = data.id;
-        this.showForm = true;
-        this.toggle = false;
+  
+      // Validar que los campos requeridos estén completos
+      if (!this.selectNameForm.value.description || !this.selectNameForm.value.name) {
+        alert('Complete los datos requeridos');
         this.showButton = false;
-        this.pop = true;
-
-        setTimeout(() => {
-          this.closeFn();
-        }, 2000);
-        this.questionCategory.name = this.selectNameForm.value.name;
-        this.questionCategory.description =
-          this.selectNameForm.value.description;
-      } else {
-        alert('complete los datos requeridos');
-        this.showButton = false;
+        return;
       }
+  
+      // Crear el quiz
+      const response = await fetch(`${environment.url}/quiz`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(quizData),
+      });
+  
+      if (!response.ok) {
+        throw new Error(`Error al crear el quiz: ${response.statusText}`);
+      }
+  
+      const data = await response.json();
+      
+      // Actualizar el estado del componente
+      this.quizID = data.id;
+      this.showForm = true;
+      this.toggle = false;
+      this.showButton = false;
+      this.pop = true;
+  
+      setTimeout(() => {
+        this.closeFn();
+      }, 2000);
+  
+      this.questionCategory.name = this.selectNameForm.value.name;
+      this.questionCategory.description = this.selectNameForm.value.description;
+  
     } catch (error) {
-      console.error('Error creating quiz:', error);
+      console.error('Error creando el quiz:', error);
+      alert(error.message || 'Error al crear el quiz');
+      this.showButton = false;
     }
   }
+  
+  
 
   async updateQuiz() {
     const update = {

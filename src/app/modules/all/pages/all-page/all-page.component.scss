@@ -133,37 +133,38 @@ h2 {
   transform: translateY(-50%);
   color: #aaa;
 }
-.custom-popup {
-  background-color: rgba(53, 52, 52, 0.5) !important;
+// .custom-popup {
+//   background-color: rgba(33, 33, 33,) !important;
 
-  color: #fff !important;
-  border-radius: 15px !important ;
-}
+//   color: #fff !important;
+//   border-radius: 15px !important ;
+// }
 
-.custom-title {
-  font-size: 20px !important;
-  font-weight: bold !important;
-  color: #fff !important;
-}
+// .custom-title {
+//   font-size: 20px !important;
+//   font-weight: bold !important;
+//   color: #fff !important;
+// }
 
-.custom-content {
-  font-size: 14px !important;
-  color: #cccccc !important;
-}
+// .custom-content {
+//   font-size: 14px !important;
+//   color: #cccccc !important;
+// }
 
-.custom-confirm-btn {
-  background-color: #6c63ff !important;
-  border-radius: 10px !important;
-  color: #fff !important;
-  padding: 10px 20px !important;
-}
+// .custom-confirm-btn {
+//   background-color: #6c63ff !important;
+//   border-radius: 10px !important;
+//   color: #fff !important;
+//   padding: 10px 20px !important;
+// }
 
-.custom-cancel-btn {
-  background-color: #4e4e4e !important;
-  border-radius: 10px !important;
-  color: #fff !important;
-  padding: 10px 20px !important;
-}
+// .custom-cancel-btn {
+//   background-color: #4e4e4e !important;
+//   border-radius: 10px !important;
+//   color: #fff !important;
+//   padding: 10px 20px !important;
+//   display: none !important;
+// }
 
 .input-wrapper input {
   padding-left: 35px;
@@ -225,4 +226,46 @@ h2 {
 
   overflow-y: auto;
   z-index: 1001;
+}
+/* Estilos personalizados para el popup */
+.swal2-popup.custom-popup {
+  background-color: #2c2c2c !important; /* Fondo oscuro */
+  border-radius: 20px;
+  padding: 20px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+}
+
+/* Estilo para el título */
+.swal2-title.custom-title {
+  color: #ffcc00 !important; /* Color dorado */
+  font-family: 'Arial', sans-serif;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+/* Estilo para el botón de confirmación (Eliminar) */
+.swal2-confirm.custom-confirm-btn {
+  background-color: #ff4d4d !important; /* Rojo para el botón de eliminar */
+  color: #fff;
+  border-radius: 8px;
+  padding: 10px 20px;
+  border: none;
+  font-weight: bold;
+}
+
+.swal2-confirm.custom-confirm-btn:hover {
+  background-color: #ff1a1a !important; /* Rojo más intenso */
+}
+
+/* Estilo para el botón de cancelación */
+.swal2-cancel.custom-cancel-btn {
+  background-color: #999 !important; /* Gris para el botón de cancelar */
+  color: #fff;
+  border-radius: 8px;
+  padding: 10px 20px;
+  border: none;
+}
+
+.swal2-cancel.custom-cancel-btn:hover {
+  background-color: #666 !important; /* Gris más oscuro */
 }

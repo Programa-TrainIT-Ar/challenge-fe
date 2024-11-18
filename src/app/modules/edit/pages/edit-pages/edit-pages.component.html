@@ -30,23 +30,19 @@
 
           <div class="text-question">
             <div>{{ question.get('text').value }}</div>
-            <button class="edit-button">
+            <button (click)="showEditPopup()" class="edit-button">
               <i class="fas fa-edit"></i>
             </button>
           </div>
 
           <!-- Opciones para preguntas de tipo 'true_false' -->
-          <div
-            *ngIf="question.get('type').value === 'true_false'"
-            class="option-row">
+          <div *ngIf="question.get('type').value === 'true_false'" class="option-row">
             <div class="option-item">
               <span>
                 <input
                   type="radio"
                   name="correct_option_{{ i }}"
-                  [checked]="
-                    question.get('correct_option').value === 'Verdadero'
-                  "
+                  [checked]="question.get('correct_option').value === 0"
                   (change)="selectCorrectOption(i, 'Verdadero')" />
                 <label class="option-label">Verdadero</label>
               </span>
@@ -56,7 +52,7 @@
                 <input
                   type="radio"
                   name="correct_option_{{ i }}"
-                  [checked]="question.get('correct_option').value === 'Falso'"
+                  [checked]="question.get('correct_option').value === 1"
                   (change)="selectCorrectOption(i, 'Falso')" />
                 <label class="option-label">Falso</label>
               </span>
@@ -111,7 +107,7 @@
           (click)="prevPage()"
           [disabled]="currentPage === 0"
           [class.disabled]="currentPage === 0">
-          atras
+          Atras
         </button>
 
         <div class="page-numbers">
@@ -150,7 +146,7 @@
         </div>
         <button *ngIf="currentPage >= totalPages - 1"
         (click)="createQuiz()" 
-        class="pagination-button">
+        class="pagination-button save-button">
           Guardar
         </button>
 
@@ -159,8 +155,98 @@
           (click)="nextPage()"
           [disabled]="currentPage >= totalPages - 1"
           [class.disabled]="currentPage >= totalPages - 1">
-          siguiente
+          Siguiente
         </button>
+      </div>
+      <!-- el popup para editar preguntas-->
+      <div *ngIf="showEditForm" class="popup-overlay">
+        <div class="content-2">
+          <div class="popup-header">
+            <h3>Editar pregunta</h3>
+            <button class="close-button" (click)="closeEditPopup()">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+      
+          <form #questionForm="ngForm" (ngSubmit)="updateQuestion(questionForm)">
+            <div class="question-container mb-3">
+              <div>
+                <label for="questionType" class="custom-label">Tipo de Pregunta</label>
+                <div class="d-flex">
+                  <select
+                    class="custom-input"
+                    id="questionType"
+                    name="questionType"
+                    [(ngModel)]="selectedOption"
+                    (ngModelChange)="onQuestionTypeChange($event, questionForm)"
+                    required>
+                    <option
+                      *ngFor="let type of questionTypes"
+                      [value]="type">
+                      {{ type }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              
+              <div class="custom-label">
+                <div class="label-input">
+                  <label for="questionText" class="custom-label">Escribe una pregunta</label>
+                </div>
+                <input
+                  type="text"
+                  id="questionText"
+                  class="custom-input"
+                  name="questionText"
+                  [(ngModel)]="currentEditingQuestion?.get('text').value"
+                  required />
+              </div>
+            </div>
+      
+            <div class="form-group">
+              <div class="option-row">
+                <div *ngFor="let option of options; let i = index" class="row">
+                  <div *ngIf="showInput" class="checkbox-container mb-3">
+                    <input
+                      *ngIf="inputType === 'radio'"
+                      type="radio"
+                      class="checkbox-input"
+                      [(ngModel)]="selectedRadio"
+                      [value]="option"
+                      name="radioGroup"
+                      (click)="answerChoice(i)" />
+                    <input
+                      *ngIf="inputType === 'checkbox'"
+                      type="checkbox"
+                      class="checkbox-input"
+                      [(ngModel)]="selectedValues[i]"
+                      (click)="answerChoice(i)"
+                      [name]="'checkbox' + i" />
+                  </div>
+                  <input
+                    type="text"
+                    class="custom-option-input mb-3"
+                    [(ngModel)]="options[i]"
+                    name="option{{ i }}"
+                    [readonly]="isTrueFalseQuestion"
+                    required />
+                </div>
+      
+                <div *ngIf="showPlus" class="row">
+                  <div class="checkbox-container">
+                    <i class="bi bi-plus-circle" (click)="addOption()"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+      
+            <div *ngIf="showSubmits" class="d-flex justify-content-around">
+              <button type="submit" class="custom-btn-submit">
+                Guardar Cambios
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
 
       <!-- <div class="page-info">

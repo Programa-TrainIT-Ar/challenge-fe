@@ -118,7 +118,7 @@ button {
 .edit-button {
   display: inline-flex;
   align-items: center;
-
+background-color: #282828;
   color: white;
   font-size: 14px;
   border: none;
@@ -130,14 +130,15 @@ button {
     transform 0.2s;
 }
 
+
 .edit-button:hover {
-  background-color: darkviolet;
+  background-color: #373737;
   transform: scale(1.05);
 }
 
 .edit-button:focus {
   outline: none;
-  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.5);
+  box-shadow: 0 0 0 2px rgba(51, 52, 54, 0.5);
 }
 
 .edit-button:active {
@@ -185,7 +186,7 @@ button:hover {
   display: flex;
   align-items: center;
   justify-content: space-around;
-  padding: 20px 0; /* Ajusta el padding según sea necesario */
+  padding: 20px 0; 
   position: relative;
   bottom: 0px;
   margin-top: auto;
@@ -211,22 +212,22 @@ button:hover {
 }
 .option-row {
   // display: flex;
-  // flex-wrap: wrap; /* Permitir que las opciones se envuelvan */
-  // justify-content: space-between; /* Espacio entre las opciones */
-  margin-top: 15px; /* Espacio entre la pregunta y las opciones */
+  // flex-wrap: wrap; 
+  // justify-content: space-between; 
+  margin-top: 15px; 
   display: inline;
 }
 
 .option-item {
   display: inline-block;
-  align-items: center; /* Alinear el texto y el input verticalmente */
-  width: 48%; /* Ocupa casi la mitad del contenedor */
-  margin-bottom: 10px; /* Espacio inferior entre las opciones */
-  border: 1px solid #444; /* Borde oscuro */
-  border-radius: 15px; /* Borde redondeado */
-  background-color: #212121ff; /* Color de fondo */
-  padding: 10px; /* Espacio interno */
-  color: white; /* Color de texto gris oscuro */
+  align-items: center; 
+  width: 48%; 
+  margin-bottom: 10px; 
+  border: 1px solid #444; 
+  border-radius: 15px; 
+  background-color: #212121ff; 
+  padding: 10px; 
+  color: white; 
 }
 .text-question {
   color: white;
@@ -235,11 +236,11 @@ button:hover {
 }
 
 .option-label {
-  color: white; /* Color gris oscuro para las etiquetas */
+  color: white; 
 }
 
 input[type='radio'] {
-  margin-right: 5px; /* Espacio entre el input y el texto */
+  margin-right: 5px; 
 }
 #pagination {
   display: flex;
@@ -274,7 +275,7 @@ input[type='radio'] {
 }
 
 .dot.active {
-  color: #007bff; /* Color para el punto activo */
+  color: #007bff; 
 }
 
 /* estilos de paginacion*/
@@ -291,13 +292,14 @@ input[type='radio'] {
     display: flex;
     align-items: center;
     gap: 15rem;
-    justify-content: space-around; /* Centrado de los controles */
+    justify-content: space-around; 
 
     .pagination-button {
       padding: 0.8rem 1rem;
       border: none;
       border-radius: 4px;
       cursor: pointer;
+      width: 84px;
       transition:
         background-color 0.2s,
         transform 0.2s ease;
@@ -315,6 +317,9 @@ input[type='radio'] {
         font-size: 0.875rem;
       }
     }
+    .save-button{
+      border: 2px solid magenta;
+    }
 
     .page-numbers {
       display: flex;
@@ -323,22 +328,22 @@ input[type='radio'] {
 
       .page-number {
         padding: 0;
-        font-size: 50px; /* Tamaño adecuado para los puntos */
-        background-color: transparent; /* Sin fondo */
-        border: none; /* Sin borde */
-        color: #434547; /* Color de los puntos */
+        font-size: 50px; 
+        background-color: transparent; 
+        border: none; 
+        color: #434547; 
         cursor: pointer;
         transition:
           transform 0.2s ease,
           color 0.2s ease;
 
         &:hover {
-          transform: scale(1.2); /* Aumento de tamaño al pasar el cursor */
+          transform: scale(1.2); 
         }
 
         &.active {
-          color: #000; /* Color del punto activo */
-          opacity: 1; /* Asegura que el punto activo no se desvanezca */
+          color: #000; 
+          opacity: 1; 
         }
       }
 
@@ -371,4 +376,59 @@ input[type='radio'] {
       color: #666;
     }
   }
+}
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.popup-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.close-button {
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-size: 1.2rem;
+}
+
+.close-button:hover {
+  color: #ff5ea6;
+}
+
+.content-2 {
+  position: relative;
+  background-color: rgba(79, 77, 77);
+  border-radius: 8px;
+  padding: 16px;
+  width: 137vh;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0px -3px 12.8px 0px rgba(241, 121, 197, 1);
+}
+
+.edit-button {
+  background: none;
+  border: none;
+  color: #6a5fff;
+  cursor: pointer;
+  padding: 5px;
+  transition: color 0.3s ease;
+}
+
+.edit-button:hover {
+  color: #ff5ea6;
 }
