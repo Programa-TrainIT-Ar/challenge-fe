@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { trigger, style, transition, animate, state } from '@angular/animations';
 import { Output, EventEmitter } from '@angular/core';
 import Swal from 'sweetalert2';
 import { environment } from '@environments/environment';
+import { AllPageService } from './all-page.service'
 
 interface User {
   first_name: string;
@@ -68,13 +69,42 @@ export class AllPageComponent implements OnInit {
   
   showEdit: boolean = false;
 
+  private allPageService = inject(AllPageService)
   constructor(private router: Router) {}
 
   ngOnInit(): void {
-    this.fetchAllQuizzes();
+    
+    this.allPageService.getAllQuiz().subscribe((response:any) => {
+      this.quizzes = response.quizzes
+      console.log(this.quizzes)
+    });
   }
 
-  // Método para obtener quizzes de la API con búsqueda dinámica
+  recibirDatos(quizCategory:any) {
+    this.module = quizCategory.module;
+    this.cell = quizCategory.cell;
+    this.seniority = quizCategory.seniority;
+    this.allPageService.getFilteredQuiz({
+      module: this.module,
+      cell: this.cell,
+      seniority: this.seniority.toLowerCase(),
+      search: this.searchText
+    }).subscribe((response:any) => {
+      this.quizzes = response.quizzes
+    })
+  }
+
+  onSearchChange() {
+    this.allPageService.getFilteredQuiz({
+      module: this.module,
+      cell: this.cell,
+      seniority: this.seniority.toLowerCase(),
+      search: this.searchText
+    }).subscribe((response:any) => {
+      this.quizzes = response.quizzes
+    });
+  }
+ /*  // Método para obtener quizzes de la API con búsqueda dinámica
   async fetchAllQuizzes() {
     try {
       const params = new URLSearchParams();
@@ -117,15 +147,10 @@ export class AllPageComponent implements OnInit {
     } catch (error) {
       console.error('Error al obtener los quizzes:', error);
     }
-  }
-  
-  
-  
+  } */
 
   // Método para actualizar los resultados de la búsqueda al cambiar el texto
-  onSearchChange() {
-    this.fetchAllQuizzes();
-  }
+  
 
   async toggleActive(quiz: Quiz) {
     quiz.is_active = !quiz.is_active;
