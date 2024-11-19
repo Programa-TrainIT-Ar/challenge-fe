@@ -174,10 +174,11 @@ export class NewPagesComponent {
       }
   
       // Obtener el ID del usuario desde el backend usando el email
-      const userResponse = await fetch(`${environment.url}/user/findByEmail?email=${user.email}`, {
+      const userResponse = await fetch(`${environment.url}/user/FindByEmail?email=${user.email}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
+          
         },
       });
   
