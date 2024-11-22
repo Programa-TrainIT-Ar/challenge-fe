@@ -16,7 +16,34 @@
                   class="module-option"
                   (click)="selectModule(module)">
                   {{ module.name }}
+                  @if(editMode){<button (click)="editQuiz(module.id)"><i class="bi bi-pencil-square"></i></button>
+                  <button (click)="deleteModule(module.id)"><i class="bi bi-trash"></i></button>}
                 </button>
+                
+              }
+              @if (editMode) {
+                @if (!addModule) {
+                  
+                  <div >
+                    <input
+                      class="module-option"
+                      type="text"
+                      formControlName="modulo"
+                      placeholder="Nombre del nuevo módulo"
+                      (keyup.enter)="createModule()"
+                    >
+                    @if(this.selectHeaderForm.get('modulo')?.errors?.['required']) {
+                      <span>(El modulo no puede quedar vacío)</span>
+                    }
+                    @if(this.selectHeaderForm.get('modulo')?.errors?.['minlength']) {
+                      <span>(Debe tener como mínimo 3 caracteres)</span>
+                    }
+                    <div class="input-actions">
+                      <button (click)="createModule()">Guardar</button>
+                      <button (click)="toggleEditMode()">Cancelar</button>
+                    </div>
+                  </div>
+                }
               }
             </div>
           }
@@ -26,8 +53,7 @@
         <h4>Célula</h4>
         <div class="form-select option-select" (click)="isShowCelula()">
           <span
-          class="floating"
-          [style.background-color]="quizCategory?.colorCell">
+          class="floating {{ quizCategory?.cellClass }}">
             {{ quizCategory?.cell || 'Selecciona la célula'}}
           </span>
         </div>
@@ -35,9 +61,9 @@
           <div class="option-floating floating-cell">
             @for (cell of cells;track $index) {
                 <button
-                  class="floating"
-                  (click)="selectCell(cell, colorsCells[$index])"
-                  [style.background-color]="colorsCells[$index]">
+                  class="floating "
+                  (click)="selectCell(cell, $index)"
+                  [ngClass]="getCellClass($index)">
                   {{ cell.name }}
                 </button>
             }

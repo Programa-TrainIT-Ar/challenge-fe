@@ -2,7 +2,8 @@
   <app-header-page
     [ngClass]="showForm ? '' : 'absolute-true'"
     (datosParaPadre)="recibirDatos($event)"
-    [mode]="true">
+    [mode]='true'
+    [editMode]='false'>
   </app-header-page>
   <div class="search-container">
     <h2>Todos los Quiz</h2>

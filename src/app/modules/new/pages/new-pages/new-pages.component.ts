@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { environment } from '@environments/environment';
 import { ChangeDetectorRef } from '@angular/core';
@@ -8,7 +8,7 @@ import { ChangeDetectorRef } from '@angular/core';
   templateUrl: './new-pages.component.html',
   styleUrls: ['./new-pages.component.scss'],
 })
-export class NewPagesComponent {
+export class NewPagesComponent implements OnInit {
   constructor(
     private formsBuilder: FormBuilder,
     private cdr: ChangeDetectorRef
@@ -18,11 +18,23 @@ export class NewPagesComponent {
     description: ['', Validators.required],
   });
 
+  selectHeaderForm : FormGroup;
+
+  ngOnInit(): void {
+    this.selectHeaderForm = this.formsBuilder.group({
+      name: ['',[Validators.required, Validators.minLength(3)]],
+      descripcion: [''],
+      module: ['',[Validators.required, Validators.minLength(3)]],
+      cell: ['',[Validators.required, Validators.minLength(3)]],
+      seniority: ['',[Validators.required, Validators.minLength(3)]],
+      //questions:
+    });
+  }
   isFieldInvalid(field: string): boolean {
     const control = this.selectNameForm.get(field);
     return control?.invalid && (control.dirty || control.touched);
   }
-
+  
   questionTypes: string[] = [
     'Selección mutiple',
     'Casilla',

@@ -1,5 +1,5 @@
 import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, MinLengthValidator, Validators } from '@angular/forms';
 import { HeaderPageService } from './header-page.service';
 import { Module, Cell, Seniority } from './header-page.interface';
 
@@ -8,8 +8,10 @@ import { Module, Cell, Seniority } from './header-page.interface';
   templateUrl: './header-page.component.html',
   styleUrl: './header-page.component.scss',
 })
+
 export class HeaderPageComponent {
   @Input() mode: boolean = true;
+  @Input() editMode: boolean = true ;
   @Output() datosParaPadre = new EventEmitter<any>(); // cambie a any
   public selectHeaderForm: FormGroup;
   constructor(private formsBuilder: FormBuilder) {}
@@ -19,41 +21,24 @@ export class HeaderPageComponent {
   cells: Cell[] = []
   
   ngOnInit(): void {
-    
-    this.selectHeaderForm = this.formsBuilder.group({
-      nombreQuiz: [''],
-      descripcion: [''],
-      modulo: [''],
-    });
     //Consulta los modulos y las celullas que tiene anidadas
     this.headerPageService.getModules().subscribe(( response: any) => {
       this.modules= response
     })
   }
-  colorsCells: string[] = [
-    '#ffcc00',
-    '#ff9500',
-    '#34c759',
-    '#00c7be',
-    '#30b0c7',
-    '#32ade6',
-    '#007aff',
-    '#007AFF',
-    '#ff2d55',
-    '#af52de',
-    '#5856d6',
-    '#007aff',
-  ];
   
   showModulo: boolean = false;
   showCelula: boolean = false;
   showSeniority: boolean = false;
-  
+  addModule: boolean = false;
+  addCell: boolean = false;
+  newModuleName: string = '';
+
   quizCategory: any = {
     module: '',
     cell: '',
     seniority: '',
-    colorCell: '',
+    cellClass: '',
   };
   
   seniorities: Seniority[]=[
@@ -67,20 +52,46 @@ export class HeaderPageComponent {
     this.quizCategory.module = module.name
     this.cells = module.cell;
     this.quizCategory.cell= ''
+    this.quizCategory.cellClass= ''
     this.showModulo = false;
     this.datosParaPadre.emit(this.quizCategory);
 
   }
-  selectCell(cell: Cell, colorCell: string) {
+  selectCell(cell: Cell, index: number) {
     this.quizCategory.cell = cell.name
-    this.quizCategory.colorCell = colorCell
+    this.quizCategory.cellClass = this.getCellClass(index)
     this.showCelula = false;
     this.datosParaPadre.emit(this.quizCategory);
   }
+  
   selectSeniority(seniority: string) {
     this.quizCategory.seniority= seniority;
     this.showSeniority = false;
     this.datosParaPadre.emit(this.quizCategory);
+  }
+
+  createModule() {
+    if (this.selectHeaderForm.get('modulo').valid) {
+      console.log(this.newModuleName)
+      this.headerPageService.createModule(this.selectHeaderForm.get('modulo').value).subscribe({
+        next: (newModule) => {
+          this.editMode = false;
+          this.headerPageService.getModules().subscribe(( response: any) => {
+            this.modules= response
+          })
+        },
+        error: (error) => {
+          console.error('Error al crear módulo', error);
+          // Manejar error (mostrar mensaje al usuario)
+        }
+      });
+    }
+  }
+  deleteModule(id: string) {
+    this.headerPageService.deleteModule(id).subscribe((response:any)=>{})
+    this.headerPageService.getModules().subscribe(( response: any) => {
+      this.modules= response
+    })
   }
 
   isShowModulo() {
@@ -104,8 +115,18 @@ export class HeaderPageComponent {
       this.showModulo = false;
     }
   }
+  toggleEditMode() {
+    this.editMode = !this.editMode;
+    this.newModuleName = '';
+  }
   getSelectedSeniorityClass(): string{
     const selected = this.seniorities.find(s => s.name ===this.quizCategory?.seniority)
     return selected?.class || ''
   }
+
+  getCellClass(index: number): string {
+    const cellNumber = (index % 10) + 1;  // Esto asegura que si hay más de 10 células, los colores se repitan
+    return `cell-color-${cellNumber}`;
+  }
+  
 }

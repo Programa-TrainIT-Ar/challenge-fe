@@ -92,54 +92,7 @@ export class AllPageComponent implements OnInit {
       this.quizzes = response.quizzes
     });
   }
- /*  // Método para obtener quizzes de la API con búsqueda dinámica
-  async fetchAllQuizzes() {
-    try {
-      const params = new URLSearchParams();
-  
-      // Solo agregar el parámetro 'search' si se está buscando por nombre del quiz
-      if (this.searchText) {
-        params.append('search', this.searchText.toLowerCase());
-        console.log(`Buscando por: ${this.searchText.toLowerCase()}`);
-      }
-  
-      // Agregar parámetros solo si existen
-      if (this.seniority) {
-        params.append('seniority', this.seniority.toLowerCase());
-        console.log(`Filtrando por seniority: ${this.seniority.toLowerCase()}`);
-      }
-      if (this.module) {
-        params.append('module', this.module.toLowerCase());
-        console.log(`Filtrando por módulo: ${this.module.toLowerCase()}`);
-      }
-      if (this.cell) {
-        params.append('cell', this.cell.toLowerCase());
-        console.log(`Filtrando por célula: ${this.cell.toLowerCase()}`);
-      }
-  
-      // Construir la URL
-      const url = `${environment.url}/quiz${params.toString() ? '?' + params.toString() : ''}`;
-      console.log(`URL construida para la consulta: ${url}`);
-  
-      // Realizar la consulta
-      const response = await fetch(url, { method: 'GET' });
-      if (!response.ok) {
-        throw new Error('Error en la consulta: ' + response.status);
-      }
-  
-      // Procesar la respuesta
-      const data = await response.json();
-      this.quizzes = Array.isArray(data.quizzes) ? data.quizzes : [];
-      console.log('Quizzes filtrados recibidos:', this.quizzes);
-  
-    } catch (error) {
-      console.error('Error al obtener los quizzes:', error);
-    }
-  } */
-
-  // Método para actualizar los resultados de la búsqueda al cambiar el texto
-  
-
+ 
   async toggleActive(quiz: Quiz) {
     quiz.is_active = !quiz.is_active;
 
