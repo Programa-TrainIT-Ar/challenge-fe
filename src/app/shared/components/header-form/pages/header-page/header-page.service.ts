@@ -19,6 +19,7 @@ export class HeaderPageService {
       catchError(this.errorHandler)
     )
   }
+  
   createModule(name:string) {
     return this.http.post(`${this.urlApi}/modules`, {name: name})
     .pipe(

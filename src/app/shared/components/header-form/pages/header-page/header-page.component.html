@@ -1,4 +1,4 @@
-<form [formGroup]="selectHeaderForm">
+
   <div class="content">
     <div class="content-1">
       <!-- Opciones de Módulo -->
@@ -9,6 +9,7 @@
             {{quizCategory?.module || 'Selecciona el modulo'}}
           </span>
         </div>
+          
           @if (showModulo) {
             <div class="option-floating floating-module">
               @for (module of modules; track $index) {
@@ -16,35 +17,45 @@
                   class="module-option"
                   (click)="selectModule(module)">
                   {{ module.name }}
-                  @if(editMode){<button (click)="editQuiz(module.id)"><i class="bi bi-pencil-square"></i></button>
-                  <button (click)="deleteModule(module.id)"><i class="bi bi-trash"></i></button>}
+                  @if(editMode){
+                    <div class="actions">
+                      <button (click)="updateModule(module.id)"><i class="bi bi-pencil-square"></i></button>
+                      <button (click)="deleteModule(module.id)"><i class="bi bi-trash"></i></button>
+                    </div>
+                  }
                 </button>
-                
               }
               @if (editMode) {
                 @if (!addModule) {
-                  
+                  <button
+                  class="module-option"
+                  (click)="toggleAddModule()">
+                  + Agregar modulo
+                  </button>
+                } 
+                @else { 
                   <div >
                     <input
                       class="module-option"
                       type="text"
-                      formControlName="modulo"
+                      [formControl]="module"
                       placeholder="Nombre del nuevo módulo"
                       (keyup.enter)="createModule()"
                     >
-                    @if(this.selectHeaderForm.get('modulo')?.errors?.['required']) {
+                    @if(module?.errors?.['required']) {
                       <span>(El modulo no puede quedar vacío)</span>
                     }
-                    @if(this.selectHeaderForm.get('modulo')?.errors?.['minlength']) {
+                    @if(module?.errors?.['minlength']) {
                       <span>(Debe tener como mínimo 3 caracteres)</span>
                     }
                     <div class="input-actions">
                       <button (click)="createModule()">Guardar</button>
-                      <button (click)="toggleEditMode()">Cancelar</button>
+                      <button (click)="toggleAddModule()">Cancelar</button>
                     </div>
                   </div>
                 }
               }
+              
             </div>
           }
       </div>
@@ -94,4 +105,4 @@
 
     </div>
   </div>
-</form>
+
