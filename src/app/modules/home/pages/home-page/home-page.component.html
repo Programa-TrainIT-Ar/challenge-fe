@@ -1,6 +1,16 @@
 <div class="container-fluid">
-  
-    <app-side-bar></app-side-bar>
-  
-  <router-outlet></router-outlet>
+  <div><app-side-bar></app-side-bar></div>
+  <div id="welcome"><router-outlet></router-outlet></div>
+
+  <div *ngIf="user$ | async as user" class="mensaje" [class.hidden]="isMessageHidden">
+    <div class="Bienvenida">
+      Bienvenido, {{ user.name }}
+      <div *ngIf="user.picture">
+        <img
+          [src]="user.picture"
+          alt="Foto de perfil"
+          class="profile-picture ml-2" />
+      </div>
+    </div>
+  </div>
 </div>
