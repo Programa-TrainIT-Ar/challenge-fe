@@ -14,18 +14,13 @@ export class NewPagesComponent {
   constructor(
     private formsBuilder: FormBuilder,
     private cdr: ChangeDetectorRef,
-    private auth:AuthService
-    
+    private auth: AuthService
   ) {}
+
   public selectNameForm = this.formsBuilder.group({
     name: ['', Validators.required],
     description: ['', Validators.required],
   });
-
-  isFieldInvalid(field: string): boolean {
-    const control = this.selectNameForm.get(field);
-    return control?.invalid && (control.dirty || control.touched);
-  }
 
   questionTypes: string[] = [
     'Selección mutiple',
@@ -39,7 +34,7 @@ export class NewPagesComponent {
   };
 
   questionText: string = '';
-  questions: any = [];
+  questions: any[] = []; // Cambiado a array tipado
   options: string[] = [];
   selection: number[] = [];
   selectedOption: string = '';
@@ -50,7 +45,7 @@ export class NewPagesComponent {
   isTrueFalseQuestion: boolean = false;
   showPlus: boolean = false;
   showSubmits: boolean = false;
-  quizID: number | string = '';
+  quizID: string = '';
   quizData: any = {};
   createOrEdit: boolean = true;
   toggle: boolean = true;
@@ -58,6 +53,12 @@ export class NewPagesComponent {
   correct_option: number[] = [];
   selectedValues: boolean[] = [];
   inputsValues: boolean = false;
+  temporaryQuestions: any[] = []; // Array para almacenar preguntas temporalmente
+
+  isFieldInvalid(field: string): boolean {
+    const control = this.selectNameForm.get(field);
+    return control?.invalid && (control.dirty || control.touched);
+  }
 
   trackByFn(index: number): any {
     return index;
@@ -73,13 +74,14 @@ export class NewPagesComponent {
     } else {
       this.correct_option.push(i);
     }
-    console.log(this.correct_option);
   }
+
   showInput: boolean = true;
   selectedRadio: string | null = null;
+
   changeInputType() {
     this.selectedValues = Array(this.options.length).fill(false);
-    this.selectedRadio = null; // Reinicia la selección de radio
+    this.selectedRadio = null;
     this.showInput = false;
     setTimeout(() => {
       this.showInput = true;
@@ -137,25 +139,18 @@ export class NewPagesComponent {
       this.showButton = false;
     }
 
-    /* modulo */
-
     let responseModule: any = await fetch(`${environment.url}/modules`);
     responseModule = await responseModule.json();
-
     responseModule = responseModule.find(
       element => element.name == datos.module
     );
-
     this.quizData.module = responseModule.id;
-
-    /* celula */
 
     let response: any = await fetch(`${environment.url}/cells`);
     response = await response.json();
     response = response.find(element => datos.cell == element.name);
     response ? (this.quizData.cell = response.id) : '';
 
-    /* seniority */
     if (datos.seniority) {
       this.quizData.seniority = datos.seniority;
     }
@@ -163,124 +158,61 @@ export class NewPagesComponent {
 
   async createQuiz() {
     try {
-      // Ajustamos la seniority si es necesario
       this.quizData.seniority = this.quizData.seniority === 'semi-sr' ? 'middle' : this.quizData.seniority;
-  
-      // Obtener el email del usuario autenticado
       const user = await firstValueFrom(this.auth.user$);
-  
+
       if (!user?.email) {
         throw new Error('No se encontró el email del usuario autenticado');
       }
-  
-      // Obtener el ID del usuario desde el backend usando el email
+
       const userResponse = await fetch(`${environment.url}/user/FindByEmail?email=${user.email}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          
         },
       });
-  
+
       if (!userResponse.ok) {
         throw new Error('Error al obtener el usuario desde el backend');
       }
-  
+
       const userData = await userResponse.json();
       
       if (!userData?.id) {
         throw new Error('No se encontró el ID del usuario en la base de datos');
       }
-  
-      // Crear el objeto del quiz con el ID del usuario obtenido
-      const quizData = {
+
+      // Mostrar el formulario para agregar preguntas
+      this.showForm = true;
+      this.toggle = false;
+      this.showButton = false;
+      
+      // Guardar los datos del quiz para usarlos cuando tengamos todas las preguntas
+      this.quizData = {
         name: this.selectNameForm.value.name,
         description: this.selectNameForm.value.description,
         cell_id: this.quizData.cell,
         seniority: this.quizData.seniority,
         challenge_type: 'immediate',
-        created_by_id: userData.id, // Usamos el ID obtenido dinámicamente
-        is_active: true,
+        created_by_id: userData.id,
+        is_active: true
       };
-  
-      // Validar que los campos requeridos estén completos
-      if (!this.selectNameForm.value.description || !this.selectNameForm.value.name) {
-        alert('Complete los datos requeridos');
-        this.showButton = false;
-        return;
-      }
-  
-      // Crear el quiz
-      const response = await fetch(`${environment.url}/quiz`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(quizData),
-      });
-  
-      if (!response.ok) {
-        throw new Error(`Error al crear el quiz: ${response.statusText}`);
-      }
-  
-      const data = await response.json();
-      
-      // Actualizar el estado del componente
-      this.quizID = data.id;
-      this.showForm = true;
-      this.toggle = false;
-      this.showButton = false;
-      this.pop = true;
-  
-      setTimeout(() => {
-        this.closeFn();
-      }, 2000);
-  
+
       this.questionCategory.name = this.selectNameForm.value.name;
       this.questionCategory.description = this.selectNameForm.value.description;
-  
+
     } catch (error) {
-      console.error('Error creando el quiz:', error);
-      alert(error.message || 'Error al crear el quiz');
+      console.error('Error preparando el quiz:', error);
+      alert(error.message || 'Error al preparar el quiz');
       this.showButton = false;
     }
-  }
-  
-  
-
-  async updateQuiz() {
-    const update = {
-      name: this.selectNameForm.value.name,
-      description: this.selectNameForm.value.description,
-      cell_id: this.quizData.cell,
-      seniority: this.quizData.seniority,
-    };
-    let response = await fetch(`${environment.url}/quiz/${this.quizID}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(update),
-    });
-    response = await response.json();
-    this.showButton = false;
-    this.pop = true;
-    setTimeout(() => {
-      this.pop = false;
-    }, 2000);
-    this.showForm = true;
-    this.questionCategory.name = this.selectNameForm.value.name;
-    this.questionCategory.description = this.selectNameForm.value.description;
-  }
-
-  isDisabled(index: number): any {
-    return this.selection[index] || false;
   }
 
   async createQuestion(form: any) {
     try {
       const formSection = form.value;
 
+      // Convertir tipo de pregunta
       switch (formSection.questionType) {
         case 'Selección mutiple':
           formSection.questionType = 'multiple_choice';
@@ -293,8 +225,8 @@ export class NewPagesComponent {
           break;
       }
 
-      if (formSection.questionText && this.correct_option.length != 0) {
-        let question = {
+      if (formSection.questionText && this.correct_option.length !== 0) {
+        const question = {
           question: formSection.questionText,
           seniority: 'junior',
           type: formSection.questionType,
@@ -309,40 +241,49 @@ export class NewPagesComponent {
           correct_option: this.correct_option,
           explanation: 'string',
           link: 'string',
-          is_active: true,
-          /* quiz_id: '168b2a93-7358-48cb-951a-793281c35983', */
-          quiz_id: this.quizID,
+          is_active: true
         };
 
-        const response = await fetch(`${environment.url}/question`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(question),
-        });
-
-        const data = await response.json();
-        if (!response.ok) {
-          alert(response);
-          throw new Error(`Error: ${response.status}`);
-        }
-
-        console.log(data);
-        this.questions.push(formSection);
+        this.temporaryQuestions.push(question);
+        this.questions.push(formSection); // Para mantener el contador en la UI
 
         form.reset();
         this.selectedOption = '';
         this.isFocused = false;
         this.options = [];
-      } else {
-        alert('complete los campos requeridos');
-        console.log(this.correct_option);
-      }
 
-      if (this.questions.length == 10000) {
-        alert('10 preguntas cargadas con exito');
-        window.location.reload();
+        // Si tenemos 10 preguntas, crear el quiz con todas las preguntas
+        if (this.temporaryQuestions.length === 10) {
+          const quizWithQuestions = {
+            ...this.quizData,
+            questions: this.temporaryQuestions
+          };
+          this.showForm = false;
+
+          const response = await fetch(`${environment.url}/quiz/nested`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(quizWithQuestions),
+          });
+
+          if (!response.ok) {
+            throw new Error(`Error: ${response.status}`);
+          }
+
+          const data = await response.json();
+          this.quizID = data.id;
+          this.pop = true;
+          
+          
+          // setTimeout(() => {
+          //   this.closeFn();
+          //   window.location.reload();
+          // }, 2000);
+        }
+      } else {
+        alert('Complete los campos requeridos');
       }
     } catch (error) {
       alert(error);
