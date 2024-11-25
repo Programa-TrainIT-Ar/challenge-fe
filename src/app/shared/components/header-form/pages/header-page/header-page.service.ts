@@ -58,10 +58,9 @@ export class HeaderPageService {
     )
   }
 
-  updateCell(id: string, name:string, module_id:string) {
+  updateCell(id: string, name:string) {
     return this.http.put(`${this.urlApi}/cells/${id}`, {
       name: name,
-      module_id: module_id
     })
     
   }

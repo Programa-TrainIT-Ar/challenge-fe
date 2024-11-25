@@ -38,9 +38,12 @@ export class HeaderPageComponent {
   editModuleControl= new FormControl('',[Validators.required, Validators.minLength(3)]);
   editingModuleId: string | null = null;
   cell= new FormControl('',[Validators.required, Validators.minLength(3)]);
+  editCellControl= new FormControl('',[Validators.required, Validators.minLength(3)]);
+  editingCellId: string | null = null;
   //seleccion actual de modulo celula y seniority
   quizCategory: any = {
     module: '',
+    moduleId: '',
     cell: '',
     seniority: '',
     cellClass: '',
@@ -59,7 +62,8 @@ export class HeaderPageComponent {
   }
   //coloca el modulo como seleccionado y carga las celulas que le corresponden 
   selectModule(module: Module) {
-    this.quizCategory.module = module.name
+    this.quizCategory.module = module.name;
+    this.quizCategory.moduleId = module.id;
     this.cells = module.cell;
     this.quizCategory.cell= ''
     this.quizCategory.cellClass= ''
@@ -83,7 +87,7 @@ export class HeaderPageComponent {
   createModule() {
     if (this.module.valid) {
       this.headerPageService.createModule(this.module.value).subscribe({
-        next: (newModule) => {
+        next: () => {
           this.getCategory()
           this.toggleAddModule()
         },
@@ -128,6 +132,86 @@ export class HeaderPageComponent {
     ).subscribe({
       next: (response: any) => {
         this.modules = response;
+      }
+    });
+  }
+  //Crea una nueva celula 
+  createCell() {
+    if (this.cell.valid && this.quizCategory.moduleId) {
+      this.headerPageService.createCell(this.cell.value, this.quizCategory.moduleId).pipe(
+        switchMap(() => {
+          // Una vez que termine la creacion, obtener la lista actualizada
+          return this.headerPageService.getModules();})
+      ).subscribe({
+        next: (response: any) => {
+          this.modules = response;
+          this.toggleAddCell()
+          for (const module of this.modules) {
+            if (module.name == this.quizCategory.module)
+              this.cells = module.cell
+          }
+          
+        },
+        error: (error) => {
+          console.error('Error al crear la célula', error);
+          // Manejar error (mostrar mensaje al usuario)
+        }
+      });
+    }
+  }
+  // Método para iniciar la edición
+  startEditingCell(event: Event, cellId: string, currentName: string) {
+    event.stopPropagation();
+    this.editingCellId = cellId;
+    this.editCellControl.setValue(currentName);
+  }
+  // Método para guardar los cambios
+  saveCellEdit(cellId: string) {
+    if (this.editCellControl.valid) {
+      const newName = this.editCellControl.value;
+      this.headerPageService.updateCell(cellId, newName).pipe(
+        switchMap(() => {
+          // Una vez que termine la creacion, obtener la lista actualizada
+          return this.headerPageService.getModules();})
+      ).subscribe({
+        next: (response: any) => {
+          this.modules = response;
+          for (const module of this.modules) {
+            if (module.name == this.quizCategory.module)
+              this.cells = module.cell
+          }
+          this.editingCellId = null;
+          this.editCellControl.reset();
+        },
+        error: (error) => {
+          console.error('Error al actualizar la célula', error);
+          // Manejar error (mostrar mensaje al usuario)
+        }
+      });
+    }
+  }
+
+  // Método para cancelar la edición
+  cancelEditingCell() {
+    this.editingCellId = null;
+    this.editCellControl.reset();
+  }
+  
+  //elimina un modulo
+  deleteCell(id: string) {
+    this.headerPageService.deleteCell(id).pipe(
+      // Esperar a que termine el delete
+      switchMap(() => {
+        // Una vez que termine el delete, obtener la lista actualizada
+        return this.headerPageService.getModules();
+      })
+    ).subscribe({
+      next: (response: any) => {
+        this.modules = response;
+        for (const module of this.modules) {
+          if (module.name == this.quizCategory.module)
+            this.cells = module.cell
+        }
       }
     });
   }

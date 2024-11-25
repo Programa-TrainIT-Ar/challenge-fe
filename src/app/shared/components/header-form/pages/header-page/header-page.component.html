@@ -9,7 +9,6 @@
             {{quizCategory?.module || 'Selecciona el modulo'}}
           </span>
         </div>
-          
           @if (showModulo) {
             <div class="option-floating floating-module">
               @for (module of modules; track $index) {
@@ -98,15 +97,81 @@
             {{ quizCategory?.cell || 'Selecciona la célula'}}
           </span>
         </div>
-        @if (showCelula && cells.length > 0) {
+        @if (showCelula && quizCategory.module != '') {
           <div class="option-floating floating-cell">
             @for (cell of cells;track $index) {
                 <button
                   class="floating "
                   (click)="selectCell(cell, $index)"
                   [ngClass]="getCellClass($index)">
-                  {{ cell.name }}
+                  @if (editingCellId === cell.id) {
+                    <div class="edit-cell-form">
+                      <input
+                        [formControl]="editCellControl"
+                        (click)="$event.stopPropagation()"
+                        (keyup.enter)="saveCellEdit(cell.id)"
+                        (keyup.escape)="cancelEditingCell()"
+                        placeholder="Nombre de la celula"
+                      >
+                      @if(editCellControl?.errors?.['required']) {
+                        <span>(La celula no puede quedar vacía)</span>
+                      }
+                      @if(editCellControl?.errors?.['minlength']) {
+                        <span>(Debe tener como mínimo 3 caracteres)</span>
+                      }
+                      <div class="edit-actions">
+                        <button (click)="$event.stopPropagation(); saveCellEdit(cell.id)">
+                          <i class="bi bi-check"></i>
+                        </button>
+                        <button (click)="$event.stopPropagation(); cancelEditingCell()">
+                          <i class="bi bi-x"></i>
+                        </button>
+                      </div>
+                    </div>
+                  } @else {
+                    {{ cell.name }}
+                    @if(editMode){
+                      <div class="actions">
+                        <button (click)="$event.stopPropagation(); startEditingCell($event, cell.id, cell.name)">
+                          <i class="bi bi-pencil-square"></i>
+                        </button>
+                        <button (click)="$event.stopPropagation(); deleteCell(cell.id)">
+                          <i class="bi bi-trash"></i>
+                        </button>
+                      </div>
+                    }
+                  }
                 </button>
+              }
+              @if (editMode) {
+                @if (!addCell) {
+                  <button
+                  class="module-option"
+                  (click)="toggleAddCell()">
+                  + Agregar celula
+                  </button>
+                } 
+                @else { 
+                  <div >
+                    <input
+                      class="module-option"
+                      type="text"
+                      [formControl]="cell"
+                      placeholder="Nombre de la nueva célula"
+                      (keyup.enter)="createCell()"
+                    >
+                    @if(cell?.errors?.['required']) {
+                      <span>(La célula no puede quedar vacía)</span>
+                    }
+                    @if(cell?.errors?.['minlength']) {
+                      <span>(Debe tener como mínimo 3 caracteres)</span>
+                    }
+                    <div class="input-actions">
+                      <button (click)="createCell()">Guardar</button>
+                      <button (click)="toggleAddCell()">Cancelar</button>
+                    </div>
+                  </div>
+                }
             }
           </div>
         }
