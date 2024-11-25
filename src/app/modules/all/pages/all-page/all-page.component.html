@@ -58,5 +58,7 @@
 
 <!-- Mostrar los detalles del quiz seleccionado -->
 <div *ngIf="selectedQuiz">
-  <app-view-quiz [quiz]="selectedQuiz"></app-view-quiz>
+  <app-view-quiz 
+  [quiz]="selectedQuiz">
+  </app-view-quiz>
 </div>

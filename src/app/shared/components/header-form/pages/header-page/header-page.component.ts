@@ -35,6 +35,8 @@ export class HeaderPageComponent {
   addCell: boolean = false;
   //campos de formulario
   module= new FormControl('',[Validators.required, Validators.minLength(3)]);
+  editModuleControl= new FormControl('',[Validators.required, Validators.minLength(3)]);
+  editingModuleId: string | null = null;
   cell= new FormControl('',[Validators.required, Validators.minLength(3)]);
   //seleccion actual de modulo celula y seniority
   quizCategory: any = {
@@ -43,7 +45,6 @@ export class HeaderPageComponent {
     seniority: '',
     cellClass: '',
   };
-  
   
   ngOnInit(): void {
     //Consulta los modulos y las celullas que tiene anidadas
@@ -93,12 +94,29 @@ export class HeaderPageComponent {
       });
     }
   }
-  //actualiza un modulo
-  updateModule(id:string) {
-    if (this.module.valid) {
-    this.headerPageService.updateModule(id, this.module.value).subscribe()
+  // Método para iniciar la edición
+  startEditingModule(event: Event, moduleId: string, currentName: string) {
+    event.stopPropagation();
+    this.editingModuleId = moduleId;
+    this.editModuleControl.setValue(currentName);
   }
+  // Método para guardar los cambios
+  saveModuleEdit(moduleId: string) {
+    if (this.editModuleControl.valid) {
+      const newName = this.editModuleControl.value;
+      this.headerPageService.updateModule(moduleId, newName).subscribe()      
+      // Resetear el estado de edición
+      this.editingModuleId = null;
+      this.editModuleControl.reset();
+    }
   }
+
+  // Método para cancelar la edición
+  cancelEditingModule() {
+    this.editingModuleId = null;
+    this.editModuleControl.reset();
+  }
+  
   //elimina un modulo
   deleteModule(id: string) {
     this.headerPageService.deleteModule(id).pipe(

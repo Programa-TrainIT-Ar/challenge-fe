@@ -48,10 +48,11 @@ interface Quiz {
 })
 export class AllPageComponent implements OnInit {
   @Output() quizSelected = new EventEmitter<any>();
-  searchText: string = '';
-  seniority: string = '';
   module: string = '';
   cell: string = '';
+  seniority: string = '';
+  searchText: string = '';
+  
   quizzes: Quiz[] = [];
   selectedQuiz: any;
   isExpanded3: boolean = false;
@@ -118,44 +119,38 @@ export class AllPageComponent implements OnInit {
     this.router.navigate(['home/view-quiz', quiz.id]);
   }
 
-  async deleteQuiz(quiz: any) {
-    try {
-      const result = await Swal.fire({
-        title: '¿Deseas eliminar el registro?',
-        text: 'Una vez eliminado no se podrá recuperar',
-        showCancelButton: true,
-        confirmButtonColor: '#6c63ff',
-        cancelButtonColor: '#4e4e4e',
-        confirmButtonText: 'Eliminar',
-        cancelButtonText: 'Cancelar',
-        customClass: {
-          popup: 'custom-popup',
-          title: 'custom-title',
-          confirmButton: 'custom-confirm-btn',
-          cancelButton: 'custom-cancel-btn'
-        }
-      });
-
-      if (result.isConfirmed) {
-        let response = await fetch(`${environment.url}/quiz/${quiz.id}`, {
+  async deleteQuiz(quiz: Quiz) {
+    const result = await Swal.fire({
+      title: '¿Deseas eliminar el registro?',
+      text: 'Una vez eliminado no se podrá recuperar',    
+      showCloseButton: true,
+      showCancelButton: false,
+      confirmButtonText: 'Eliminar',
+      customClass: {
+        popup: 'custom-delete-popup',
+        title: 'custom-delete-title',
+        confirmButton: 'custom-delete-confirm-button',
+      },
+    });
+  
+    if (result.isConfirmed) {
+      try {
+        const response = await fetch(`${environment.url}/quiz/${quiz.id}`, {
           method: 'DELETE',
-          headers: {
-            'Content-Type': 'application/json',
-          }
         });
-
-        if (response.ok) {
-          Swal.fire('Eliminado', 'El quiz ha sido eliminado.', 'success');
-          this.quizzes = this.quizzes.filter(q => q !== quiz);
-        } else {
-          Swal.fire('Error', 'Hubo un error al eliminar el quiz.', 'error');
-        }
+        if (!response.ok) throw new Error('Error al eliminar el quiz');
+        this.quizzes = this.quizzes.filter((q) => q.id !== quiz.id);
+        
+      } catch (error) {
+        Swal.fire({
+          title: 'Error',
+          text: 'No se pudo eliminar el registro.',
+          icon: 'error',
+          confirmButtonText: 'Entendido',
+        });
       }
-    } catch (error) {
-      console.error('Error en la solicitud:', error);
-      Swal.fire('Error', 'Hubo un error en la solicitud.', 'error');
     }
-  }
+   }
 
   editQuiz(quiz: Quiz) {
     this.selectedQuiz = quiz;
