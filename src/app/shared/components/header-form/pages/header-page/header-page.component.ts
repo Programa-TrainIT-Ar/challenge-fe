@@ -1,111 +1,283 @@
-import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, ElementRef, EventEmitter, HostListener, inject, Input, Output } from '@angular/core';
+import { FormControl, Validators } from '@angular/forms';
 import { HeaderPageService } from './header-page.service';
 import { Module, Cell, Seniority } from './header-page.interface';
+import { switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-header-page',
   templateUrl: './header-page.component.html',
   styleUrl: './header-page.component.scss',
 })
+
 export class HeaderPageComponent {
-  @Input() mode: boolean = true;
-  @Output() datosParaPadre = new EventEmitter<any>(); // cambie a any
-  public selectHeaderForm: FormGroup;
-  constructor(private formsBuilder: FormBuilder) {}
+  
+  @Input() editMode: boolean; //cambia modo editable a lectura
+  @Output() datosParaPadre = new EventEmitter<any>(); //envia al componente padre la seleccion actual
   
   private headerPageService = inject(HeaderPageService)
+  private elementRef= inject(ElementRef)
+
+  //Estructura de los dropdown
   modules: Module[] = []
   cells: Cell[] = []
-  
-  ngOnInit(): void {
-    
-    this.selectHeaderForm = this.formsBuilder.group({
-      nombreQuiz: [''],
-      descripcion: [''],
-      modulo: [''],
-    });
-    //Consulta los modulos y las celullas que tiene anidadas
-    this.headerPageService.getModules().subscribe(( response: any) => {
-      this.modules= response
-    })
-  }
-  colorsCells: string[] = [
-    '#ffcc00',
-    '#ff9500',
-    '#34c759',
-    '#00c7be',
-    '#30b0c7',
-    '#32ade6',
-    '#007aff',
-    '#007AFF',
-    '#ff2d55',
-    '#af52de',
-    '#5856d6',
-    '#007aff',
-  ];
-  
-  showModulo: boolean = false;
-  showCelula: boolean = false;
-  showSeniority: boolean = false;
-  
-  quizCategory: any = {
-    module: '',
-    cell: '',
-    seniority: '',
-    colorCell: '',
-  };
-  
   seniorities: Seniority[]=[
     {class: 'trainee', name: 'Trainee'},
     {class: 'junior', name: 'Junior'},
     {class: 'middle', name: 'Middle'},
     {class: 'senior', name: 'Senior'},
     ]
-
+  //visibilidad de los dropdown
+  showModulo: boolean = false;
+  showCelula: boolean = false;
+  showSeniority: boolean = false;
+  //visibilidad del input para agregar modulos o celulas
+  addModule: boolean = false;
+  addCell: boolean = false;
+  //campos de formulario
+  module= new FormControl('',[Validators.required, Validators.minLength(3)]);
+  editModuleControl= new FormControl('',[Validators.required, Validators.minLength(3)]);
+  editingModuleId: string | null = null;
+  cell= new FormControl('',[Validators.required, Validators.minLength(3)]);
+  editCellControl= new FormControl('',[Validators.required, Validators.minLength(3)]);
+  editingCellId: string | null = null;
+  //seleccion actual de modulo celula y seniority
+  quizCategory: any = {
+    module: '',
+    moduleId: '',
+    cell: '',
+    seniority: '',
+    cellClass: '',
+  };
+  
+  ngOnInit(): void {
+    //Consulta los modulos y las celullas que tiene anidadas
+    this.getCategory()
+    
+  }
+  //obtiene los modulos y celulas de la api
+  getCategory() {
+    this.headerPageService.getModules().subscribe(( response: any) => {
+      this.modules= response
+    })
+  }
+  //coloca el modulo como seleccionado y carga las celulas que le corresponden 
   selectModule(module: Module) {
-    this.quizCategory.module = module.name
+    this.quizCategory.module = module.name;
+    this.quizCategory.moduleId = module.id;
     this.cells = module.cell;
     this.quizCategory.cell= ''
+    this.quizCategory.cellClass= ''
     this.showModulo = false;
     this.datosParaPadre.emit(this.quizCategory);
-
-  }
-  selectCell(cell: Cell, colorCell: string) {
+    }
+  //coloca la celula como seleccionado y su correspondiente clase
+  selectCell(cell: Cell, index: number) {
     this.quizCategory.cell = cell.name
-    this.quizCategory.colorCell = colorCell
+    this.quizCategory.cellClass = this.getCellClass(index)
     this.showCelula = false;
     this.datosParaPadre.emit(this.quizCategory);
   }
+  //coloca el seniority como seleccionado
   selectSeniority(seniority: string) {
     this.quizCategory.seniority= seniority;
     this.showSeniority = false;
     this.datosParaPadre.emit(this.quizCategory);
   }
+  //Crea un nuevo modulo 
+  createModule() {
+    if (this.module.valid) {
+      this.headerPageService.createModule(this.module.value).subscribe({
+        next: () => {
+          this.getCategory()
+          this.toggleAddModule()
+        },
+        error: (error) => {
+          console.error('Error al crear módulo', error);
+          // Manejar error (mostrar mensaje al usuario)
+        }
+      });
+    }
+  }
+  // Método para iniciar la edición
+  startEditingModule(event: Event, moduleId: string, currentName: string) {
+    event.stopPropagation();
+    this.editingModuleId = moduleId;
+    this.editModuleControl.setValue(currentName);
+  }
+  // Método para guardar los cambios
+  saveModuleEdit(moduleId: string) {
+    if (this.editModuleControl.valid) {
+      const newName = this.editModuleControl.value;
+      this.headerPageService.updateModule(moduleId, newName).subscribe()      
+      // Resetear el estado de edición
+      this.editingModuleId = null;
+      this.editModuleControl.reset();
+    }
+  }
 
-  isShowModulo() {
-     if (this.mode) {
-      this.showModulo = !this.showModulo;
+  // Método para cancelar la edición
+  cancelEditingModule() {
+    this.editingModuleId = null;
+    this.editModuleControl.reset();
+  }
+  
+  //elimina un modulo
+  deleteModule(id: string) {
+    this.headerPageService.deleteModule(id).pipe(
+      // Esperar a que termine el delete
+      switchMap(() => {
+        // Una vez que termine el delete, obtener la lista actualizada
+        return this.headerPageService.getModules();
+      })
+    ).subscribe({
+      next: (response: any) => {
+        this.modules = response;
+      }
+    });
+  }
+  //Crea una nueva celula 
+  createCell() {
+    if (this.cell.valid && this.quizCategory.moduleId) {
+      this.headerPageService.createCell(this.cell.value, this.quizCategory.moduleId).pipe(
+        switchMap(() => {
+          // Una vez que termine la creacion, obtener la lista actualizada
+          return this.headerPageService.getModules();})
+      ).subscribe({
+        next: (response: any) => {
+          this.modules = response;
+          this.toggleAddCell()
+          for (const module of this.modules) {
+            if (module.name == this.quizCategory.module)
+              this.cells = module.cell
+          }
+          
+        },
+        error: (error) => {
+          console.error('Error al crear la célula', error);
+          // Manejar error (mostrar mensaje al usuario)
+        }
+      });
+    }
+  }
+  // Método para iniciar la edición
+  startEditingCell(event: Event, cellId: string, currentName: string) {
+    event.stopPropagation();
+    this.editingCellId = cellId;
+    this.editCellControl.setValue(currentName);
+  }
+  // Método para guardar los cambios
+  saveCellEdit(cellId: string) {
+    if (this.editCellControl.valid) {
+      const newName = this.editCellControl.value;
+      this.headerPageService.updateCell(cellId, newName).pipe(
+        switchMap(() => {
+          // Una vez que termine la creacion, obtener la lista actualizada
+          return this.headerPageService.getModules();})
+      ).subscribe({
+        next: (response: any) => {
+          this.modules = response;
+          for (const module of this.modules) {
+            if (module.name == this.quizCategory.module)
+              this.cells = module.cell
+          }
+          this.editingCellId = null;
+          this.editCellControl.reset();
+        },
+        error: (error) => {
+          console.error('Error al actualizar la célula', error);
+          // Manejar error (mostrar mensaje al usuario)
+        }
+      });
+    }
+  }
+
+  // Método para cancelar la edición
+  cancelEditingCell() {
+    this.editingCellId = null;
+    this.editCellControl.reset();
+  }
+  
+  //elimina un modulo
+  deleteCell(id: string) {
+    this.headerPageService.deleteCell(id).pipe(
+      // Esperar a que termine el delete
+      switchMap(() => {
+        // Una vez que termine el delete, obtener la lista actualizada
+        return this.headerPageService.getModules();
+      })
+    ).subscribe({
+      next: (response: any) => {
+        this.modules = response;
+        for (const module of this.modules) {
+          if (module.name == this.quizCategory.module)
+            this.cells = module.cell
+        }
+      }
+    });
+  }
+  //Escucha los click del mouse en el documento
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent) {
+    // Verifica si el clic fue fuera de los contenedores
+    const clickedInside = this.elementRef.nativeElement.contains(event.target);
+    
+    if (!clickedInside) {
+      this.showModulo = false;
       this.showCelula = false;
       this.showSeniority = false;
     }
   }
-  isShowCelula() {
-    if (this.mode) {
-      this.showCelula = !this.showCelula;
+  //Cambia la visibilidad de modulo, celula y seniority
+  isShowModulo(event?: MouseEvent) {
+    if (event) {
+      event.stopPropagation();
+    }
+    this.showModulo = !this.showModulo;
+    if (this.showModulo){
+      this.showCelula = false;
+      this.showSeniority = false;
+    }
+  }
+  isShowCelula(event?: MouseEvent) {
+    if (event) {
+      event.stopPropagation();
+    }
+    this.showCelula = !this.showCelula;
+    if (this.showCelula){
       this.showSeniority = false;
       this.showModulo = false;
     }
   }
-  isShowSeniority() {
-    if (this.mode) {
-      this.showSeniority = !this.showSeniority;
+  isShowSeniority(event?: MouseEvent) {
+    if (event) {
+      event.stopPropagation();
+    }
+    this.showSeniority = !this.showSeniority;
+    if (this.showSeniority){
       this.showCelula = false;
       this.showModulo = false;
     }
   }
+  //Cambia la visibilidad del input modulo para agregar un nuevo en el modo edit
+  toggleAddModule() {
+    this.addModule = !this.addModule;
+    this.module.setValue('');
+  }
+  //Cambia la visibilidad del input celula para agregar una nueva en el modo edit
+  toggleAddCell() {
+    this.addCell = !this.addCell;
+    this.cell.setValue('');
+  }
+  //Selecciona la clase de seniority que corresponda
   getSelectedSeniorityClass(): string{
     const selected = this.seniorities.find(s => s.name ===this.quizCategory?.seniority)
     return selected?.class || ''
+  }
+  //Selecciona la clase de celula que corresponda
+  getCellClass(index: number): string {
+    // Esto asegura que si hay más de 10 células, los colores se repitan
+    const cellNumber = (index % 10) + 1;  
+    return `cell-color-${cellNumber}`;
   }
 }

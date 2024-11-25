@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { environment } from '@environments/environment';
 import { ChangeDetectorRef } from '@angular/core';
@@ -10,7 +10,7 @@ import { AuthService } from '@auth0/auth0-angular';
   templateUrl: './new-pages.component.html',
   styleUrls: ['./new-pages.component.scss'],
 })
-export class NewPagesComponent {
+export class NewPagesComponent implements OnInit {
   constructor(
     private formsBuilder: FormBuilder,
     private cdr: ChangeDetectorRef,
@@ -22,11 +22,23 @@ export class NewPagesComponent {
     description: ['', Validators.required],
   });
 
+  quizForm : FormGroup;
+
+  ngOnInit(): void {
+    this.quizForm = this.formsBuilder.group({
+      name: ['',[Validators.required, Validators.minLength(3)]],
+      descripcion: [''],
+      module: ['',[Validators.required, Validators.minLength(3)]],
+      cell: ['',[Validators.required, Validators.minLength(3)]],
+      seniority: ['',[Validators.required, Validators.minLength(3)]],
+      //questions:
+    });
+  }
   isFieldInvalid(field: string): boolean {
     const control = this.selectNameForm.get(field);
     return control?.invalid && (control.dirty || control.touched);
   }
-
+  
   questionTypes: string[] = [
     'Selección mutiple',
     'Casilla',
@@ -126,7 +138,17 @@ export class NewPagesComponent {
     }
   }
 
-  async recibirDatos(datos: any) {
+  recibirDatos(datos: any) {
+    if (datos.module) {
+      this.quizForm.patchValue({
+        module: datos.module,
+        cell: datos.cell,
+        seniority: datos.seniority
+      });
+    }
+  }
+  
+  /* async recibirDatos(datos: any) {
     if (
       datos.celula != 'Selecciona la célula' &&
       datos.modulo != 'Selecciona el modulo' &&
@@ -137,7 +159,8 @@ export class NewPagesComponent {
       this.showButton = false;
     }
 
-    /* modulo */
+    
+    // modulo 
 
     let responseModule: any = await fetch(`${environment.url}/modules`);
     responseModule = await responseModule.json();
@@ -148,18 +171,18 @@ export class NewPagesComponent {
 
     this.quizData.module = responseModule.id;
 
-    /* celula */
+    // celula 
 
     let response: any = await fetch(`${environment.url}/cells`);
     response = await response.json();
     response = response.find(element => datos.cell == element.name);
     response ? (this.quizData.cell = response.id) : '';
 
-    /* seniority */
+    // seniority
     if (datos.seniority) {
       this.quizData.seniority = datos.seniority;
     }
-  }
+  } */
 
   async createQuiz() {
     try {
