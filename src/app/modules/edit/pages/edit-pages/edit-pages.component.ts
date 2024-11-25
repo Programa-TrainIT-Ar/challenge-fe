@@ -13,8 +13,8 @@ export class EditPagesComponent implements OnInit {
 
   selectNameForm: FormGroup;
   currentPage: number = 0;
-  questionsPerPage: number = 2; // Aumentado a 5 preguntas por página
-  maxVisiblePages: number = 5; // Número máximo de páginas visibles en la paginación
+  questionsPerPage: number = 2;
+  maxVisiblePages: number = 5;
   showEditForm: boolean = false;
   currentEditingQuestion: FormGroup | null = null;
   selectedOption: string = '';
@@ -83,7 +83,7 @@ export class EditPagesComponent implements OnInit {
         id: [question.id],
         text: [question.question],
         type: [question.type],
-        correct_option: [question.correct_option],
+        correct_option: [question.correct_option[0]], 
         options: optionsArray,
       });
     });
@@ -159,15 +159,16 @@ export class EditPagesComponent implements OnInit {
           selected: index === optionIndex,
         });
       });
-      question.patchValue({ correct_option: [optionIndex] });
+      question.patchValue({ correct_option: optionIndex });
     }
   }
 
   selectCorrectOption(questionIndex: number, optionValue: string) {
     const question = this.questions.at(questionIndex);
     if (question.get('type')?.value === 'true_false') {
+      const correctOption = optionValue === 'Verdadero' ? 0 : 1;
       question.patchValue({
-        correct_option: optionValue === 'Verdadero' ? 0 : 1,
+        correct_option: correctOption
       });
     }
   }
@@ -179,16 +180,12 @@ export class EditPagesComponent implements OnInit {
       name: formValue.name,
       questions: formValue.questions.map(question => {
         if (question.type === 'true_false') {
-          const correctOptionNumber = question.correct_option === 'Verdadero' ? 0 : 1;
           return {
             ...question,
-            correct_option: [correctOptionNumber],
+            correct_option: [question.correct_option], // Convertir a array
           };
         }
-        return {
-          ...question,
-          correct_option: question.correct_option,
-        };
+        return question;
       }),
     };
 
