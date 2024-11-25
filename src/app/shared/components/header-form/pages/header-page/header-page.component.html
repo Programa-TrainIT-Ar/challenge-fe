@@ -4,13 +4,13 @@
       <!-- Opciones de Módulo -->
       <div class="input-container">
         <h4>Módulo</h4>
-        <div class="form-select option-select" (click)="isShowModulo()">
+        <div class="form-select option-select" (click)="isShowModulo($event)">
           <span [ngClass]="[quizCategory?.module, 'floating']">
             {{quizCategory?.module || 'Selecciona el modulo'}}
           </span>
         </div>
           @if (showModulo) {
-            <div class="option-floating floating-module">
+            <div class="option-floating floating-module" (click)="$event.stopPropagation()">
               @for (module of modules; track $index) {
                 <button
                   class="module-option"
@@ -91,14 +91,14 @@
       <!-- Opciones de Célula -->
       <div class="input-container">
         <h4>Célula</h4>
-        <div class="form-select option-select" (click)="isShowCelula()">
+        <div class="form-select option-select" (click)="isShowCelula($event)">
           <span
           class="floating {{ quizCategory?.cellClass }}">
             {{ quizCategory?.cell || 'Selecciona la célula'}}
           </span>
         </div>
         @if (showCelula && quizCategory.module != '') {
-          <div class="option-floating floating-cell">
+          <div class="option-floating floating-cell" (click)="$event.stopPropagation()">
             @for (cell of cells;track $index) {
                 <button
                   class="floating "

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
+import { Component, ElementRef, EventEmitter, HostListener, inject, Input, Output } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { HeaderPageService } from './header-page.service';
 import { Module, Cell, Seniority } from './header-page.interface';
@@ -16,7 +16,8 @@ export class HeaderPageComponent {
   @Output() datosParaPadre = new EventEmitter<any>(); //envia al componente padre la seleccion actual
   
   private headerPageService = inject(HeaderPageService)
-  
+  private elementRef= inject(ElementRef)
+
   //Estructura de los dropdown
   modules: Module[] = []
   cells: Cell[] = []
@@ -215,21 +216,48 @@ export class HeaderPageComponent {
       }
     });
   }
+  //Escucha los click del mouse en el documento
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent) {
+    // Verifica si el clic fue fuera de los contenedores
+    const clickedInside = this.elementRef.nativeElement.contains(event.target);
+    
+    if (!clickedInside) {
+      this.showModulo = false;
+      this.showCelula = false;
+      this.showSeniority = false;
+    }
+  }
   //Cambia la visibilidad de modulo, celula y seniority
-  isShowModulo() {
-      this.showModulo = !this.showModulo;
+  isShowModulo(event?: MouseEvent) {
+    if (event) {
+      event.stopPropagation();
+    }
+    this.showModulo = !this.showModulo;
+    if (this.showModulo){
       this.showCelula = false;
       this.showSeniority = false;
+    }
   }
-  isShowCelula() {
-      this.showCelula = !this.showCelula;
+  isShowCelula(event?: MouseEvent) {
+    if (event) {
+      event.stopPropagation();
+    }
+    this.showCelula = !this.showCelula;
+    if (this.showCelula){
       this.showSeniority = false;
       this.showModulo = false;
+    }
   }
-  isShowSeniority() {
-      this.showSeniority = !this.showSeniority;
+  isShowSeniority(event?: MouseEvent) {
+    if (event) {
+      event.stopPropagation();
+    }
+    this.showSeniority = !this.showSeniority;
+    if (this.showSeniority){
       this.showCelula = false;
       this.showModulo = false;
+    }
   }
   //Cambia la visibilidad del input modulo para agregar un nuevo en el modo edit
   toggleAddModule() {
