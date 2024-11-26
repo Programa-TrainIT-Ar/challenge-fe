@@ -1,5 +1,10 @@
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, FormArray, AbstractControl } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  FormArray,
+  AbstractControl,
+} from '@angular/forms';
 import { QuizService } from './services/quiz.service';
 
 @Component({
@@ -12,11 +17,9 @@ export class EditPagesComponent implements OnInit {
   @Output() close = new EventEmitter<void>();
 
   selectNameForm: FormGroup;
-  currentPage: number = 0;
-  questionsPerPage: number = 2;
-  maxVisiblePages: number = 5;
   showEditForm: boolean = false;
   currentEditingQuestion: FormGroup | null = null;
+  currentEditingIndex: number | null = null;
   selectedOption: string = '';
   options: string[] = [];
   questionTypes: string[] = [
@@ -39,6 +42,7 @@ export class EditPagesComponent implements OnInit {
   ) {
     this.selectNameForm = this.formBuilder.group({
       name: [''],
+      description: [''],
       questions: this.formBuilder.array([]),
     });
   }
@@ -56,14 +60,17 @@ export class EditPagesComponent implements OnInit {
     }
 
     this.quizService.getQuizWithQuestions(this.quizId).subscribe({
-      next: (quizData) => {
+      next: quizData => {
         console.log('Respuesta de la API:', quizData);
-        this.selectNameForm.patchValue({ name: quizData.name });
+        this.selectNameForm.patchValue({
+          name: quizData.name,
+          description: quizData.description,
+        });
         this.populateQuestions(quizData.questions);
       },
-      error: (error) => {
+      error: error => {
         console.error('Error al obtener el cuestionario:', error);
-      }
+      },
     });
   }
 
@@ -83,7 +90,7 @@ export class EditPagesComponent implements OnInit {
         id: [question.id],
         text: [question.question],
         type: [question.type],
-        correct_option: [question.correct_option[0]], 
+        correct_option: [question.correct_option[0]],
         options: optionsArray,
       });
     });
@@ -97,49 +104,11 @@ export class EditPagesComponent implements OnInit {
     return this.selectNameForm.get('questions') as FormArray;
   }
 
-  get paginatedQuestions() {
-    const startIndex = this.currentPage * this.questionsPerPage;
-    return this.questions.controls.slice(
-      startIndex,
-      startIndex + this.questionsPerPage
-    );
-  }
-
-  get totalPages() {
-    return Math.ceil(this.questions.length / this.questionsPerPage);
-  }
-
-  get visiblePages(): number[] {
-    const totalPages = this.totalPages;
-    const current = this.currentPage;
-    const maxVisible = this.maxVisiblePages;
-    
-    if (totalPages <= maxVisible) {
-      return Array.from({ length: totalPages }, (_, i) => i);
-    }
-
-    let start = Math.max(0, current - Math.floor(maxVisible / 2));
-    let end = Math.min(totalPages - 1, start + maxVisible - 1);
-
-    if (end - start + 1 < maxVisible) {
-      start = Math.max(0, end - maxVisible + 1);
-    }
-
-    return Array.from(
-      { length: end - start + 1 },
-      (_, i) => start + i
-    );
-  }
-
-  get showFirstPage(): boolean {
-    return this.visiblePages[0] > 0;
-  }
-
-  get showLastPage(): boolean {
-    return this.visiblePages[this.visiblePages.length - 1] < this.totalPages - 1;
-  }
-
-  handleOptionSelection(questionIndex: number, optionIndex: number, event: any) {
+  handleOptionSelection(
+    questionIndex: number,
+    optionIndex: number,
+    event: any
+  ) {
     const question = this.questions.at(questionIndex);
     const options = question.get('options') as FormArray;
     const questionType = question.get('type')?.value;
@@ -168,7 +137,7 @@ export class EditPagesComponent implements OnInit {
     if (question.get('type')?.value === 'true_false') {
       const correctOption = optionValue === 'Verdadero' ? 0 : 1;
       question.patchValue({
-        correct_option: correctOption
+        correct_option: correctOption,
       });
     }
   }
@@ -178,11 +147,12 @@ export class EditPagesComponent implements OnInit {
     const updatedQuiz = {
       id: this.quizId,
       name: formValue.name,
+      description: formValue.description,
       questions: formValue.questions.map(question => {
         if (question.type === 'true_false') {
           return {
             ...question,
-            correct_option: [question.correct_option], // Convertir a array
+            correct_option: [question.correct_option],
           };
         }
         return question;
@@ -190,43 +160,28 @@ export class EditPagesComponent implements OnInit {
     };
 
     this.quizService.updateQuiz(this.quizId, updatedQuiz).subscribe({
-      next: (response) => {
+      next: response => {
         console.log('Cambios guardados para el quiz:', response);
         this.close.emit();
       },
-      error: (error) => {
+      error: error => {
         console.error('Error al guardar cambios:', error);
-      }
+      },
     });
-  }
-
-  goToPage(page: number) {
-    if (page >= 0 && page < this.totalPages) {
-      this.currentPage = page;
-    }
-  }
-
-  nextPage() {
-    this.goToPage(this.currentPage + 1);
-  }
-
-  prevPage() {
-    this.goToPage(this.currentPage - 1);
   }
 
   trackByFn(index: number): number {
     return index;
   }
 
-  // Show Edit Popup for editing question
   showEditPopup(questionIndex: number) {
     const question = this.questions.at(questionIndex) as FormGroup;
     this.currentEditingQuestion = question;
+    this.currentEditingIndex = questionIndex;
     this.showEditForm = true;
-    
-    // Set initial values based on question type
+
     const type = question.get('type')?.value;
-    switch(type) {
+    switch (type) {
       case 'multiple_choice':
         this.selectedOption = 'Selección mutiple';
         this.inputType = 'checkbox';
@@ -241,16 +196,18 @@ export class EditPagesComponent implements OnInit {
         break;
     }
 
-    // Set options
     const optionsArray = question.get('options') as FormArray;
-    this.options = optionsArray.controls.map((control: AbstractControl) => control.get('text')?.value);
-    
-    // Set correct options
+    this.options = optionsArray.controls.map(
+      (control: AbstractControl) => control.get('text')?.value
+    );
+
     if (type === 'true_false') {
-      this.correct_option = [question.get('correct_option')?.value === 'Verdadero' ? 0 : 1];
+      this.correct_option = [
+        question.get('correct_option')?.value === 'Verdadero' ? 0 : 1,
+      ];
     } else {
       this.correct_option = optionsArray.controls
-        .map((control, index) => control.get('selected')?.value ? index : -1)
+        .map((control, index) => (control.get('selected')?.value ? index : -1))
         .filter(index => index !== -1);
     }
 
@@ -260,16 +217,15 @@ export class EditPagesComponent implements OnInit {
     this.changeInputType();
   }
 
-  // Close the edit popup
   closeEditPopup() {
     this.showEditForm = false;
     this.currentEditingQuestion = null;
+    this.currentEditingIndex = null;
     this.options = [];
     this.correct_option = [];
     this.selectedValues = [];
   }
 
-  // Update the question after edit
   updateQuestion(form: any) {
     if (!this.currentEditingQuestion) return;
 
@@ -297,13 +253,42 @@ export class EditPagesComponent implements OnInit {
       correct_option: this.correct_option,
     });
 
-    const optionsArray = this.currentEditingQuestion.get('options') as FormArray;
+    const optionsArray = this.currentEditingQuestion.get(
+      'options'
+    ) as FormArray;
     this.selectedValues.forEach((isSelected, index) => {
       optionsArray.at(index).patchValue({ selected: isSelected });
     });
+
+    this.closeEditPopup();
+  }
+
+  onQuestionTypeChange(event: any, form: any) {
+    // Implementar la lógica necesaria para el cambio de tipo de pregunta
+  }
+
+  addOption() {
+    this.options.push('');
+    this.selectedValues.push(false);
+  }
+
+  answerChoice(index: number) {
+    if (this.inputType === 'radio') {
+      this.selectedValues = this.options.map((_, i) => i === index);
+      this.correct_option = [index];
+    } else {
+      this.selectedValues[index] = !this.selectedValues[index];
+      this.correct_option = this.selectedValues
+        .map((isSelected, i) => (isSelected ? i : -1))
+        .filter(i => i !== -1);
+    }
   }
 
   changeInputType() {
-    // Adjust the input type if needed
+    if (this.selectedOption === 'Selección mutiple') {
+      this.inputType = 'checkbox';
+    } else {
+      this.inputType = 'radio';
+    }
   }
 }

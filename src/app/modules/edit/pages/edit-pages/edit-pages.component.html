@@ -1,36 +1,152 @@
+
 <div class="body">
   <div class="title">
     <a class="leave" (click)="close.emit()">
       <i class="fa-solid fa-circle-chevron-left"></i> volver al listado
     </a>
-    <div>
-      <h1>{{ selectNameForm.value.name }}</h1>
-    </div>
+
     <div class="empty-space"></div>
   </div>
 
   <div class="content-1">
+    <div [formGroup]="selectNameForm" class="quiz-info">
+      <div class="form-group">
+        <input
+          type="text"
+          formControlName="name"
+          class="custom-input"
+          placeholder="Nombre del quiz"
+          style="width: max-content;" />
+      </div>
+      <div class="form-group">
+        <input
+          type="text"
+          formControlName="description"
+          class="custom-input"
+          placeholder="Descripción del quiz" />
+      </div>
+    </div>
+
     <app-header-page></app-header-page>
 
-    <div [formGroup]="selectNameForm">
+    <div [formGroup]="selectNameForm" id="questions-scroll">
       <div formArrayName="questions" id="question-container">
         <div
           *ngFor="
-            let question of paginatedQuestions;
+            let question of questions.controls;
             let i = index;
             trackBy: trackByFn
           "
           [formGroupName]="i"
           class="question-container">
-          <div class="question-header">
-            <!-- <span class="question-number"
-              >Pregunta {{ currentPage * questionsPerPage + i + 1 }}</span
-            > -->
+          <!-- Edit Form Popup -->
+          <div
+            *ngIf="showEditForm && currentEditingIndex === i"
+            class="edit-popup">
+            <div class="content-2">
+              <div class="popup-header">
+                <h3>Editar pregunta</h3>
+                <button class="close-button" (click)="closeEditPopup()">
+                  <i class="fas fa-times"></i>
+                </button>
+              </div>
+
+              <form
+                #questionForm="ngForm"
+                (ngSubmit)="updateQuestion(questionForm)">
+                <div class="question-container mb-3">
+                  <div>
+                    <label for="questionType" class="custom-label"
+                      >Tipo de Pregunta</label
+                    >
+                    <div class="d-flex">
+                      <select
+                        class="custom-input"
+                        id="questionType"
+                        name="questionType"
+                        [(ngModel)]="selectedOption"
+                        (ngModelChange)="
+                          onQuestionTypeChange($event, questionForm)
+                        "
+                        required>
+                        <option
+                          *ngFor="let type of questionTypes"
+                          [value]="type">
+                          {{ type }}
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="custom-label">
+                    <div class="label-input">
+                      <label for="questionText" class="custom-label"
+                        >Escribe una pregunta</label
+                      >
+                    </div>
+                    <input
+                      type="text"
+                      id="questionText"
+                      class="custom-input"
+                      name="questionText"
+                      [(ngModel)]="currentEditingQuestion?.get('text').value"
+                      required />
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <div class="option-row">
+                    <div
+                      *ngFor="let option of options; let i = index"
+                      class="row">
+                      <div *ngIf="showInput" class="checkbox-container mb-3">
+                        <input
+                          *ngIf="inputType === 'radio'"
+                          type="radio"
+                          class="checkbox-input"
+                          [(ngModel)]="selectedRadio"
+                          [value]="option"
+                          name="radioGroup"
+                          (click)="answerChoice(i)" />
+                        <input
+                          *ngIf="inputType === 'checkbox'"
+                          type="checkbox"
+                          class="checkbox-input"
+                          [(ngModel)]="selectedValues[i]"
+                          (click)="answerChoice(i)"
+                          [name]="'checkbox' + i" />
+                      </div>
+                      <input
+                        type="text"
+                        class="custom-option-input mb-3"
+                        [(ngModel)]="options[i]"
+                        name="option{{ i }}"
+                        [readonly]="isTrueFalseQuestion"
+                        required />
+                    </div>
+
+                    <div *ngIf="showPlus" class="row">
+                      <div class="checkbox-container">
+                        <i class="bi bi-plus-circle" (click)="addOption()"></i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div *ngIf="showSubmits" class="d-flex justify-content-around">
+                  <button type="submit" class="custom-btn-submit">
+                    Guardar Cambios
+                  </button>
+                </div>
+              </form>
+            </div>
           </div>
+
+          <div class="question-header"></div>
 
           <div class="text-question">
             <div>{{ question.get('text').value }}</div>
-            <button (click)="showEditPopup()" class="edit-button">
+            <button (click)="showEditPopup(i)" class="edit-button">
               <i class="fas fa-edit"></i>
             </button>
           </div>
@@ -92,9 +208,6 @@
                     option.get('text').value
                   }}</label>
                 </span>
-                <!-- <span *ngIf="option.get('selected').value">
-                  <i class="fa-solid fa-check"></i>
-                </span> -->
               </div>
             </div>
           </div>
@@ -102,164 +215,8 @@
       </div>
     </div>
 
-    <div class="pagination-container" *ngIf="totalPages > 1">
-      <div class="pagination-controls">
-        <button
-          class="pagination-button"
-          (click)="prevPage()"
-          [disabled]="currentPage === 0"
-          [class.disabled]="currentPage === 0">
-          Atras
-        </button>
-
-        <div class="page-numbers">
-          <!-- Primera página -->
-          <button
-            *ngIf="showFirstPage"
-            class="page-number"
-            (click)="goToPage(0)"
-            [class.active]="currentPage === 0">
-            .
-          </button>
-
-          <!-- Ellipsis inicial -->
-          <span *ngIf="showFirstPage" class="ellipsis">...</span>
-
-          <!-- Páginas visibles -->
-          <button
-            *ngFor="let page of visiblePages"
-            class="page-number"
-            (click)="goToPage(page)"
-            [class.active]="currentPage === page">
-            .
-          </button>
-
-          <!-- Ellipsis final -->
-          <span *ngIf="showLastPage" class="ellipsis">...</span>
-
-          <!-- Última página -->
-          <button
-            *ngIf="showLastPage"
-            class="page-number"
-            (click)="goToPage(totalPages - 1)"
-            [class.active]="currentPage === totalPages - 1">
-            .
-          </button>
-        </div>
-        <button
-          *ngIf="currentPage >= totalPages - 1"
-          (click)="createQuiz()"
-          class="pagination-button save-button">
-          Guardar
-        </button>
-
-        <button
-          *ngIf="currentPage < totalPages - 1"
-          class="pagination-button"
-          (click)="nextPage()"
-          [disabled]="currentPage >= totalPages - 1"
-          [class.disabled]="currentPage >= totalPages - 1">
-          Siguiente
-        </button>
-      </div>
-      <!-- el popup para editar preguntas-->
-      <div *ngIf="showEditForm" class="popup-overlay">
-        <div class="content-2">
-          <div class="popup-header">
-            <h3>Editar pregunta</h3>
-            <button class="close-button" (click)="closeEditPopup()">
-              <i class="fas fa-times"></i>
-            </button>
-          </div>
-
-          <form
-            #questionForm="ngForm"
-            (ngSubmit)="updateQuestion(questionForm)">
-            <div class="question-container mb-3">
-              <div>
-                <label for="questionType" class="custom-label"
-                  >Tipo de Pregunta</label
-                >
-                <div class="d-flex">
-                  <select
-                    class="custom-input"
-                    id="questionType"
-                    name="questionType"
-                    [(ngModel)]="selectedOption"
-                    (ngModelChange)="onQuestionTypeChange($event, questionForm)"
-                    required>
-                    <option *ngFor="let type of questionTypes" [value]="type">
-                      {{ type }}
-                    </option>
-                  </select>
-                </div>
-              </div>
-
-              <div class="custom-label">
-                <div class="label-input">
-                  <label for="questionText" class="custom-label"
-                    >Escribe una pregunta</label
-                  >
-                </div>
-                <input
-                  type="text"
-                  id="questionText"
-                  class="custom-input"
-                  name="questionText"
-                  [(ngModel)]="currentEditingQuestion?.get('text').value"
-                  required />
-              </div>
-            </div>
-
-            <div class="form-group">
-              <div class="option-row">
-                <div *ngFor="let option of options; let i = index" class="row">
-                  <div *ngIf="showInput" class="checkbox-container mb-3">
-                    <input
-                      *ngIf="inputType === 'radio'"
-                      type="radio"
-                      class="checkbox-input"
-                      [(ngModel)]="selectedRadio"
-                      [value]="option"
-                      name="radioGroup"
-                      (click)="answerChoice(i)" />
-                    <input
-                      *ngIf="inputType === 'checkbox'"
-                      type="checkbox"
-                      class="checkbox-input"
-                      [(ngModel)]="selectedValues[i]"
-                      (click)="answerChoice(i)"
-                      [name]="'checkbox' + i" />
-                  </div>
-                  <input
-                    type="text"
-                    class="custom-option-input mb-3"
-                    [(ngModel)]="options[i]"
-                    name="option{{ i }}"
-                    [readonly]="isTrueFalseQuestion"
-                    required />
-                </div>
-
-                <div *ngIf="showPlus" class="row">
-                  <div class="checkbox-container">
-                    <i class="bi bi-plus-circle" (click)="addOption()"></i>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div *ngIf="showSubmits" class="d-flex justify-content-around">
-              <button type="submit" class="custom-btn-submit">
-                Guardar Cambios
-              </button>
-            </div>
-          </form>
-        </div>
-      </div>
-
-      <!-- <div class="page-info">
-        Página {{ currentPage + 1 }} de {{ totalPages }}
-      </div> -->
+    <div class="actions-container" style="display: flex;justify-content: end;">
+      <button (click)="createQuiz()" class="save-button">Guardar</button>
     </div>
   </div>
 </div>
