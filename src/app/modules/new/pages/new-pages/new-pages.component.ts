@@ -16,7 +16,7 @@ export class NewPagesComponent {
     private cdr: ChangeDetectorRef,
     private auth: AuthService
   ) {}
-
+//componente jesus
   public selectNameForm = this.formsBuilder.group({
     name: ['', Validators.required],
     description: ['', Validators.required],
@@ -244,7 +244,7 @@ export class NewPagesComponent {
         return;
       }
 
-      // Prepare options, filtering out undefined or empty options
+      // preparar opciones undefined o null
       const options = [
         formSection?.option0,
         formSection?.option1,
@@ -254,7 +254,7 @@ export class NewPagesComponent {
         formSection?.option5
       ].filter(option => option !== undefined && option !== null && option.trim() !== '');
 
-      // Validate options based on question type
+      // Validacion
       if (
         (questionType === 'true_false' && options.length !== 2) ||
         (questionType === 'simple_choice' && options.length < 2) ||
@@ -264,7 +264,7 @@ export class NewPagesComponent {
         return;
       }
 
-      // Validate correct options
+      //validacion
       const maxOptionIndex = options.length - 1;
       const invalidCorrectOptions = this.correct_option.some(opt => opt > maxOptionIndex);
       if (invalidCorrectOptions) {
@@ -293,7 +293,7 @@ export class NewPagesComponent {
       this.options = [];
       this.correct_option = [];
 
-      // If we have 10 questions, create the quiz with all questions
+      //con las 10 preguntas enviamos el quiz
       if (this.temporaryQuestions.length === 10) {
         const quizWithQuestions = {
           ...this.quizData,
@@ -321,7 +321,7 @@ export class NewPagesComponent {
         this.quizID = data.id;
         this.pop = true;
 
-        // Optional: Add a reload after a delay
+        
         // setTimeout(() => {
         //   this.closeFn();
         //   window.location.reload();
