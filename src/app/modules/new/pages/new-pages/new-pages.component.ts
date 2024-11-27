@@ -34,7 +34,7 @@ export class NewPagesComponent {
   };
 
   questionText: string = '';
-  questions: any[] = []; // Cambiado a array tipado
+  questions: any[] = [];
   options: string[] = [];
   selection: number[] = [];
   selectedOption: string = '';
@@ -53,7 +53,7 @@ export class NewPagesComponent {
   correct_option: number[] = [];
   selectedValues: boolean[] = [];
   inputsValues: boolean = false;
-  temporaryQuestions: any[] = []; // Array para almacenar preguntas temporalmente
+  temporaryQuestions: any[] = [];
 
   isFieldInvalid(field: string): boolean {
     const control = this.selectNameForm.get(field);
@@ -70,7 +70,7 @@ export class NewPagesComponent {
 
   answerChoice(i: number) {
     if (this.correct_option.includes(i)) {
-      this.correct_option = this.correct_option.filter(element => element != i);
+      this.correct_option = this.correct_option.filter(element => element !== i);
     } else {
       this.correct_option.push(i);
     }
@@ -139,20 +139,25 @@ export class NewPagesComponent {
       this.showButton = false;
     }
 
-    let responseModule: any = await fetch(`${environment.url}/modules`);
-    responseModule = await responseModule.json();
-    responseModule = responseModule.find(
-      element => element.name == datos.module
-    );
-    this.quizData.module = responseModule.id;
+    try {
+      let responseModule: any = await fetch(`${environment.url}/modules`);
+      responseModule = await responseModule.json();
+      responseModule = responseModule.find(
+        element => element.name == datos.module
+      );
+      this.quizData.module = responseModule.id;
 
-    let response: any = await fetch(`${environment.url}/cells`);
-    response = await response.json();
-    response = response.find(element => datos.cell == element.name);
-    response ? (this.quizData.cell = response.id) : '';
+      let response: any = await fetch(`${environment.url}/cells`);
+      response = await response.json();
+      response = response.find(element => datos.cell == element.name);
+      response ? (this.quizData.cell = response.id) : '';
 
-    if (datos.seniority) {
-      this.quizData.seniority = datos.seniority;
+      if (datos.seniority) {
+        this.quizData.seniority = datos.seniority;
+      }
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      alert('Error al obtener datos del módulo o célula');
     }
   }
 
@@ -192,7 +197,7 @@ export class NewPagesComponent {
         name: this.selectNameForm.value.name,
         description: this.selectNameForm.value.description,
         cell_id: this.quizData.cell,
-        seniority: this.quizData.seniority,
+        seniority: this.quizData.seniority?.toLowerCase(),
         challenge_type: 'immediate',
         created_by_id: userData.id,
         is_active: true
@@ -212,82 +217,119 @@ export class NewPagesComponent {
     try {
       const formSection = form.value;
 
-      // Convertir tipo de pregunta
+      // Convert question type
+      let questionType = '';
       switch (formSection.questionType) {
         case 'Selección mutiple':
-          formSection.questionType = 'multiple_choice';
+          questionType = 'multiple_choice';
           break;
         case 'Verdadero o falso':
-          formSection.questionType = 'true_false';
+          questionType = 'true_false';
           break;
         case 'Casilla':
-          formSection.questionType = 'simple_choice';
+          questionType = 'simple_choice';
           break;
+        default:
+          throw new Error('Tipo de pregunta no válido');
       }
 
-      if (formSection.questionText && this.correct_option.length !== 0) {
-        const question = {
-          question: formSection.questionText,
-          seniority: 'junior',
-          type: formSection.questionType,
-          options: [
-            formSection?.option0,
-            formSection?.option1,
-            formSection?.option2,
-            formSection?.option3,
-            formSection?.option4,
-            formSection?.option5,
-          ].filter(option => option !== undefined && option !== null),
-          correct_option: this.correct_option,
-          explanation: 'string',
-          link: 'string',
-          is_active: true
+      // Validate question text and correct options
+      if (!formSection.questionText) {
+        alert('Por favor, ingrese el texto de la pregunta');
+        return;
+      }
+
+      if (this.correct_option.length === 0) {
+        alert('Por favor, seleccione al menos una opción correcta');
+        return;
+      }
+
+      // Prepare options, filtering out undefined or empty options
+      const options = [
+        formSection?.option0,
+        formSection?.option1,
+        formSection?.option2,
+        formSection?.option3,
+        formSection?.option4,
+        formSection?.option5
+      ].filter(option => option !== undefined && option !== null && option.trim() !== '');
+
+      // Validate options based on question type
+      if (
+        (questionType === 'true_false' && options.length !== 2) ||
+        (questionType === 'simple_choice' && options.length < 2) ||
+        (questionType === 'multiple_choice' && options.length < 3)
+      ) {
+        alert('Número de opciones inválido para el tipo de pregunta seleccionado');
+        return;
+      }
+
+      // Validate correct options
+      const maxOptionIndex = options.length - 1;
+      const invalidCorrectOptions = this.correct_option.some(opt => opt > maxOptionIndex);
+      if (invalidCorrectOptions) {
+        alert('Selección de opciones correctas no válida');
+        return;
+      }
+
+      const question = {
+        question: formSection.questionText,
+        seniority: this.quizData.seniority || 'junior',
+        type: questionType,
+        options: options,
+        correct_option: this.correct_option,
+        explanation: formSection.explanation || '',
+        link: formSection.link || '',
+        is_active: true
+      };
+
+      this.temporaryQuestions.push(question);
+      this.questions.push(formSection);
+
+      // Reset form
+      form.reset();
+      this.selectedOption = '';
+      this.isFocused = false;
+      this.options = [];
+      this.correct_option = [];
+
+      // If we have 10 questions, create the quiz with all questions
+      if (this.temporaryQuestions.length === 10) {
+        const quizWithQuestions = {
+          ...this.quizData,
+          questions: this.temporaryQuestions
         };
+        this.showForm = false;
 
-        this.temporaryQuestions.push(question);
-        this.questions.push(formSection); // Para mantener el contador en la UI
+        console.log('Sending quiz data:', JSON.stringify(quizWithQuestions));
 
-        form.reset();
-        this.selectedOption = '';
-        this.isFocused = false;
-        this.options = [];
+        const response = await fetch(`${environment.url}/quiz/nested`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(quizWithQuestions),
+        });
 
-        // Si tenemos 10 preguntas, crear el quiz con todas las preguntas
-        if (this.temporaryQuestions.length === 10) {
-          const quizWithQuestions = {
-            ...this.quizData,
-            questions: this.temporaryQuestions
-          };
-          this.showForm = false;
-
-          const response = await fetch(`${environment.url}/quiz/nested`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(quizWithQuestions),
-          });
-
-          if (!response.ok) {
-            throw new Error(`Error: ${response.status}`);
-          }
-
-          const data = await response.json();
-          this.quizID = data.id;
-          this.pop = true;
-          
-          
-          // setTimeout(() => {
-          //   this.closeFn();
-          //   window.location.reload();
-          // }, 2000);
+        if (!response.ok) {
+          const errorText = await response.text();
+          console.error('Full error response:', errorText);
+          throw new Error(`Error: ${response.status} - ${errorText}`);
         }
-      } else {
-        alert('Complete los campos requeridos');
+
+        const data = await response.json();
+        this.quizID = data.id;
+        this.pop = true;
+
+        // Optional: Add a reload after a delay
+        // setTimeout(() => {
+        //   this.closeFn();
+        //   window.location.reload();
+        // }, 2000);
       }
     } catch (error) {
-      alert(error);
-      console.error(error);
+      console.error('Detailed error:', error);
+      alert(error.message || 'Error al crear el cuestionario');
     }
   }
 
@@ -300,11 +342,11 @@ export class NewPagesComponent {
   }
 
   addOption() {
-    if (this.options.length < 5) {
+    if (this.options.length < 6) {
       this.options.push(`Opción ${this.options.length + 1}`);
-    } else {
-      this.options.push(`Opción ${this.options.length + 1}`);
-      this.showPlus = false;
+      if (this.options.length === 6) {
+        this.showPlus = false;
+      }
     }
   }
 }
