@@ -1,7 +1,8 @@
 <div class="normal-container transparent">
   <div class="header-inputs-container">
     <div>
-      <div [ngClass]="showForm ? 'quiz-container-true' : 'quiz-container-false'">
+      <div
+        [ngClass]="showForm ? 'quiz-container-true' : 'quiz-container-false'">
         <form [formGroup]="selectNameForm">
           <div class="flex-b">
             <input
@@ -15,7 +16,7 @@
               formControlName="name"
               (input)="isValidInput()"
               [ngClass]="{ notice: isFieldInvalid('name') }" />
-            <div [ngClass]="showForm ? '' : 'd-none'">
+            <div *ngIf="!showForm">
               <button class="btn-plus" (click)="editQuiz()">
                 <span><i class="fa-regular fa-pen-to-square"></i></span>
               </button>
@@ -27,7 +28,7 @@
               type="text"
               class="input-description"
               [ngClass]="{ notice: isFieldInvalid('description') }"
-              [ngClass]="showForm ? 'd-none' : 'input-description'"
+              [class]="showForm ? 'd-none' : 'input-description'"
               [placeholder]="
                 isFieldInvalid('description')
                   ? '* La descripción es requerida'
@@ -41,7 +42,7 @@
         <app-header-page
           [ngClass]="showForm ? '' : 'absolute-true'"
           (datosParaPadre)="recibirDatos($event)"
-          [mode]="toggle">
+          [editMode]="true">
         </app-header-page>
       </div>
     </div>
@@ -49,11 +50,7 @@
 
   <div>
     <div *ngIf="showButton && inputsValues">
-      <button
-        (click)="createQuiz()"
-        class="custom-btn-save">
-        Guardar
-      </button>
+      <button (click)="createQuiz()" class="custom-btn-save">Guardar</button>
     </div>
 
     <div *ngIf="showForm" class="content-2">
@@ -61,14 +58,16 @@
       <form #questionForm="ngForm" (ngSubmit)="createQuestion(questionForm)">
         <div class="question-container mb-3">
           <div>
-            <label for="questionType" class="custom-label">Tipo de Pregunta</label>
+            <label for="questionType" class="custom-label"
+              >Tipo de Pregunta</label
+            >
             <div class="d-flex">
               <select
                 class="custom-input"
                 id="questionType"
                 name="questionType"
                 [(ngModel)]="selectedOption"
-                (ngModelChange)="onQuestionTypeChange($event)"
+                (ngModelChange)="onQuestionTypeChange($event, questionForm)"
                 (focus)="isFocused = true"
                 (blur)="isFocused = false"
                 required>
@@ -86,7 +85,9 @@
           </div>
           <div class="custom-label">
             <div class="label-input">
-              <label for="questionText" class="custom-label d-flex justify-content-end">
+              <label
+                for="questionText"
+                class="custom-label d-flex justify-content-end">
                 Escribe una pregunta
               </label>
             </div>
@@ -103,7 +104,9 @@
 
         <div class="form-group">
           <div class="option-row">
-            <div *ngFor="let option of options; let i = index; trackBy: trackByFn" class="row">
+            <div
+              *ngFor="let option of options; let i = index; trackBy: trackByFn"
+              class="row">
               <div *ngIf="showInput" class="checkbox-container mb-3">
                 <input
                   *ngIf="inputType === 'radio'"
@@ -112,16 +115,14 @@
                   [(ngModel)]="selectedRadio"
                   [value]="option"
                   name="radioGroup"
-                  (click)="answerChoice(i)"
-                />
+                  (click)="answerChoice(i)" />
                 <input
                   *ngIf="inputType === 'checkbox'"
                   type="checkbox"
                   class="checkbox-input"
                   [(ngModel)]="selectedValues[i]"
                   (click)="answerChoice(i)"
-                  [name]="'checkbox' + i"
-                />
+                  [name]="'checkbox' + i" />
               </div>
               <input
                 type="text"
@@ -129,11 +130,9 @@
                 [(ngModel)]="options[i]"
                 name="option{{ i }}"
                 [readonly]="isTrueFalseQuestion"
-                required
-              />
+                required />
             </div>
 
-            <!-- Botón para agregar más opciones -->
             <div *ngIf="showPlus" class="row">
               <div class="checkbox-container">
                 <i class="bi bi-plus-circle" (click)="addOption()"></i>
@@ -155,12 +154,15 @@
       </form>
     </div>
   </div>
-  
-  <!-- Mensaje de éxito -->
+
   <span *ngIf="pop">
-    <app-pop-message 
-      class="pop-message" 
-      [message]="questions.length === 10 ? 'Quiz creado exitosamente' : 'Pregunta guardada correctamente'" 
+    <app-pop-message
+      class="pop-message"
+      [message]="
+        questions.length === 10
+          ? 'Quiz creado exitosamente'
+          : 'Pregunta guardada correctamente'
+      "
       (closeEvent)="closeFn()">
     </app-pop-message>
   </span>

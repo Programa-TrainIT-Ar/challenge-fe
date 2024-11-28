@@ -2,7 +2,7 @@
   <app-header-page
     [ngClass]="showForm ? '' : 'absolute-true'"
     (datosParaPadre)="recibirDatos($event)"
-    [mode]="true">
+    [editMode]='false'>
   </app-header-page>
   <div class="search-container">
     <h2>Todos los Quiz</h2>
@@ -54,6 +54,7 @@
   <div *ngIf="isExpanded3" class="edit-column" [@expandState3]="isExpanded3 ? 'expanded' : 'collapsed'">
     <app-edit-pages [quizId]="selectedQuiz?.id" (close)="closeEdit()"></app-edit-pages>
   </div>
+  
 </div>
 
 <!-- Mostrar los detalles del quiz seleccionado -->

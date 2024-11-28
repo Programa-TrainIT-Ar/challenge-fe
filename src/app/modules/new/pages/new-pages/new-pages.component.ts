@@ -16,7 +16,7 @@ export class NewPagesComponent {
     private cdr: ChangeDetectorRef,
     private auth: AuthService
   ) {}
-//componente jesus
+
   public selectNameForm = this.formsBuilder.group({
     name: ['', Validators.required],
     description: ['', Validators.required],
@@ -70,7 +70,9 @@ export class NewPagesComponent {
 
   answerChoice(i: number) {
     if (this.correct_option.includes(i)) {
-      this.correct_option = this.correct_option.filter(element => element !== i);
+      this.correct_option = this.correct_option.filter(
+        element => element !== i
+      );
     } else {
       this.correct_option.push(i);
     }
@@ -130,9 +132,9 @@ export class NewPagesComponent {
 
   async recibirDatos(datos: any) {
     if (
-      datos.celula != 'Selecciona la célula' &&
-      datos.modulo != 'Selecciona el modulo' &&
-      datos.seniority != 'Seniority'
+      datos.celula != '' &&
+      datos.modulo != '' &&
+      datos.seniority != ''
     ) {
       this.showButton = true;
     } else {
@@ -163,26 +165,32 @@ export class NewPagesComponent {
 
   async createQuiz() {
     try {
-      this.quizData.seniority = this.quizData.seniority === 'semi-sr' ? 'middle' : this.quizData.seniority;
+      this.quizData.seniority =
+        this.quizData.seniority === 'semi-sr'
+          ? 'middle'
+          : this.quizData.seniority;
       const user = await firstValueFrom(this.auth.user$);
 
       if (!user?.email) {
         throw new Error('No se encontró el email del usuario autenticado');
       }
 
-      const userResponse = await fetch(`${environment.url}/user/FindByEmail?email=${user.email}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
+      const userResponse = await fetch(
+        `${environment.url}/user/FindByEmail?email=${user.email}`,
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
 
       if (!userResponse.ok) {
         throw new Error('Error al obtener el usuario desde el backend');
       }
 
       const userData = await userResponse.json();
-      
+
       if (!userData?.id) {
         throw new Error('No se encontró el ID del usuario en la base de datos');
       }
@@ -191,7 +199,7 @@ export class NewPagesComponent {
       this.showForm = true;
       this.toggle = false;
       this.showButton = false;
-      
+
       // Guardar los datos del quiz para usarlos cuando tengamos todas las preguntas
       this.quizData = {
         name: this.selectNameForm.value.name,
@@ -200,12 +208,11 @@ export class NewPagesComponent {
         seniority: this.quizData.seniority?.toLowerCase(),
         challenge_type: 'immediate',
         created_by_id: userData.id,
-        is_active: true
+        is_active: true,
       };
 
       this.questionCategory.name = this.selectNameForm.value.name;
       this.questionCategory.description = this.selectNameForm.value.description;
-
     } catch (error) {
       console.error('Error preparando el quiz:', error);
       alert(error.message || 'Error al preparar el quiz');
@@ -244,29 +251,36 @@ export class NewPagesComponent {
         return;
       }
 
-      // preparar opciones undefined o null
+      // Prepare options, filtering out undefined or empty options
       const options = [
         formSection?.option0,
         formSection?.option1,
         formSection?.option2,
         formSection?.option3,
         formSection?.option4,
-        formSection?.option5
-      ].filter(option => option !== undefined && option !== null && option.trim() !== '');
+        formSection?.option5,
+      ].filter(
+        option =>
+          option !== undefined && option !== null && option.trim() !== ''
+      );
 
-      // Validacion
+      // Validate options based on question type
       if (
         (questionType === 'true_false' && options.length !== 2) ||
         (questionType === 'simple_choice' && options.length < 2) ||
         (questionType === 'multiple_choice' && options.length < 3)
       ) {
-        alert('Número de opciones inválido para el tipo de pregunta seleccionado');
+        alert(
+          'Número de opciones inválido para el tipo de pregunta seleccionado'
+        );
         return;
       }
 
-      //validacion
+      // Validate correct options
       const maxOptionIndex = options.length - 1;
-      const invalidCorrectOptions = this.correct_option.some(opt => opt > maxOptionIndex);
+      const invalidCorrectOptions = this.correct_option.some(
+        opt => opt > maxOptionIndex
+      );
       if (invalidCorrectOptions) {
         alert('Selección de opciones correctas no válida');
         return;
@@ -280,7 +294,7 @@ export class NewPagesComponent {
         correct_option: this.correct_option,
         explanation: formSection.explanation || '',
         link: formSection.link || '',
-        is_active: true
+        is_active: true,
       };
 
       this.temporaryQuestions.push(question);
@@ -293,11 +307,11 @@ export class NewPagesComponent {
       this.options = [];
       this.correct_option = [];
 
-      //con las 10 preguntas enviamos el quiz
+      // If we have 10 questions, create the quiz with all questions
       if (this.temporaryQuestions.length === 10) {
         const quizWithQuestions = {
           ...this.quizData,
-          questions: this.temporaryQuestions
+          questions: this.temporaryQuestions,
         };
         this.showForm = false;
 
@@ -321,7 +335,7 @@ export class NewPagesComponent {
         this.quizID = data.id;
         this.pop = true;
 
-        
+        // Optional: Add a reload after a delay
         // setTimeout(() => {
         //   this.closeFn();
         //   window.location.reload();

@@ -27,7 +27,10 @@
       </div>
     </div>
 
-    <app-header-page></app-header-page>
+    <app-header-page
+          
+          [editMode]="true">
+        </app-header-page>
 
     <div [formGroup]="selectNameForm" id="questions-scroll">
       <div formArrayName="questions" id="question-container">
