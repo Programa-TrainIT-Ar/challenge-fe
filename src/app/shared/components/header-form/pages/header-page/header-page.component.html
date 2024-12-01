@@ -4,6 +4,9 @@
       <!-- Opciones de Módulo -->
       <div class="input-container">
         <h4>Módulo</h4>
+        <button (click)="resetValue()">
+          <i class="bi bi-arrow-counterclockwise"></i>
+        </button>
         <div class="form-select option-select" (click)="isShowModulo($event)">
           <span [ngClass]="[quizCategory?.module, 'floating']">
             {{quizCategory?.module || 'Selecciona el modulo'}}
@@ -45,9 +48,6 @@
                       <div class="actions">
                         <button (click)="$event.stopPropagation(); startEditingModule($event, module.id, module.name)">
                           <i class="bi bi-pencil-square"></i>
-                        </button>
-                        <button (click)="$event.stopPropagation(); deleteModule(module.id)">
-                          <i class="bi bi-trash"></i>
                         </button>
                       </div>
                     }
@@ -134,9 +134,6 @@
                       <div class="actions">
                         <button (click)="$event.stopPropagation(); startEditingCell($event, cell.id, cell.name)">
                           <i class="bi bi-pencil-square"></i>
-                        </button>
-                        <button (click)="$event.stopPropagation(); deleteCell(cell.id)">
-                          <i class="bi bi-trash"></i>
                         </button>
                       </div>
                     }

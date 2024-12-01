@@ -42,4 +42,12 @@ export class AllPageService {
     return this.http.get(this.urlApi, { params });
   }
   
+  toggleIsActiveQuiz(id: string, is_active:boolean) {
+    return this.http.put(`${this.urlApi}/${id}`, {is_active: is_active});
+  }
+
+  deleteQuiz(id: string) {
+    return this.http.delete(`${this.urlApi}/${id}`)
+  }
 }
+

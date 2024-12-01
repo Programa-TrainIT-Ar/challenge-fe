@@ -71,7 +71,6 @@ export class AllPageComponent implements OnInit {
   ngOnInit(): void {
     this.allPageService.getAllQuiz().subscribe((response: any) => {
       this.quizzes = response.quizzes;
-      console.log(this.quizzes);
     });
   }
 
@@ -79,16 +78,7 @@ export class AllPageComponent implements OnInit {
     this.module = quizCategory.module;
     this.cell = quizCategory.cell;
     this.seniority = quizCategory.seniority;
-    this.allPageService
-      .getFilteredQuiz({
-        module: this.module,
-        cell: this.cell,
-        seniority: this.seniority.toLowerCase(),
-        search: this.searchText,
-      })
-      .subscribe((response: any) => {
-        this.quizzes = response.quizzes;
-      });
+    this.onSearchChange()
   }
 
   onSearchChange() {
@@ -104,40 +94,25 @@ export class AllPageComponent implements OnInit {
       });
   }
 
-  async toggleActive(quiz: Quiz) {
+  toggleActive(quiz: Quiz) {
     quiz.is_active = !quiz.is_active;
-
-    try {
-      const response = await fetch(`${environment.url}/quiz/${quiz.id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ is_active: quiz.is_active }),
-      });
-
-      if (!response.ok) {
-        throw new Error(
-          'Error al actualizar el estado del quiz: ' + response.status
-        );
+    this.allPageService.toggleIsActiveQuiz(quiz.id, quiz.is_active).subscribe({
+      next: (response) => {
+        console.log('Se actualizo el estado del quiz correctamente', response)
+      },
+      error: (error) => {
+        console.error('Error al actualizar el estado del quiz:', error)
       }
-    } catch (error) {
-      console.error('Error al actualizar el estado del quiz:', error);
-    }
+    })
   }
 
   viewQuiz(quiz: Quiz) {
-    this.selectedQuizOnView = quiz; // Esto hace que la ventana emergente se muestre
-
-    console.log('Quiz seleccionado:', quiz);
+    this.selectedQuiz = quiz;
+    this.router.navigate(['home/view-quiz', quiz.id]);
   }
 
-  closeQuiz() {
-    this.selectedQuizOnView = null; // Esto cierra la ventana emergente
-  }
-
-  async deleteQuiz(quiz: Quiz) {
-    const result = await Swal.fire({
+  deleteQuiz(quiz: Quiz) {
+    Swal.fire({
       title: '¿Deseas eliminar el registro?',
       text: 'Una vez eliminado no se podrá recuperar',
       showCloseButton: true,
@@ -148,24 +123,39 @@ export class AllPageComponent implements OnInit {
         title: 'custom-delete-title',
         confirmButton: 'custom-delete-confirm-button',
       },
-    });
-
-    if (result.isConfirmed) {
-      try {
-        const response = await fetch(`${environment.url}/quiz/${quiz.id}`, {
-          method: 'DELETE',
-        });
-        if (!response.ok) throw new Error('Error al eliminar el quiz');
-        this.quizzes = this.quizzes.filter(q => q.id !== quiz.id);
-      } catch (error) {
-        Swal.fire({
-          title: 'Error',
-          text: 'No se pudo eliminar el registro.',
-          icon: 'error',
-          confirmButtonText: 'Entendido',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.allPageService.deleteQuiz(quiz.id).subscribe({
+          next: () => {
+            this.quizzes = this.quizzes.filter((q) => q.id !== quiz.id);
+            Swal.fire({
+              title: 'Eliminado',
+              text: 'El registro ha sido eliminado.',
+              icon: 'success',
+              confirmButtonText: 'Entendido',
+              customClass: {
+                popup: 'custom-delete-popup',
+                title: 'custom-delete-title',
+                confirmButton: 'custom-delete-confirm-button',
+              },
+            });
+          },
+          error: () => {
+            Swal.fire({
+              title: 'Error',
+              text: 'No se pudo eliminar el registro.',
+              icon: 'error',
+              confirmButtonText: 'Entendido',
+              customClass: {
+                popup: 'custom-delete-popup',
+                title: 'custom-delete-title',
+                confirmButton: 'custom-delete-confirm-button',
+              },
+            });
+          }
         });
       }
-    }
+    });
   }
 
   editQuiz(quiz: Quiz) {
