@@ -60,6 +60,6 @@
 <!-- Mostrar los detalles del quiz seleccionado -->
 <div *ngIf="selectedQuizOnView" class="overlay" [@fadeInOut]>
   <div class="popup">
-    <app-view-quiz [quizId]="selectedQuizOnView?.id" (close)="closeQuiz()"></app-view-quiz>
+    <app-view-quiz [quizId]="selectedQuizOnView?.id" (edit)="editQuiz($event)" (delete)="deleteQuiz($event)" (close)="closeQuiz()"></app-view-quiz>
   </div>
 </div>

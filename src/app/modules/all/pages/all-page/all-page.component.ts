@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, input, OnInit, output } from '@angular/core';
 import { Router } from '@angular/router';
 import {
   trigger,
@@ -54,6 +54,7 @@ interface Quiz {
 })
 export class AllPageComponent implements OnInit {
   @Output() quizSelected = new EventEmitter<any>();
+
   module: string = '';
   cell: string = '';
   seniority: string = '';
@@ -128,8 +129,6 @@ export class AllPageComponent implements OnInit {
 
   viewQuiz(quiz: Quiz) {
     this.selectedQuizOnView = quiz; // Esto hace que la ventana emergente se muestre
-
-    console.log('Quiz seleccionado:', quiz);
   }
 
   closeQuiz() {

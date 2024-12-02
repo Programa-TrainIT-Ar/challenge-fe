@@ -287,7 +287,7 @@ export class EditPagesComponent implements OnInit {
     }
 
     this.changeInputType();
-    this.cdr.detectChanges();
+    // this.cdr.detectChanges();
     // Implementar la lógica necesaria para el cambio de tipo de pregunta
   }
 
@@ -314,7 +314,7 @@ export class EditPagesComponent implements OnInit {
     this.showInput = false;
     setTimeout(() => {
       this.showInput = true;
-      this.cdr.detectChanges();
+      // this.cdr.detectChanges();
     }, 50);
   }
 }
