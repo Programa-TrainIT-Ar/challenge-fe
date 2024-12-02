@@ -30,7 +30,8 @@
             "assets": [
               "src/favicon.ico",
               "src/assets",
-              "src/mockServiceWorker.js"
+              "src/mockServiceWorker.js",
+              "src/_redirects"
             ],
             "styles": [ "node_modules/bootstrap/dist/css/bootstrap.min.css","src/styles.scss"],
             "scripts": [ "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"]

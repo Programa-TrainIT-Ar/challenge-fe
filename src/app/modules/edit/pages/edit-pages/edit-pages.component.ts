@@ -263,7 +263,31 @@ export class EditPagesComponent implements OnInit {
     this.closeEditPopup();
   }
 
-  onQuestionTypeChange(event: any, form: any) {
+  onQuestionTypeChange(selectedType: any, form: any) {
+    this.correct_option = [];
+    this.selectedValues = [];
+    this.showSubmits = true;
+    if (selectedType === 'Verdadero o falso') {
+      this.options = ['Verdadero', 'Falso'];
+      this.inputType = 'radio';
+      this.isTrueFalseQuestion = true;
+      this.showPlus = false;
+    } else if (selectedType === 'Selección mutiple') {
+      this.options = ['Opción 1', 'Opción 2', 'Opción 3'];
+      this.inputType = 'checkbox';
+      this.isTrueFalseQuestion = false;
+      this.showPlus = true;
+    } else if (selectedType === 'Casilla') {
+      this.options = ['Opción 1', 'Opción 2'];
+      this.inputType = 'radio';
+      this.isTrueFalseQuestion = false;
+      this.showPlus = true;
+    } else {
+      this.showPlus = false;
+    }
+
+    this.changeInputType();
+    this.cdr.detectChanges();
     // Implementar la lógica necesaria para el cambio de tipo de pregunta
   }
 
@@ -285,10 +309,12 @@ export class EditPagesComponent implements OnInit {
   }
 
   changeInputType() {
-    if (this.selectedOption === 'Selección mutiple') {
-      this.inputType = 'checkbox';
-    } else {
-      this.inputType = 'radio';
-    }
+    this.selectedValues = Array(this.options.length).fill(false);
+    this.selectedRadio = null;
+    this.showInput = false;
+    setTimeout(() => {
+      this.showInput = true;
+      this.cdr.detectChanges();
+    }, 50);
   }
 }
