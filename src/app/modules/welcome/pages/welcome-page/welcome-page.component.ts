@@ -120,6 +120,11 @@ export class WelcomePageComponent {
     this.toggleExpand1();  // Limpia el quiz seleccionado
   }
   
+  // Cuando se crea un nuevo quiz colapsa nuevo y abre todos
+  onQuizCreated() {
+    this.isExpanded2 = false;  // Contraer Nuevo
+    this.isExpanded1 = true;   // Expandir Todos
+  }
 
   
 }

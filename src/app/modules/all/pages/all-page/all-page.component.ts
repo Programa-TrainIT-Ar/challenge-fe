@@ -9,7 +9,7 @@ import {
 } from '@angular/animations';
 import { Output, EventEmitter } from '@angular/core';
 import Swal from 'sweetalert2';
-import { environment } from '@environments/environment';
+import { AlertService } from 'src/app/shared/components/alert/alert.service'; 
 import { AllPageService } from './all-page.service';
 
 interface User {
@@ -67,7 +67,9 @@ export class AllPageComponent implements OnInit {
   showEdit: boolean = false;
 
   private allPageService = inject(AllPageService);
-  constructor(private router: Router) {}
+  constructor(private router: Router,
+              private alertService: AlertService,
+  ) {}
 
   ngOnInit(): void {
     this.allPageService.getAllQuiz().subscribe((response: any) => {
@@ -115,7 +117,22 @@ export class AllPageComponent implements OnInit {
   }
 
   deleteQuiz(quiz: Quiz) {
-    Swal.fire({
+    this.alertService.showConfirm(
+      '¿Deseas eliminar el registro?',
+      'Una vez eliminado no se podrá recuperar',
+      () => {
+        // Acción de confirmación
+        this.allPageService.deleteQuiz(quiz.id).subscribe(
+          () => {
+            this.quizzes = this.quizzes.filter(q => q.id !== quiz.id);
+          },
+        ),
+        () => {
+          // Lógica cuando se cancela
+        },
+        'Eliminar'
+      })
+    alert.Swal.fire({
       title: '¿Deseas eliminar el registro?',
       text: 'Una vez eliminado no se podrá recuperar',
       showCloseButton: true,

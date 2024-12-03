@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { environment } from '@environments/environment';
 import { ChangeDetectorRef } from '@angular/core';
@@ -6,6 +6,7 @@ import { firstValueFrom } from 'rxjs';
 import { AuthService } from '@auth0/auth0-angular';
 import { NewPageService } from './new-pages.service';
 import { AlertService } from 'src/app/shared/components/alert/alert.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-new-pages',
@@ -19,7 +20,10 @@ export class NewPagesComponent {
     private auth: AuthService,
     private newPageService: NewPageService,
     private alertService: AlertService,
+    private router: Router,
   ) {}
+
+  @Output() quizCreated = new EventEmitter<void>();
 
   public selectNameForm = this.formsBuilder.group({
     name: ['', [Validators.required, Validators.minLength(3)]],
@@ -283,6 +287,7 @@ export class NewPagesComponent {
 
       // If we have 10 questions, create the quiz with all questions
       if (this.temporaryQuestions.length === 10) {
+        this.quizData.name= this.selectNameForm.value.name;
         const quizWithQuestions = {
           ...this.quizData,
           questions: this.temporaryQuestions,
@@ -308,6 +313,7 @@ export class NewPagesComponent {
         const data = await response.json();
         this.quizID = data.id;
         this.pop = true;
+        this.quizCreated.emit();
       }
     } catch (error) {
       console.error('Detailed error:', error);
