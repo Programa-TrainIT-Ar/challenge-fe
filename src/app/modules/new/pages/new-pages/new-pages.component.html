@@ -109,7 +109,7 @@
                   type="radio"
                   class="checkbox-input"
                   [(ngModel)]="selectedRadio"
-                  [value]="option"
+                  [value]="option || 'Opción ' + (i + 1)"
                   name="radioGroup"
                   (click)="answerChoiceRadio(i)" />
                 <input
@@ -117,8 +117,8 @@
                   type="checkbox"
                   class="checkbox-input"
                   [(ngModel)]="selectedValues[i]"
-                  (click)="answerChoice(i)"
-                  [name]="'checkbox' + i" />
+                  [name]="'checkbox' + i" 
+                  (click)="answerChoice(i)"/>
               </div>
               <input
                 type="text"
@@ -128,7 +128,6 @@
                 [placeholder]="'Opción ' + (i + 1)"
                 [readonly]="isTrueFalseQuestion"
                 required />
-                
             </div>
 
             <div *ngIf="showPlus" class="row">
@@ -139,7 +138,8 @@
                 type="text"
                 class="custom-option-input"
                 name="agregate"
-                placeholder="Añadir una nueva opción" />
+                placeholder="Añadir una nueva opción" 
+                disabled/>
             </div>
           </div>
         </div>

@@ -5,6 +5,7 @@ import { ChangeDetectorRef } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 import { AuthService } from '@auth0/auth0-angular';
 import { NewPageService } from './new-pages.service';
+import { AlertService } from 'src/app/shared/components/alert/alert.service';
 
 @Component({
   selector: 'app-new-pages',
@@ -16,7 +17,8 @@ export class NewPagesComponent {
     private formsBuilder: FormBuilder,
     private cdr: ChangeDetectorRef,
     private auth: AuthService,
-    private newPageService : NewPageService
+    private newPageService: NewPageService,
+    private alertService: AlertService,
   ) {}
 
   public selectNameForm = this.formsBuilder.group({
@@ -92,6 +94,7 @@ export class NewPagesComponent {
   }
   
   async createQuiz() {
+    // Conseguir el User_id del usuario autenticado
     try {  
       const user = await firstValueFrom(this.auth.user$);    
       if (!user?.email) {
@@ -120,7 +123,7 @@ export class NewPagesComponent {
     } 
     catch (error) {
       console.error('Error preparando el quiz:', error);
-      alert(error.message || 'Error al preparar el quiz');
+      this.alertService.showError(error.message || 'Error al preparar el quiz');
       this.showButton = false;
     }
   }
@@ -162,7 +165,7 @@ export class NewPagesComponent {
     this.selectedValues = [];
     this.showSubmits = true;
     if (selectedType === 'Verdadero o falso') {
-      this.options = ['Verdadero', 'Falso'];
+      this.options = ['Falso', 'Verdadero'];
       this.inputType = 'radio';
       this.isTrueFalseQuestion = true;
       this.showPlus = false;
@@ -206,18 +209,18 @@ export class NewPagesComponent {
 
       // Validate question text and correct options
       if (!formSection.questionText) {
-        alert('Por favor, ingrese el texto de la pregunta');
+        this.alertService.showWarning('Por favor, ingrese el texto de la pregunta');
         return;
       }
       console.log(this.correct_option)
       if (questionType === 'multiple_choice') {
         if (this.correct_option.length < 2) {
-          alert('Por favor, seleccione al menos dos opciones correctas');
+          this.alertService.showWarning('Por favor, seleccione al menos dos opciones correctas');
         return;
         }
       } else{
         if (this.correct_option.length === 0) {
-        alert('Por favor, seleccione una opción correcta');
+          this.alertService.showWarning('Por favor, seleccione una opción correcta');
         return;
       }}
 
@@ -237,11 +240,11 @@ export class NewPagesComponent {
       // Validate options based on question type
       if (
         (questionType === 'true_false' && options.length !== 2) ||
-        (questionType === 'simple_choice' && options.length < 2) ||
-        (questionType === 'multiple_choice' && options.length < 3)
+        (questionType === 'simple_choice' && options.length !== this.options.length) ||
+        (questionType === 'multiple_choice' && options.length !== this.options.length)
       ) {
-        alert(
-          'Número de opciones inválido para el tipo de pregunta seleccionado'
+        this.alertService.showWarning(
+          'Ingrese el texto en todas las opciones'
         );
         return;
       }
@@ -252,13 +255,13 @@ export class NewPagesComponent {
         opt => opt > maxOptionIndex
       );
       if (invalidCorrectOptions) {
-        alert('Selección de opciones correctas no válida');
+        this.alertService.showWarning('Selección de opciones correctas no válida');
         return;
       }
 
       const question = {
         question: formSection.questionText,
-        seniority: this.quizData.seniority || 'junior',
+        seniority: this.quizData.seniority,
         type: questionType,
         options: options,
         correct_option: this.correct_option,
@@ -268,6 +271,7 @@ export class NewPagesComponent {
       };
 
       this.temporaryQuestions.push(question);
+      this.pop = true;
       this.questions.push(formSection);
 
       // Reset form
@@ -307,7 +311,7 @@ export class NewPagesComponent {
       }
     } catch (error) {
       console.error('Detailed error:', error);
-      alert(error.message || 'Error al crear el cuestionario');
+      this.alertService.showError(error.message || 'Error al crear el cuestionario');
     }
   }
 
@@ -321,7 +325,7 @@ export class NewPagesComponent {
 
   addOption() {
     if (this.options.length < 6) {
-      this.options.push(`Opción ${this.options.length + 1}`);
+      this.options.push('');
       if (this.options.length === 6) {
         this.showPlus = false;
       }
