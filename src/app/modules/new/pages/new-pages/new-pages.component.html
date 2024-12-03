@@ -14,7 +14,6 @@
                   : 'Nombre del Quiz'
               "
               formControlName="name"
-              (input)="isValidInput()"
               [ngClass]="{ notice: isFieldInvalid('name') }" />
             <div *ngIf="!showForm">
               <button class="btn-plus" (click)="editQuiz()">
@@ -29,13 +28,8 @@
               class="input-description"
               [ngClass]="{ notice: isFieldInvalid('description') }"
               [class]="showForm ? 'd-none' : 'input-description'"
-              [placeholder]="
-                isFieldInvalid('description')
-                  ? '* La descripción es requerida'
-                  : 'Descripción'
-              "
-              formControlName="description"
-              (input)="isValidInput()" />
+              placeholder="Descripción"
+              formControlName="description"/>
           </div>
         </form>
 
@@ -48,11 +42,13 @@
     </div>
   </div>
 
+  @if(selectNameForm.valid && showButton) {
+    <button
+    class="custom-btn-save"
+    (click)="createQuiz()" >
+    Guardar</button>
+  }
   <div>
-    <div *ngIf="showButton && inputsValues">
-      <button (click)="createQuiz()" class="custom-btn-save">Guardar</button>
-    </div>
-
     <div *ngIf="showForm" class="content-2">
       <h3>Define la pregunta {{ questions.length + 1 }}/10</h3>
       <form #questionForm="ngForm" (ngSubmit)="createQuestion(questionForm)">
@@ -113,22 +109,23 @@
                   type="radio"
                   class="checkbox-input"
                   [(ngModel)]="selectedRadio"
-                  [value]="option"
+                  [value]="option || 'Opción ' + (i + 1)"
                   name="radioGroup"
-                  (click)="answerChoice(i)" />
+                  (click)="answerChoiceRadio(i)" />
                 <input
                   *ngIf="inputType === 'checkbox'"
                   type="checkbox"
                   class="checkbox-input"
                   [(ngModel)]="selectedValues[i]"
-                  (click)="answerChoice(i)"
-                  [name]="'checkbox' + i" />
+                  [name]="'checkbox' + i" 
+                  (click)="answerChoice(i)"/>
               </div>
               <input
                 type="text"
                 class="custom-option-input mb-3"
                 [(ngModel)]="options[i]"
                 name="option{{ i }}"
+                [placeholder]="'Opción ' + (i + 1)"
                 [readonly]="isTrueFalseQuestion"
                 required />
             </div>
@@ -141,7 +138,8 @@
                 type="text"
                 class="custom-option-input"
                 name="agregate"
-                placeholder="Añadir una nueva opción" />
+                placeholder="Añadir una nueva opción" 
+                disabled/>
             </div>
           </div>
         </div>

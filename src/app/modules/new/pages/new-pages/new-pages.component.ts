@@ -1,9 +1,11 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { environment } from '@environments/environment';
 import { ChangeDetectorRef } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 import { AuthService } from '@auth0/auth0-angular';
+import { NewPageService } from './new-pages.service';
+import { AlertService } from 'src/app/shared/components/alert/alert.service';
 
 @Component({
   selector: 'app-new-pages',
@@ -14,12 +16,17 @@ export class NewPagesComponent {
   constructor(
     private formsBuilder: FormBuilder,
     private cdr: ChangeDetectorRef,
-    private auth: AuthService
+    private auth: AuthService,
+    private newPageService: NewPageService,
+    private alertService: AlertService,
   ) {}
 
   public selectNameForm = this.formsBuilder.group({
-    name: ['', Validators.required],
-    description: ['', Validators.required],
+    name: ['', [Validators.required, Validators.minLength(3)]],
+    description: [''],
+    module: ['', [Validators.required]],
+    cell: ['', [Validators.required]],
+    seniority: ['', [Validators.required]],
   });
 
   questionTypes: string[] = [
@@ -33,20 +40,30 @@ export class NewPagesComponent {
     seniority: 'Seniority',
   };
 
+  quizData = {
+      name: '',
+      description: '',
+      module: '',
+      cell_id: '',
+      seniority: '',
+      challenge_type: '',
+      created_by_id: '',
+      is_active: true,
+    };
+
   questionText: string = '';
   questions: any[] = [];
   options: string[] = [];
   selection: number[] = [];
   selectedOption: string = '';
   inputType: string = '';
-  showButton: boolean = false;
+  showButton: boolean = true;
   pop: boolean = false;
   showForm: boolean = false;
   isTrueFalseQuestion: boolean = false;
   showPlus: boolean = false;
   showSubmits: boolean = false;
   quizID: string = '';
-  quizData: any = {};
   createOrEdit: boolean = true;
   toggle: boolean = true;
   isFocused: boolean = false;
@@ -54,12 +71,63 @@ export class NewPagesComponent {
   selectedValues: boolean[] = [];
   inputsValues: boolean = false;
   temporaryQuestions: any[] = [];
+  
+  showInput: boolean = true;
+  selectedRadio: string | null = null;
 
+  recibirDatos(datos: any) {
+    this.selectNameForm.get('module').setValue(datos.module);
+    this.selectNameForm.get('cell').setValue(datos.cell);
+    this.selectNameForm.get('seniority').setValue(datos.seniority);
+    this.quizData.module= datos.moduleId,
+    this.quizData.cell_id= datos.cellId,
+    this.quizData.seniority= datos.seniority.toLowerCase()
+  }
+  
   isFieldInvalid(field: string): boolean {
     const control = this.selectNameForm.get(field);
-    return control?.invalid && (control.dirty || control.touched);
+    return control.invalid && (control.dirty || control.touched);
   }
 
+  isValidInput() {
+    return this.selectNameForm.valid
+  }
+  
+  async createQuiz() {
+    // Conseguir el User_id del usuario autenticado
+    try {  
+      const user = await firstValueFrom(this.auth.user$);    
+      if (!user?.email) {
+        throw new Error('No se encontró el email del usuario autenticado');
+      }
+      
+      this.newPageService.findUserByEmail(user.email).subscribe({
+        next: (response: any)=>{
+          this.quizData.created_by_id = response.id;
+        },
+        error: (error)=>{
+          console.error('Error al obtener el usuario desde el backend')
+        }
+      })
+
+      // Mostrar el formulario para agregar preguntas
+      this.showButton = false;
+      this.showForm = true;
+      this.toggle = false;
+      this.showButton = false;
+
+      // Guardar los datos del quiz para usarlos cuando tengamos todas las preguntas
+      this.quizData.name= this.selectNameForm.value.name;
+      this.quizData.challenge_type= 'immediate',
+      this.quizData.description= this.selectNameForm.value.description;
+    } 
+    catch (error) {
+      console.error('Error preparando el quiz:', error);
+      this.alertService.showError(error.message || 'Error al preparar el quiz');
+      this.showButton = false;
+    }
+  }
+  
   trackByFn(index: number): any {
     return index;
   }
@@ -78,9 +146,10 @@ export class NewPagesComponent {
     }
   }
 
-  showInput: boolean = true;
-  selectedRadio: string | null = null;
-
+  answerChoiceRadio(i: number) {
+    // Para radio buttons, simplemente estableces la opción seleccionada
+    this.correct_option = [i]; 
+}
   changeInputType() {
     this.selectedValues = Array(this.options.length).fill(false);
     this.selectedRadio = null;
@@ -96,17 +165,17 @@ export class NewPagesComponent {
     this.selectedValues = [];
     this.showSubmits = true;
     if (selectedType === 'Verdadero o falso') {
-      this.options = ['Verdadero', 'Falso'];
+      this.options = ['Falso', 'Verdadero'];
       this.inputType = 'radio';
       this.isTrueFalseQuestion = true;
       this.showPlus = false;
     } else if (selectedType === 'Selección mutiple') {
-      this.options = ['Opción 1', 'Opción 2', 'Opción 3'];
+      this.options = ['', '', ''];
       this.inputType = 'checkbox';
       this.isTrueFalseQuestion = false;
       this.showPlus = true;
     } else if (selectedType === 'Casilla') {
-      this.options = ['Opción 1', 'Opción 2'];
+      this.options = ['', ''];
       this.inputType = 'radio';
       this.isTrueFalseQuestion = false;
       this.showPlus = true;
@@ -116,108 +185,6 @@ export class NewPagesComponent {
 
     this.changeInputType();
     this.cdr.detectChanges();
-  }
-
-  isValidInput() {
-    if (
-      this.selectNameForm.value.name &&
-      this.selectNameForm.value.description &&
-      this.selectNameForm.valid
-    ) {
-      this.inputsValues = true;
-    } else {
-      this.inputsValues = false;
-    }
-  }
-
-  async recibirDatos(datos: any) {
-    if (
-      datos.celula != '' &&
-      datos.modulo != '' &&
-      datos.seniority != ''
-    ) {
-      this.showButton = true;
-    } else {
-      this.showButton = false;
-    }
-
-    try {
-      let responseModule: any = await fetch(`${environment.url}/modules`);
-      responseModule = await responseModule.json();
-      responseModule = responseModule.find(
-        element => element.name == datos.module
-      );
-      this.quizData.module = responseModule.id;
-
-      let response: any = await fetch(`${environment.url}/cells`);
-      response = await response.json();
-      response = response.find(element => datos.cell == element.name);
-      response ? (this.quizData.cell = response.id) : '';
-
-      if (datos.seniority) {
-        this.quizData.seniority = datos.seniority;
-      }
-    } catch (error) {
-      console.error('Error fetching data:', error);
-      alert('Error al obtener datos del módulo o célula');
-    }
-  }
-
-  async createQuiz() {
-    try {
-      this.quizData.seniority =
-        this.quizData.seniority === 'semi-sr'
-          ? 'middle'
-          : this.quizData.seniority;
-      const user = await firstValueFrom(this.auth.user$);
-
-      if (!user?.email) {
-        throw new Error('No se encontró el email del usuario autenticado');
-      }
-
-      const userResponse = await fetch(
-        `${environment.url}/user/FindByEmail?email=${user.email}`,
-        {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        }
-      );
-
-      if (!userResponse.ok) {
-        throw new Error('Error al obtener el usuario desde el backend');
-      }
-
-      const userData = await userResponse.json();
-
-      if (!userData?.id) {
-        throw new Error('No se encontró el ID del usuario en la base de datos');
-      }
-
-      // Mostrar el formulario para agregar preguntas
-      this.showForm = true;
-      this.toggle = false;
-      this.showButton = false;
-
-      // Guardar los datos del quiz para usarlos cuando tengamos todas las preguntas
-      this.quizData = {
-        name: this.selectNameForm.value.name,
-        description: this.selectNameForm.value.description,
-        cell_id: this.quizData.cell,
-        seniority: this.quizData.seniority?.toLowerCase(),
-        challenge_type: 'immediate',
-        created_by_id: userData.id,
-        is_active: true,
-      };
-
-      this.questionCategory.name = this.selectNameForm.value.name;
-      this.questionCategory.description = this.selectNameForm.value.description;
-    } catch (error) {
-      console.error('Error preparando el quiz:', error);
-      alert(error.message || 'Error al preparar el quiz');
-      this.showButton = false;
-    }
   }
 
   async createQuestion(form: any) {
@@ -242,14 +209,20 @@ export class NewPagesComponent {
 
       // Validate question text and correct options
       if (!formSection.questionText) {
-        alert('Por favor, ingrese el texto de la pregunta');
+        this.alertService.showWarning('Por favor, ingrese el texto de la pregunta');
         return;
       }
-
-      if (this.correct_option.length === 0) {
-        alert('Por favor, seleccione al menos una opción correcta');
+      console.log(this.correct_option)
+      if (questionType === 'multiple_choice') {
+        if (this.correct_option.length < 2) {
+          this.alertService.showWarning('Por favor, seleccione al menos dos opciones correctas');
         return;
-      }
+        }
+      } else{
+        if (this.correct_option.length === 0) {
+          this.alertService.showWarning('Por favor, seleccione una opción correcta');
+        return;
+      }}
 
       // Prepare options, filtering out undefined or empty options
       const options = [
@@ -267,11 +240,11 @@ export class NewPagesComponent {
       // Validate options based on question type
       if (
         (questionType === 'true_false' && options.length !== 2) ||
-        (questionType === 'simple_choice' && options.length < 2) ||
-        (questionType === 'multiple_choice' && options.length < 3)
+        (questionType === 'simple_choice' && options.length !== this.options.length) ||
+        (questionType === 'multiple_choice' && options.length !== this.options.length)
       ) {
-        alert(
-          'Número de opciones inválido para el tipo de pregunta seleccionado'
+        this.alertService.showWarning(
+          'Ingrese el texto en todas las opciones'
         );
         return;
       }
@@ -282,13 +255,13 @@ export class NewPagesComponent {
         opt => opt > maxOptionIndex
       );
       if (invalidCorrectOptions) {
-        alert('Selección de opciones correctas no válida');
+        this.alertService.showWarning('Selección de opciones correctas no válida');
         return;
       }
 
       const question = {
         question: formSection.questionText,
-        seniority: this.quizData.seniority || 'junior',
+        seniority: this.quizData.seniority,
         type: questionType,
         options: options,
         correct_option: this.correct_option,
@@ -298,6 +271,7 @@ export class NewPagesComponent {
       };
 
       this.temporaryQuestions.push(question);
+      this.pop = true;
       this.questions.push(formSection);
 
       // Reset form
@@ -334,16 +308,10 @@ export class NewPagesComponent {
         const data = await response.json();
         this.quizID = data.id;
         this.pop = true;
-
-        // Optional: Add a reload after a delay
-        // setTimeout(() => {
-        //   this.closeFn();
-        //   window.location.reload();
-        // }, 2000);
       }
     } catch (error) {
       console.error('Detailed error:', error);
-      alert(error.message || 'Error al crear el cuestionario');
+      this.alertService.showError(error.message || 'Error al crear el cuestionario');
     }
   }
 
@@ -357,7 +325,7 @@ export class NewPagesComponent {
 
   addOption() {
     if (this.options.length < 6) {
-      this.options.push(`Opción ${this.options.length + 1}`);
+      this.options.push('');
       if (this.options.length === 6) {
         this.showPlus = false;
       }
