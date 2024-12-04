@@ -62,7 +62,6 @@ export class NewPagesComponent {
   selectedOption: string = '';
   inputType: string = '';
   showButton: boolean = true;
-  pop: boolean = false;
   showForm: boolean = false;
   isTrueFalseQuestion: boolean = false;
   showPlus: boolean = false;
@@ -118,7 +117,6 @@ export class NewPagesComponent {
       this.showButton = false;
       this.showForm = true;
       this.toggle = false;
-      this.showButton = false;
 
       // Guardar los datos del quiz para usarlos cuando tengamos todas las preguntas
       this.quizData.name= this.selectNameForm.value.name;
@@ -134,10 +132,6 @@ export class NewPagesComponent {
   
   trackByFn(index: number): any {
     return index;
-  }
-
-  closeFn() {
-    this.pop = false;
   }
 
   answerChoice(i: number) {
@@ -275,7 +269,6 @@ export class NewPagesComponent {
       };
 
       this.temporaryQuestions.push(question);
-      this.pop = true;
       this.questions.push(formSection);
 
       // Reset form
@@ -288,6 +281,7 @@ export class NewPagesComponent {
       // If we have 10 questions, create the quiz with all questions
       if (this.temporaryQuestions.length === 10) {
         this.quizData.name= this.selectNameForm.value.name;
+        this.quizData.description= this.selectNameForm.value.description;
         const quizWithQuestions = {
           ...this.quizData,
           questions: this.temporaryQuestions,
@@ -312,7 +306,7 @@ export class NewPagesComponent {
 
         const data = await response.json();
         this.quizID = data.id;
-        this.pop = true;
+        this.alertService.showSuccess('Cuestionario creado correctamente')
         this.quizCreated.emit();
       }
     } catch (error) {

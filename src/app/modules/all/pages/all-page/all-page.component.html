@@ -2,6 +2,7 @@
   <app-header-page
     [ngClass]="showForm ? '' : 'absolute-true'"
     (datosParaPadre)="recibirDatos($event)"
+    [resetButton]="true"
     [editMode]='false'>
   </app-header-page>
   <div class="search-container">

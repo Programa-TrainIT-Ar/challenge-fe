@@ -52,7 +52,6 @@ export class AlertService {
     Swal.fire({
       title: title,
       text: text,
-      icon: 'question',
       showCloseButton: true,
       showCancelButton: false,
       confirmButtonText: confirmButtonText,

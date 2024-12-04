@@ -33,7 +33,7 @@
               "src/mockServiceWorker.js",
               "src/_redirects"
             ],
-            "styles": [ "node_modules/bootstrap/dist/css/bootstrap.min.css","src/styles.scss"],
+            "styles": [ "node_modules/bootstrap/dist/css/bootstrap.min.css","src/styles.scss","node_modules/sweetalert2/dist/sweetalert2.min.css"],
             "scripts": [ "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"]
           },
           "configurations": {

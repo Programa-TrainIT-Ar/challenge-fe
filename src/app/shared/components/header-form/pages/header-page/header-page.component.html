@@ -4,9 +4,11 @@
       <!-- Opciones de Módulo -->
       <div class="input-container">
         <h4 class="mb-5">Módulo</h4>
-        <button (click)="resetValue()">
-          <i class="bi bi-arrow-counterclockwise"></i>
-        </button>
+        @if(resetButton) {
+          <button (click)="resetValue()">
+            <i class="bi bi-arrow-counterclockwise"></i>
+          </button>
+        }
         <div class="form-select option-select" (click)="isShowModulo($event)">
           <span [ngClass]="[quizCategory?.module, 'floating']">
             {{quizCategory?.module || 'Selecciona el modulo'}}

@@ -122,60 +122,23 @@ export class AllPageComponent implements OnInit {
       'Una vez eliminado no se podrá recuperar',
       () => {
         // Acción de confirmación
-        this.allPageService.deleteQuiz(quiz.id).subscribe(
-          () => {
-            this.quizzes = this.quizzes.filter(q => q.id !== quiz.id);
-          },
-        ),
-        () => {
-          // Lógica cuando se cancela
-        },
-        'Eliminar'
-      })
-    alert.Swal.fire({
-      title: '¿Deseas eliminar el registro?',
-      text: 'Una vez eliminado no se podrá recuperar',
-      showCloseButton: true,
-      showCancelButton: false,
-      confirmButtonText: 'Eliminar',
-      customClass: {
-        popup: 'custom-delete-popup',
-        title: 'custom-delete-title',
-        confirmButton: 'custom-delete-confirm-button',
-      },
-    }).then(result => {
-      if (result.isConfirmed) {
         this.allPageService.deleteQuiz(quiz.id).subscribe({
           next: () => {
             this.quizzes = this.quizzes.filter(q => q.id !== quiz.id);
-            Swal.fire({
-              title: 'Eliminado',
-              text: 'El registro ha sido eliminado.',
-              icon: 'success',
-              confirmButtonText: 'Entendido',
-              customClass: {
-                popup: 'custom-delete-popup',
-                title: 'custom-delete-title',
-                confirmButton: 'custom-delete-confirm-button',
-              },
-            });
+            this.alertService.showSuccess(
+              'Eliminado',
+              'El registro ha sido eliminado.')
           },
           error: () => {
-            Swal.fire({
-              title: 'Error',
-              text: 'No se pudo eliminar el registro.',
-              icon: 'error',
-              confirmButtonText: 'Entendido',
-              customClass: {
-                popup: 'custom-delete-popup',
-                title: 'custom-delete-title',
-                confirmButton: 'custom-delete-confirm-button',
-              },
-            });
+            this.alertService.showError(
+              'Error',
+              'No se pudo eliminar el registro.',
+            )
           },
-        });
-      }
-    });
+        })
+        },
+        'Eliminar'
+      )
   }
 
   editQuiz(quiz: Quiz) {
