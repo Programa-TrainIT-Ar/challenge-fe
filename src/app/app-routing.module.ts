@@ -35,7 +35,7 @@ import { EditPagesComponent } from './modules/edit/pages/edit-pages/edit-pages.c
         },
         {
           path: '**',
-          redirectTo: '/notfound',
+          redirectTo: '',
         },
       ],
       {

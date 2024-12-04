@@ -46,8 +46,9 @@ export class HeaderPageComponent {
     module: '',
     moduleId: '',
     cell: '',
-    seniority: '',
+    cellId: '',
     cellClass: '',
+    seniority: '',
   };
   
   ngOnInit(): void {
@@ -61,6 +62,17 @@ export class HeaderPageComponent {
       this.modules= response
     })
   }
+  
+  //Coloca los valores de modulo, celula y seniority vacios
+  resetValue() {
+    this.quizCategory.module = '';
+    this.quizCategory.moduleId = '';
+    this.quizCategory.cell = '';
+    this.quizCategory.seniority = '';
+    this.quizCategory.cellClass = '';
+    this.datosParaPadre.emit(this.quizCategory);
+  }
+
   //coloca el modulo como seleccionado y carga las celulas que le corresponden 
   selectModule(module: Module) {
     this.quizCategory.module = module.name;
@@ -74,6 +86,7 @@ export class HeaderPageComponent {
   //coloca la celula como seleccionado y su correspondiente clase
   selectCell(cell: Cell, index: number) {
     this.quizCategory.cell = cell.name
+    this.quizCategory.cellId = cell.id
     this.quizCategory.cellClass = this.getCellClass(index)
     this.showCelula = false;
     this.datosParaPadre.emit(this.quizCategory);
@@ -259,7 +272,7 @@ export class HeaderPageComponent {
       this.showModulo = false;
     }
   }
-  //Cambia la visibilidad del input modulo para agregar un nuevo en el modo edit
+  //Cambia la visibilidad del input modulo para agregar uno nuevo en el modo edit
   toggleAddModule() {
     this.addModule = !this.addModule;
     this.module.setValue('');

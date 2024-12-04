@@ -25,9 +25,10 @@
 }
 
 .btn-plus {
-  width: 3rem;
-  height: 3rem;
+  // width: 2.2rem;
+  // height: 2.2rem;
   border-radius: 8px;
+  font-size: .5rem;
   padding: 8px;
   gap: 8px;
   background: linear-gradient(to right, #6a5fff80, #ff5ea680);
@@ -137,7 +138,13 @@
   align-items: center;
   justify-content: space-around;
 }
-
+// .question-progress {
+//   font-size: 14px;
+//   color: #666;
+//   padding: 4px 8px;
+//   border-radius: 4px;
+//   background-color: #f5f5f5;
+// }
 .custom-label {
   font-family: Poppins;
   font-weight: 500;

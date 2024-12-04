@@ -72,6 +72,7 @@ export class WelcomePageComponent {
   isExpanded2 = false; // Controla la expansión de la columna de "Nuevo"
   isExpanded3 = false; // Controla la expansión de la columna de "Editar"
   selectedQuiz: any = null; // Almacena el quiz seleccionado
+  
 
   toggleExpand1() {
     this.isExpanded1 = !this.isExpanded1;
@@ -108,7 +109,7 @@ export class WelcomePageComponent {
   onQuizSelected(quiz: any) {
     this.selectedQuiz = quiz;
     this.isExpanded3 = true;  // Expande la columna de edición
-    this.isExpanded1 = false;  // Colapsa la columna de "Todos"
+    this.isExpanded1 = false;  // Colapsa la columna de "Todos"  
     this.isExpanded2 = false;  // Colapsa la columna de "Nuevo"
   }
 
@@ -118,4 +119,7 @@ export class WelcomePageComponent {
     this.selectedQuiz = null;
     this.toggleExpand1();  // Limpia el quiz seleccionado
   }
+  
+
+  
 }

@@ -54,11 +54,12 @@
   <div *ngIf="isExpanded3" class="edit-column" [@expandState3]="isExpanded3 ? 'expanded' : 'collapsed'">
     <app-edit-pages [quizId]="selectedQuiz?.id" (close)="closeEdit()"></app-edit-pages>
   </div>
+  
 </div>
 
 <!-- Mostrar los detalles del quiz seleccionado -->
-<div *ngIf="selectedQuiz">
-  <app-view-quiz 
-  [quiz]="selectedQuiz">
-  </app-view-quiz>
+<div *ngIf="selectedQuizOnView" class="overlay" [@fadeInOut]>
+  <div class="popup">
+    <app-view-quiz [quizId]="selectedQuizOnView?.id" (close)="closeQuiz()"></app-view-quiz>
+  </div>
 </div>

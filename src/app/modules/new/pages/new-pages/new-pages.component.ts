@@ -1,40 +1,34 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component } from '@angular/core';
+import { FormBuilder, Validators } from '@angular/forms';
 import { environment } from '@environments/environment';
 import { ChangeDetectorRef } from '@angular/core';
+import { firstValueFrom } from 'rxjs';
+import { AuthService } from '@auth0/auth0-angular';
+import { NewPageService } from './new-pages.service';
+import { AlertService } from 'src/app/shared/components/alert/alert.service';
 
 @Component({
   selector: 'app-new-pages',
   templateUrl: './new-pages.component.html',
   styleUrls: ['./new-pages.component.scss'],
 })
-export class NewPagesComponent implements OnInit {
+export class NewPagesComponent {
   constructor(
     private formsBuilder: FormBuilder,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private auth: AuthService,
+    private newPageService: NewPageService,
+    private alertService: AlertService,
   ) {}
+
   public selectNameForm = this.formsBuilder.group({
-    name: ['', Validators.required],
-    description: ['', Validators.required],
+    name: ['', [Validators.required, Validators.minLength(3)]],
+    description: [''],
+    module: ['', [Validators.required]],
+    cell: ['', [Validators.required]],
+    seniority: ['', [Validators.required]],
   });
 
-  quizForm : FormGroup;
-
-  ngOnInit(): void {
-    this.quizForm = this.formsBuilder.group({
-      name: ['',[Validators.required, Validators.minLength(3)]],
-      descripcion: [''],
-      module: ['',[Validators.required, Validators.minLength(3)]],
-      cell: ['',[Validators.required, Validators.minLength(3)]],
-      seniority: ['',[Validators.required, Validators.minLength(3)]],
-      //questions:
-    });
-  }
-  isFieldInvalid(field: string): boolean {
-    const control = this.selectNameForm.get(field);
-    return control?.invalid && (control.dirty || control.touched);
-  }
-  
   questionTypes: string[] = [
     'Selección mutiple',
     'Casilla',
@@ -46,27 +40,94 @@ export class NewPagesComponent implements OnInit {
     seniority: 'Seniority',
   };
 
+  quizData = {
+      name: '',
+      description: '',
+      module: '',
+      cell_id: '',
+      seniority: '',
+      challenge_type: '',
+      created_by_id: '',
+      is_active: true,
+    };
+
   questionText: string = '';
-  questions: any = [];
+  questions: any[] = [];
   options: string[] = [];
   selection: number[] = [];
   selectedOption: string = '';
   inputType: string = '';
-  showButton: boolean = false;
+  showButton: boolean = true;
   pop: boolean = false;
   showForm: boolean = false;
   isTrueFalseQuestion: boolean = false;
   showPlus: boolean = false;
   showSubmits: boolean = false;
-  quizID: number | string = '';
-  quizData: any = {};
+  quizID: string = '';
   createOrEdit: boolean = true;
   toggle: boolean = true;
   isFocused: boolean = false;
   correct_option: number[] = [];
   selectedValues: boolean[] = [];
   inputsValues: boolean = false;
+  temporaryQuestions: any[] = [];
+  
+  showInput: boolean = true;
+  selectedRadio: string | null = null;
 
+  recibirDatos(datos: any) {
+    this.selectNameForm.get('module').setValue(datos.module);
+    this.selectNameForm.get('cell').setValue(datos.cell);
+    this.selectNameForm.get('seniority').setValue(datos.seniority);
+    this.quizData.module= datos.moduleId,
+    this.quizData.cell_id= datos.cellId,
+    this.quizData.seniority= datos.seniority.toLowerCase()
+  }
+  
+  isFieldInvalid(field: string): boolean {
+    const control = this.selectNameForm.get(field);
+    return control.invalid && (control.dirty || control.touched);
+  }
+
+  isValidInput() {
+    return this.selectNameForm.valid
+  }
+  
+  async createQuiz() {
+    // Conseguir el User_id del usuario autenticado
+    try {  
+      const user = await firstValueFrom(this.auth.user$);    
+      if (!user?.email) {
+        throw new Error('No se encontró el email del usuario autenticado');
+      }
+      
+      this.newPageService.findUserByEmail(user.email).subscribe({
+        next: (response: any)=>{
+          this.quizData.created_by_id = response.id;
+        },
+        error: (error)=>{
+          console.error('Error al obtener el usuario desde el backend')
+        }
+      })
+
+      // Mostrar el formulario para agregar preguntas
+      this.showButton = false;
+      this.showForm = true;
+      this.toggle = false;
+      this.showButton = false;
+
+      // Guardar los datos del quiz para usarlos cuando tengamos todas las preguntas
+      this.quizData.name= this.selectNameForm.value.name;
+      this.quizData.challenge_type= 'immediate',
+      this.quizData.description= this.selectNameForm.value.description;
+    } 
+    catch (error) {
+      console.error('Error preparando el quiz:', error);
+      this.alertService.showError(error.message || 'Error al preparar el quiz');
+      this.showButton = false;
+    }
+  }
+  
   trackByFn(index: number): any {
     return index;
   }
@@ -77,17 +138,21 @@ export class NewPagesComponent implements OnInit {
 
   answerChoice(i: number) {
     if (this.correct_option.includes(i)) {
-      this.correct_option = this.correct_option.filter(element => element != i);
+      this.correct_option = this.correct_option.filter(
+        element => element !== i
+      );
     } else {
       this.correct_option.push(i);
     }
-    console.log(this.correct_option);
   }
-  showInput: boolean = true;
-  selectedRadio: string | null = null;
+
+  answerChoiceRadio(i: number) {
+    // Para radio buttons, simplemente estableces la opción seleccionada
+    this.correct_option = [i]; 
+}
   changeInputType() {
     this.selectedValues = Array(this.options.length).fill(false);
-    this.selectedRadio = null; // Reinicia la selección de radio
+    this.selectedRadio = null;
     this.showInput = false;
     setTimeout(() => {
       this.showInput = true;
@@ -100,17 +165,17 @@ export class NewPagesComponent implements OnInit {
     this.selectedValues = [];
     this.showSubmits = true;
     if (selectedType === 'Verdadero o falso') {
-      this.options = ['Verdadero', 'Falso'];
+      this.options = ['Falso', 'Verdadero'];
       this.inputType = 'radio';
       this.isTrueFalseQuestion = true;
       this.showPlus = false;
     } else if (selectedType === 'Selección mutiple') {
-      this.options = ['Opción 1', 'Opción 2', 'Opción 3'];
+      this.options = ['', '', ''];
       this.inputType = 'checkbox';
       this.isTrueFalseQuestion = false;
       this.showPlus = true;
     } else if (selectedType === 'Casilla') {
-      this.options = ['Opción 1', 'Opción 2'];
+      this.options = ['', ''];
       this.inputType = 'radio';
       this.isTrueFalseQuestion = false;
       this.showPlus = true;
@@ -122,216 +187,131 @@ export class NewPagesComponent implements OnInit {
     this.cdr.detectChanges();
   }
 
-  isValidInput() {
-    if (
-      this.selectNameForm.value.name &&
-      this.selectNameForm.value.description &&
-      this.selectNameForm.valid
-    ) {
-      this.inputsValues = true;
-    } else {
-      this.inputsValues = false;
-    }
-  }
-
-  recibirDatos(datos: any) {
-    if (datos.module) {
-      this.quizForm.patchValue({
-        module: datos.module,
-        cell: datos.cell,
-        seniority: datos.seniority
-      });
-    }
-  }
-  
-  /* async recibirDatos(datos: any) {
-    if (
-      datos.celula != 'Selecciona la célula' &&
-      datos.modulo != 'Selecciona el modulo' &&
-      datos.seniority != 'Seniority'
-    ) {
-      this.showButton = true;
-    } else {
-      this.showButton = false;
-    }
-
-    
-    // modulo 
-
-    let responseModule: any = await fetch(`${environment.url}/modules`);
-    responseModule = await responseModule.json();
-
-    responseModule = responseModule.find(
-      element => element.name == datos.module
-    );
-
-    this.quizData.module = responseModule.id;
-
-    // celula 
-
-    let response: any = await fetch(`${environment.url}/cells`);
-    response = await response.json();
-    response = response.find(element => datos.cell == element.name);
-    response ? (this.quizData.cell = response.id) : '';
-
-    // seniority
-    if (datos.seniority) {
-      this.quizData.seniority = datos.seniority;
-    }
-  } */
-
-  async createQuiz() {
-    try {
-      this.quizData.seniority == 'semi-sr'
-        ? (this.quizData.seniority = 'middle')
-        : this.quizData;
-
-      const prueba = {
-        name: this.selectNameForm.value.name,
-        description: this.selectNameForm.value.description,
-        cell_id: this.quizData.cell,
-        seniority: this.quizData.seniority,
-        challenge_type: 'immediate',
-        created_by_id: '224742e8-731b-40bf-b05f-a7547270746c',
-        is_active: true,
-      };
-
-      if (
-        this.selectNameForm.value.description &&
-        this.selectNameForm.value.name
-      ) {
-        const response = await fetch(`${environment.url}/quiz`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(prueba),
-        });
-        if (!response.ok) {
-          alert(response);
-          throw new Error(`Error: ${response}`);
-        }
-        const data = await response.json();
-        this.quizID = data.id;
-        this.showForm = true;
-        this.toggle = false;
-        this.showButton = false;
-        this.pop = true;
-
-        setTimeout(() => {
-          this.closeFn();
-        }, 2000);
-        this.questionCategory.name = this.selectNameForm.value.name;
-        this.questionCategory.description =
-          this.selectNameForm.value.description;
-      } else {
-        alert('complete los datos requeridos');
-        this.showButton = false;
-      }
-    } catch (error) {
-      console.error('Error creating quiz:', error);
-    }
-  }
-
-  async updateQuiz() {
-    const update = {
-      name: this.selectNameForm.value.name,
-      description: this.selectNameForm.value.description,
-      cell_id: this.quizData.cell,
-      seniority: this.quizData.seniority,
-    };
-    let response = await fetch(`${environment.url}/quiz/${this.quizID}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(update),
-    });
-    response = await response.json();
-    this.showButton = false;
-    this.pop = true;
-    setTimeout(() => {
-      this.pop = false;
-    }, 2000);
-    this.showForm = true;
-    this.questionCategory.name = this.selectNameForm.value.name;
-    this.questionCategory.description = this.selectNameForm.value.description;
-  }
-
-  isDisabled(index: number): any {
-    return this.selection[index] || false;
-  }
-
   async createQuestion(form: any) {
     try {
       const formSection = form.value;
 
+      // Convert question type
+      let questionType = '';
       switch (formSection.questionType) {
         case 'Selección mutiple':
-          formSection.questionType = 'multiple_choice';
+          questionType = 'multiple_choice';
           break;
         case 'Verdadero o falso':
-          formSection.questionType = 'true_false';
+          questionType = 'true_false';
           break;
         case 'Casilla':
-          formSection.questionType = 'simple_choice';
+          questionType = 'simple_choice';
           break;
+        default:
+          throw new Error('Tipo de pregunta no válido');
       }
 
-      if (formSection.questionText && this.correct_option.length != 0) {
-        let question = {
-          question: formSection.questionText,
-          seniority: 'junior',
-          type: formSection.questionType,
-          options: [
-            formSection?.option0,
-            formSection?.option1,
-            formSection?.option2,
-            formSection?.option3,
-            formSection?.option4,
-            formSection?.option5,
-          ].filter(option => option !== undefined && option !== null),
-          correct_option: this.correct_option,
-          explanation: 'string',
-          link: 'string',
-          is_active: true,
-          /* quiz_id: '168b2a93-7358-48cb-951a-793281c35983', */
-          quiz_id: this.quizID,
-        };
+      // Validate question text and correct options
+      if (!formSection.questionText) {
+        this.alertService.showWarning('Por favor, ingrese el texto de la pregunta');
+        return;
+      }
+      console.log(this.correct_option)
+      if (questionType === 'multiple_choice') {
+        if (this.correct_option.length < 2) {
+          this.alertService.showWarning('Por favor, seleccione al menos dos opciones correctas');
+        return;
+        }
+      } else{
+        if (this.correct_option.length === 0) {
+          this.alertService.showWarning('Por favor, seleccione una opción correcta');
+        return;
+      }}
 
-        const response = await fetch(`${environment.url}/question`, {
+      // Prepare options, filtering out undefined or empty options
+      const options = [
+        formSection?.option0,
+        formSection?.option1,
+        formSection?.option2,
+        formSection?.option3,
+        formSection?.option4,
+        formSection?.option5,
+      ].filter(
+        option =>
+          option !== undefined && option !== null && option.trim() !== ''
+      );
+
+      // Validate options based on question type
+      if (
+        (questionType === 'true_false' && options.length !== 2) ||
+        (questionType === 'simple_choice' && options.length !== this.options.length) ||
+        (questionType === 'multiple_choice' && options.length !== this.options.length)
+      ) {
+        this.alertService.showWarning(
+          'Ingrese el texto en todas las opciones'
+        );
+        return;
+      }
+
+      // Validate correct options
+      const maxOptionIndex = options.length - 1;
+      const invalidCorrectOptions = this.correct_option.some(
+        opt => opt > maxOptionIndex
+      );
+      if (invalidCorrectOptions) {
+        this.alertService.showWarning('Selección de opciones correctas no válida');
+        return;
+      }
+
+      const question = {
+        question: formSection.questionText,
+        seniority: this.quizData.seniority,
+        type: questionType,
+        options: options,
+        correct_option: this.correct_option,
+        explanation: formSection.explanation || '',
+        link: formSection.link || '',
+        is_active: true,
+      };
+
+      this.temporaryQuestions.push(question);
+      this.pop = true;
+      this.questions.push(formSection);
+
+      // Reset form
+      form.reset();
+      this.selectedOption = '';
+      this.isFocused = false;
+      this.options = [];
+      this.correct_option = [];
+
+      // If we have 10 questions, create the quiz with all questions
+      if (this.temporaryQuestions.length === 10) {
+        const quizWithQuestions = {
+          ...this.quizData,
+          questions: this.temporaryQuestions,
+        };
+        this.showForm = false;
+
+        console.log('Sending quiz data:', JSON.stringify(quizWithQuestions));
+
+        const response = await fetch(`${environment.url}/quiz/nested`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify(question),
+          body: JSON.stringify(quizWithQuestions),
         });
 
-        const data = await response.json();
         if (!response.ok) {
-          alert(response);
-          throw new Error(`Error: ${response.status}`);
+          const errorText = await response.text();
+          console.error('Full error response:', errorText);
+          throw new Error(`Error: ${response.status} - ${errorText}`);
         }
 
-        console.log(data);
-        this.questions.push(formSection);
-
-        form.reset();
-        this.selectedOption = '';
-        this.isFocused = false;
-        this.options = [];
-      } else {
-        alert('complete los campos requeridos');
-        console.log(this.correct_option);
-      }
-
-      if (this.questions.length == 10000) {
-        alert('10 preguntas cargadas con exito');
-        window.location.reload();
+        const data = await response.json();
+        this.quizID = data.id;
+        this.pop = true;
       }
     } catch (error) {
-      alert(error);
-      console.error(error);
+      console.error('Detailed error:', error);
+      this.alertService.showError(error.message || 'Error al crear el cuestionario');
     }
   }
 
@@ -344,11 +324,11 @@ export class NewPagesComponent implements OnInit {
   }
 
   addOption() {
-    if (this.options.length < 5) {
-      this.options.push(`Opción ${this.options.length + 1}`);
-    } else {
-      this.options.push(`Opción ${this.options.length + 1}`);
-      this.showPlus = false;
+    if (this.options.length < 6) {
+      this.options.push('');
+      if (this.options.length === 6) {
+        this.showPlus = false;
+      }
     }
   }
 }

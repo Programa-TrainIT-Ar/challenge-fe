@@ -2,7 +2,8 @@
   <div class="content-1">
     <!-- Opciones de Módulo -->
     <div class="input-container">
-      <h4 class="mb-5">Módulo</h4>
+      <h4>Módulo</h4>
+
       <div class="form-select option-select" (click)="isShowModulo($event)">
         <span [ngClass]="[quizCategory?.module, 'floating']">
           {{quizCategory?.module || 'Selecciona el modulo'}}
@@ -24,32 +25,23 @@
             <span>(Debe tener como mínimo 3 caracteres)</span>
             }
             <div class="edit-actions">
-              <button class="actions-btn" (click)="$event.stopPropagation(); saveModuleEdit(module.id)">
-                <i class="bi bi-check fs-6"></i>
+              <button (click)="$event.stopPropagation(); saveModuleEdit(module.id)">
+                <i class="bi bi-check"></i>
               </button>
-              <button class="actions-btn ms-2" (click)="$event.stopPropagation(); cancelEditingModule()">
-                <i class="bi bi-x fs-6"></i>
+              <button (click)="$event.stopPropagation(); cancelEditingModule()">
+                <i class="bi bi-x"></i>
               </button>
             </div>
           </div>
           } @else {
-          <div class="module-container">
-            <div>
-              {{ module.name }}
-            </div>
-            @if(editMode){
-            <div class="actions">
-              <button class="actions-btn"
-                (click)="$event.stopPropagation(); startEditingModule($event, module.id, module.name)">
-                <i class="bi bi-pencil-square fs-6"></i>
-              </button>
-              <button class="actions-btn ms-2" (click)="$event.stopPropagation(); deleteModule(module.id)">
-                <i class="bi bi-trash fs-6"></i>
-              </button>
-            </div>
-            }
+          {{ module.name }}
+          @if(editMode){
+          <div class="actions">
+            <button (click)="$event.stopPropagation(); startEditingModule($event, module.id, module.name)">
+              <i class="bi bi-pencil-square"></i>
+            </button>
           </div>
-
+          }
           }
         </button>
         }
@@ -113,22 +105,14 @@
             </div>
           </div>
           } @else {
-          <div class="d-flex">
-            <div>
-              {{ cell.name }}
-            </div>
-            @if(editMode){
-            <div class="actions">
-              <button class="actions-btn ms-2 me-1"
-                (click)="$event.stopPropagation(); startEditingCell($event, cell.id, cell.name)">
-                <i class="bi bi-pencil-square"></i>
-              </button>
-              <button class="actions-btn" (click)="$event.stopPropagation(); deleteCell(cell.id)">
-                <i class="bi bi-trash"></i>
-              </button>
-            </div>
-            }
+          {{ cell.name }}
+          @if(editMode){
+          <div class="actions">
+            <button (click)="$event.stopPropagation(); startEditingCell($event, cell.id, cell.name)">
+              <i class="bi bi-pencil-square"></i>
+            </button>
           </div>
+          }
           }
         </button>
         }
@@ -160,7 +144,13 @@
     </div>
     <!-- senñority -->
     <div class="input-container">
-      <h4>Seniority / Nivel</h4>
+      <div class="d-flex align-items-center justify-content-between">
+        <h4>Seniority / Nivel</h4>
+        <button class="btn-plus" (click)="resetValue()">
+          <!-- <i class="bi bi-arrow-counterclockwise"></i> -->
+          Limpiar campos
+        </button>
+      </div>
       <div class="form-select option-select" (click)="isShowSeniority()">
         <span class='floating' [class]="getSelectedSeniorityClass()">{{ quizCategory?.seniority || 'Seniority'}}
         </span>

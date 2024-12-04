@@ -1,8 +1,10 @@
-import { Component, OnInit, Output, EventEmitter} from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { environment } from '@environments/environment';
 import { Location } from '@angular/common';
 import { Router } from '@angular/router';
+import { QuizService } from '../../../edit/pages/edit-pages/services/quiz.service';  // Importa el servicio
+
 interface User {
   first_name: string;
 }
@@ -44,45 +46,42 @@ interface Question {
   styleUrls: ['./view-quiz.component.scss'],
 })
 export class ViewQuizComponent implements OnInit {
-  quizId: string = '';
   quizDetails: Quiz | null = null;
   @Output() close = new EventEmitter<void>();
+  @Input() quizId: string = '';  // Recibe el ID del quiz como Input
 
-  constructor(private route: ActivatedRoute, private location: Location, private router: Router ) {}
+  constructor(
+    private route: ActivatedRoute,
+    private location: Location,
+    private router: Router,
+    private quizService: QuizService // Inyectamos el servicio
+  ) {}
 
   ngOnInit(): void {
-    this.quizId = this.route.snapshot.paramMap.get('id') || '';
-    this.quizId = this.quizId.replace(/['"]+/g, '');
-    console.log('ID del quiz sin comillas:', this.quizId);
-    this.fetchQuizDetails();
-  }
-
-  async fetchQuizDetails() {
-    try {
-      console.log(`Realizando solicitud a la API con ID: ${this.quizId}`); 
-      const response = await fetch(`${environment.url}/quiz/${this.quizId}`);
-      if (response.ok) {
-        const data: Quiz = await response.json();
-        this.quizDetails = data;
-        console.log('Detalles del quiz:', this.quizDetails);
-      } else {
-        console.error('Error al obtener detalles del quiz, respuesta no OK.');
-      }
-    } catch (error) {
-      console.error('Error en la solicitud:', error);
+    // Usar quizId desde el Input en vez de la ruta
+    console.log('Quiz ID recibido en view-quiz:', this.quizId);
+    if (this.quizId) {
+      this.fetchQuizDetails();  // Llamar al método para obtener los detalles del quiz
     }
   }
-  editQuiz(): void {
-    
-   
+
+  fetchQuizDetails() {
+    this.quizService.getQuizWithQuestions(this.quizId).subscribe(
+      (data: Quiz) => {
+        this.quizDetails = data;
+        console.log('Detalles del quiz:', this.quizDetails); // Verifica los datos del quiz
+      },
+      (error) => {
+        console.error('Error al obtener los detalles del quiz:', error);
+      }
+    );
   }
 
+  editQuiz(): void {
+    // Lógica para editar el quiz si es necesario
+  }
 
-   goBack(): void {
+  goBack(): void {
     this.close.emit();
-    
-
-    
-    
-  } 
+  }
 }

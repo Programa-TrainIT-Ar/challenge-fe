@@ -42,6 +42,8 @@
         "rxjs": "~7.8.1",
         "sweetalert2": "^11.14.3",
         "tslib": "^2.5.0",
+        "uuid": "^11.0.3",
+        "webpack": "^5.96.1",
         "zone.js": "~0.14.0"
     },
     "devDependencies": {

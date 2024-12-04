@@ -1,43 +1,46 @@
+$primary-color: magenta;
+$secondary-color: darkviolet;
+$background-dark: #1e1e1e;
+$input-background: #212121;
+$border-color: rgba(241, 121, 197, 1);
+
+// Main Layout
 .body {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  background-color: #1e1e1e;
+  background-color: $background-dark;
   height: 95vh;
   padding: 20px;
   border-radius: 15px;
   margin-block: 2.5vh;
 }
 
-a {
-  color: white;
-  flex: 0 0 33.33%;
-}
-
-a:hover {
-  cursor: pointer;
-  text-decoration: none;
-  color: magenta;
-}
-
-h1 {
-  color: magenta;
-  flex: 0 0 33.33%;
-  text-align: center;
-  top: 0%;
-}
-
-.empty-space {
-  flex: 0 0 33.33%;
-}
-
-.tittle {
+// Title Section
+.title {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin: 1% 3%;
+  padding: inherit;
+
+  .leave {
+    color: white;
+    flex: 0 0 33.33%;
+    transition: 0.3s ease-in-out;
+    text-decoration: none;
+
+    &:hover {
+      cursor: pointer;
+      color: $primary-color;
+    }
+  }
+
+  .empty-space {
+    flex: 0 0 33.33%;
+  }
 }
 
+// Main Content
 .content-1 {
   width: 100%;
   height: 100%;
@@ -45,160 +48,147 @@ h1 {
   background-repeat: no-repeat;
   background-position: center;
   background-size: 414px 404px;
-  background-color: #353434;
+  background-color: rgba(53, 52, 52, 0.8);
+  background-blend-mode: overlay;
   border-radius: 15px;
   padding: 20px;
   display: flex;
   flex-direction: column;
-  border: 2px solid rgba(241, 121, 197, 1);
-  box-shadow: 0px 0px 12.8px rgba(241, 121, 197, 1);
+  border: 2px solid $border-color;
+  box-shadow: 0px 0px 12.8px $border-color;
 }
 
-.question {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 20px;
-  padding: 15px;
-  border: 1px solid #444;
+// Questions Section
+.question-container {
+  margin-bottom: 2rem;
   border-radius: 8px;
-  background-color: #282828;
+  border: 2.5px solid rgb(61, 36, 160);
+  position: relative; // Added for popup positioning
 }
 
+#questions-scroll {
+  overflow-y: scroll;
+}
 
-input[type='text'],
-.custom-option-input {
+// Question Text and Options
+.text-question {
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   padding: 10px;
-  margin-top: 5px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  width: 100%;
 }
 
-.btn-primary {
-  background-color: #007bff;
-  color: white;
-  padding: 10px 15px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.btn-primary:hover {
-  background-color: #0056b3;
-}
-
-.quiz-name-input {
-  font-size: 24px;
-  background-color: transparent;
-  color: white;
-  border: none;
-  border-bottom: 2px solid #ccc;
-  outline: none;
-  width: 200px;
-}
-
-.quiz-name-input:focus {
-  border-bottom-color: darkviolet;
-}
-
-button {
-  padding: 8px 12px;
-  background-color: #444;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-  background-color: slateblue;
-}
-
-button:hover {
-  background-color: darkviolet;
-}
-
-.buttons {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 20%;
-}
-
-/* Estilos para la paginación */
-.pagination-buttons {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 20px;
-}
-
-.pagination-buttons button {
-  padding: 10px 20px;
-  background-color: #444;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.pagination-buttons button:hover {
-  background-color: darkviolet;
-}
-
-.pagination-buttons button:disabled {
-  background-color: #888;
-  cursor: not-allowed;
-}
-
-.buttons {
-  display: flex;
-  align-items: center;
-  justify-content:space-around;
-  padding: 20px 0; /* Ajusta el padding según sea necesario */
-}
-
-.buttons button {
-  padding: 10px 15px;
-  background-color: #444;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-  background-color: rgb(0, 56, 211);
-}
-
-.buttons button:hover {
-  background-color: rgb(17, 75, 236);
-}
-
-.buttons button:disabled {
-  background-color: #888;
-  
-}
 .option-row {
-  // display: flex;
-  // flex-wrap: wrap; /* Permitir que las opciones se envuelvan */
-  // justify-content: space-between; /* Espacio entre las opciones */
-  margin-top: 15px; /* Espacio entre la pregunta y las opciones */
   display: inline;
+  margin-top: 15px;
 }
 
 .option-item {
   display: inline-block;
-  align-items: center; /* Alinear el texto y el input verticalmente */
-  width: 48%; /* Ocupa casi la mitad del contenedor */
-  margin-bottom: 10px; /* Espacio inferior entre las opciones */
-  border: 1px solid #444; /* Borde oscuro */
-  border-radius: 15px; /* Borde redondeado */
-  background-color: #282828; /* Color de fondo */
-  padding: 10px; /* Espacio interno */
-  color: #4f4f4f; /* Color de texto gris oscuro */
+  align-items: center;
+  width: 48%;
+  margin-bottom: 10px;
+  border: 1px solid $input-background;
+  border-radius: 12px;
+  background-color: $input-background;
+  padding: 10px;
+  color: white;
 }
 
 .option-label {
-  color: #4f4f4f; /* Color gris oscuro para las etiquetas */
+  color: white;
+  margin-left: 5px;
 }
 
-input[type="radio"] {
-  margin-right: 5px; /* Espacio entre el input y el texto */
+// Edit Button
+.edit-button {
+  background: none;
+  border: none;
+  color: #6a5fff;
+  cursor: pointer;
+  padding: 5px;
+  transition: color 0.3s ease;
+
+  &:hover {
+    color: #ff5ea6;
+  }
+}
+
+// Popup Styles
+.edit-popup {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background-color: rgba(0, 0, 0, 0.7);
+  border-radius: 8px;
+}
+
+.content-2 {
+  background-color: rgba(79, 77, 77, 0.95);
+  border-radius: 8px;
+  padding: 20px;
+  margin: 10px;
+  box-shadow: 0px -3px 12.8px 0px $border-color;
+
+  .popup-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    color: white;
+
+    h3 {
+      margin: 0;
+    }
+
+    .close-button {
+      background: none;
+      border: none;
+      color: white;
+      cursor: pointer;
+      font-size: 1.2rem;
+      padding: 5px;
+
+      &:hover {
+        color: #ff5ea6;
+      }
+    }
+  }
+}
+
+// Form Elements
+input[type='text'],
+.custom-option-input {
+  padding: 10px;
+  margin-top: 5px;
+  border: 1px solid $input-background;
+  border-radius: 12px;
+  background-color: $input-background;
+  width: 100%;
+  color: white;
+}
+
+.custom-label {
+  color: white;
+  margin-bottom: 5px;
+  display: block;
+}
+
+// Save Button
+.save-button {
+  padding: 10px 20px;
+  background-color: $secondary-color;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  border: 2px solid $primary-color;
+
+  &:hover {
+    background-color: darken($secondary-color, 10%);
+  }
 }
