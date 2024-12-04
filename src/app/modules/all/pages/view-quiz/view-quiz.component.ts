@@ -1,9 +1,9 @@
-import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input, output } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { environment } from '@environments/environment';
 import { Location } from '@angular/common';
 import { Router } from '@angular/router';
-import { QuizService } from '../../../edit/pages/edit-pages/services/quiz.service';  // Importa el servicio
+import { QuizService } from '../../../edit/pages/edit-pages/services/quiz.service'; // Importa el servicio
 
 interface User {
   first_name: string;
@@ -48,7 +48,9 @@ interface Question {
 export class ViewQuizComponent implements OnInit {
   quizDetails: Quiz | null = null;
   @Output() close = new EventEmitter<void>();
-  @Input() quizId: string = '';  // Recibe el ID del quiz como Input
+  @Output() edit = new EventEmitter<Quiz>();
+  @Output() delete = new EventEmitter<Quiz>();
+  @Input() quizId: string = ''; // Recibe el ID del quiz como un Input
 
   constructor(
     private route: ActivatedRoute,
@@ -61,7 +63,7 @@ export class ViewQuizComponent implements OnInit {
     // Usar quizId desde el Input en vez de la ruta
     console.log('Quiz ID recibido en view-quiz:', this.quizId);
     if (this.quizId) {
-      this.fetchQuizDetails();  // Llamar al método para obtener los detalles del quiz
+      this.fetchQuizDetails(); // Llamar al método para obtener los detalles del quiz
     }
   }
 
@@ -71,14 +73,23 @@ export class ViewQuizComponent implements OnInit {
         this.quizDetails = data;
         console.log('Detalles del quiz:', this.quizDetails); // Verifica los datos del quiz
       },
-      (error) => {
+      error => {
         console.error('Error al obtener los detalles del quiz:', error);
       }
     );
   }
+  deleteQuiz(){
+    if (this.quizDetails) {
+      this.delete.emit(this.quizDetails);
+      this.close.emit();
+    }
+  }
 
-  editQuiz(): void {
-    // Lógica para editar el quiz si es necesario
+  editQuiz() {
+    if (this.quizDetails) {
+      this.edit.emit(this.quizDetails);
+      this.close.emit();
+    }
   }
 
   goBack(): void {

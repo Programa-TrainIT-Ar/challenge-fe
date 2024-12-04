@@ -100,9 +100,15 @@
       Este quiz no tiene preguntas disponibles.
     </p>
   </div>
+
+  <!-- Botones de acciones -->
+  <div class="button-container">
+    <button class="btn btn-edit" (click)="editQuiz()">Editar</button>
+    <button class="btn btn-delete" (click)="deleteQuiz()">Eliminar Quiz</button>
+  </div>
 </div>
 
 <!-- Plantilla para cargar datos -->
-<ng-template #loading>
-  <p>Cargando detalles del quiz...</p>
+<ng-template #loading >
+  <p  id="loading">Cargando detalles del quiz...</p>
 </ng-template>

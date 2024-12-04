@@ -52,10 +52,9 @@ export class AlertService {
     Swal.fire({
       title: title,
       text: text,
-      icon: 'question',
-      showCancelButton: true,
+      showCloseButton: true,
+      showCancelButton: false,
       confirmButtonText: confirmButtonText,
-      cancelButtonText: cancelButtonText,
       customClass: {
         popup: 'custom-delete-popup',
         title: 'custom-delete-title',

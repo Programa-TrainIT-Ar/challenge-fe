@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, input, OnInit, output } from '@angular/core';
 import { Router } from '@angular/router';
 import {
   trigger,
@@ -9,7 +9,7 @@ import {
 } from '@angular/animations';
 import { Output, EventEmitter } from '@angular/core';
 import Swal from 'sweetalert2';
-import { environment } from '@environments/environment';
+import { AlertService } from 'src/app/shared/components/alert/alert.service'; 
 import { AllPageService } from './all-page.service';
 
 interface User {
@@ -54,6 +54,7 @@ interface Quiz {
 })
 export class AllPageComponent implements OnInit {
   @Output() quizSelected = new EventEmitter<any>();
+
   module: string = '';
   cell: string = '';
   seniority: string = '';
@@ -66,7 +67,9 @@ export class AllPageComponent implements OnInit {
   showEdit: boolean = false;
 
   private allPageService = inject(AllPageService);
-  constructor(private router: Router) {}
+  constructor(private router: Router,
+              private alertService: AlertService,
+  ) {}
 
   ngOnInit(): void {
     this.allPageService.getAllQuiz().subscribe((response: any) => {
@@ -78,7 +81,7 @@ export class AllPageComponent implements OnInit {
     this.module = quizCategory.module;
     this.cell = quizCategory.cell;
     this.seniority = quizCategory.seniority;
-    this.onSearchChange()
+    this.onSearchChange();
   }
 
   onSearchChange() {
@@ -97,65 +100,45 @@ export class AllPageComponent implements OnInit {
   toggleActive(quiz: Quiz) {
     quiz.is_active = !quiz.is_active;
     this.allPageService.toggleIsActiveQuiz(quiz.id, quiz.is_active).subscribe({
-      next: (response) => {
-        console.log('Se actualizo el estado del quiz correctamente', response)
+      next: response => {
+        console.log('Se actualizo el estado del quiz correctamente', response);
       },
-      error: (error) => {
-        console.error('Error al actualizar el estado del quiz:', error)
-      }
-    })
+      error: error => {
+        console.error('Error al actualizar el estado del quiz:', error);
+      },
+    });
   }
 
   viewQuiz(quiz: Quiz) {
-    this.selectedQuiz = quiz;
-    this.router.navigate(['home/view-quiz', quiz.id]);
+    this.selectedQuizOnView = quiz; // Esto hace que la ventana emergente se muestre
+  }
+  closeQuiz() {
+    this.selectedQuizOnView = null; // Esto hace que la ventana emergente se cierre
   }
 
   deleteQuiz(quiz: Quiz) {
-    Swal.fire({
-      title: '¿Deseas eliminar el registro?',
-      text: 'Una vez eliminado no se podrá recuperar',
-      showCloseButton: true,
-      showCancelButton: false,
-      confirmButtonText: 'Eliminar',
-      customClass: {
-        popup: 'custom-delete-popup',
-        title: 'custom-delete-title',
-        confirmButton: 'custom-delete-confirm-button',
-      },
-    }).then((result) => {
-      if (result.isConfirmed) {
+    this.alertService.showConfirm(
+      '¿Deseas eliminar el registro?',
+      'Una vez eliminado no se podrá recuperar',
+      () => {
+        // Acción de confirmación
         this.allPageService.deleteQuiz(quiz.id).subscribe({
           next: () => {
-            this.quizzes = this.quizzes.filter((q) => q.id !== quiz.id);
-            Swal.fire({
-              title: 'Eliminado',
-              text: 'El registro ha sido eliminado.',
-              icon: 'success',
-              confirmButtonText: 'Entendido',
-              customClass: {
-                popup: 'custom-delete-popup',
-                title: 'custom-delete-title',
-                confirmButton: 'custom-delete-confirm-button',
-              },
-            });
+            this.quizzes = this.quizzes.filter(q => q.id !== quiz.id);
+            this.alertService.showSuccess(
+              'Eliminado',
+              'El registro ha sido eliminado.')
           },
           error: () => {
-            Swal.fire({
-              title: 'Error',
-              text: 'No se pudo eliminar el registro.',
-              icon: 'error',
-              confirmButtonText: 'Entendido',
-              customClass: {
-                popup: 'custom-delete-popup',
-                title: 'custom-delete-title',
-                confirmButton: 'custom-delete-confirm-button',
-              },
-            });
-          }
-        });
-      }
-    });
+            this.alertService.showError(
+              'Error',
+              'No se pudo eliminar el registro.',
+            )
+          },
+        })
+        },
+        'Eliminar'
+      )
   }
 
   editQuiz(quiz: Quiz) {

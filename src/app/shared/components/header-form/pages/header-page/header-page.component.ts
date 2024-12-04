@@ -13,6 +13,7 @@ import { switchMap } from 'rxjs';
 export class HeaderPageComponent {
   
   @Input() editMode: boolean; //cambia modo editable a lectura
+  @Input() resetButton: boolean; //visivilidad del boton reset
   @Output() datosParaPadre = new EventEmitter<any>(); //envia al componente padre la seleccion actual
   
   private headerPageService = inject(HeaderPageService)
