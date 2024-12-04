@@ -8,26 +8,20 @@
             <input
               type="text"
               class="input-name mb-2"
+              [ngClass]="{ notice: isFieldInvalid('name') }" 
               [placeholder]="
                 isFieldInvalid('name')
                   ? '* El nombre es requerido'
                   : 'Nombre del Quiz'
               "
-              formControlName="name"
-              [ngClass]="{ notice: isFieldInvalid('name') }" />
-            <div *ngIf="!showForm">
-              <!-- <button class="btn-plus" (click)="editQuiz()">
-                <span><i class="fa-regular fa-pen-to-square"></i></span>
-              </button> -->
-            </div>
+              formControlName="name"/>
           </div>
 
-          <div>
+          <div class="flex-b">
             <input
               type="text"
               class="input-description"
               [ngClass]="{ notice: isFieldInvalid('description') }"
-              [class]="showForm ? 'd-none' : 'input-description'"
               placeholder="Descripción"
               formControlName="description"/>
           </div>
@@ -36,6 +30,7 @@
         <app-header-page
           [ngClass]="showForm ? '' : 'absolute-true'"
           (datosParaPadre)="recibirDatos($event)"
+          [resetButton]="false"
           [editMode]="true">
         </app-header-page>
       </div>
@@ -153,15 +148,4 @@
     </div>
   </div>
 
-  <span *ngIf="pop">
-    <app-pop-message
-      class="pop-message"
-      [message]="
-        questions.length === 10
-          ? 'Quiz creado exitosamente'
-          : 'Pregunta guardada correctamente'
-      "
-      (closeEvent)="closeFn()">
-    </app-pop-message>
-  </span>
 </div>

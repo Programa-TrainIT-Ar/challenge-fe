@@ -1,30 +1,26 @@
 .normal-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  padding: 2rem;
-   width: 100%; 
-  max-width: 95vh;
-   height: 90vh; 
-  border-radius: 12px;
+  width: 804px; 
+  height: 600px; 
+  padding: 25px 16px; 
+  gap: 17px; 
+  border-radius: 8px 0px 0px 0px;   
   box-shadow: 0px 0px 12.8px rgba(241, 121, 197, 1);
   background: rgba(56, 53, 53, 1);
   border: 2px solid rgba(241, 121, 197, 1);
   background-image: url('../../../../../assets/layout/images/logo.svg');
   background-repeat: no-repeat;
   background-position: center;
-  background-size: 180px;
+  background-size: 200px;
   z-index: 1;
   font-family: Poppins;
-  margin: auto;
   overflow-y: auto;
 }
-.wrapper{
-  width: 100%;
+
+.wrapper {
+  width: 100%; 
 }
+
 .contenedor {
-  // margin-top: 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -70,10 +66,11 @@
   flex-direction: column;
   gap: 15px;
 }
+
 .inline-block {
   display: inline-block;
   vertical-align: top;
-  margin-top: 20px; 
+  margin-top: 20px;
   width: 100%;
 }
 
@@ -114,7 +111,7 @@
 .button-container {
   display: flex;
   align-items: center;
-  justify-content: space-between; /* Para separarlos a cada extremo del contenedor */
+  justify-content: space-between; 
 }
 
 .btn-plus {
@@ -128,5 +125,21 @@
 }
 
 .btn-circle {
-  margin-left: auto; /* Envía el botón de cerrar a la derecha */
+  margin-left: auto; 
+}
+
+.btn-delete{
+  background: rgba(106, 95, 255, 1);
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.15);
+
+
+}
+.btn-edit{
+  border: 1.4px solid rgba(112, 111, 229, 1) !important;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.15);
+
+}
+#loading{
+  background-color: #333232;
+  padding: 10px;
 }
