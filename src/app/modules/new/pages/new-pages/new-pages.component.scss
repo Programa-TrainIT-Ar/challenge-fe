@@ -25,9 +25,10 @@
 }
 
 .btn-plus {
-  width: 3rem;
-  height: 3rem;
+  // width: 2.2rem;
+  // height: 2.2rem;
   border-radius: 8px;
+  font-size: .5rem;
   padding: 8px;
   gap: 8px;
   background: linear-gradient(to right, #6a5fff80, #ff5ea680);
@@ -65,17 +66,17 @@
 .quiz-container-true {
   flex-wrap: wrap;
   width: 137vh;
-  height: 28vh;
+  // height: 28vh;
   border-radius: 8px;
-  padding: .4rem .4rem 1rem .4rem;
+  padding: .4rem;
   font-size: 14px;
   box-shadow: 0px 2px 10px 0px #718EE3;
   border: 1px solid #333232;
 }
 .quiz-container-false {
   width: 137vh;
-  height: 22vh;
-  padding: .4rem .4rem 1rem .4rem;
+  // height: 22vh;
+  padding: .5rem;
   font-size: 14px;
 }
 
