@@ -36,13 +36,14 @@
       </div>
     </div>
   </div>
-
+ 
   @if(selectNameForm.valid && showButton) {
     <button
     class="custom-btn-save"
     (click)="createQuiz()" >
     Guardar</button>
   }
+  
   <div>
     <div *ngIf="showForm" class="content-2">
       <h3>Define la pregunta {{ questions.length + 1 }}/10</h3>
@@ -121,7 +122,7 @@
                 [(ngModel)]="options[i]"
                 name="option{{ i }}"
                 [placeholder]="'Opción ' + (i + 1)"
-                [readonly]="isTrueFalseQuestion"
+                disabled
                 required />
             </div>
 
