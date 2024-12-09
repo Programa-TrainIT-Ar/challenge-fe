@@ -1,7 +1,17 @@
 <div class="question-container">
-    <div class="counter-container">
-        {{ counter | date:'mm:ss' }}
+    <div class="title-component">
+        <h3>Preguntas de práctica</h3>
+        <div class="d-flex justify-content-between">
+            <div class="question-type-input">
+                <p>Preguntas de selección simple.</p>
+            </div>
+            <div class="counter-container">
+                {{ counter | date:'mm:ss' }}
+            </div>
+        </div>
+
     </div>
+
     <app-question [question]="question">
     </app-question>
     <!-- <button class="next-button" (click)="updateQuestion()">
