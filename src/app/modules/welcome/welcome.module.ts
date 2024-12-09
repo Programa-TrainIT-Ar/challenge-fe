@@ -5,6 +5,7 @@ import { WelcomePageComponent } from './pages/welcome-page/welcome-page.componen
 import { AllModule } from '../all/all.module';
 import { EditModule } from '../edit/edit.module';
 import { NewModule } from '../new/new.module';
+import { QuestionComponent } from 'src/app/shared/question/question.component';
 
 @NgModule({
   declarations: [WelcomePageComponent],

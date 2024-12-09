@@ -1,0 +1,12 @@
+<div class="question-container">
+    <div class="counter-container">
+        {{ counter | date:'mm:ss' }}
+    </div>
+    <app-question
+    [question]="question">
+    </app-question>
+    <button
+    (click)="updateQuestion()">
+        Siguiente
+    </button>
+</div>
