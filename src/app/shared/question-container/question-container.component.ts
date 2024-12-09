@@ -3,11 +3,12 @@ import { QuestionComponent } from '../question/question.component';
 import { DatePipe } from '@angular/common';
 import { QuestionService } from './question.service';
 import { Question, ResponseQuestion } from './question-interface';
+import { BlueButtonComponent } from '../components/blue-button/blue-button.component';
 
 @Component({
   selector: 'app-question-container',
   standalone: true,
-  imports: [QuestionComponent, DatePipe],
+  imports: [QuestionComponent, DatePipe, BlueButtonComponent],
   templateUrl: './question-container.component.html',
   styleUrl: './question-container.component.scss'
 })
