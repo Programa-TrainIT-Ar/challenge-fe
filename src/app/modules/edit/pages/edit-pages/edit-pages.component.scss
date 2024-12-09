@@ -67,7 +67,7 @@ $border-color: rgba(241, 121, 197, 1);
   border: 2.5px solid rgb(61, 36, 160);
   position: relative;
 }
-.question-container-edit{
+.question-container-edit {
   margin-bottom: 2rem;
   border-radius: 8px;
   position: relative;
@@ -137,8 +137,8 @@ $border-color: rgba(241, 121, 197, 1);
 }
 
 .content-2 {
-  height: 500px;
-  padding: 16px 0px 0px 0px;
+  height: auto;
+  padding: 16px;
   gap: 17px;
   font-family: Poppins;
   border-radius: 8px;
@@ -162,12 +162,19 @@ $border-color: rgba(241, 121, 197, 1);
     }
   }
 }
+#form-group {
+  display: flex;
+
+  flex-wrap: wrap;
+  justify-content:space-around;
+  align-items: center;
+}
 
 // Form Elements
 input[type='text'],
 .custom-option-input {
-  padding: 10px;
-  margin-top: 5px;
+  padding: 12px;
+  margin-left: -8px;
   border: 1px solid $input-background;
   border-radius: 12px;
   background-color: $input-background;
@@ -175,10 +182,18 @@ input[type='text'],
   color: white;
 }
 
+.span-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .custom-label {
   color: white;
   margin-bottom: 5px;
   display: block;
+  width: 50%;
+  padding: 12px;
 }
 
 // Save Button
@@ -259,7 +274,8 @@ input[type='text'],
   display: inline-flex;
   justify-content: center;
   align-items: center;
-  padding: 0;
+  padding: 15px;
+  z-index: 9999;
 }
 
 .checkbox-input {
@@ -338,4 +354,10 @@ input[type='text'],
 .label-input {
   display: flex;
   justify-content: flex-start;
+}
+#questionType {
+  background-color: #202020;
+  border-radius: 12px;
+  padding: 10px;
+  width: 350px;
 }

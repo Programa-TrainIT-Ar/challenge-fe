@@ -45,15 +45,11 @@
             *ngIf="showEditForm && currentEditingIndex === i"
             class="edit-popup">
             <div class="content-2">
-              <div class="popup-header">
-                
-              </div>
-
               <form
                 #questionForm="ngForm"
                 (ngSubmit)="updateQuestion(questionForm)">
                 <div class="question-container-edit mb-3">
-                  <div class="form-group">
+                  <div class="form-group" id="form-group">
                     <div>
                       <label for="questionType" class="custom-label"
                         >Tipo de Pregunta</label
@@ -77,7 +73,7 @@
                       </div>
                     </div>
 
-                    <div class="custom-label mt-3">
+                    <div class="custom-label">
                       <label for="questionText" class="custom-label"
                         >Escribe una pregunta</label
                       >
@@ -96,30 +92,33 @@
                       <div
                         *ngFor="let option of options; let optIndex = index"
                         class="row mb-2">
-                        <div *ngIf="showInput" class="checkbox-container">
+                        <span class="span-container"
+                          ><div *ngIf="showInput" class="checkbox-container">
+                            <input
+                              *ngIf="inputType === 'radio'"
+                              type="radio"
+                              class="checkbox-input"
+                              [(ngModel)]="selectedRadio"
+                              [value]="option"
+                              name="radioGroup"
+                              (click)="answerChoice(optIndex)" />
+                            <input
+                              *ngIf="inputType === 'checkbox'"
+                              type="checkbox"
+                              class="checkbox-input"
+                              [(ngModel)]="selectedValues[optIndex]"
+                              (click)="answerChoice(optIndex)"
+                              [name]="'checkbox' + optIndex" />
+                          </div>
                           <input
-                            *ngIf="inputType === 'radio'"
-                            type="radio"
-                            class="checkbox-input"
-                            [(ngModel)]="selectedRadio"
-                            [value]="option"
-                            name="radioGroup"
-                            (click)="answerChoice(optIndex)" />
-                          <input
-                            *ngIf="inputType === 'checkbox'"
-                            type="checkbox"
-                            class="checkbox-input"
-                            [(ngModel)]="selectedValues[optIndex]"
-                            (click)="answerChoice(optIndex)"
-                            [name]="'checkbox' + optIndex" />
-                        </div>
-                        <input
-                          type="text"
-                          class="custom-option-input"
-                          [(ngModel)]="options[optIndex]"
-                          name="option{{ optIndex }}"
-                          [readonly]="isTrueFalseQuestion"
-                          required />
+                            type="text"
+                            class="custom-option-input"
+                            [(ngModel)]="options[optIndex]"
+                            name="option{{ optIndex }}"
+                            [readonly]="isTrueFalseQuestion"
+                            [placeholder]="'Opción ' + (optIndex + 1)"
+                            required />
+                        </span>
                       </div>
 
                       <div *ngIf="showPlus" class="row">
