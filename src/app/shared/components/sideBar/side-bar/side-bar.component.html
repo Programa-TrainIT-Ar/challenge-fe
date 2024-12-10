@@ -6,27 +6,20 @@
 
   <div class="sidebar-btns-container">
     <div class="gestion-btns">
-      <div class="">
+      
+      @for (item of sidebarItems; track $index) {
         <button class="sidebar-btns active-btn mb-2">
-          <img class="svg" src="../../../../../assets/demo/images/dos/Vector.png">
-          <span class="sidebar-font-btn">Gestión Quizz</span>
+        <ng-container *ngIf="item.type === 'image'">
+          <img class="svg" [src]="item.icon">
+        </ng-container>
+        <ng-container *ngIf="item.type === 'icon'">
+          <i [class]="item.icon"></i>
+        </ng-container>
+          <span class="sidebar-font-btn">{{ item.label }}</span>
         </button>
-      </div>
-
-      <div class="">
-        <button class="sidebar-btns mb-2">
-          <img class="svg" src="../../../../../assets/demo/images/tres/Vector.png">
-          <span class="sidebar-font-btn">Gestión Challenge</span>
-        </button>
-      </div>
-
-      <div class="">
-        <button class="sidebar-btns">
-          <img class="svg" src="../../../../../assets/demo/images/cuatro/Administrador/Crear Quizz/Vector.png">
-          <div class="sidebar-font-btn">Gestionar Candidatos</div>
-        </button>
-      </div>
+      }
     </div>
+
 
     <div class="">
       <button class="sidebar-btns active-btn mb-2">
