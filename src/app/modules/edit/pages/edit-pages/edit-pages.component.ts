@@ -35,6 +35,7 @@ export class EditPagesComponent implements OnInit {
   selectedValues: boolean[] = [];
   correct_option: number[] = [];
   selectedRadio: string | null = null;
+  initialQuizCategory: any = null;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -66,12 +67,31 @@ export class EditPagesComponent implements OnInit {
           name: quizData.name,
           description: quizData.description,
         });
+
+        const quizCategory = {
+          module: quizData.module?.value || '',
+          moduleId: quizData.module?.id || '',
+          cell: quizData.cell?.name || '',
+          cellId: quizData.cell?.id || '',
+          cellClass: quizData.cell
+            ? this.getCellClass(quizData.cell.index)
+            : '',
+          seniority: quizData.seniority || '',
+        };
+
+        console.log('Quiz Category:', quizCategory);
+        this.initialQuizCategory = quizCategory;
+
         this.populateQuestions(quizData.questions);
       },
       error: error => {
         console.error('Error al obtener el cuestionario:', error);
       },
     });
+  }
+  private getCellClass(index: number): string {
+    const cellNumber = (index % 10) + 1;
+    return `cell-color-${cellNumber}`;
   }
 
   private populateQuestions(questions: any[]) {

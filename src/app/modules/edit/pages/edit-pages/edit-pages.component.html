@@ -27,7 +27,11 @@
       </div>
     </div>
 
-    <app-header-page [editMode]="true"> </app-header-page>
+    <app-header-page
+      [resetButton]="true"
+      [editMode]="true"
+      [initialCategory]="initialQuizCategory">
+    </app-header-page>
 
     <div [formGroup]="selectNameForm" id="questions-scroll">
       <div formArrayName="questions" id="question-container">
@@ -230,7 +234,7 @@
       </div>
       <div
         class="actions-container"
-        style="display: flex; justify-content: end">
+        style="display: flex; justify-content: space-around">
         <button (click)="createQuiz()" class="save-button">Guardar</button>
       </div>
     </div>
