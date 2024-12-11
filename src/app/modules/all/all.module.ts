@@ -1,30 +1,37 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AllPageComponent } from './pages/all-page/all-page.component';
-import { ViewQuizComponent } from './pages/view-quiz/view-quiz.component'; // Asegúrate de importar el componente
+import { ViewQuizComponent } from './pages/view-quiz/view-quiz.component';
 import { AllRoutingModule } from './all-routing.module';
 import { RouterModule, Routes } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { HeaderFormModule } from 'src/app/shared/components/header-form/header-form.module';
 import { EditModule } from '../edit/edit.module';
 import { EditPagesComponent } from '../edit/pages/edit-pages/edit-pages.component';
-
+import { CandidatoDashboardModule } from '../candidato-dashboard/candidato-dashboard.module';
 
 const routes: Routes = [
   {
     path: 'view-quiz/:id', // Define la ruta con el parámetro 'id'
-    component: ViewQuizComponent
+    component: ViewQuizComponent,
   },
   {
     path: 'edit-pages/:id', // Define la ruta con el parámetro 'id'
-    component: EditPagesComponent
+    component: EditPagesComponent,
   },
+  // {
+  //   path: 'candidato', // Define la ruta para /candidato
+  //   loadChildren: () =>
+  //     import('../candidato-dashboard/candidato-dashboard.module').then(
+  //       (m) => m.CandidatoDashboardModule
+  //     ),
+  // },
 ];
 
 @NgModule({
   declarations: [
     AllPageComponent,
-    ViewQuizComponent // Asegúrate de declarar el componente aquí
+    ViewQuizComponent,
   ],
   imports: [
     CommonModule,
@@ -32,11 +39,12 @@ const routes: Routes = [
     FormsModule,
     HeaderFormModule,
     EditModule,
-    RouterModule.forChild(routes) // Cambia forRoot por forChild
+    CandidatoDashboardModule, // Importa el módulo
+    RouterModule.forChild(routes), // Cambia forRoot por forChild
   ],
   exports: [
     AllPageComponent,
-    ViewQuizComponent // Puedes exportar si es necesario
-  ]
+    ViewQuizComponent,
+  ],
 })
 export class AllModule {}
