@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-
+import { AuthService } from '@auth0/auth0-angular';
 export type UserRole = 'admin' | 'candidate' | 'hr';
 
 interface SidebarItem {
@@ -15,6 +15,10 @@ interface SidebarItem {
 })
 export class SideBarComponent {
   @Input() role: UserRole = 'admin';
+  isSidebarOpen: boolean = true;
+
+  constructor(
+    private authService: AuthService) {}
 
   private adminItems: SidebarItem[] = [
     {
@@ -32,34 +36,26 @@ export class SideBarComponent {
       label: 'Gestionar Candidatos',
       type: 'image'
     },
-    {
-      icon: 'bi bi-trophy',
-      label: 'Salir',
-      type: 'icon'
-    }
+   
   ];
 
   private candidateItems: SidebarItem[] = [
     {
-      icon: '../../../../../assets/demo/images/dos/Vector.png',
-      label: 'Gestión Quizz',
+      icon: '../../../../../assets/demo/candidate/sidebar/inicio.png',
+      label: 'Inicio',
       type: 'image'
     },
     {
-      icon: '../../../../../assets/demo/images/tres/Vector.png',
-      label: 'Gestión Challenge',
+      icon: '../../../../../assets/demo/candidate/sidebar/challenge.png',
+      label: 'Challenge',
       type: 'image'
     },
     {
       icon: '../../../../../assets/demo/images/cuatro/Administrador/Crear Quizz/Vector.png',
-      label: 'Gestionar Candidatos',
+      label: 'Mis Challenge',
       type: 'image'
     },
-    {
-      icon: 'bi bi-trophy',
-      label: 'Salir',
-      type: 'icon'
-    }
+    
   ];
   // Método para obtener los items según el rol
   get sidebarItems(): SidebarItem[] {
@@ -69,8 +65,17 @@ export class SideBarComponent {
       default: return [];
     }
   }
-}
+  
+  toggleSidebar() {
+    this.isSidebarOpen = !this.isSidebarOpen;
+  }
 
+  logout() {
+    this.authService.logout().subscribe(() => {
+      window.location.href = ''; 
+    });
+  }
+} 
 /* import { Component } from '@angular/core';
 import { AuthService } from '@auth0/auth0-angular';
 

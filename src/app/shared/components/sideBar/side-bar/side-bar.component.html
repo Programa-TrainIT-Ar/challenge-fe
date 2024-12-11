@@ -15,20 +15,29 @@
         <ng-container *ngIf="item.type === 'icon'">
           <i [class]="item.icon"></i>
         </ng-container>
-          <span class="sidebar-font-btn">{{ item.label }}</span>
+          <span *ngiIf="isSidebarOpen === true" 
+          class="sidebar-font-btn">{{ item.label }}</span>
         </button>
       }
     </div>
 
 
     <div class="">
-      <button class="sidebar-btns active-btn mb-2">
+      <button *ngIf="role === 'candidate'" 
+      class="sidebar-btns active-btn mb-2">
         <i class="bi bi-gear"></i>
-        <span class="sidebar-font-btn svg">Configuración</span>
+        <span 
+        *ngiIf="isSidebarOpen === true"
+        class="sidebar-font-btn svg">Configuración</span>
       </button>
       <button class="sidebar-btns active-btn">
-        <img class="svg" src="../../../../../assets/demo/images/Administrador/Crear Quizz/Vector.png">
-        <span class="sidebar-font-btn">Salir</span>
+        <img 
+        (click)="logout()"
+        class="svg" 
+        src="../../../../../assets/demo/images/Administrador/Crear Quizz/Vector.png">
+        <span 
+        *ngiIf="isSidebarOpen === true"
+        class="sidebar-font-btn">Salir</span>
       </button>
     </div>
   </div>
