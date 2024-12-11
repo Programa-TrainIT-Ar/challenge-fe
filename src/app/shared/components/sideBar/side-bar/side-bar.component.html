@@ -1,22 +1,28 @@
-<div class="sidebar-container">
+<div [ngClass]="extended ? 'sidebar-container-extended' : 'sidebar-container'">
   <!-- Sidebar -->
   <div>
-    <img src="assets/layout/images/logo.svg" class="side-img" alt="logo" />
+    <img 
+    [ngClass]="extended ? 'side-img-extended' : 'side-img'" 
+    src="assets/layout/images/logo.svg" alt="logo" />
   </div>
 
   <div class="sidebar-btns-container">
     <div class="gestion-btns">
       
       @for (item of sidebarItems; track $index) {
-        <button class="sidebar-btns active-btn mb-2">
+        <button 
+        [ngClass]=" extended ? 'sidebar-btns-extended' : 'sidebar-btns'"
+        class="active-btn mb-2">
         <ng-container *ngIf="item.type === 'image'">
           <img class="svg" [src]="item.icon">
         </ng-container>
         <ng-container *ngIf="item.type === 'icon'">
           <i [class]="item.icon"></i>
         </ng-container>
-          <span *ngiIf="isSidebarOpen === true" 
-          class="sidebar-font-btn">{{ item.label }}</span>
+          <span
+          *ngIf="extended"  
+          class="sidebar-font-btn">
+          {{ item.label }}</span>
         </button>
       }
     </div>
@@ -24,19 +30,22 @@
 
     <div class="">
       <button *ngIf="role === 'candidate'" 
-      class="sidebar-btns active-btn mb-2">
+        [ngClass]=" extended ? 'sidebar-btns-extended' : 'sidebar-btns'"
+        class="active-btn mb-2">
         <i class="bi bi-gear"></i>
         <span 
-        *ngiIf="isSidebarOpen === true"
+        *ngIf="extended"
         class="sidebar-font-btn svg">Configuración</span>
       </button>
-      <button class="sidebar-btns active-btn">
+      <button 
+      [ngClass]=" extended ? 'sidebar-btns-extended' : 'sidebar-btns'"
+      class="active-btn mb-2">
         <img 
         (click)="logout()"
         class="svg" 
         src="../../../../../assets/demo/images/Administrador/Crear Quizz/Vector.png">
         <span 
-        *ngiIf="isSidebarOpen === true"
+        *ngIf="extended"
         class="sidebar-font-btn">Salir</span>
       </button>
     </div>

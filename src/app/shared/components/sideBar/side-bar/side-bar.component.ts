@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { Router } from '@angular/router';
 import { AuthService } from '@auth0/auth0-angular';
 export type UserRole = 'admin' | 'candidate' | 'hr';
 
@@ -15,10 +16,14 @@ interface SidebarItem {
 })
 export class SideBarComponent {
   @Input() role: UserRole = 'admin';
+  @Input() extended: boolean = true ;
+  
   isSidebarOpen: boolean = true;
 
   constructor(
-    private authService: AuthService) {}
+    private authService: AuthService,
+    private router: Router,
+  ) {}
 
   private adminItems: SidebarItem[] = [
     {
@@ -41,17 +46,17 @@ export class SideBarComponent {
 
   private candidateItems: SidebarItem[] = [
     {
-      icon: '../../../../../assets/demo/candidate/sidebar/inicio.png',
+      icon: '../../../../../assets/demo/images/candidate/sidebar/inicio.png',
       label: 'Inicio',
       type: 'image'
     },
     {
-      icon: '../../../../../assets/demo/candidate/sidebar/challenge.png',
+      icon: '../../../../../assets/demo/images/candidate/sidebar/Challenge.png',
       label: 'Challenge',
       type: 'image'
     },
     {
-      icon: '../../../../../assets/demo/images/cuatro/Administrador/Crear Quizz/Vector.png',
+      icon: '../../../../../assets/demo/images/candidate/sidebar/MisChallenge.png',
       label: 'Mis Challenge',
       type: 'image'
     },
@@ -72,7 +77,7 @@ export class SideBarComponent {
 
   logout() {
     this.authService.logout().subscribe(() => {
-      window.location.href = ''; 
+      this.router.navigate(['']); 
     });
   }
 } 
