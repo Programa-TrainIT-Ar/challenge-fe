@@ -6,7 +6,7 @@
   <div id="welcome"><router-outlet></router-outlet></div>
 
   <div *ngIf="user$ | async as user" class="mensaje" [class.hidden]="isMessageHidden">
-    <div class="Bienvenida">
+    <!-- <div class="Bienvenida">
       Bienvenido, {{ user.name }}
       <div *ngIf="user.picture">
         <img
@@ -14,6 +14,6 @@
           alt="Foto de perfil"
           class="profile-picture ml-2" />
       </div>
-    </div>
+    </div> -->
   </div>
 </div>

@@ -9,7 +9,7 @@ import { AuthGuard } from '@auth0/auth0-angular';
 import { RoleGuard } from '../app/modules/guards/role.guard'; // Importa el guardia de roles
 import { EditPagesComponent } from './modules/edit/pages/edit-pages/edit-pages.component';
 import { WelcomeCandidatoComponent } from './modules/welcome-candidato/welcome-candidato.component';
-
+import { CandidatoDashboardModule } from './modules/candidato-dashboard/candidato-dashboard.module';
 @NgModule({
   imports: [
     RouterModule.forRoot(
@@ -31,6 +31,14 @@ import { WelcomeCandidatoComponent } from './modules/welcome-candidato/welcome-c
         },
         // { path: 'edit', component: EditPagesComponent },
         // { path: 'edit/:name', component: EditPagesComponent },
+        {
+          path: 'dashboard', // Define la ruta para /candidato
+          
+          loadChildren: () =>
+            import('./modules/candidato-dashboard/candidato-dashboard.module').then(
+              (m) => m.CandidatoDashboardModule
+            ),
+        },
         {
           path: '',
           component: AuthPageComponent,

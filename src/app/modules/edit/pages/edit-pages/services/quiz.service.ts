@@ -25,7 +25,7 @@ export class QuizService {
 
   // Método para actualizar un cuestionario
   updateQuiz(id: string, quizData: any): Observable<any> {
-    return this.http.put(`${this.apiUrl}/${id}`, quizData).pipe(
+    return this.http.put(`${this.apiUrl}/nested/${id}`, quizData).pipe(
       catchError(error => {
         console.error('Error al actualizar el cuestionario:', error);
         return throwError(error);
