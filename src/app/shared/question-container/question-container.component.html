@@ -1,6 +1,7 @@
 <div class="question-container">
-    
-    <div  class="title-component">
+    <img src="assets/layout/images/logo.svg" alt="Logo" class="bg-logo">
+
+    <div class="title-component">
         <h3 *ngIf="test">Preguntas de práctica</h3>
         <div class="d-flex justify-content-between">
             <div *ngIf="test" class="question-type-input">
@@ -13,10 +14,10 @@
             </div>
         </div>
     </div>
-   
+
     <app-question [question]="question">
     </app-question>
-    
+
     <div class="button-container">
         <app-blue-button text="Siguiente" (click)="updateQuestion()">
         </app-blue-button>
