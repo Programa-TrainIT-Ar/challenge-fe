@@ -10,6 +10,7 @@ import { RoleGuard } from '../app/modules/guards/role.guard'; // Importa el guar
 import { EditPagesComponent } from './modules/edit/pages/edit-pages/edit-pages.component';
 import { WelcomeCandidatoComponent } from './modules/welcome-candidato/welcome-candidato.component';
 import { CandidatoDashboardModule } from './modules/candidato-dashboard/candidato-dashboard.module';
+import { DashboardPageComponent } from './modules/candidato-dashboard/dashboard-page/dashboard-page.component';
 @NgModule({
   imports: [
     RouterModule.forRoot(
@@ -17,7 +18,7 @@ import { CandidatoDashboardModule } from './modules/candidato-dashboard/candidat
         {
           path: 'home',
           component: HomePageComponent,
-          canActivate: [AuthGuard,RoleGuard],
+          canActivate: [AuthGuard, RoleGuard],
           data: { expectedRole: 'admin' },
           loadChildren: () =>
             import('./modules/home/home.module').then(m => m.HomeModule),
@@ -33,11 +34,12 @@ import { CandidatoDashboardModule } from './modules/candidato-dashboard/candidat
         // { path: 'edit/:name', component: EditPagesComponent },
         {
           path: 'dashboard', // Define la ruta para /candidato
+          component: DashboardPageComponent,
           
           loadChildren: () =>
-            import('./modules/candidato-dashboard/candidato-dashboard.module').then(
-              (m) => m.CandidatoDashboardModule
-            ),
+            import(
+              './modules/candidato-dashboard/candidato-dashboard.module'
+            ).then(m => m.CandidatoDashboardModule),
         },
         {
           path: '',

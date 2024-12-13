@@ -114,7 +114,7 @@ export class AuthPageComponent implements OnInit {
       if (roles.includes('admin')) {
         await this.router.navigate(['/home']);
       } else {
-        await this.router.navigate(['/sign-in']);
+        await this.router.navigate(['/candidato']);
       }
     } catch (error) {
       console.error('Error en la redirección:', error);

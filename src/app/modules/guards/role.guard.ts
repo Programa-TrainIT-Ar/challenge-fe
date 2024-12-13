@@ -21,7 +21,7 @@ export class RoleGuard implements CanActivate {
       }),
       tap(hasAccess => {
         if (!hasAccess) {
-          this.router.navigate(['/sign-in']); // Redirigir si no tiene acceso
+          this.router.navigate(['/candidato']); // Redirigir si no tiene acceso
         }
       })
     );
