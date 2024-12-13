@@ -4,7 +4,9 @@
 }
 
 .container-fluid {
-  background-color: #121212;
+  // background-color: #121212;
+  background-color: rgba(27, 27, 27, 1);
+
   min-height: 100vh;
   display: flex;
   align-items: center;
@@ -62,5 +64,3 @@ font-weight:600;
     margin-top: 20px; 
   }
 } */
-
-
