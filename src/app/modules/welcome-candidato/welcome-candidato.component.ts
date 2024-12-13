@@ -8,12 +8,29 @@ import { BlueButtonComponent } from 'src/app/shared/components/blue-button/blue-
   standalone: true,
   imports: [SharedModule, QuestionContainerComponent, BlueButtonComponent],
   templateUrl: './welcome-candidato.component.html',
-  styleUrl: './welcome-candidato.component.scss'
+  styleUrls: ['./welcome-candidato.component.scss']
 })
 export class WelcomeCandidatoComponent {
   step: number = 1;
+  countdown: number = 10; 
+  intervalId!: any; 
 
   nextStep() {
-    this.step ++;
+    this.step++;
+
+    if (this.step === 3) {
+      this.startCountdown();
+    }
+  }
+
+  private startCountdown() {
+    this.intervalId = setInterval(() => {
+      if (this.countdown > 0) {
+        this.countdown--;
+      } else {
+        clearInterval(this.intervalId);
+        this.step++; 
+      }
+    }, 1000);
   }
 }
