@@ -14,8 +14,10 @@
         <button class="module-option" (click)="selectModule(module)">
           @if (editingModuleId === module.id) {
           <div class="edit-module-form">
-            <input [formControl]="editModuleControl" (click)="$event.stopPropagation()"
-              (keyup.enter)="saveModuleEdit(module.id)" (keyup.escape)="cancelEditingModule()"
+            <input [formControl]="editModuleControl" 
+              (click)="$event.stopPropagation()"
+              (keyup.enter)="saveModuleEdit(module.id)" 
+              (keyup.escape)="cancelEditingModule()"
               placeholder="Nombre del módulo">
             @if(editModuleControl?.errors?.['required']) {
             <span>(El módulo no puede quedar vacío)</span>
@@ -57,7 +59,11 @@
         }
         @else {
         <div>
-          <input class="module-option" type="text" [formControl]="module" placeholder="Nombre del nuevo módulo"
+          <input class="module-option" 
+            type="text" 
+            [formControl]="module" 
+            placeholder="Nombre del nuevo módulo"
+            (keyup.escape)="toggleAddModule()"
             (keyup.enter)="createModule()">
           @if(module?.errors?.['required']) {
           <span>(El modulo no puede quedar vacío)</span>
@@ -90,8 +96,10 @@
         <button class="floating " (click)="selectCell(cell, $index)" [ngClass]="getCellClass($index)">
           @if (editingCellId === cell.id) {
           <div class="edit-cell-form">
-            <input [formControl]="editCellControl" (click)="$event.stopPropagation()"
-              (keyup.enter)="saveCellEdit(cell.id)" (keyup.escape)="cancelEditingCell()"
+            <input [formControl]="editCellControl" 
+              (click)="$event.stopPropagation()"
+              (keyup.enter)="saveCellEdit(cell.id)" 
+              (keyup.escape)="cancelEditingCell()"
               placeholder="Nombre de la celula">
             @if(editCellControl?.errors?.['required']) {
             <span>(La celula no puede quedar vacía)</span>
@@ -133,7 +141,12 @@
         }
         @else {
         <div>
-          <input class="module-option" type="text" [formControl]="cell" placeholder="Nombre de la nueva célula"
+          <input 
+            class="module-option" 
+            type="text" 
+            [formControl]="cell" 
+            placeholder="Nombre de la nueva célula"
+            (keyup.escape)="toggleAddCell()"
             (keyup.enter)="createCell()">
           @if(cell?.errors?.['required']) {
           <span>(La célula no puede quedar vacía)</span>

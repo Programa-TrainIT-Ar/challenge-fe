@@ -8,7 +8,8 @@ import { HomePageComponent } from './modules/home/pages/home-page/home-page.comp
 import { AuthGuard } from '@auth0/auth0-angular';
 import { RoleGuard } from '../app/modules/guards/role.guard'; // Importa el guardia de roles
 import { EditPagesComponent } from './modules/edit/pages/edit-pages/edit-pages.component';
-
+import { WelcomeCandidatoComponent } from './modules/welcome-candidato/welcome-candidato.component';
+import { CandidatoDashboardModule } from './modules/candidato-dashboard/candidato-dashboard.module';
 @NgModule({
   imports: [
     RouterModule.forRoot(
@@ -21,8 +22,23 @@ import { EditPagesComponent } from './modules/edit/pages/edit-pages/edit-pages.c
           loadChildren: () =>
             import('./modules/home/home.module').then(m => m.HomeModule),
         },
+        {
+          path: 'candidato',
+          component: WelcomeCandidatoComponent,
+          //canActivate: [AuthGuard,RoleGuard],
+          loadChildren: () =>
+            import('./modules/welcome-candidato/welcome-candidato.module').then(m => m.WelcomeCandidatoModule),
+        },
         // { path: 'edit', component: EditPagesComponent },
         // { path: 'edit/:name', component: EditPagesComponent },
+        {
+          path: 'dashboard', // Define la ruta para /candidato
+          
+          loadChildren: () =>
+            import('./modules/candidato-dashboard/candidato-dashboard.module').then(
+              (m) => m.CandidatoDashboardModule
+            ),
+        },
         {
           path: '',
           component: AuthPageComponent,

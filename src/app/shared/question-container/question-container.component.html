@@ -1,0 +1,24 @@
+<div class="question-container">
+    
+    <div  class="title-component">
+        <h3 *ngIf="test">Preguntas de práctica</h3>
+        <div class="d-flex justify-content-between">
+            <div *ngIf="test" class="question-type-input">
+                <p *ngIf="question.type === 'true_false'">Preguntas de verdadero y falso.</p>
+                <p *ngIf="question.type == 'simple_choice'">Preguntas de selección simple.</p>
+                <p *ngIf="question.type == 'multiple_choice'">Preguntas de selección múltiple.</p>
+            </div>
+            <div class="counter-container">
+                {{ counter | date:'mm:ss' }}
+            </div>
+        </div>
+    </div>
+   
+    <app-question [question]="question">
+    </app-question>
+    
+    <div class="button-container">
+        <app-blue-button text="Siguiente" (click)="updateQuestion()">
+        </app-blue-button>
+    </div>
+</div>
