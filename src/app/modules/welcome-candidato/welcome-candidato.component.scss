@@ -34,8 +34,14 @@
   border: 1px solid #333232;
   font-size: .9rem;
   font-weight: 300;
-  padding: 8px 0px 0px 16px;
+  padding: 8px 0px 0px 64px;
   border-radius: 8px 0px 0px 0px;
   margin-bottom: 1rem;
 }
 
+.button-container {
+  width: 804px;
+  margin: 0 auto;
+  text-align: end;
+  padding-right: 1rem;
+}

@@ -11,5 +11,9 @@ import { BlueButtonComponent } from 'src/app/shared/components/blue-button/blue-
   styleUrl: './welcome-candidato.component.scss'
 })
 export class WelcomeCandidatoComponent {
+  step: number = 1;
 
+  nextStep() {
+    this.step ++;
+  }
 }

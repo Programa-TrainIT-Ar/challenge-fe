@@ -15,13 +15,9 @@ import { Question } from '../question-container/question-interface';
 export class QuestionComponent {
   private formBuilder = inject(FormBuilder)
   
-  /* private questionService = inject(QuestionService)
-  ngOnInit(): void {
-    this.questionService.getQuiz(id).subscribe()
-  } */
   @Input() question: Question;
   @Output() answer: number[];
-  
+
   questionForm = this.formBuilder.group({
     answer: [,[Validators.required,]]
   })
