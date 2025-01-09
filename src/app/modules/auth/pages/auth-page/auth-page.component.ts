@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { AuthService } from '@auth0/auth0-angular';
 import { Router } from '@angular/router';
 import { environment } from '@environments/environment';
@@ -22,22 +22,24 @@ interface UserData {
   templateUrl: './auth-page.component.html',
   styleUrls: ['./auth-page.component.scss'],
 })
-export class AuthPageComponent implements OnInit {
+export class AuthPageComponent {
   constructor(
     private auth: AuthService,
     private router: Router,
     private http: HttpClient
   ) {}
 
-  ngOnInit() {
-    this.handleAuthentication();
-  }
-
-  login() {
-    this.auth.loginWithRedirect({
-      appState: { returnTo: window.location.pathname },
-    });
-    
+  async login() {
+    try {
+      // Usar loginWithPopup en lugar de loginWithRedirect
+      await this.auth.loginWithPopup();
+      
+      // Después del login exitoso, manejar la autenticación
+      await this.handleAuthentication();
+    } catch (error) {
+      console.error('Error durante el login:', error);
+      this.handleAuthError(error);
+    }
   }
 
   private async handleAuthentication() {
@@ -78,12 +80,10 @@ export class AuthPageComponent implements OnInit {
 
   private async registerOrAuthenticateUser(userData: UserData): Promise<any> {
     try {
-      // Usa el endpoint existente del backend
       const response = await firstValueFrom(
         this.http.post(`${environment.url}/user`, userData).pipe(
           catchError(async error => {
             if (error.status === 400 && error.error?.user) {
-              // Si el usuario ya existe, retornamos los datos del usuario>>>>>>>>>>>>>
               return error.error;
             }
             throw error;
@@ -100,12 +100,11 @@ export class AuthPageComponent implements OnInit {
 
   private async handleUserRedirection(user: any) {
     try {
-      // Obtiene los roles desde los metadatos de Auth0 >>>>>>>>>>>>>>
       const roles = user['https://miaplicacion.com/roles'] || [];
       const isEmailVerified = user.email_verified;
-      // Si el email no está verificado, redirige a una página de verificación probar!!!!
-      // if (!isEmailVerified) {
 
+      // Si el email no está verificado, redirige a una página de verificación
+      // if (!isEmailVerified) {
       //   this.router.navigate(['/verify-email']);
       //   return;
       // }
@@ -122,10 +121,8 @@ export class AuthPageComponent implements OnInit {
     }
   }
 
-  // Método para manejar errores de autenticación
   private handleAuthError(error: any) {
     console.error('Error de autenticación:', error);
-
     this.router.navigate(['/error']);
   }
 }

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthService } from '@auth0/auth0-angular';
 
 @Component({
   selector: 'app-dashboard-page',
@@ -6,6 +7,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./dashboard-page.component.scss']
 })
 export class DashboardPageComponent implements OnInit {
+  user$ = this.auth.user$
   userName: string = 'Usuario'; // Puedes obtener el nombre de usuario desde algún servicio
   currentDate: string = new Date().toLocaleDateString(); // Fecha actual
   items: any[] = [
@@ -17,7 +19,7 @@ export class DashboardPageComponent implements OnInit {
     { title: 'QA', icon: 'assets/scrum.png' }
   ];
 
-  constructor() {}
+  constructor(private auth: AuthService) {}
 
   ngOnInit(): void {}
 }
