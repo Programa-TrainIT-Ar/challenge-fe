@@ -34,7 +34,7 @@ export class AuthPageComponent {
       // Usar loginWithPopup en lugar de loginWithRedirect
       await this.auth.loginWithPopup();
       
-      // Después del login exitoso, manejar la autenticación
+      
       await this.handleAuthentication();
     } catch (error) {
       console.error('Error durante el login:', error);
