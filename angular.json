@@ -24,14 +24,16 @@
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": ["zone.js"],
+            
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [
               "src/favicon.ico",
               "src/assets",
-              "src/mockServiceWorker.js"
+              "src/mockServiceWorker.js",
+              "src/_redirects"
             ],
-            "styles": [ "node_modules/bootstrap/dist/css/bootstrap.min.css","src/styles.scss"],
+            "styles": [ "node_modules/bootstrap/dist/css/bootstrap.min.css","src/styles.scss","node_modules/sweetalert2/dist/sweetalert2.min.css"],
             "scripts": [ "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"]
           },
           "configurations": {
@@ -45,9 +47,60 @@
                 {
                   "type": "anyComponentStyle",
                   "maximumWarning": "2kb",
-                  "maximumError": "4kb"
+                  "maximumError": "10kb"
                 }
               ],
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all"
+            },
+            "dev": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "1mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "2kb",
+                  "maximumError": "10kb"
+                }
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.dev.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all"
+            },
+            "testing": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "1mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "2kb",
+                  "maximumError": "10kb"
+                }
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.test.ts"
+                }
+              ],
+              "optimization": true,
               "outputHashing": "all"
             },
             "development": {
@@ -69,6 +122,12 @@
             },
             "development": {
               "buildTarget": "challenge:build:development"
+            },
+            "testing": {
+            "buildTarget": "challenge:build:testing"
+            },
+            "dev": {
+              "buildTarget": "challenge:build:dev"
             }
           },
           "defaultConfiguration": "development"

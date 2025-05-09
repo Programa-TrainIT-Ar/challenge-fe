@@ -1,5 +1,43 @@
 /* You can add global styles to this file, and also import other style files */
 
+.custom-delete-popup {
+    background-color: #1e1e1e; 
+    color: #fff; 
+    border-radius: 50px; 
+    padding: 24px 24px 24px 24px; 
+  }
+  
+.custom-delete-title {
+  font-size: 24px; 
+  padding: 0px 8px; 
+  text-align: center; 
+  opacity: 1; 
+}
+
+.custom-delete-confirm-button {
+  background: rgba(106, 95, 255, 1);
+  color: #fff;
+  font-size: 18px; 
+  padding: 12px 24px; 
+  border-radius: 16px; 
+  box-shadow: none;
+  outline: none;
+  transition: background-color 0.3s ease; 
+}
+
+.custom-delete-confirm-button:hover {
+  background-color: #5a47cc; 
+}
+
+.swal2-close {
+  color: #fff; 
+  font-size: 20px; 
+}
+
+.custom-delete-content {
+  padding: 24px 0 0 0; 
+  gap: 24px; 
+}
 $gutter: 1rem; //for primeflex grid system
 @import 'assets/layout/styles/layout/layout.scss';
 

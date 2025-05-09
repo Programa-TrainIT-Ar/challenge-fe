@@ -1,0 +1,86 @@
+.question-container {
+    width: 80vw;
+    height: 95vh;
+    padding: 24px 8px 8px 8px;
+    gap: 47px;
+    border-radius: 12px 0px 0px 0px;
+    opacity: 0px;
+    display: flex;
+    flex-direction: column;
+    // align-items: center;
+    // justify-content: center;
+    background-color: #212121;
+    margin: 0 1rem;
+    border-radius: .8rem;
+    backdrop-filter: blur(4px);
+    box-shadow: 0px 4px 4px 0px #00000040;
+    position: relative;
+}
+
+.counter-container {
+    width: 108px;
+    height: 36px;
+    padding: 8px 0px 0px 0px;
+    gap: 0px;
+    opacity: 0px;
+    font-family: "Protest Guerrilla", sans-serif;
+    font-size: 32px;
+    font-weight: 400;
+    line-height: 20px;
+    letter-spacing: 0.25px;
+    text-align: left;
+    text-underline-position: from-font;
+    text-decoration-skip-ink: none;
+
+}
+
+
+.button-container {
+    width: 804px;
+    margin: 0 auto;
+    text-align: end;
+    padding-right: 1rem;
+}
+
+.title-component {
+    margin-top: 3rem;
+    margin-left: 5rem;
+    width: 50vw;
+    margin-bottom: 5rem;
+    font-family: 'poppins';
+    font-weight: 200;
+}
+
+.title-component h3 {
+    font-weight: 300;
+}
+
+
+.question-type-input {
+    background: rgba(27, 27, 27, 1);
+    border: 1px solid rgba(51, 50, 50, 1);
+    font-size: 1.1rem;
+    padding: .2rem 1rem;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    width: 60%;
+
+   
+}
+
+.question-type-input p {
+    margin: 0;
+}
+
+
+
+.bg-logo {
+    width: 15rem;
+    position: absolute; 
+    opacity: .3;
+    top: 35%;
+    right: 45%;
+    z-index: -5;
+  
+  }
