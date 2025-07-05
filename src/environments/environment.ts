@@ -1,12 +1,12 @@
 export const environment = {
     production: false,
     auth: {
-      domain: "dev-hwbroc2d1yqqr04v.us.auth0.com",
-      clientId: "TTVpH09MQpHbU6oHQjXAVt4I66h9f2Hk",
+      domain: "dev-etnwb5jjlx4qpvdm.us.auth0.com",
+      clientId: "cDXMB8lOxTHRJUodDMCLLrbxbooFe2le",
       authorizationParams: {
         audience: 'https://api.miaplicacion.com',
         redirect_uri: 'http://localhost:4200',
       },
     },
-    url: 'https://challenge-be-testing.onrender.com'
+    url: 'http://localhost:3000'
   };
