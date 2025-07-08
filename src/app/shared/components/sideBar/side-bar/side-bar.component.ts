@@ -27,17 +27,17 @@ export class SideBarComponent {
 
   private adminItems: SidebarItem[] = [
     {
-      icon: '../../../../../assets/demo/images/dos/Vector.png',
+      icon: '../../../../../assets/images/dos/Vector.png',
       label: 'Gestión Quizz',
       type: 'image'
     },
     {
-      icon: '../../../../../assets/demo/images/tres/Vector.png',
+      icon: '../../../../../assets/images/tres/Vector.png',
       label: 'Gestión Challenge',
       type: 'image'
     },
     {
-      icon: '../../../../../assets/demo/images/cuatro/Administrador/Crear Quizz/Vector.png',
+      icon: '../../../../../assets/images/cuatro/Administrador/Crear Quizz/Vector.png',
       label: 'Gestionar Candidatos',
       type: 'image'
     },
@@ -46,17 +46,17 @@ export class SideBarComponent {
 
   private candidateItems: SidebarItem[] = [
     {
-      icon: '../../../../../assets/demo/images/candidate/sidebar/inicio.png',
+      icon: '../../../../../assets/images/candidate/sidebar/inicio.png',
       label: 'Inicio',
       type: 'image'
     },
     {
-      icon: '../../../../../assets/demo/images/candidate/sidebar/Challenge.png',
+      icon: '../../../../../assets/images/candidate/sidebar/Challenge.png',
       label: 'Challenge',
       type: 'image'
     },
     {
-      icon: '../../../../../assets/demo/images/candidate/sidebar/MisChallenge.png',
+      icon: '../../../../../assets/images/candidate/sidebar/MisChallenge.png',
       label: 'Mis Challenge',
       type: 'image'
     },

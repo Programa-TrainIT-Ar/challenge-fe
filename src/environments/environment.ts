@@ -4,9 +4,9 @@ export const environment = {
       domain: "dev-etnwb5jjlx4qpvdm.us.auth0.com",
       clientId: "cDXMB8lOxTHRJUodDMCLLrbxbooFe2le",
       authorizationParams: {
-        audience: 'https://api.miaplicacion.com',
-        redirect_uri: 'http://localhost:4200',
+        audience: 'http://localhost:3001',
+        redirect_uri: 'http://localhost:4200/home',
       },
     },
-    url: 'http://localhost:3000'
+    url: 'http://localhost:3001'
   };
