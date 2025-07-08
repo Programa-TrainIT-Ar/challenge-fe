@@ -7,24 +7,161 @@
   </div>
   <h2 class="mb-5">Registrate para comenzar la aventura</h2>
 
-  <form class="d-flex flex-column mb-3">
-    <div class="mb-5 input-w">
-      <input type="text" class="form-control" name="nombre" placeholder="Nombre" />
+  <form
+    class="d-flex flex-column mb-3 align-items-center "
+    [formGroup]="registerForm"
+    (ngSubmit)="onSubmit()">
+    <!-- Nombre -->
+    <div class="mb-3 input-w">
+      <input
+        type="text"
+        class="form-control"
+        formControlName="nombre"
+        placeholder="Nombre"
+        [class.is-invalid]="f['nombre'].invalid && submitted" />
+      <!-- Alertas para nombre -->
+      <div
+        *ngIf="f['nombre'].invalid && submitted"
+        class="invalid-feedback d-block">
+        <div *ngIf="f['nombre'].errors?.['required']">
+          El nombre es requerido.
+        </div>
+        <div *ngIf="f['nombre'].errors?.['pattern']">
+          El nombre sólo puede contener letras.
+        </div>
+      </div>
     </div>
+
+    <!-- Apellido -->
+    <div class="mb-3 input-w">
+      <input
+        type="text"
+        class="form-control"
+        formControlName="apellido"
+        placeholder="Apellido"
+        [class.is-invalid]="f['apellido'].invalid && submitted" />
+
+      <!-- Alertas para apellido -->
+
+      <div
+        *ngIf="f['apellido'].invalid && submitted"
+        class="invalid-feedback d-block">
+        <div *ngIf="f['apellido'].errors?.['required']">
+          El apellido es requerido.
+        </div>
+        <div *ngIf="f['apellido'].errors?.['pattern']">
+          El apellido solo puede contener letras.
+        </div>
+      </div>
+    </div>
+
+    <!-- Correo -->
+    <div class="mb-3 input-w">
+      <input
+        type="email"
+        class="form-control"
+        formControlName="email"
+        placeholder="Email"
+        [class.is-invalid]="f['email'].invalid && submitted" />
+
+      <!-- Alertas para el correo -->
+      <div
+        *ngIf="f['email'].invalid && submitted"
+        class="invalid-feedback d-block">
+        <div *ngIf="f['email'].errors?.['required']">
+          El email es requerido.
+        </div>
+        <div *ngIf="f['email'].errors?.['pattern']">Ingrese un email válido.</div>
+      </div>
+    </div>
+
+    <!-- Número telefónico -->
+    <div class="mb-3 input-w">
+      <input
+        type="tel"
+        class="form-control"
+        formControlName="phone"
+        placeholder="Teléfono"
+        [class.is-invalid]="f['phone'].invalid && submitted" />
+
+      <!-- Alertas para el teléfono -->
+      <div
+        *ngIf="f['phone'].invalid && submitted"
+        class="invalid-feedback d-block">
+        <div *ngIf="f['phone'].errors?.['required']">
+          El teléfono es requerido.
+        </div>
+        <div *ngIf="f['phone'].errors?.['pattern']">
+          El teléfono solo debe contener números.
+        </div>
+      </div>
+    </div>
+
+    <!-- Contraseña -->
+    <div class="mb-3 input-w">
+      <input
+        type="password"
+        class="form-control"
+        formControlName="password"
+        placeholder="Contraseña"
+        [class.is-invalid]="f['password'].invalid && submitted" />
+
+    </div>
+    
+      <!-- Alertas para la contraseña -->
+
+      <div
+        *ngIf="f['password'].invalid && submitted"
+        class="invalid-feedback d-flex justify-content-center">
+        <div *ngIf="f['password'].errors?.['required']">
+          La contraseña es requerida.
+        </div>
+        <!-- <div *ngIf="f['password'].errors?.['minlength']">
+          La contraseña debe tener al menos 8 caracteres.
+        </div> -->
+        <div *ngIf="f['password'].errors?.['pattern']">
+          La contraseña no cumple con los requisitos de seguridad.
+          <div class="small mt-2 mb-2 flex flex-column align-items-center">
+            La contraseña debe tener:
+            <ul>
+              <li>Al menos 8 caracteres.</li>
+              <li>Al menos una letra mayúscula.</li>
+              <li>Al menos un número.</li>
+              <li>Al menos un símbolo especial.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    <!-- Confirma contraseña / Contraseña 2 -->
     <div class="mb-4 input-w">
-      <input type="email" class="form-control mb-3" name="email" placeholder="Email" />
+      <input
+        type="password"
+        class="form-control"
+        formControlName="password-2"
+        placeholder="Confirmación de la contraseña"
+        [class.is-invalid]="
+          f['password-2'].invalid && submitted
+        " />
+
+      <!-- Aletas para contraseña 2 -->
+      <div
+        *ngIf="f['password-2'].invalid && submitted"
+        class="invalid-feedback d-block">
+        <div *ngIf="f['password-2'].errors?.['required']">
+          Confirmar contraseña es requerido.
+        </div>
+      </div>
+      <div
+        *ngIf="
+          registerForm.errors?.['mismatch'] &&
+          (f['password'].touched || submitted)
+        "
+        class="invalid-feedback d-block">
+        Las contraseñas no coinciden.
+      </div>
     </div>
-    <div class="mb-4 input-w">
-      <input type="number" class="form-control mb-3" name="phone" placeholder="Teléfono" />
-    </div>
-    <div class="mb-4 input-w">
-      <input type="password" class="form-control mb-3" name="password" placeholder="Contraseña" />
-    </div>
-    <div class="mb-4 input-w">
-      <input type="password" class="form-control mb-3" name="password-2" placeholder="Repito la contraseña" />
-    </div>
-  
+
     <button type="submit" class="btn btn-primary btn-li">REGISTRARME</button>
   </form>
-
 </div>

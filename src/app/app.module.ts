@@ -10,6 +10,7 @@ import { environment } from 'src/environments/environment';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
+import { AuthSignInModule } from './modules/auth-sign-in/auth-sign-in.module';
 
 @NgModule({
     declarations: [AppComponent],
@@ -20,6 +21,7 @@ import { CommonModule } from '@angular/common';
         AppLayoutModule,
         HttpClientModule,
         BrowserAnimationsModule,
+        AuthSignInModule,
         AuthModule.forRoot({
             domain: environment.auth.domain,
             clientId: environment.auth.clientId,
