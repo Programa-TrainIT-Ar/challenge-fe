@@ -14,7 +14,6 @@ import {
 })
 export class AuthSignInPageComponent implements OnInit {
   registerForm: FormGroup;
-  submitted = false; //Permite evaluar cada campo del formulario
 
   constructor(private fb: FormBuilder) {}
 
@@ -89,8 +88,6 @@ export class AuthSignInPageComponent implements OnInit {
   }
 
   onSubmit(): void {
-    console.log('Pisando botón');
-    this.submitted = true;
     this.registerForm.markAllAsTouched();
     if (this.registerForm.valid) {
       console.log(
@@ -99,7 +96,6 @@ export class AuthSignInPageComponent implements OnInit {
       );
       alert('¡Registro exitoso!');
       this.registerForm.reset(); // Opcional: resetear el formulario después de enviar
-      this.submitted = false;
     } else {
       console.log('Formulario inválido. Por favor, revisa los errores.');
       // Marca todos los campos como "touched" para que se muestren los mensajes de error
