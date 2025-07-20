@@ -11,21 +11,21 @@
     (ngSubmit)="onSubmit()">
     <!-- Nombre -->
     <div class="input-w">
-      <label for="nombre">Nombre <span class="required">*</span></label>
+      <label for="first_name">Nombre <span class="required">*</span></label>
       <input
         type="text"
         class="form-control"
-        formControlName="nombre"
+        formControlName="first_name"
         placeholder="Nombre"
-        [class.is-invalid]="f['nombre'].invalid && f['nombre'].touched" />
+        [class.is-invalid]="f['first_name'].invalid && f['first_name'].touched" />
       <!-- Alertas para nombre -->
       <div
-        *ngIf="f['nombre'].invalid && f['nombre'].touched"
+        *ngIf="f['first_name'].invalid && f['first_name'].touched"
         class="invalid-feedback d-block">
-        <div *ngIf="f['nombre'].errors?.['required']" class="required-text">
+        <div *ngIf="f['first_name'].errors?.['required']" class="required-text">
           El nombre es requerido.
         </div>
-        <div *ngIf="f['nombre'].errors?.['pattern']">
+        <div *ngIf="f['first_name'].errors?.['pattern']">
           El nombre sólo puede contener letras.
         </div>
       </div>
@@ -33,23 +33,23 @@
 
     <!-- Apellido -->
     <div class="input-w">
-      <label for="apellido">Apellido <span class="required">*</span></label>
+      <label for="last_name">Apellido <span class="required">*</span></label>
       <input
         type="text"
         class="form-control"
-        formControlName="apellido"
+        formControlName="last_name"
         placeholder="Apellido"
-        [class.is-invalid]="f['apellido'].invalid && f['apellido'].touched" />
+        [class.is-invalid]="f['last_name'].invalid && f['last_name'].touched" />
 
       <!-- Alertas para apellido -->
 
       <div
-        *ngIf="f['apellido'].invalid && f['apellido'].touched"
+        *ngIf="f['last_name'].invalid && f['last_name'].touched"
         class="invalid-feedback d-block">
-        <div *ngIf="f['apellido'].errors?.['required']" class="required-text">
+        <div *ngIf="f['last_name'].errors?.['required']" class="required-text">
           El apellido es requerido.
         </div>
-        <div *ngIf="f['apellido'].errors?.['pattern']">
+        <div *ngIf="f['last_name'].errors?.['pattern']">
           El apellido solo puede contener letras.
         </div>
       </div>
@@ -80,22 +80,22 @@
 
     <!-- Número telefónico -->
     <div class="input-w">
-      <label for="nombre">Teléfono <span class="required">*</span></label>
+      <label for="phone_number">Teléfono <span class="required">*</span></label>
       <input
         type="tel"
         class="form-control"
-        formControlName="phone"
+        formControlName="phone_number"
         placeholder="+54 9"
-        [class.is-invalid]="f['phone'].invalid && f['phone'].touched" />
+        [class.is-invalid]="f['phone_number'].invalid && f['phone_number'].touched" />
 
       <!-- Alertas para el teléfono -->
       <div
-        *ngIf="f['phone'].invalid && f['phone'].touched"
+        *ngIf="f['phone_number'].invalid && f['phone_number'].touched"
         class="invalid-feedback d-block">
         <div *ngIf="f['phone'].errors?.['required']" class="required-text">
           Ingresa un teléfono válido.
         </div>
-        <div *ngIf="f['phone'].errors?.['pattern']">
+        <div *ngIf="f['phone_number'].errors?.['pattern']">
           El teléfono solo debe contener números.
         </div>
       </div>
@@ -137,29 +137,29 @@
 
     <!-- Confirma contraseña / Contraseña 2 -->
     <div class="input-w">
-      <label for="nombre"
+      <label for="confirmPassword"
         >Repite contraseña <span class="required">*</span></label
       >
       <input
         type="password"
         class="form-control"
-        formControlName="password-2"
+        formControlName="confirmPassword"
         placeholder="Repetir contraseña"
         [class.is-invalid]="
-          f['password-2'].invalid && f['password-2'].touched
+          f['confirmPassword'].invalid && f['confirmPassword'].touched
         " />
         
 
       <!-- Aletas para contraseña 2 -->
       <div
-        *ngIf="f['password-2'].invalid && f['password-2'].touched"
+        *ngIf="f['confirmPassword'].invalid && f['confirmPassword'].touched"
         class="invalid-feedback d-block">
-        <div *ngIf="f['password-2'].errors?.['required']" class="required-text">
+        <div *ngIf="f['confirmPassword'].errors?.['required']" class="required-text">
           Confirmar contraseña es requerido.
         </div>
       </div>
       <div
-        *ngIf="registerForm.errors?.['mismatch'] && f['password'].touched"
+        *ngIf="registerForm.errors?.['mismatch'] && f['confirmPassword'].touched"
         class="invalid-feedback d-block">
         La contraseña no coincide.
       </div>

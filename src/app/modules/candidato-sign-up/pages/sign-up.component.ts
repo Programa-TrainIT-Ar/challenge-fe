@@ -5,6 +5,7 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
+import { SignUpService } from './sign-up.service';
 
 @Component({
   selector: 'app-auth-sign-in-page',
@@ -15,19 +16,22 @@ import {
 export class SignUpComponent implements OnInit {
   registerForm: FormGroup;
 
-  constructor(private fb: FormBuilder) {}
+  constructor(
+    private fb: FormBuilder,
+    private SignUpService: SignUpService
+  ) {}
 
   ngOnInit(): void {
     this.registerForm = this.fb.group(
       {
-        nombre: [
+        first_name: [
           '',
           [
             Validators.required,
             Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]*$/),
           ],
         ],
-        apellido: [
+        last_name: [
           '',
           [
             Validators.required,
@@ -43,7 +47,7 @@ export class SignUpComponent implements OnInit {
             ),
           ],
         ],
-        phone: ['', [Validators.required, Validators.pattern(/^\d+$/)]],
+        phone_number: ['', [Validators.required, Validators.pattern(/^\d+$/)]],
         password: [
           '',
           [
@@ -54,7 +58,7 @@ export class SignUpComponent implements OnInit {
             ),
           ],
         ],
-        'password-2': ['', Validators.required],
+        'confirmPassword': ['', Validators.required],
       },
       {
         validators: this.passwordMatchValidator, // Validador a nivel de FormGroup
@@ -67,7 +71,7 @@ export class SignUpComponent implements OnInit {
     control: AbstractControl
   ): { [key: string]: boolean } | null {
     const password = control.get('password');
-    const confirmPassword = control.get('password-2');
+    const confirmPassword = control.get('confirmPassword');
 
     if (!password || !confirmPassword) {
       return null;
@@ -88,18 +92,29 @@ export class SignUpComponent implements OnInit {
   }
 
   onSubmit(): void {
-    this.registerForm.markAllAsTouched();
-    if (this.registerForm.valid) {
-      console.log(
-        'Formulario válido, enviando datos:',
-        this.registerForm.value
-      );
-      alert('¡Registro exitoso!');
-      this.registerForm.reset(); // Opcional: resetear el formulario después de enviar
-    } else {
-      console.log('Formulario inválido. Por favor, revisa los errores.');
-      // Marca todos los campos como "touched" para que se muestren los mensajes de error
-      // this.registerForm.markAllAsTouched();
+    try {
+      this.registerForm.markAllAsTouched();
+      if (this.registerForm.valid) {
+        this.SignUpService.registerUser(this.registerForm.value).subscribe({
+          next: response => {
+            alert('¡Registro exitoso! ');
+            console.log('Resultado: ', response);
+          },
+          error: error => {
+            alert('Ocurrió un error inesperado.');
+            console.error(error.message);
+          },
+          complete: () => {
+            this.registerForm.reset(); // Resetear el formulario después de enviar
+          },
+        });
+      } else {
+        console.log('Formulario inválido. Por favor, revisa los errores.');
+        // Marca todos los campos como "touched" para que se muestren los mensajes de error
+        // this.registerForm.markAllAsTouched();
+      }
+    } catch (error) {
+      console.log(error.message);
     }
   }
 
