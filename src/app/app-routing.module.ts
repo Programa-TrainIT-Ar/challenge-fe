@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 
 import { AppLayoutComponent } from './layout/app.layout.component';
 import { AuthPageComponent } from './modules/auth/pages/auth-page/auth-page.component';
-import { AuthSignInPageComponent } from './modules/auth-sign-in/pages/auth-sign-in-page/auth-sign-in-page.component';
+import { SignUpComponent } from './modules/candidato-sign-up/pages/sign-up.component';
 import { HomePageComponent } from './modules/home/pages/home-page/home-page.component';
 import { AuthGuard } from '@auth0/auth0-angular';
 import { RoleGuard } from '../app/modules/guards/role.guard'; // Importa el guardia de roles
@@ -48,8 +48,8 @@ import { DashboardPageComponent } from './modules/candidato-dashboard/dashboard-
             import('./modules/auth/auth.module').then(m => m.AuthModule),
         },
         {
-          path: 'sign-in',
-          component: AuthSignInPageComponent,
+          path: 'sign-up',
+          component: SignUpComponent,
         },
         {
           path: '**',

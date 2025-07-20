@@ -3,14 +3,13 @@ import { LocationStrategy, PathLocationStrategy } from '@angular/common';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { AppLayoutModule } from './layout/app.layout.module';
-import { AuthService } from '@auth0/auth0-angular';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AuthModule } from '@auth0/auth0-angular';
 import { environment } from 'src/environments/environment';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
-import { AuthSignInModule } from './modules/auth-sign-in/auth-sign-in.module';
+import { SignUpModule } from './modules/candidato-sign-up/sign-up.module';
 
 @NgModule({
     declarations: [AppComponent],
@@ -21,7 +20,7 @@ import { AuthSignInModule } from './modules/auth-sign-in/auth-sign-in.module';
         AppLayoutModule,
         HttpClientModule,
         BrowserAnimationsModule,
-        AuthSignInModule,
+        SignUpModule,
         AuthModule.forRoot({
             domain: environment.auth.domain,
             clientId: environment.auth.clientId,

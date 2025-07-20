@@ -9,10 +9,10 @@ import {
 @Component({
   selector: 'app-auth-sign-in-page',
 
-  templateUrl: './auth-sign-in-page.component.html',
-  styleUrl: './auth-sign-in-page.component.scss',
+  templateUrl: './sign-up.component.html',
+  styleUrl: './sign-up.component.scss',
 })
-export class AuthSignInPageComponent implements OnInit {
+export class SignUpComponent implements OnInit {
   registerForm: FormGroup;
 
   constructor(private fb: FormBuilder) {}
