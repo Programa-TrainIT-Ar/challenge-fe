@@ -1,10 +1,11 @@
 <div
-  class="d-flex justify-content-center flex-column align-items-center vh-100 fondo">
+  class="d-flex justify-content-center flex-column align-items-center fondo">
   <div>
-    <img src="assets/images/login/trainit.png" alt="" class="logo" />
+    <img src="assets/trainit.png" alt="" class="logo" />
   </div>
-  <h2 class="mb-5">Registrate para comenzar la aventura</h2>
-
+  <h2 class="mb-5">Regístrate para comenzar la aventura</h2>
+  <img src="assets/DotsTop.png" alt="" class="dotTop" />
+  <img src="assets/DotsBottom.png" alt="" class="dotBottom" />
   <form
     class="d-flex flex-column"
     [formGroup]="registerForm"
@@ -17,7 +18,9 @@
         class="form-control"
         formControlName="first_name"
         placeholder="Nombre"
-        [class.is-invalid]="f['first_name'].invalid && f['first_name'].touched" />
+        [class.is-invalid]="
+          f['first_name'].invalid && f['first_name'].touched
+        " />
       <!-- Alertas para nombre -->
       <div
         *ngIf="f['first_name'].invalid && f['first_name'].touched"
@@ -72,7 +75,7 @@
         <div *ngIf="f['email'].errors?.['required']" class="ml-3">
           El email es requerido.
         </div>
-        <div *ngIf="f['email'].errors?.['pattern']">
+        <div *ngIf="f['email'].errors?.['pattern']" class="required-text">
           Ingresa un email válido.
         </div>
       </div>
@@ -86,16 +89,18 @@
         class="form-control"
         formControlName="phone_number"
         placeholder="+54 9"
-        [class.is-invalid]="f['phone_number'].invalid && f['phone_number'].touched" />
+        [class.is-invalid]="
+          f['phone_number'].invalid && f['phone_number'].touched
+        " />
 
       <!-- Alertas para el teléfono -->
       <div
         *ngIf="f['phone_number'].invalid && f['phone_number'].touched"
         class="invalid-feedback d-block">
-        <div *ngIf="f['phone'].errors?.['required']" class="required-text">
+        <div *ngIf="f['phone_number'].errors?.['required']" class="required-text">
           Ingresa un teléfono válido.
         </div>
-        <div *ngIf="f['phone_number'].errors?.['pattern']">
+        <div *ngIf="f['phone_number'].errors?.['pattern']" class="required-text">
           El teléfono solo debe contener números.
         </div>
       </div>
@@ -105,24 +110,33 @@
     <div class="input-w">
       <label for="nombre">Contraseña <span class="required">*</span></label>
       <input
-        type="password"
+        [type]="passwordFieldType1"
         class="form-control"
         formControlName="password"
         placeholder="Contraseña"
         [class.is-invalid]="f['password'].invalid && f['password'].touched" />
+
+      <button
+        class="btn btn-eye shadow-none"
+        type="button"
+        id="password-toggle"
+        (click)="togglePasswordVisibility()">
+        <img
+          src="assets/images/sign-up/Eye.png"
+          alt="mostrar contraseña"
+          class="showPasswordBtn" />
+      </button>
       <!-- Alertas para la contraseña -->
 
       <div
         *ngIf="f['password'].invalid && f['password'].touched"
         class="invalid-feedback d-flex">
-        <div
-          *ngIf="f['password'].errors?.['required']"
-          class="required-text">
+        <div *ngIf="f['password'].errors?.['required']" class="required-text">
           La contraseña es requerida.
         </div>
-        <div *ngIf="f['password'].errors?.['pattern']">
+        <div *ngIf="f['password'].errors?.['pattern']" class="required">
           La contraseña no cumple con los parámetros.
-          <div class="small mt-2 mb-2 flex flex-column align-items-center">
+          <div class="small mt-2 mb-2 flex flex-column align-items-start required">
             La contraseña debe tener:
             <ul>
               <li>Al menos 8 caracteres.</li>
@@ -141,33 +155,47 @@
         >Repite contraseña <span class="required">*</span></label
       >
       <input
-        type="password"
+        [type]="passwordFieldType2"
         class="form-control"
         formControlName="confirmPassword"
         placeholder="Repetir contraseña"
         [class.is-invalid]="
           f['confirmPassword'].invalid && f['confirmPassword'].touched
         " />
-        
+
+        <button
+        class="btn btn-eye shadow-none"
+        type="button"
+        id="password-toggle"
+        (click)="togglePasswordVisibility2()">
+        <img
+          src="assets/images/sign-up/Eye.png"
+          alt="mostrar contraseña"
+          class="showPasswordBtn" />
+      </button>
 
       <!-- Aletas para contraseña 2 -->
       <div
         *ngIf="f['confirmPassword'].invalid && f['confirmPassword'].touched"
         class="invalid-feedback d-block">
-        <div *ngIf="f['confirmPassword'].errors?.['required']" class="required-text">
+        <div
+          *ngIf="f['confirmPassword'].errors?.['required']"
+          class="required-text">
           Confirmar contraseña es requerido.
         </div>
       </div>
       <div
-        *ngIf="registerForm.errors?.['mismatch'] && f['confirmPassword'].touched"
-        class="invalid-feedback d-block">
+        *ngIf="
+          registerForm.errors?.['mismatch'] && f['confirmPassword'].touched
+        "
+        class="invalid-feedback d-block required-text">
         La contraseña no coincide.
       </div>
     </div>
 
     <button
       type="submit"
-      class="btn btn-primary btn-li"
+      class="btn btn-primary btn-form"
       [disabled]="registerForm.invalid">
       Registrarme
     </button>

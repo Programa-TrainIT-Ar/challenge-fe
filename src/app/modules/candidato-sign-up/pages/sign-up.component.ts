@@ -15,6 +15,12 @@ import { SignUpService } from './sign-up.service';
 })
 export class SignUpComponent implements OnInit {
   registerForm: FormGroup;
+  //Para mostrar contraseña
+  passwordVisible1: boolean = false;
+  passwordFieldType1: string = 'password';
+  //Para mostrar contraseña de confirmación
+  passwordVisible2: boolean = false;
+  passwordFieldType2: string = 'password';
 
   constructor(
     private fb: FormBuilder,
@@ -58,7 +64,7 @@ export class SignUpComponent implements OnInit {
             ),
           ],
         ],
-        'confirmPassword': ['', Validators.required],
+        confirmPassword: ['', Validators.required],
       },
       {
         validators: this.passwordMatchValidator, // Validador a nivel de FormGroup
@@ -90,6 +96,16 @@ export class SignUpComponent implements OnInit {
       return null;
     }
   }
+
+  togglePasswordVisibility(): void {
+    this.passwordVisible1 = !this.passwordVisible1;
+    this.passwordFieldType1 = this.passwordVisible1 ? 'text' : 'password';
+  }
+  togglePasswordVisibility2(): void {
+    this.passwordVisible2 = !this.passwordVisible2;
+    this.passwordFieldType2 = this.passwordVisible2 ? 'text' : 'password';
+  }
+
 
   onSubmit(): void {
     try {
