@@ -1,5 +1,4 @@
-<div
-  class="d-flex justify-content-center flex-column align-items-center fondo">
+<div class="d-flex justify-content-center flex-column align-items-center fondo">
   <div>
     <img src="assets/trainit.png" alt="" class="logo" />
   </div>
@@ -97,11 +96,15 @@
       <div
         *ngIf="f['phone_number'].invalid && f['phone_number'].touched"
         class="invalid-feedback d-block">
-        <div *ngIf="f['phone_number'].errors?.['required']" class="required-text">
+        <div
+          *ngIf="f['phone_number'].errors?.['required']"
+          class="required-text">
           Ingresa un teléfono válido.
         </div>
-        <div *ngIf="f['phone_number'].errors?.['pattern']" class="required-text">
-          El teléfono solo debe contener números.
+        <div
+          *ngIf="f['phone_number'].errors?.['pattern']"
+          class="required-text">
+          El teléfono solo debe contener números y un símbolo + al inicio.
         </div>
       </div>
     </div>
@@ -117,14 +120,18 @@
         [class.is-invalid]="f['password'].invalid && f['password'].touched" />
 
       <button
-        class="btn btn-eye shadow-none"
+        class="btn showPasswordBtn shadow-none"
         type="button"
         id="password-toggle"
         (click)="togglePasswordVisibility()">
         <img
-          src="assets/images/sign-up/Eye.png"
+          [src]="
+            passwordVisible1
+              ? 'assets/images/sign-up/ClosedEye.png'
+              : 'assets/images/sign-up/OpenedEye.png'
+          "
           alt="mostrar contraseña"
-          class="showPasswordBtn" />
+          class="eyePic" />
       </button>
       <!-- Alertas para la contraseña -->
 
@@ -136,14 +143,10 @@
         </div>
         <div *ngIf="f['password'].errors?.['pattern']" class="required">
           La contraseña no cumple con los parámetros.
-          <div class="small mt-2 mb-2 flex flex-column align-items-start required">
-            La contraseña debe tener:
-            <ul>
-              <li>Al menos 8 caracteres.</li>
-              <li>Al menos una letra mayúscula.</li>
-              <li>Al menos un número.</li>
-              <li>Al menos un símbolo especial.</li>
-            </ul>
+          <div
+            class="small mt-2 mb-2 flex flex-column align-items-start required">
+            Debe tener 8 caracteres, con al menos una letra mayúscula, un
+            número, y un símbolo especial.
           </div>
         </div>
       </div>
@@ -163,15 +166,19 @@
           f['confirmPassword'].invalid && f['confirmPassword'].touched
         " />
 
-        <button
-        class="btn btn-eye shadow-none"
+      <button
+        class="btn showPasswordBtn shadow-none"
         type="button"
         id="password-toggle"
         (click)="togglePasswordVisibility2()">
         <img
-          src="assets/images/sign-up/Eye.png"
+          [src]="
+            passwordVisible2
+              ? 'assets/images/sign-up/ClosedEye.png'
+              : 'assets/images/sign-up/OpenedEye.png'
+          "
           alt="mostrar contraseña"
-          class="showPasswordBtn" />
+          class="eyePic" />
       </button>
 
       <!-- Aletas para contraseña 2 -->
@@ -189,7 +196,7 @@
           registerForm.errors?.['mismatch'] && f['confirmPassword'].touched
         "
         class="invalid-feedback d-block required-text">
-        La contraseña no coincide.
+        Tu contraseña no coincide.
       </div>
     </div>
 

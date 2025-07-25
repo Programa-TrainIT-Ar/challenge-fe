@@ -53,7 +53,7 @@ export class SignUpComponent implements OnInit {
             ),
           ],
         ],
-        phone_number: ['', [Validators.required, Validators.pattern(/^\d+$/)]],
+        phone_number: ['', [Validators.required, Validators.pattern(/^\+\d+$/),Validators.minLength(8), Validators.maxLength(11)]],
         password: [
           '',
           [
