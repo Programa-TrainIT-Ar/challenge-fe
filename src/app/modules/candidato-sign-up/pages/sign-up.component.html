@@ -71,7 +71,7 @@
       <div
         *ngIf="f['email'].invalid && f['email'].touched"
         class="invalid-feedback d-block required">
-        <div *ngIf="f['email'].errors?.['required']" class="ml-3">
+        <div *ngIf="f['email'].errors?.['required']" class="required-text">
           El email es requerido.
         </div>
         <div *ngIf="f['email'].errors?.['pattern']" class="required-text">

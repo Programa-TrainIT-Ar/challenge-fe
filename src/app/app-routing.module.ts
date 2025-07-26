@@ -2,7 +2,7 @@ import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 
 import { AppLayoutComponent } from './layout/app.layout.component';
-import { AuthPageComponent } from './modules/auth/pages/auth-page/auth-page.component';
+import { AuthPageComponent } from './modules/auth/pages/auth-page.component';
 import { SignUpComponent } from './modules/candidato-sign-up/pages/sign-up.component';
 import { HomePageComponent } from './modules/home/pages/home-page/home-page.component';
 import { AuthGuard } from '@auth0/auth0-angular';
@@ -11,6 +11,7 @@ import { EditPagesComponent } from './modules/edit/pages/edit-pages/edit-pages.c
 import { WelcomeCandidatoComponent } from './modules/welcome-candidato/welcome-candidato.component';
 import { CandidatoDashboardModule } from './modules/candidato-dashboard/candidato-dashboard.module';
 import { DashboardPageComponent } from './modules/candidato-dashboard/dashboard-page/dashboard-page.component';
+import { LoginComponent } from './modules/auth/pages/login/login.component';
 @NgModule({
   imports: [
     RouterModule.forRoot(
@@ -42,7 +43,7 @@ import { DashboardPageComponent } from './modules/candidato-dashboard/dashboard-
             ).then(m => m.CandidatoDashboardModule),
         },
         {
-          path: '',
+          path: 'register',
           component: AuthPageComponent,
           loadChildren: () =>
             import('./modules/auth/auth.module').then(m => m.AuthModule),
@@ -52,8 +53,12 @@ import { DashboardPageComponent } from './modules/candidato-dashboard/dashboard-
           component: SignUpComponent,
         },
         {
+          path: 'login',
+          component: LoginComponent,
+        },
+        {
           path: '**',
-          redirectTo: '',
+          redirectTo: 'register',
         },
       ],
       {
