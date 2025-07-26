@@ -17,10 +17,9 @@
       <button class="btn btn-primary btn-li">REGISTRARME</button>
     </div>
     <span class="mb-3">o</span>
-    <button class="btn btn-google mb-3" (click)="login()">
-      <img src="https://th.bing.com/th/id/R.7e557f1c0864829c54c300d15bee69f4?rik=fjZN1AYH30vXIw&riu=http%3a%2f%2fpngimg.com%2fuploads%2fgoogle%2fgoogle_PNG19635.png&ehk=ZmsumEtoeJQhKoUzQTZO2TEbYPBu0%2b7EFdjmJ3qljls%3d&risl=&pid=ImgRaw&r=0" alt="Google Logo" style="width:20px; height:20px; margin-right:8px;">
-      Regístrate con Google
-    </button>
-    <span style="cursor: pointer;" (click)="login()">¿Ya tienes una cuenta? Inicia sesión</span>
+    <app-google-btn
+      buttonText="Regístrate con Google">
+    </app-google-btn>
+    <span>¿Ya tienes una cuenta? <span class="required" style="cursor: pointer;" (click)="login()" >Inicia sesión</span></span>
   </div>
 </body>

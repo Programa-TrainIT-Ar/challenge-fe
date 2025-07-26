@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AuthPageComponent } from './pages/auth-page.component';
+import { AuthPageComponent } from './pages/register/auth-page.component';
 import { AuthRoutingModule } from './auth-routing.module';
 
 
 @NgModule({
-  declarations: [AuthPageComponent],
+  declarations: [],
   imports: [
     CommonModule,
     AuthRoutingModule

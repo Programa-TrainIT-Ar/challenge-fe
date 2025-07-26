@@ -2,7 +2,7 @@ import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 
 import { AppLayoutComponent } from './layout/app.layout.component';
-import { AuthPageComponent } from './modules/auth/pages/auth-page.component';
+import { AuthPageComponent } from './modules/auth/pages/register/auth-page.component';
 import { SignUpComponent } from './modules/candidato-sign-up/pages/sign-up.component';
 import { HomePageComponent } from './modules/home/pages/home-page/home-page.component';
 import { AuthGuard } from '@auth0/auth0-angular';

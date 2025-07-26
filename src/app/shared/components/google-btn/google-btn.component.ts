@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { AuthService } from '@auth0/auth0-angular';
 
 @Component({
   selector: 'app-google-btn',
@@ -10,10 +11,15 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 })
 export class GoogleBtnComponent {
   @Input() buttonText: string = 'Continuar con Google'; // Texto por defecto
-  
-  @Output() googleClick = new EventEmitter<void>(); // Evento que emite al padre
+
+  constructor(private auth: AuthService) {}
 
   onGoogleClick(): void {
-    this.googleClick.emit(); // Emite el evento al componente padre
+    this.auth.loginWithRedirect({
+      authorizationParams: {
+        connection: 'google-oauth2',
+        prompt: 'select_account' // Permite seleccionar cuenta
+      }
+    });
   }
 }
