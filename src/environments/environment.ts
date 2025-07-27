@@ -5,8 +5,8 @@ export const environment = {
       clientId: "cDXMB8lOxTHRJUodDMCLLrbxbooFe2le",
       authorizationParams: {
         audience: 'http://localhost:3001',
-        redirect_uri: 'http://localhost:4200/home',
+        redirect_uri: 'http://localhost:4200/callback',
       },
     },
-    url: 'http://localhost:3000'
+    url: 'http://localhost:3001'
   };

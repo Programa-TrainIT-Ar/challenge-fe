@@ -12,10 +12,15 @@ import { WelcomeCandidatoComponent } from './modules/welcome-candidato/welcome-c
 import { CandidatoDashboardModule } from './modules/candidato-dashboard/candidato-dashboard.module';
 import { DashboardPageComponent } from './modules/candidato-dashboard/dashboard-page/dashboard-page.component';
 import { LoginComponent } from './modules/auth/pages/login/login.component';
+import { CallbackComponent } from './modules/auth/pages/callback/callback.component';
 @NgModule({
   imports: [
     RouterModule.forRoot(
       [
+        {
+          path: 'callback',
+          component: CallbackComponent
+        },
         {
           path: 'home',
           component: HomePageComponent,
@@ -27,12 +32,10 @@ import { LoginComponent } from './modules/auth/pages/login/login.component';
         {
           path: 'candidato',
           component: WelcomeCandidatoComponent,
-          //canActivate: [AuthGuard,RoleGuard],
+          canActivate: [AuthGuard ],
           loadChildren: () =>
             import('./modules/welcome-candidato/welcome-candidato.module').then(m => m.WelcomeCandidatoModule),
         },
-        // { path: 'edit', component: EditPagesComponent },
-        // { path: 'edit/:name', component: EditPagesComponent },
         {
           path: 'dashboard', // Define la ruta para /candidato
           component: DashboardPageComponent,
@@ -45,8 +48,6 @@ import { LoginComponent } from './modules/auth/pages/login/login.component';
         {
           path: 'register',
           component: AuthPageComponent,
-          loadChildren: () =>
-            import('./modules/auth/auth.module').then(m => m.AuthModule),
         },
         {
           path: 'sign-up',
@@ -55,6 +56,13 @@ import { LoginComponent } from './modules/auth/pages/login/login.component';
         {
           path: 'login',
           component: LoginComponent,
+        },
+        {
+          path: 'forgot-password',
+          loadComponent: () =>
+            import('./modules/auth/pages/forgot-password/forgot-password.component').then(
+              m => m.ForgotPasswordComponent
+            ),
         },
         {
           path: '**',

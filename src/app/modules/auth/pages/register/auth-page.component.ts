@@ -46,7 +46,7 @@ export class AuthPageComponent {
     } */
   }
 
-  private async handleAuthentication() {
+  /* private async handleAuthentication() {
     try {
       const user = await firstValueFrom(this.auth.user$);
 
@@ -107,12 +107,6 @@ export class AuthPageComponent {
       const roles = user['https://miaplicacion.com/roles'] || [];
       const isEmailVerified = user.email_verified;
 
-      // Si el email no está verificado, redirige a una página de verificación
-      // if (!isEmailVerified) {
-      //   this.router.navigate(['/verify-email']);
-      //   return;
-      // }
-
       // Redirige según el rol del usuario
       if (roles.includes('admin')) {
         await this.router.navigate(['/home']);
@@ -128,5 +122,5 @@ export class AuthPageComponent {
   private handleAuthError(error: any) {
     console.error('Error de autenticación:', error);
     this.router.navigate(['/error']);
-  }
+  } */
 }

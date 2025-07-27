@@ -41,35 +41,24 @@ export class LoginComponent implements OnInit{
       const {email, password} = this.loginForm.value;
       this.auth.loginWithRedirect({
         authorizationParams: {
-          email,
-          password,
-          connection: 'Challenge-development-DB' // Asegúrate de que este sea el nombre correcto de tu conexión
-        }
-      }).subscribe({
-        next: (result) => {
-          console.log('Login successful', result);
+          connection: 'Challenge-development-DB',
+          login_hint: email,
         },
-        error: (error) => {
-          console.error('Login failed', error);
-        }
+        appState: { target: '/' }
       });
 
     }
   }
 
-  loginWithGoogle() {
-    // Lógica para manejar el inicio de sesión con Google
-    this.auth.loginWithRedirect({
-      authorizationParams: {
-      connection: 'google-oauth2'
-      }
-    });
-  }
   navigateToRegister() {
     // Lógica para navegar a la página de registro
     this.router.navigate(['/register']);
   }
 
+  forgotPassword() {
+    // Lógica para navegar a la página de recuperación de contraseña
+    this.router.navigate(['/forgot-password']);
+  }
   // Getter para acceder a los controles más fácilmente en la plantilla
   get f() {
     return this.loginForm.controls;
