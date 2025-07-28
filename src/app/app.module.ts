@@ -20,7 +20,7 @@ import { SignUpModule } from './modules/candidato-sign-up/sign-up.module';
         AppLayoutModule,
         HttpClientModule,
         BrowserAnimationsModule,
-        SignUpModule,
+        // SignUpModule,
         AuthModule.forRoot({
             domain: environment.auth.domain,
             clientId: environment.auth.clientId,

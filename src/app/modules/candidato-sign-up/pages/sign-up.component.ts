@@ -3,13 +3,16 @@ import {
   AbstractControl,
   FormBuilder,
   FormGroup,
+  ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
 import { SignUpService } from './sign-up.service';
+import { BackgroundComponent } from "src/app/shared/components/background/background.component";
 
 @Component({
-  selector: 'app-auth-sign-in-page',
-
+  selector: 'app-sign-up-page',
+  standalone: true,
+  imports: [BackgroundComponent, ReactiveFormsModule],
   templateUrl: './sign-up.component.html',
   styleUrl: './sign-up.component.scss',
 })
@@ -53,7 +56,15 @@ export class SignUpComponent implements OnInit {
             ),
           ],
         ],
-        phone_number: ['', [Validators.required, Validators.pattern(/^\+\d+$/),Validators.minLength(8), Validators.maxLength(11)]],
+        phone_number: [
+          '',
+          [
+            Validators.required,
+            Validators.pattern(/^\+\d+$/),
+            Validators.minLength(8),
+            Validators.maxLength(11),
+          ],
+        ],
         password: [
           '',
           [
@@ -105,7 +116,6 @@ export class SignUpComponent implements OnInit {
     this.passwordVisible2 = !this.passwordVisible2;
     this.passwordFieldType2 = this.passwordVisible2 ? 'text' : 'password';
   }
-
 
   onSubmit(): void {
     try {

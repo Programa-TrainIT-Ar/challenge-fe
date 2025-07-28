@@ -5,6 +5,7 @@ import { environment } from '@environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { catchError, firstValueFrom } from 'rxjs';
 import { GoogleBtnComponent } from 'src/app/shared/components/google-btn/google-btn.component';
+import { BackgroundComponent } from "src/app/shared/components/background/background.component";
 
 interface UserData {
   email: string;
@@ -21,7 +22,7 @@ interface UserData {
 @Component({
   selector: 'app-auth-page',
   standalone: true,
-  imports: [GoogleBtnComponent],
+  imports: [GoogleBtnComponent, BackgroundComponent],
   templateUrl: './auth-page.component.html',
   styleUrls: ['./auth-page.component.scss'],
 })
