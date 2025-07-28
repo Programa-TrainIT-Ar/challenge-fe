@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '@auth0/auth0-angular';
 import { Router } from '@angular/router';
-import { CommonModule } from '@angular/common';
 import { switchMap, catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
 
