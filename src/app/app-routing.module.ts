@@ -13,6 +13,7 @@ import { CandidatoDashboardModule } from './modules/candidato-dashboard/candidat
 import { DashboardPageComponent } from './modules/candidato-dashboard/dashboard-page/dashboard-page.component';
 import { LoginComponent } from './modules/auth/pages/login/login.component';
 import { CallbackComponent } from './modules/auth/pages/callback/callback.component';
+import { authenticatedGuard } from './modules/guards/authenticated.guard';
 @NgModule({
   imports: [
     RouterModule.forRoot(
@@ -47,18 +48,22 @@ import { CallbackComponent } from './modules/auth/pages/callback/callback.compon
         },
         {
           path: 'register',
+          canActivate: [authenticatedGuard], // Si esta autenticado lo redirige a home o candidato segun su rol
           component: AuthPageComponent,
         },
         {
           path: 'sign-up',
+          canActivate: [authenticatedGuard], // Si esta autenticado lo redirige a home o candidato segun su rol
           component: SignUpComponent,
         },
         {
           path: 'login',
+          canActivate: [authenticatedGuard], // Si esta autenticado lo redirige a home o candidato segun su rol
           component: LoginComponent,
         },
         {
           path: 'forgot-password',
+          canActivate: [authenticatedGuard], // Si esta autenticado lo redirige a home o candidato segun su rol
           loadComponent: () =>
             import('./modules/auth/pages/forgot-password/forgot-password.component').then(
               m => m.ForgotPasswordComponent
