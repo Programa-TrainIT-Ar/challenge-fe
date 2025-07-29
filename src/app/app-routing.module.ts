@@ -14,6 +14,7 @@ import { DashboardPageComponent } from './modules/candidato-dashboard/dashboard-
 import { LoginComponent } from './modules/auth/pages/login/login.component';
 import { CallbackComponent } from './modules/auth/pages/callback/callback.component';
 import { authenticatedGuard } from './modules/guards/authenticated.guard';
+import { MailConfirmationComponent } from './modules/candidato-sign-up/pages/mail-confirmation/mail-confirmation.component';
 @NgModule({
   imports: [
     RouterModule.forRoot(
@@ -55,6 +56,10 @@ import { authenticatedGuard } from './modules/guards/authenticated.guard';
           path: 'sign-up',
           canActivate: [authenticatedGuard], // Si esta autenticado lo redirige a home o candidato segun su rol
           component: SignUpComponent,
+        },
+        {
+          path: 'confirmation',
+          component: MailConfirmationComponent
         },
         {
           path: 'login',

@@ -1,0 +1,15 @@
+button {
+  border: none;
+  border-radius: 8px;
+  font-family: 'Poppins';
+  font-size: 12px;
+  font-weight: 500;
+  background: linear-gradient(45deg, #572eff, #ff5ea6);
+  height: 42px;
+  padding: 8px 20px;
+  margin: 35px;
+}
+
+button:hover {
+  background: linear-gradient(45deg, #572eff);
+}

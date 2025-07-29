@@ -8,6 +8,7 @@ import {
 } from '@angular/forms';
 import { SignUpService } from './sign-up.service';
 import { BackgroundComponent } from "src/app/shared/components/background/background.component";
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-sign-up-page',
@@ -27,7 +28,8 @@ export class SignUpComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private SignUpService: SignUpService
+    private SignUpService: SignUpService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -125,6 +127,7 @@ export class SignUpComponent implements OnInit {
           next: response => {
             alert('¡Registro exitoso! ');
             console.log('Resultado: ', response);
+            this.router.navigate(['/confirmation'], { queryParams: { nameUser: this.registerForm.value.first_name, type: 'mail' } })
           },
           error: error => {
             alert('Ocurrió un error inesperado.');
