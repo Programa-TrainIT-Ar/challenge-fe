@@ -1,61 +1,68 @@
 <div [ngClass]="extended ? 'sidebar-container-extended' : 'sidebar-container'">
-  <!-- Sidebar -->
-  <div>
-    <img 
-    [ngClass]="extended ? 'side-img-extended' : 'side-img'" 
-    src="assets/images/logo.svg" alt="logo" />
+  
+  <!-- Contenido del Sidebar -->
+  <div class="d-flex flex-column">
+    <button class="toggle-sidebar border-0 mb-3" (click)="toggleSidebar()">
+      <i class="bi bi-list"></i>
+    </button>
+    <img
+      [ngClass]="extended ? 'side-img-extended' : 'side-img'"
+      src="assets/images/logo.svg"
+      alt="logo" />
   </div>
 
+  <!-- Botones cargados desde el componente dependiendo del rol del usuario -->
   <div class="sidebar-btns-container">
     <div class="gestion-btns">
-      
       @for (item of sidebarItems; track $index) {
-        <button 
-        [ngClass]=" extended ? 'sidebar-btns-extended' : 'sidebar-btns'"
-        class="active-btn mb-2">
-        <ng-container *ngIf="item.type === 'image'">
-          <img class="svg" [src]="item.icon">
-        </ng-container>
-        <ng-container *ngIf="item.type === 'icon'">
-          <i [class]="item.icon"></i>
-        </ng-container>
-          <span
-          *ngIf="extended"  
-          class="sidebar-font-btn">
-          {{ item.label }}</span>
+        <button
+          [ngClass]="extended ? 'sidebar-btns-extended' : 'sidebar-btns'"
+          class="active-btn mb-2">
+          <ng-container *ngIf="item.type === 'image'">
+            <img class="svg" [src]="item.icon" />
+          </ng-container>
+          <ng-container *ngIf="item.type === 'icon'">
+            <i [class]="item.icon"></i>
+          </ng-container>
+          <span *ngIf="extended" class="sidebar-font-btn">
+            {{ item.label }}</span
+          >
         </button>
       }
     </div>
 
-
     <div class="w-100">
-      <button *ngIf="role === 'candidate'" 
-        [ngClass]=" extended ? 'sidebar-btns-extended' : 'sidebar-btns'"
+      <!-- Botón configuración. ¿Es sólo para candidatos? -->
+      <button
+        *ngIf="role === 'candidate'"
+        [ngClass]="extended ? 'sidebar-btns-extended' : 'sidebar-btns'"
         class="active-btn mb-2">
         <i class="bi bi-gear"></i>
-        <span 
-        *ngIf="extended"
-        class="sidebar-font-btn svg">Configuración</span>
+        <span *ngIf="extended" class="sidebar-font-btn svg">Configuración</span>
       </button>
-      <button 
-      [ngClass]=" extended ? 'sidebar-btns-extended' : 'sidebar-btns'"
-      class="active-btn mb-2">
-        <img 
-        (click)="logout()"
-        class="svg" 
-        src="../../../../../assets/images/Crear Quizz/Vector.png">
-        <span 
-        *ngIf="extended"
-        class="sidebar-font-btn">Salir</span>
+
+      <!-- Botón cerrar sesióm -->
+      <button
+        [ngClass]="extended ? 'sidebar-btns-extended' : 'sidebar-btns'"
+        class="active-btn mb-2">
+        <img
+          (click)="logout()"
+          class="svg"
+          src="../../../../../assets/images/Crear Quizz/Vector.png" />
+        <span *ngIf="extended" class="sidebar-font-btn">Salir</span>
       </button>
     </div>
   </div>
 </div>
-<!-- 
+
+<!--
 <button class="toggle-sidebar d-md-none" (click)="toggleSidebar()">
-  <i class="bi bi-list"></i>
+  <i class="bi bi-list">Toggle</i>
 </button>
 
+
+
+ 
 
 <div class="sidebar" [ngClass]="{'active': isSidebarOpen}">
   <div class="mb-5 side-img">
@@ -100,5 +107,4 @@
         </button>
     </div>
   </div>
-</div>
- -->
+</div> -->
