@@ -43,6 +43,9 @@ export class ForgotPasswordComponent implements OnInit{
           next: () => {
             // Handle successful response
             console.log('Reset link sent successfully');
+            
+            //después de la respuesta del back exitosa
+            this.router.navigate(['/confirmation'], {queryParams: {type: 'pass'}})
           },
           error: (error) => {
             // Handle error response

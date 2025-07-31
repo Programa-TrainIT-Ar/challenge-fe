@@ -1,0 +1,45 @@
+<background-black>
+  <section class="form" *ngIf="isMailConfirmation">
+    <div class="info greeting">
+      <h3>Estimado {{ nameUser }}</h3>
+      <p>
+        Antes de que puedas comenzar con nosotros, necesitamos verificar tu
+        correo.
+      </p>
+    </div>
+
+    <div class="info">
+      <secundary-btn></secundary-btn>
+
+      <p>Si el botón no funciona, ¡No te preocupes!</p>
+      <p>Copia y pega el siguiente enlace en tu navegador:</p>
+      <a href="#">Enlace aquí</a>
+      <p>
+        Si no has solicitado una cuenta en TrainiT, por favor, ignora este
+        correo
+      </p>
+    </div>
+    <div class="info nota">
+      <p>
+        <span>Challenge TrainIt</span> es una herramienta que permite formar
+        parte del Programa Trainit.
+      </p>
+    </div>
+  </section>
+
+  <section class="form" *ngIf="isPassConfirmation">
+    <div class="info pass">
+      <h3>Estimado {{ nameUser }}</h3>
+      <p>Puede cambiar su contraseña haciendo click en el siguiente enlace:</p>
+      <a href="#">URL</a>
+      <p>Este enlace es válido por 24 horas</p>
+    </div>
+
+    <div class="info nota">
+      <p>
+        <span>Challenge TrainIt</span> es una herramienta que permite formar
+        parte del Programa Trainit.
+      </p>
+    </div>
+  </section>
+</background-black>

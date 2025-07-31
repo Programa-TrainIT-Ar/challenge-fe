@@ -1,0 +1,32 @@
+.logo {
+  width: 9vw;
+  height: 9vw;
+  position: fixed;
+  top: 65px;
+}
+.fondo {
+  background: #272727ec;
+  background-size: cover;
+  background-position: center;
+  width: 100%;
+  height: 100vh;
+}
+.dotTop {
+  position: absolute;
+  width: 14vw;
+  top: -110px;
+  left: 9vw;
+}
+
+.dotBottom {
+  margin-bottom: 0;
+  position: fixed;
+  width: 14vw;
+  bottom: -110px;
+  right: 11vw;
+}
+.content-container {
+  margin-top: 2rem;
+  text-align: left;
+  z-index: 10; // Para asegurar que esté por encima de las imágenes de fondo
+}
