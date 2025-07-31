@@ -5,7 +5,7 @@ export const environment = {
       clientId: "cDXMB8lOxTHRJUodDMCLLrbxbooFe2le",
       authorizationParams: {
         audience: 'https://challenge-be-development-99e1.onrender.com',
-        redirect_uri: 'https://challenge-fe-development.netlify.app/callback',
+        redirect_uri: 'https://challenge-fe-development.netlify.app',
       },
     },
     url: 'https://challenge-be-development-99e1.onrender.com'

@@ -1,5 +1,6 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Inject } from '@angular/core';
 import { Router } from '@angular/router';
+import { DOCUMENT } from '@angular/common';
 import { AuthService } from '@auth0/auth0-angular';
 export type UserRole = 'admin' | 'candidate' | 'hr';
 
@@ -23,6 +24,7 @@ export class SideBarComponent {
   constructor(
     private authService: AuthService,
     private router: Router,
+    @Inject(DOCUMENT) public document: Document
   ) {}
 
   private adminItems: SidebarItem[] = [
@@ -74,10 +76,12 @@ export class SideBarComponent {
   toggleSidebar() {
     this.isSidebarOpen = !this.isSidebarOpen;
   }
-
-  logout() {
-    this.authService.logout().subscribe(() => {
-      this.router.navigate(['']); 
+  
+    logout() {
+    this.authService.logout({ 
+      logoutParams: {
+        returnTo: this.document.location.origin 
+      }
     });
   }
 } 

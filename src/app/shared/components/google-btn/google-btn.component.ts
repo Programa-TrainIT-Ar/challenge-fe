@@ -28,11 +28,11 @@ export class GoogleBtnComponent {
           prompt: 'select_account',
         }
       });
-      console.log('Login exitoso');
+      console.log('✅ Login exitoso');
 
     } catch (error) {
-      console.error('Error en login:', error);
-    } 
+      console.error('❌ Error en login:', error);
+    }
   }
 /* 
   private handleUserRegistration(user: any): void {

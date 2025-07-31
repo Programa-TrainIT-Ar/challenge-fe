@@ -1,37 +1,22 @@
+import { AuthService} from '@auth0/auth0-angular';
+import { tap, map, } from 'rxjs';
 import { inject } from '@angular/core';
-import { CanActivateFn, Router } from '@angular/router';
-import { AuthService } from '@auth0/auth0-angular';
-import { switchMap, tap, map } from 'rxjs';
-
-export const authenticatedGuard: CanActivateFn = (route, state) => {
+import { Router, CanActivateFn } from '@angular/router';
+      
+  export const authenticatedGuard: CanActivateFn = (route, state) => {
   const auth = inject(AuthService);
   const router = inject(Router);
 
   return auth.isAuthenticated$.pipe(
-    switchMap(isAuthenticated => {
+    tap(isAuthenticated => {
+      console.log('🔒 Verificando autenticación del usuario:', isAuthenticated);
       if (isAuthenticated) {
-        // Si está autenticado, obtener usuario para verificar roles
-        return auth.user$.pipe(
-          tap(user => {
-            if (user) {
-              console.log('✅ Usuario ya autenticado:', user.name || user.email);
-              const roles = user['https://miaplicacion.com/roles'] || [];
-              console.log('🎭 Roles del usuario:', roles);
-              
-              if (roles.includes('admin')) {
-                router.navigate(['/home']);
-              } else {                
-                router.navigate(['/candidato']);
-              }
-            } 
-          }),
-          map(() => false) // No permitir acceso a login/register
-        );
+        console.log('✅ Usuario ya autenticado, redirigiendo a home');
+        router.navigate(['/home']);
       } else {
-        // No está autenticado, permitir acceso a login/register
-        console.log('🔓 Usuario no autenticado, permitiendo acceso a:', state.url);
-        return [true];
+        console.log('🔓 Usuario no autenticado, permitiendo acceso a la ruta');
       }
-    })
+    }),
+    map(isAuthenticated => !isAuthenticated) // Permitir acceso solo si no está autenticado
   );
 };

@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { BackgroundComponent } from 'src/app/shared/components/background/background.component';
 import { GoogleBtnComponent } from 'src/app/shared/components/google-btn/google-btn.component';
 import { PrimaryBtnComponent } from 'src/app/shared/components/primary-btn/primary-btn.component';
+import { filter, take, tap } from 'rxjs';
 
 @Component({
   selector: 'app-login',
@@ -25,11 +26,19 @@ export class LoginComponent implements OnInit{
 
   constructor(
     private fb: FormBuilder,
-    private auth: AuthService,
+    public auth: AuthService,
     private router: Router
   ) {}
 
   ngOnInit(): void {
+    this.auth.user$.pipe(
+      tap(user => console.log('🔒 Verificando autenticación del usuario:', user)),
+      filter(user => !!user),
+      take(1)
+    ).subscribe(() => {
+      this.router.navigate(['/home']);
+      console.log('🔒 Usuario ya autenticado, redirigiendo a home');
+    });
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required]]

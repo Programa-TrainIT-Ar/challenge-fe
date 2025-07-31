@@ -16,7 +16,9 @@ export class RoleGuard implements CanActivate {
   ): Observable<boolean> {
     return this.auth.user$.pipe(
       map(user => {
+        console.log('🔒 Verificando autenticación del usuario:', user);
         const roles = user['https://miaplicacion.com/roles']; 
+        console.log('🔒 Verificando roles del usuario:', roles);
         return roles && roles.includes('admin'); 
       }),
       tap(hasAccess => {
