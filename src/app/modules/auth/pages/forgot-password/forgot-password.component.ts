@@ -36,7 +36,7 @@ export class ForgotPasswordComponent implements OnInit{
     });
   }
 
-  onSubmit() {
+  sendResetMail() {
     if (this.emailForm.valid) {
       this.userService.sendResetLink(this.emailForm.value.email)
         .subscribe({
