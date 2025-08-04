@@ -17,10 +17,6 @@ import { VerifyEmailComponent } from './modules/auth/pages/verify-email/verify-e
     RouterModule.forRoot(
       [
         {
-          path: 'callback',
-          component: CallbackComponent,
-        },
-        {
           path: 'home',
           component: HomePageComponent,
           canActivate: [AuthGuard, RoleGuard],
