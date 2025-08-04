@@ -1,11 +1,20 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AuthService } from '@auth0/auth0-angular';
 import { Router } from '@angular/router';
 import { environment } from '@environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { catchError, firstValueFrom } from 'rxjs';
 import { GoogleBtnComponent } from 'src/app/shared/components/google-btn/google-btn.component';
-import { BackgroundComponent } from "src/app/shared/components/background/background.component";
+import { BackgroundComponent } from 'src/app/shared/components/background/background.component';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+  ReactiveFormsModule,
+} from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { PrimaryBtnComponent } from 'src/app/shared/components/primary-btn/primary-btn.component';
+import { ModalComponent } from 'src/app/shared/components/info-modal/info-modal.component';
 
 interface UserData {
   email: string;
@@ -22,32 +31,97 @@ interface UserData {
 @Component({
   selector: 'app-auth-page',
   standalone: true,
-  imports: [GoogleBtnComponent, BackgroundComponent],
+  imports: [
+    PrimaryBtnComponent,
+    GoogleBtnComponent,
+    BackgroundComponent,
+    ReactiveFormsModule,
+    CommonModule,
+    ModalComponent,
+    
+  ],
   templateUrl: './auth-page.component.html',
   styleUrls: ['./auth-page.component.scss'],
 })
-export class AuthPageComponent {
+export class AuthPageComponent implements OnInit{
+  registerForm: FormGroup;
+
   constructor(
+    private fb: FormBuilder,
     private auth: AuthService,
     private router: Router,
     private http: HttpClient
   ) {}
-
-  async login() {
+  showModal = false;
+  ngOnInit(): void {
+    this.registerForm = this.fb.group({
+      email: ['', [Validators.required, Validators.email]],
+      name: ['', [Validators.required]],
+    });
+  }
+  navigateToLogin() {
+    // Lógica para navegar a la página de login
     this.router.navigate(['/login']);
-    /* try {
-      // Usar loginWithPopup en lugar de loginWithRedirect
-      await this.auth.loginWithPopup();
-      
-      
-      await this.handleAuthentication();
-    } catch (error) {
-      console.error('Error durante el login:', error);
-      this.handleAuthError(error);
-    } */
+  }
+  // Getter para acceder a los controles más fácilmente en la plantilla
+  get f() {
+    return this.registerForm.controls;
   }
 
-  /* private async handleAuthentication() {
+  checkData() {
+    console.log('Nombre:', this.f['name'].value);
+    console.log('Email:', this.f['email'].value);
+    if (this.registerForm.invalid) return;
+
+    const { name, email } = this.registerForm.value;
+
+    this.http
+      .get(
+        `https://challenge-be-development-99e1.onrender.com/user/FindByEmail`,
+        {
+          params: { email },
+        }
+      )
+      .subscribe({
+        next: response => {
+          alert('Este email ya está registrado. Por favor inicia sesión.');
+          this.router.navigate(['/login']);
+        },
+        error: error => {
+          if (error.status === 404) {
+            this.sendVerificationEmail(name, email);
+          } else {
+            alert('Error inesperado. Intenta nuevamente.');
+            console.error(error);
+          }
+        },
+      });
+  }
+
+    sendVerificationEmail(name: string, email: string) {
+      console.log('Enviando correo de verificación a:', email);
+      console.log('Nombre:', name);
+      this.http
+        .post(`https://challenge-be-development-99e1.onrender.com/user/send-email-confirmation`, { email,first_name: name })
+        .subscribe({
+          next: res => {
+            this.showModal = true;
+            this.registerForm.reset();
+          },
+          error: error => {
+            alert(
+              'No se pudo enviar el correo de verificación. Intenta nuevamente.'
+            );
+            console.error(error);
+          },
+        });
+    }
+    closeModal() {
+      this.showModal = false;
+    }
+
+  /*
+  private async handleAuthentication() {
     try {
       const user = await firstValueFrom(this.auth.user$);
 
@@ -118,10 +192,5 @@ export class AuthPageComponent {
       console.error('Error en la redirección:', error);
       this.router.navigate(['/error']);
     }
-  }
-
-  private handleAuthError(error: any) {
-    console.error('Error de autenticación:', error);
-    this.router.navigate(['/error']);
-  } */
+  }*/
 }

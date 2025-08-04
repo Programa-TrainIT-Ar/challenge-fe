@@ -1,56 +1,82 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+.input-w {
+  position: relative;
+  width: 208px;
+  min-height: 53px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: min-height 0.3s ease-in-out;
+  margin-bottom: 4px;
 }
 
-body {
-  background: linear-gradient(#4f2a40, #302151);
+
+.input-w input {
+  background-color: white;
+  border: solid 1px #6a6ae8;
+  border-radius: 8px;
+  font-family: Poppins;
+  font-weight: 300;
+  font-style: light;
+  font-size: 10px;
+  width: 208px;
+  height: 31px;
 }
 
-img {
-  width: 100%;
-  max-width: 200px;
-  height: auto;
+.input-w input:focus {
+  box-shadow: 0 0 0 0.25rem #6a6ae8;
+  outline: none;
+}
+
+
+
+.input-w {
+  position: relative;
+  width: 208px;
+  min-height: 53px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: min-height 0.3s ease-in-out;
+  margin-bottom: 4px;
 }
 
 .input-w input {
-  width: 100%;
-  padding: 10px;
   background-color: white;
-  border: none;
+  border: solid 1px #6a6ae8;
   border-radius: 8px;
-  color: rgb(40, 39, 39);
-}
-::placeholder{
-  color: grey;
-}
-.btn-li {
-  border-radius: 25px;
-  font-size: 15px;
-  font-weight: 600;
-  height: 50px;
-}
-.btn-google {
-  background-color: black; 
-  color:white; 
-  border-radius: 18px;
+  font-family: Poppins;
+  font-weight: 300;
+  font-style: light;
   font-size: 10px;
-  padding: 10px 20px; 
-  border: 1px solid white;; 
-  cursor: pointer; 
-  
+  width: 208px;
+  height: 31px;
 }
 
-@media (max-width: 576px) {
-  h2 {
-    font-size: 18px;
-  }
+.input-w input:focus {
+  box-shadow: 0 0 0 0.25rem #6a6ae8;
+  outline: none;
+}
 
-  .btn-li {
-    font-size: 12px;
-  }
+.input-w label {
+  position: absolute;
+  top: -8px;
+  left: 11px;
+  width: auto;
+  height: auto;
+  background-color: #1b1b1b;
+  padding: 0px 4px;
+  font: Poppins;
+  font-size: 10px;
+  color: #ffffff;
+  text-align: center;
+  border-radius: 4px;
 }
 .required {
   color: #f63aaf;
+}
+
+.required-text {
+  margin-left: 10px;
+  color: #f63aaf;
+  margin-bottom: 10px;
 }
