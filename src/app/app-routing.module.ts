@@ -10,6 +10,7 @@ import { DashboardPageComponent } from './modules/candidato-dashboard/dashboard-
 import { LoginComponent } from './modules/auth/pages/login/login.component';
 import { authenticatedGuard } from './modules/guards/authenticated.guard';
 import { MailConfirmationComponent } from './modules/candidato-sign-up/pages/mail-confirmation/mail-confirmation.component';
+import { ErrorComponent } from './modules/home/pages/error/error.component';
 
 @NgModule({
   imports: [
@@ -69,7 +70,7 @@ import { MailConfirmationComponent } from './modules/candidato-sign-up/pages/mai
         },
         {
           path: '**',
-          redirectTo: 'register',
+          component: ErrorComponent,
         },
       ],
       {
