@@ -11,10 +11,15 @@ import { LoginComponent } from './modules/auth/pages/login/login.component';
 import { authenticatedGuard } from './modules/guards/authenticated.guard';
 import { MailConfirmationComponent } from './modules/candidato-sign-up/pages/mail-confirmation/mail-confirmation.component';
 
+import { VerifyEmailComponent } from './modules/auth/pages/verify-email/verify-email.component';
 @NgModule({
   imports: [
     RouterModule.forRoot(
       [
+        {
+          path: 'callback',
+          component: CallbackComponent,
+        },
         {
           path: 'home',
           component: HomePageComponent,
@@ -28,13 +33,15 @@ import { MailConfirmationComponent } from './modules/candidato-sign-up/pages/mai
           component: WelcomeCandidatoComponent,
           canActivate: [AuthGuard],
           loadChildren: () =>
-            import('./modules/welcome-candidato/welcome-candidato.module').then(m => m.WelcomeCandidatoModule),
+            import('./modules/welcome-candidato/welcome-candidato.module').then(
+              m => m.WelcomeCandidatoModule
+            ),
         },
         {
           path: 'dashboard',
           canActivate: [AuthGuard],
           component: DashboardPageComponent,
-          
+
           loadChildren: () =>
             import(
               './modules/candidato-dashboard/candidato-dashboard.module'
@@ -60,12 +67,16 @@ import { MailConfirmationComponent } from './modules/candidato-sign-up/pages/mai
           component: LoginComponent,
         },
         {
+          path: 'verify-email',
+          component: VerifyEmailComponent,
+        },
+        {
           path: 'forgot-password',
           canActivate: [authenticatedGuard], // Si esta autenticado lo redirige a home o candidato segun su rol
           loadComponent: () =>
-            import('./modules/auth/pages/forgot-password/forgot-password.component').then(
-              m => m.ForgotPasswordComponent
-            ),
+            import(
+              './modules/auth/pages/forgot-password/forgot-password.component'
+            ).then(m => m.ForgotPasswordComponent),
         },
         {
           path: '**',
