@@ -1,4 +1,4 @@
-<section class="d-flex">
+<section class="d-flex page">
   <app-side-bar> </app-side-bar>
 
   <!-- Content -->
@@ -9,6 +9,8 @@
       </h1>
       <p class="date">{{ users.date }}</p>
     </div>
+    
+    <!-- Cards -->
     <div class="grid">
       <div class="card" *ngFor="let item of items">
         <span class="title">{{ item.title }}</span>
@@ -16,9 +18,13 @@
       </div>
     </div>
     <div class="footer">
-      <a href="#" class="btn-custom"
+
+
+    <!-- ¿Este botón se puede eliminar? -->
+
+      <!-- <a href="#" class="btn-custom"
         ><i class="bi bi-arrow-right-circle"></i> Volver al listado</a
-      >
+      > -->
     </div>
   </div>
 </section>
