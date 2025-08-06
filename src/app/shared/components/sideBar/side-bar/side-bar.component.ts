@@ -74,7 +74,7 @@ export class SideBarComponent {
   }
   
   toggleSidebar() {
-    this.isSidebarOpen = !this.isSidebarOpen;
+    this.extended = !this.extended;
   }
   
     logout() {
