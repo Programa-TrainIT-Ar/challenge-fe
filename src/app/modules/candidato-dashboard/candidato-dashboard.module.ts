@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DashboardPageComponent } from './dashboard-page/dashboard-page.component';
 import { CandidatoDashboardRoutingModule } from './candidato-dashboard-routing.module';
+import { SharedModule } from "src/app/shared/shared.module";
 
 @NgModule({
   declarations: [
@@ -10,6 +11,7 @@ import { CandidatoDashboardRoutingModule } from './candidato-dashboard-routing.m
   imports: [
     CommonModule,
     CandidatoDashboardRoutingModule, // Importa el módulo de enrutamiento
+    SharedModule,
   ],
   exports: [
     DashboardPageComponent, // Exporta el componente para que sea reutilizable

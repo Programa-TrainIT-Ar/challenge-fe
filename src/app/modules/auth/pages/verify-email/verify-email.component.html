@@ -1,0 +1,5 @@
+<div *ngIf="loading">Verificando token...</div>
+<div *ngIf="!loading && errorMessage">
+  <p>{{ errorMessage }}</p>
+  <button (click)="router.navigate(['/'])">Volver al inicio</button>
+</div>

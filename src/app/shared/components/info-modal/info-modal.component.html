@@ -1,0 +1,27 @@
+<div class="modal-overlay" (click)="closeModal()">
+  <div class="modal-wrapper" (click)="$event.stopPropagation()">
+    <div class="fondo">
+      <img src="assets/DotsTop.png" alt="" class="dotTop" />
+      <img src="assets/DotsBottom.png" alt="" class="dotBottom" />
+      <img
+        src="assets/X.png"
+        alt="Cerrar"
+        class="close-icon"
+        (click)="closed.emit()" />
+      <div class="content-container">
+        <!-- Contenido proyectado arriba -->
+        <div class="modal-header">
+          <ng-content select="[modal-header]"></ng-content>
+        </div>
+
+        <!-- Imagen central -->
+        <img src="assets/trainit.png" alt="Logo" class="logo" />
+
+        <!-- Contenido proyectado abajo -->
+        <div class="modal-footer">
+          <ng-content select="[modal-footer]"></ng-content>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -12,6 +12,7 @@ import { authenticatedGuard } from './modules/guards/authenticated.guard';
 import { MailConfirmationComponent } from './modules/candidato-sign-up/pages/mail-confirmation/mail-confirmation.component';
 import { ErrorComponent } from './modules/home/pages/error/error.component';
 
+import { VerifyEmailComponent } from './modules/auth/pages/verify-email/verify-email.component';
 @NgModule({
   imports: [
     RouterModule.forRoot(
@@ -29,13 +30,15 @@ import { ErrorComponent } from './modules/home/pages/error/error.component';
           component: WelcomeCandidatoComponent,
           canActivate: [AuthGuard],
           loadChildren: () =>
-            import('./modules/welcome-candidato/welcome-candidato.module').then(m => m.WelcomeCandidatoModule),
+            import('./modules/welcome-candidato/welcome-candidato.module').then(
+              m => m.WelcomeCandidatoModule
+            ),
         },
         {
           path: 'dashboard',
           canActivate: [AuthGuard],
           component: DashboardPageComponent,
-          
+
           loadChildren: () =>
             import(
               './modules/candidato-dashboard/candidato-dashboard.module'
@@ -61,12 +64,16 @@ import { ErrorComponent } from './modules/home/pages/error/error.component';
           component: LoginComponent,
         },
         {
+          path: 'verify-email',
+          component: VerifyEmailComponent,
+        },
+        {
           path: 'forgot-password',
           canActivate: [authenticatedGuard], // Si esta autenticado lo redirige a home o candidato segun su rol
           loadComponent: () =>
-            import('./modules/auth/pages/forgot-password/forgot-password.component').then(
-              m => m.ForgotPasswordComponent
-            ),
+            import(
+              './modules/auth/pages/forgot-password/forgot-password.component'
+            ).then(m => m.ForgotPasswordComponent),
         },
         {
           path: '**',
