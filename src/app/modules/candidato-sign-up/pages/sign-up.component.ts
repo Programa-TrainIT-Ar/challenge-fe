@@ -28,8 +28,7 @@ export class SignUpComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private SignUpService: SignUpService,
-    private router: Router
+    private SignUpService: SignUpService
   ) {}
 
   ngOnInit(): void {
@@ -127,7 +126,6 @@ export class SignUpComponent implements OnInit {
           next: response => {
             alert('¡Registro exitoso! ');
             console.log('Resultado: ', response);
-            this.router.navigate(['/confirmation'], { queryParams: { nameUser: this.registerForm.value.first_name, type: 'mail' } })
           },
           error: error => {
             alert('Ocurrió un error inesperado.');

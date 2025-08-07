@@ -9,7 +9,6 @@ import { WelcomeCandidatoComponent } from './modules/welcome-candidato/welcome-c
 import { DashboardPageComponent } from './modules/candidato-dashboard/dashboard-page/dashboard-page.component';
 import { LoginComponent } from './modules/auth/pages/login/login.component';
 import { authenticatedGuard } from './modules/guards/authenticated.guard';
-import { MailConfirmationComponent } from './modules/candidato-sign-up/pages/mail-confirmation/mail-confirmation.component';
 import { ErrorComponent } from './modules/home/pages/error/error.component';
 
 import { VerifyEmailComponent } from './modules/auth/pages/verify-email/verify-email.component';
@@ -24,6 +23,11 @@ import { VerifyEmailComponent } from './modules/auth/pages/verify-email/verify-e
           data: { expectedRole: 'admin' },
           loadChildren: () =>
             import('./modules/home/home.module').then(m => m.HomeModule),
+        },
+        {
+          path: '',
+          redirectTo: 'home',
+          pathMatch: 'full'
         },
         {
           path: 'candidato',
@@ -55,17 +59,9 @@ import { VerifyEmailComponent } from './modules/auth/pages/verify-email/verify-e
           component: SignUpComponent,
         },
         {
-          path: 'confirmation',
-          component: MailConfirmationComponent
-        },
-        {
           path: 'login',
           canActivate: [authenticatedGuard], // Si esta autenticado lo redirige a home o candidato segun su rol
           component: LoginComponent,
-        },
-        {
-          path: 'verify-email',
-          component: VerifyEmailComponent,
         },
         {
           path: 'forgot-password',
