@@ -6,7 +6,7 @@ import { delay, of, throwError } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
-export class SignUpService {
+export class AccountSetupService {
   private http = inject(HttpClient);
   private urlApi: string = `${environment.url}/user`;
 

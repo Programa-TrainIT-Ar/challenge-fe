@@ -6,7 +6,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { SignUpService } from './sign-up.service';
+import { AccountSetupService } from './account-setup.service';
 import { BackgroundComponent } from "src/app/shared/components/background/background.component";
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -18,10 +18,10 @@ import { ModalComponent } from 'src/app/shared/components/info-modal/info-modal.
   selector: 'app-sign-up-page',
   standalone: true,
   imports: [BackgroundComponent, ReactiveFormsModule, CommonModule, ModalComponent],
-  templateUrl: './sign-up.component.html',
-  styleUrl: './sign-up.component.scss',
+  templateUrl: './account-setup.component.html',
+  styleUrl: './account-setup.component.scss',
 })
-export class SignUpComponent implements OnInit {
+export class AccountSetupComponent implements OnInit {
   registerForm: FormGroup;
   //Para mostrar contraseña
   passwordVisible1: boolean = false;
@@ -35,7 +35,7 @@ export class SignUpComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private SignUpService: SignUpService,
+    private AccountSetupService: AccountSetupService,
     private router: Router
   ) {}
 
@@ -130,7 +130,7 @@ export class SignUpComponent implements OnInit {
     try {
       this.registerForm.markAllAsTouched();
       if (this.registerForm.valid) {
-        this.SignUpService.registerUser(this.registerForm.value).subscribe({
+        this.AccountSetupService.registerUser(this.registerForm.value).subscribe({
           next: response => {
             this.successOperation = true;
             this.showModal = true;
