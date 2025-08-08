@@ -1,10 +1,10 @@
 export const environment = {
     production: false,
     auth: {
-      domain: "dev-hwbroc2d1yqqr04v.us.auth0.com",
-      clientId: "TTVpH09MQpHbU6oHQjXAVt4I66h9f2Hk",
+      domain: "dev-etnwb5jjlx4qpvdm.us.auth0.com",
+      clientId: "cDXMB8lOxTHRJUodDMCLLrbxbooFe2le",
       authorizationParams: {
-        audience: 'https://api.miaplicacion.com',
+        audience: 'https://challenge-be-testing.onrender.com',
         redirect_uri: 'https://challenge-fe-testing.netlify.app',
       },
     },
