@@ -1,7 +1,7 @@
 import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { AuthPageComponent } from './modules/auth/pages/register/auth-page.component';
-import { AccountSetupComponent } from './modules/auth/account-setup/pages/account-setup.component';
+import { AccountSetupComponent } from './modules/auth/pages/account-setup/pages/account-setup.component';
 import { HomePageComponent } from './modules/home/pages/home-page/home-page.component';
 import { AuthGuard } from '@auth0/auth0-angular';
 import { RoleGuard } from '../app/modules/guards/role.guard';
@@ -9,7 +9,7 @@ import { WelcomeCandidatoComponent } from './modules/welcome-candidato/welcome-c
 import { DashboardPageComponent } from './modules/candidato-dashboard/dashboard-page/dashboard-page.component';
 import { LoginComponent } from './modules/auth/pages/login/login.component';
 import { authenticatedGuard } from './modules/guards/authenticated.guard';
-import { MailConfirmationComponent } from './modules/auth/account-setup/pages/mail-confirmation/mail-confirmation.component';
+import { MailConfirmationComponent } from './modules/auth/pages/account-setup/pages/mail-confirmation/mail-confirmation.component';
 
 import { VerifyEmailComponent } from './modules/auth/pages/verify-email/verify-email.component';
 @NgModule({
