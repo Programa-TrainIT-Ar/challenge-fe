@@ -5,7 +5,7 @@ import { HttpClient } from '@angular/common/http';
 @Component({
   selector: 'app-verify-email',
   templateUrl: './verify-email.component.html',
-  styleUrls: ['./verify-email.component.scss']
+  styleUrls: ['./verify-email.component.scss'],
 })
 export class VerifyEmailComponent implements OnInit {
   loading = true;
@@ -18,6 +18,7 @@ export class VerifyEmailComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    console.log('VerifyEmailComponent ngOnInit');
     this.route.queryParams.subscribe(params => {
       const token = params['token'];
       if (!token) {
@@ -31,13 +32,17 @@ export class VerifyEmailComponent implements OnInit {
         .post('https://challenge-be-development-99e1.onrender.com/user/confirm-email', { token })
         .subscribe({
           next: (res: any) => {
-            // Si todo bien, redirigir a /sign-up con email y nombre como query params
-            const email = res.email;
-            const name = res.name;
-
-            this.router.navigate(['/account-setup'], {
-              queryParams: { email, name },
-            });
+            this.loading = false;
+            // Validamos que el email esté confirmado
+            if (res.emailConfirmed === true) {
+              const email = res.email;
+              const name = res.first_name || res.name || ''; 
+              this.router.navigate(['/account-setup'], {
+                queryParams: { email, name },
+              });
+            } else {
+              this.errorMessage = 'El email no ha sido confirmado aún.';
+            }
           },
           error: error => {
             this.loading = false;
@@ -46,7 +51,7 @@ export class VerifyEmailComponent implements OnInit {
             } else {
               this.errorMessage = 'Error inesperado al verificar el token.';
             }
-          }
+          },
         });
     });
   }
