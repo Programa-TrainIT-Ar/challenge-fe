@@ -35,7 +35,7 @@ export class VerifyEmailComponent implements OnInit {
             const email = res.email;
             const name = res.name;
 
-            this.router.navigate(['/sign-up'], {
+            this.router.navigate(['/account-setup'], {
               queryParams: { email, name },
             });
           },
