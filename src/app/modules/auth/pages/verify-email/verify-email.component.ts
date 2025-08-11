@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
+import { UserService } from '../user.service';
 
 @Component({
   selector: 'app-verify-email',
@@ -14,7 +15,8 @@ export class VerifyEmailComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private http: HttpClient
+    private http: HttpClient,
+    private userService: UserService
   ) {}
 
   ngOnInit(): void {
@@ -28,31 +30,29 @@ export class VerifyEmailComponent implements OnInit {
       }
 
       // Confirmar el email con el token
-      this.http
-        .post('https://challenge-be-development-99e1.onrender.com/user/confirm-email', { token })
-        .subscribe({
-          next: (res: any) => {
-            this.loading = false;
-            // Validamos que el email esté confirmado
-            if (res.emailConfirmed === true) {
-              const email = res.email;
-              const name = res.first_name || res.name || ''; 
-              this.router.navigate(['/account-setup'], {
-                queryParams: { email, name },
-              });
-            } else {
-              this.errorMessage = 'El email no ha sido confirmado aún.';
-            }
-          },
-          error: error => {
-            this.loading = false;
-            if (error.status === 400) {
-              this.errorMessage = 'El enlace ha expirado o es inválido.';
-            } else {
-              this.errorMessage = 'Error inesperado al verificar el token.';
-            }
-          },
-        });
+      this.userService.VerifyEmail(token).subscribe({
+        next: (res: any) => {
+          this.loading = false;
+          // Validamos que el email esté confirmado
+          if (res.emailConfirmed === true) {
+            const email = res.email;
+            const name = res.first_name || res.name || '';
+            this.router.navigate(['/account-setup'], {
+              queryParams: { email, name },
+            });
+          } else {
+            this.errorMessage = 'El email no ha sido confirmado aún.';
+          }
+        },
+        error: error => {
+          this.loading = false;
+          if (error.status === 400) {
+            this.errorMessage = 'El enlace ha expirado o es inválido.';
+          } else {
+            this.errorMessage = 'Error inesperado al verificar el token.';
+          }
+        },
+      });
     });
   }
 }
