@@ -37,4 +37,8 @@ export class UserService {
   registerUser(userData: UserData) {
     return this.http.post(`${this.urlApi}/register`, userData);
   }
+
+  sentEmailVerification(email: string , first_name: string) {
+    return this.http.post(`${this.urlApi}/send-email-confirmation`, { email, first_name });
+  }
 }
