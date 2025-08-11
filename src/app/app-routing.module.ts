@@ -56,7 +56,7 @@ import { VerifyEmailComponent } from './modules/auth/pages/verify-email/verify-e
         // },
         {
           path: 'account-setup',
-          canActivate: [authenticatedGuard],
+          //canActivate: [authenticatedGuard],
           component: AccountSetupComponent,
         },
         {
