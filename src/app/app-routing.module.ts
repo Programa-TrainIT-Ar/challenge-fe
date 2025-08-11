@@ -1,6 +1,6 @@
 import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
-import { AuthPageComponent } from './modules/auth/pages/register/auth-page.component';
+import { AuthPageComponent } from './modules/auth/pages/sign-up/signup-page.component';
 import { AccountSetupComponent } from './modules/auth/pages/account-setup/pages/account-setup.component';
 import { HomePageComponent } from './modules/home/pages/home-page/home-page.component';
 import { AuthGuard } from '@auth0/auth0-angular';

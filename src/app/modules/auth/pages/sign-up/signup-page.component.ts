@@ -40,8 +40,8 @@ interface UserData {
     CommonModule,
     ModalComponent,
   ],
-  templateUrl: './auth-page.component.html',
-  styleUrls: ['./auth-page.component.scss'],
+  templateUrl: './signup-page.component.html',
+  styleUrls: ['./signup-page.component.scss'],
 })
 export class AuthPageComponent implements OnInit {
   registerForm: FormGroup;
