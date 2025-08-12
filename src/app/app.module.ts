@@ -9,7 +9,6 @@ import { environment } from 'src/environments/environment';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
-import { SignUpModule } from './modules/candidato-sign-up/sign-up.module';
 
 @NgModule({
     declarations: [AppComponent],
@@ -20,7 +19,6 @@ import { SignUpModule } from './modules/candidato-sign-up/sign-up.module';
         AppLayoutModule,
         HttpClientModule,
         BrowserAnimationsModule,
-        // SignUpModule,
         AuthModule.forRoot({
             domain: environment.auth.domain,
             clientId: environment.auth.clientId,

@@ -1,7 +1,7 @@
 import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
-import { AuthPageComponent } from './modules/auth/pages/register/auth-page.component';
-import { SignUpComponent } from './modules/candidato-sign-up/pages/sign-up.component';
+import { AuthPageComponent } from './modules/auth/pages/sign-up/signup-page.component';
+import { AccountSetupComponent } from './modules/auth/pages/account-setup/pages/account-setup.component';
 import { HomePageComponent } from './modules/home/pages/home-page/home-page.component';
 import { AuthGuard } from '@auth0/auth0-angular';
 import { RoleGuard } from '../app/modules/guards/role.guard';
@@ -53,10 +53,16 @@ import { VerifyEmailComponent } from './modules/auth/pages/verify-email/verify-e
           canActivate: [authenticatedGuard], // Si esta autenticado lo redirige a home o candidato segun su rol
           component: AuthPageComponent,
         },
+        
+        // {
+        //   path: 'sign-up',
+        //   canActivate: [authenticatedGuard], // Si esta autenticado lo redirige a home o candidato segun su rol
+        //   component: SignUpComponent, //Colocar aquí la vista hecha por Carlos
+        // },
         {
-          path: 'sign-up',
-          canActivate: [authenticatedGuard], // Si esta autenticado lo redirige a home o candidato segun su rol
-          component: SignUpComponent,
+          path: 'account-setup',
+          //canActivate: [authenticatedGuard],
+          component: AccountSetupComponent,
         },
         {
           path: 'login',

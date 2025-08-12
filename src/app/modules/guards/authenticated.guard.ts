@@ -18,5 +18,5 @@ import { Router, CanActivateFn } from '@angular/router';
       }
     }),
     map(isAuthenticated => !isAuthenticated) // Permitir acceso solo si no está autenticado
-  );
+  )
 };

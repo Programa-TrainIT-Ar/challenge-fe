@@ -6,18 +6,22 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { SignUpService } from './sign-up.service';
+import { AccountSetupService } from './account-setup.service';
 import { BackgroundComponent } from "src/app/shared/components/background/background.component";
 import { Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { ModalComponent } from 'src/app/shared/components/info-modal/info-modal.component';
+
+
 
 @Component({
   selector: 'app-sign-up-page',
   standalone: true,
-  imports: [BackgroundComponent, ReactiveFormsModule],
-  templateUrl: './sign-up.component.html',
-  styleUrl: './sign-up.component.scss',
+  imports: [BackgroundComponent, ReactiveFormsModule, CommonModule, ModalComponent],
+  templateUrl: './account-setup.component.html',
+  styleUrl: './account-setup.component.scss',
 })
-export class SignUpComponent implements OnInit {
+export class AccountSetupComponent implements OnInit {
   registerForm: FormGroup;
   //Para mostrar contraseña
   passwordVisible1: boolean = false;
@@ -26,9 +30,13 @@ export class SignUpComponent implements OnInit {
   passwordVisible2: boolean = false;
   passwordFieldType2: string = 'password';
 
+  showModal = false;
+  successOperation = false; //Determina el contenido de la modal a mostrar al presionar el botón
+
   constructor(
     private fb: FormBuilder,
-    private SignUpService: SignUpService
+    private AccountSetupService: AccountSetupService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -122,13 +130,15 @@ export class SignUpComponent implements OnInit {
     try {
       this.registerForm.markAllAsTouched();
       if (this.registerForm.valid) {
-        this.SignUpService.registerUser(this.registerForm.value).subscribe({
+        this.AccountSetupService.registerUser(this.registerForm.value).subscribe({
           next: response => {
-            alert('¡Registro exitoso! ');
-            console.log('Resultado: ', response);
+            this.successOperation = true;
+            this.showModal = true;
+            this.router.navigate(['/confirmation'], { queryParams: { nameUser: this.registerForm.value.first_name, type: 'mail' } })
           },
           error: error => {
-            alert('Ocurrió un error inesperado.');
+            this.successOperation = false;
+            this.showModal = true;
             console.error(error.message);
           },
           complete: () => {
@@ -148,5 +158,9 @@ export class SignUpComponent implements OnInit {
   // Getter para acceder a los controles más fácilmente en la plantilla
   get f() {
     return this.registerForm.controls;
+  }
+
+  closeModal() {
+    this.showModal = false;
   }
 }
