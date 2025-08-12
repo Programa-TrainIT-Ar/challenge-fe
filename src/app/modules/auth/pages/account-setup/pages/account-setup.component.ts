@@ -11,8 +11,7 @@ import { BackgroundComponent } from "src/app/shared/components/background/backgr
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ModalComponent } from 'src/app/shared/components/info-modal/info-modal.component';
-
-
+import { UserService } from '../../user.service';
 
 @Component({
   selector: 'app-sign-up-page',
@@ -33,10 +32,14 @@ export class AccountSetupComponent implements OnInit {
   showModal = false;
   successOperation = false; //Determina el contenido de la modal a mostrar al presionar el botón
 
+  //Solución temporal para hacer funcionar la vista
+  id = 1234;
+
   constructor(
     private fb: FormBuilder,
     private AccountSetupService: AccountSetupService,
-    private router: Router
+    private router: Router,
+    private userService: UserService
   ) {}
 
   ngOnInit(): void {
@@ -130,7 +133,8 @@ export class AccountSetupComponent implements OnInit {
     try {
       this.registerForm.markAllAsTouched();
       if (this.registerForm.valid) {
-        this.AccountSetupService.registerUser(this.registerForm.value).subscribe({
+        // this.AccountSetupService.registerUser(this.registerForm.value).subscribe({
+        this.userService.accountSetup(this.id, this.registerForm.value).subscribe({
           next: response => {
             this.successOperation = true;
             this.showModal = true;

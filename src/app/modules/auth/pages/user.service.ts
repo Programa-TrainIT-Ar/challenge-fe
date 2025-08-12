@@ -38,6 +38,10 @@ export class UserService {
     return this.http.post(`${this.urlApi}/register`, userData);
   }
 
+  accountSetup(id, userData: UserData){
+    return this.http.put(`${this.urlApi}/${id}`, userData);
+  }
+
   sentEmailVerification(email: string , first_name: string) {
     return this.http.post(`${this.urlApi}/send-email-confirmation`, { email, first_name });
   }
