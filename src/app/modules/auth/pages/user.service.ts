@@ -45,4 +45,8 @@ export class UserService {
   sentEmailVerification(email: string , first_name: string) {
     return this.http.post(`${this.urlApi}/send-email-confirmation`, { email, first_name });
   }
+
+  VerifyEmail(token: string) {
+    return this.http.post(`${this.urlApi}/confirm-email`, { token });
+  }
 }
