@@ -55,10 +55,6 @@ export class AccountSetupComponent implements OnInit {
       this.id = this.route.snapshot.paramMap.get('id');
       this.first_name = this.route.snapshot.queryParamMap.get('first_name');
       this.email = this.route.snapshot.queryParamMap.get('email');
-
-      console.log('ID del usuario:', this.id);
-      console.log('Nombre del usuario:', this.first_name);
-      console.log('Correo del usuario: ', this.email);
     } catch (error) {
       console.log("Error al cargar parámetros desde la url");
       
@@ -83,7 +79,7 @@ export class AccountSetupComponent implements OnInit {
         ],
         email: [
           '',
-          [
+          [,
             Validators.required,
             Validators.pattern(
               /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/
@@ -115,6 +111,17 @@ export class AccountSetupComponent implements OnInit {
         validators: this.passwordMatchValidator, // Validador a nivel de FormGroup
       }
     );
+
+    //Cargar campos de la url en el formulario si existen
+    if (this.first_name) {
+      this.registerForm.get('first_name')?.setValue(this.first_name);
+      this.registerForm.get('first_name')?.disable(); //Desactiva el input
+    }
+
+    if (this.email) {
+      this.registerForm.get('email')?.setValue(this.email);
+      this.registerForm.get('email')?.disable(); //Desactiva el input
+    }
   }
 
   //Validador personalizado para validar contraseña
