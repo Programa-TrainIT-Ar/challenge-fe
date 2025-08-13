@@ -6,7 +6,6 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { AccountSetupService } from './account-setup.service';
 import { BackgroundComponent } from 'src/app/shared/components/background/background.component';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -45,7 +44,6 @@ export class AccountSetupComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private AccountSetupService: AccountSetupService,
     private router: Router,
     private userService: UserService,
     private route: ActivatedRoute
