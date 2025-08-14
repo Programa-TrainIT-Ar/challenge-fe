@@ -27,7 +27,7 @@ import { CommonModule } from '@angular/common';
                 redirect_uri: environment.auth.authorizationParams.redirect_uri,
             },
             cacheLocation: 'localstorage', // Cambiar a 'localstorage' para persistencia entre recargas
-            useRefreshTokens: true, // Habilitar el uso de tokens de actualización
+            //useRefreshTokens: true, // Habilitar el uso de tokens de actualización
         }),
     ],
     providers: [
