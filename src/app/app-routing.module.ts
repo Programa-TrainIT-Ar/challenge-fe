@@ -26,7 +26,7 @@ import { VerifyEmailComponent } from './modules/auth/pages/verify-email/verify-e
         },
         {
           path: '',
-          redirectTo: 'home',
+          redirectTo: 'register',
           pathMatch: 'full'
         },
         {
@@ -53,7 +53,7 @@ import { VerifyEmailComponent } from './modules/auth/pages/verify-email/verify-e
           canActivate: [authenticatedGuard], // Si esta autenticado lo redirige a home o candidato segun su rol
           component: AuthPageComponent,
         },
-        
+
         // {
         //   path: 'sign-up',
         //   canActivate: [authenticatedGuard], // Si esta autenticado lo redirige a home o candidato segun su rol
@@ -70,6 +70,10 @@ import { VerifyEmailComponent } from './modules/auth/pages/verify-email/verify-e
           component: LoginComponent,
         },
         {
+          path: 'verify-email',
+          component: VerifyEmailComponent,
+        },
+        {
           path: 'forgot-password',
           canActivate: [authenticatedGuard], // Si esta autenticado lo redirige a home o candidato segun su rol
           loadComponent: () =>
@@ -80,6 +84,7 @@ import { VerifyEmailComponent } from './modules/auth/pages/verify-email/verify-e
         {
           path: '**',
           component: ErrorComponent,
+          pathMatch: 'full',
         },
       ],
       {
