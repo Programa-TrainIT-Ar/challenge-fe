@@ -6,18 +6,22 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { AccountSetupService } from './account-setup.service';
-import { BackgroundComponent } from "src/app/shared/components/background/background.component";
+import { BackgroundComponent } from 'src/app/shared/components/background/background.component';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ModalComponent } from 'src/app/shared/components/info-modal/info-modal.component';
-
-
+import { UserService } from '../../user.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-sign-up-page',
   standalone: true,
-  imports: [BackgroundComponent, ReactiveFormsModule, CommonModule, ModalComponent],
+  imports: [
+    BackgroundComponent,
+    ReactiveFormsModule,
+    CommonModule,
+    ModalComponent,
+  ],
   templateUrl: './account-setup.component.html',
   styleUrl: './account-setup.component.scss',
 })
@@ -33,13 +37,30 @@ export class AccountSetupComponent implements OnInit {
   showModal = false;
   successOperation = false; //Determina el contenido de la modal a mostrar al presionar el botón
 
+  //Variables para almacenar datos de la url al renderizar el componente
+  id: string | null = null;
+  first_name: string | null = null;
+  email: string | null = null;
+
   constructor(
     private fb: FormBuilder,
-    private AccountSetupService: AccountSetupService,
-    private router: Router
+    private router: Router,
+    private userService: UserService,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
+    try {
+      //Tomando parámetros de la url
+      this.id = this.route.snapshot.paramMap.get('id');
+      this.first_name = this.route.snapshot.queryParamMap.get('first_name');
+      this.email = this.route.snapshot.queryParamMap.get('email');
+    } catch (error) {
+      console.log("Error al cargar parámetros desde la url");
+      
+    }
+
+    //Validaciones de cada campo del formulario
     this.registerForm = this.fb.group(
       {
         first_name: [
@@ -58,7 +79,7 @@ export class AccountSetupComponent implements OnInit {
         ],
         email: [
           '',
-          [
+          [,
             Validators.required,
             Validators.pattern(
               /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/
@@ -90,6 +111,17 @@ export class AccountSetupComponent implements OnInit {
         validators: this.passwordMatchValidator, // Validador a nivel de FormGroup
       }
     );
+
+    //Cargar campos de la url en el formulario si existen
+    if (this.first_name) {
+      this.registerForm.get('first_name')?.setValue(this.first_name);
+      this.registerForm.get('first_name')?.disable(); //Desactiva el input
+    }
+
+    if (this.email) {
+      this.registerForm.get('email')?.setValue(this.email);
+      this.registerForm.get('email')?.disable(); //Desactiva el input
+    }
   }
 
   //Validador personalizado para validar contraseña
@@ -130,21 +162,29 @@ export class AccountSetupComponent implements OnInit {
     try {
       this.registerForm.markAllAsTouched();
       if (this.registerForm.valid) {
-        this.AccountSetupService.registerUser(this.registerForm.value).subscribe({
-          next: response => {
-            this.successOperation = true;
-            this.showModal = true;
-            this.router.navigate(['/confirmation'], { queryParams: { nameUser: this.registerForm.value.first_name, type: 'mail' } })
-          },
-          error: error => {
-            this.successOperation = false;
-            this.showModal = true;
-            console.error(error.message);
-          },
-          complete: () => {
-            this.registerForm.reset(); // Resetear el formulario después de enviar
-          },
-        });
+        // this.AccountSetupService.registerUser(this.registerForm.value).subscribe({
+        this.userService
+          .accountSetup(this.id, this.registerForm.value)
+          .subscribe({
+            next: response => {
+              this.successOperation = true;
+              this.showModal = true;
+              this.router.navigate(['/confirmation'], {
+                queryParams: {
+                  nameUser: this.registerForm.value.first_name,
+                  type: 'mail',
+                },
+              });
+            },
+            error: error => {
+              this.successOperation = false;
+              this.showModal = true;
+              console.error(error.message);
+            },
+            complete: () => {
+              this.registerForm.reset(); // Resetear el formulario después de enviar
+            },
+          });
       } else {
         console.log('Formulario inválido. Por favor, revisa los errores.');
         // Marca todos los campos como "touched" para que se muestren los mensajes de error

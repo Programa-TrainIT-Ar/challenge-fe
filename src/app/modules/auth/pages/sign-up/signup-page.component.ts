@@ -15,6 +15,7 @@ import {
 import { CommonModule } from '@angular/common';
 import { PrimaryBtnComponent } from 'src/app/shared/components/primary-btn/primary-btn.component';
 import { ModalComponent } from 'src/app/shared/components/info-modal/info-modal.component';
+import { UserService } from '../user.service';
 
 interface UserData {
   email: string;
@@ -39,8 +40,8 @@ interface UserData {
     CommonModule,
     ModalComponent,
   ],
-  templateUrl: './auth-page.component.html',
-  styleUrls: ['./auth-page.component.scss'],
+  templateUrl: './signup-page.component.html',
+  styleUrls: ['./signup-page.component.scss'],
 })
 export class AuthPageComponent implements OnInit {
   registerForm: FormGroup;
@@ -51,7 +52,8 @@ export class AuthPageComponent implements OnInit {
     private fb: FormBuilder,
     private auth: AuthService,
     private router: Router,
-    private http: HttpClient
+    private http: HttpClient, 
+    private userService: UserService
   ) {}
 
   ngOnInit(): void {
@@ -74,12 +76,8 @@ export class AuthPageComponent implements OnInit {
   }
 
   sendVerificationEmail(name: string, email: string) {
-    //console.log('Enviando correo de verificación a:', email);
-    this.http
-      .post(`https://challenge-be-development-99e1.onrender.com/user/send-email-confirmation`, {
-        email,
-        first_name: name,
-      })
+    this.userService
+      .sentEmailVerification(email, name)
       .subscribe({
         next: res => {
           switch (res['action']) {

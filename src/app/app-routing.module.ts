@@ -1,6 +1,6 @@
 import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
-import { AuthPageComponent } from './modules/auth/pages/register/auth-page.component';
+import { AuthPageComponent } from './modules/auth/pages/sign-up/signup-page.component';
 import { AccountSetupComponent } from './modules/auth/pages/account-setup/pages/account-setup.component';
 import { HomePageComponent } from './modules/home/pages/home-page/home-page.component';
 import { AuthGuard } from '../app/modules/guards/authGuard.guard';
@@ -9,7 +9,7 @@ import { WelcomeCandidatoComponent } from './modules/welcome-candidato/welcome-c
 import { DashboardPageComponent } from './modules/candidato-dashboard/dashboard-page/dashboard-page.component';
 import { LoginComponent } from './modules/auth/pages/login/login.component';
 import { authenticatedGuard } from './modules/guards/authenticated.guard';
-import { MailConfirmationComponent } from './modules/auth/pages/account-setup/pages/mail-confirmation/mail-confirmation.component';
+import { ErrorComponent } from './modules/home/pages/error/error.component';
 
 import { VerifyEmailComponent } from './modules/auth/pages/verify-email/verify-email.component';
 @NgModule({
@@ -23,6 +23,11 @@ import { VerifyEmailComponent } from './modules/auth/pages/verify-email/verify-e
           data: { expectedRole: 'admin' },
           loadChildren: () =>
             import('./modules/home/home.module').then(m => m.HomeModule),
+        },
+        {
+          path: '',
+          redirectTo: 'register',
+          pathMatch: 'full'
         },
         {
           path: 'candidato',
@@ -48,7 +53,7 @@ import { VerifyEmailComponent } from './modules/auth/pages/verify-email/verify-e
           canActivate: [authenticatedGuard], // Si esta autenticado lo redirige a home o candidato segun su rol
           component: AuthPageComponent,
         },
-        
+
         // {
         //   path: 'sign-up',
         //   canActivate: [authenticatedGuard], // Si esta autenticado lo redirige a home o candidato segun su rol
@@ -56,12 +61,8 @@ import { VerifyEmailComponent } from './modules/auth/pages/verify-email/verify-e
         // },
         {
           path: 'account-setup',
-          canActivate: [authenticatedGuard],
+          //canActivate: [authenticatedGuard],
           component: AccountSetupComponent,
-        },
-        {
-          path: 'confirmation',
-          component: MailConfirmationComponent,
         },
         {
           path: 'login',
@@ -82,7 +83,8 @@ import { VerifyEmailComponent } from './modules/auth/pages/verify-email/verify-e
         },
         {
           path: '**',
-          redirectTo: 'register',
+          component: ErrorComponent,
+          pathMatch: 'full',
         },
       ],
       {
