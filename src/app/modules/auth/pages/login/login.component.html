@@ -2,7 +2,7 @@
     <div class="d-flex flex-column align-items-center w-100">
         <h2 class="mb-5">Bienvenido nuevamente</h2>
 
-        <form class="d-flex flex-column align-items-center" [formGroup]="loginForm" (ngSubmit)="loginWithEmail()">
+        <form class="d-flex flex-column align-items-center" [formGroup]="loginForm" >
             <!-- Email -->
             <div class="input-w">
                 <label for="email">Email <span class="required">*</span></label>
@@ -33,7 +33,7 @@
                 </div>
             </div>
             <!-- Botón de inicio de sesión -->
-            <app-primary-btn buttonText="Iniciar sesión" (submit)="loginWithEmail()" [disabled]="loginForm.invalid">
+            <app-primary-btn buttonText="Iniciar sesión" (submit)="login()" [disabled]="loginForm.invalid">
             </app-primary-btn>
         </form>
 

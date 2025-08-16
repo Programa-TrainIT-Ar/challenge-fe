@@ -6,9 +6,10 @@ import { AppLayoutModule } from './layout/app.layout.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AuthModule } from '@auth0/auth0-angular';
 import { environment } from 'src/environments/environment';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
+import { AuthInterceptor } from './modules/auth/auth.interceptor';
 
 @NgModule({
     declarations: [AppComponent],
@@ -34,6 +35,11 @@ import { CommonModule } from '@angular/common';
         {
             provide: LocationStrategy,
             useClass: PathLocationStrategy,
+        },
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: AuthInterceptor,
+            multi: true,  // MUY importante para que Angular soporte varios interceptores
         },
     ],
     bootstrap: [AppComponent],

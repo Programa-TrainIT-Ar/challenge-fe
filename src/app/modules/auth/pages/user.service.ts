@@ -14,6 +14,13 @@ export interface UserData {
   birthdate?: string;
 }
 
+export interface LoginResponse {
+  access_token: string;
+  scope: string;
+  token_type: string;
+  expires_in: number;
+}
+
 @Injectable({
   providedIn: 'root',
 })

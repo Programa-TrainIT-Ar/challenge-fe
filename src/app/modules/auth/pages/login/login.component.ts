@@ -7,6 +7,8 @@ import { BackgroundComponent } from 'src/app/shared/components/background/backgr
 import { GoogleBtnComponent } from 'src/app/shared/components/google-btn/google-btn.component';
 import { PrimaryBtnComponent } from 'src/app/shared/components/primary-btn/primary-btn.component';
 import { filter, take, tap } from 'rxjs';
+import { LoginResponse, UserService } from 'src/app/modules/auth/pages/user.service';
+import { LocalAuthService } from '../../local-auth.service';
 
 @Component({
   selector: 'app-login',
@@ -27,7 +29,9 @@ export class LoginComponent implements OnInit{
   constructor(
     private fb: FormBuilder,
     public auth: AuthService,
-    private router: Router
+    private router: Router,
+    private userService: UserService,
+    private localAuthService: LocalAuthService
   ) {}
 
   ngOnInit(): void {
@@ -44,18 +48,25 @@ export class LoginComponent implements OnInit{
       password: ['', [Validators.required]]
     });
   }
-  loginWithEmail() {
+  login() {
     if (this.loginForm.valid) {
       // Lógica para manejar el envío del formulario
       const {email, password} = this.loginForm.value;
-      this.auth.loginWithRedirect({
-        authorizationParams: {
-          connection: 'Challenge-development-DB',
-          login_hint: email,
+      this.userService.loginWithEmail(email, password).subscribe({
+        next: (response: LoginResponse) => {
+          console.log('🔒 Inicio de sesión exitoso:', response);
+          const accessToken = response.access_token; // Asegúrate de que la respuesta tenga el token en este formato
+          this.localAuthService.setToken(accessToken); 
+          // Accede al contenido de la llave access_token
+            
+          console.log('Access Token:', accessToken);
+          this.router.navigate(['/home']);
         },
-        appState: { target: '/' }
+        error: (error) => {
+          console.error('🔒 Error al iniciar sesión:', error);
+          // Aquí podrías mostrar un mensaje de error al usuario
+        }
       });
-
     }
   }
 
