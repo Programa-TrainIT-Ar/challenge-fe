@@ -14,6 +14,13 @@ export interface UserData {
   birthdate?: string;
 }
 
+export interface LoginResponse {
+  access_token: string;
+  scope: string;
+  token_type: string;
+  expires_in: number;
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -36,5 +43,17 @@ export class UserService {
 
   registerUser(userData: UserData) {
     return this.http.post(`${this.urlApi}/register`, userData);
+  }
+
+  accountSetup(id, userData: UserData){
+    return this.http.put(`${this.urlApi}/${id}`, userData);
+  }
+
+  sentEmailVerification(email: string , first_name: string) {
+    return this.http.post(`${this.urlApi}/send-email-confirmation`, { email, first_name });
+  }
+
+  VerifyEmail(token: string) {
+    return this.http.post(`${this.urlApi}/confirm-email`, { token });
   }
 }

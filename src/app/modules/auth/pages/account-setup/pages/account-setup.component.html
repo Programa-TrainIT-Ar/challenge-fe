@@ -59,7 +59,7 @@
         class="form-control"
         formControlName="email"
         placeholder="Email"
-        [class.is-invalid]="f['email'].invalid && f['email'].touched" />
+        [class.is-invalid]="f['email'].invalid && f['email'].touched"/>
 
       <!-- Alertas para el email -->
       <div
@@ -200,5 +200,28 @@
       [disabled]="registerForm.invalid">
       Registrarme
     </button>
+
   </form>
+
+  <app-info-modal
+    *ngIf="showModal"
+    (closed)="showModal = false"
+    [showImage]="false">
+    <div modal-footer *ngIf="successOperation">
+      <img src="assets/images/sign-up/icon-request-answer.png" alt="" />
+      <h3>¡Tu registro se ha completado con éxito!</h3>
+    </div>
+
+    <div modal-header *ngIf="!successOperation">
+      <h3>Upss. Ha ocurrido un problema</h3>
+    </div>
+
+    <div modal-footer *ngIf="!successOperation">
+      <img src="assets/images/sign-up/icon-bad-request-answer.png" alt="" />
+      <h3>Tu registro no pudo completarse</h3>
+      <button class="btn btn-primary btn-form" (click)="showModal = false">
+        Intentar de nuevo
+      </button>
+    </div>
+  </app-info-modal>
 </app-background>

@@ -2,6 +2,7 @@ import { Component, Input, Inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { DOCUMENT } from '@angular/common';
 import { AuthService } from '@auth0/auth0-angular';
+import { LocalAuthService } from 'src/app/modules/auth/local-auth.service';
 export type UserRole = 'admin' | 'candidate' | 'hr';
 
 interface SidebarItem {
@@ -24,6 +25,7 @@ export class SideBarComponent {
   constructor(
     private authService: AuthService,
     private router: Router,
+    private localAuthService: LocalAuthService,
     @Inject(DOCUMENT) public document: Document
   ) {}
 
@@ -78,6 +80,7 @@ export class SideBarComponent {
   }
   
     logout() {
+    this.localAuthService.clearToken();
     this.authService.logout({ 
       logoutParams: {
         returnTo: this.document.location.origin 
@@ -85,29 +88,3 @@ export class SideBarComponent {
     });
   }
 } 
-/* import { Component } from '@angular/core';
-import { AuthService } from '@auth0/auth0-angular';
-
-@Component({
-  selector: 'app-side-bar',
-  templateUrl: './side-bar.component.html',
-  styleUrl: './side-bar.component.scss'
-})
-export class SideBarComponent {
-  isSidebarOpen = false;
-  private authService: AuthService; 
-
-  constructor(authService: AuthService) { 
-    this.authService = authService; 
-  }
-
-  toggleSidebar() {
-    this.isSidebarOpen = !this.isSidebarOpen;
-  }
-
-  logout() {
-    this.authService.logout().subscribe(() => {
-      window.location.href = ''; 
-    });
-  }
-} */
