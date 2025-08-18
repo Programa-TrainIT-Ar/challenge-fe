@@ -169,12 +169,7 @@ export class AccountSetupComponent implements OnInit {
             next: response => {
               this.successOperation = true;
               this.showModal = true;
-              this.router.navigate(['/confirmation'], {
-                queryParams: {
-                  nameUser: this.registerForm.value.first_name,
-                  type: 'mail',
-                },
-              });
+              this.router.navigate(['/candidato']);
             },
             error: error => {
               this.successOperation = false;
