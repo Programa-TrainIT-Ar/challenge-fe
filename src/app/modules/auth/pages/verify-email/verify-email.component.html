@@ -1,2 +1,76 @@
-<div>Loading: {{ loading }}</div>
-<div>Error: {{ errorMessage }}</div>
+<!-- Loader -->
+<div *ngIf="loading">
+  <p>Verificando tu correo...</p>
+</div>
+
+<!-- Modal: Token expirado -->
+<app-info-modal
+  *ngIf="showModal && currentModal === 'expired'"
+  (closed)="closeModal()">
+  <div modal-header>
+    <h3>Enlace expirado</h3>
+  </div>
+  <div modal-footer>
+    <div modal-image>
+      <img src="assets/images/sign-up/icon-bad-request-answer.png" alt="" />
+    </div>
+    <h3>El enlace de verificación ha expirado o es inválido.</h3>
+    <button class="btn btn-primary btn-form" (click)="closeModal()">
+      Volver a registrar
+    </button>
+  </div>
+</app-info-modal>
+
+<!-- Modal: Token inválido -->
+<app-info-modal
+  *ngIf="showModal && currentModal === 'invalid'"
+  (closed)="closeModal()">
+  <div modal-header>
+    <h3>Token inválido</h3>
+  </div>
+  <div modal-footer>
+    <div modal-image>
+      <img src="assets/images/sign-up/icon-request-alert.png" alt="" />
+    </div>
+    <h3>No se proporcionó un token válido.</h3>
+    <button class="btn btn-primary btn-form" (click)="closeModal()">
+      Intentar de nuevo
+    </button>
+  </div>
+</app-info-modal>
+
+<!-- Modal: Email no confirmado -->
+<app-info-modal
+  *ngIf="showModal && currentModal === 'notConfirmed'"
+  (closed)="closeModal()">
+  <div modal-header>
+    <h3>Email no confirmado</h3>
+  </div>
+  <div modal-footer>
+    <div modal-image>
+      <img src="assets/images/sign-up/icon-request-alert.png" alt="" />
+    </div>
+    <h3>Tu correo aún no ha sido confirmado. Revisa tu bandeja.</h3>
+    <button class="btn btn-primary btn-form" (click)="closeModal()">
+      Entendido
+    </button>
+  </div>
+</app-info-modal>
+
+<!-- Modal: Error inesperado -->
+<app-info-modal
+  *ngIf="showModal && currentModal === 'error'"
+  (closed)="closeModal()">
+  <div modal-header>
+    <h3>Upss. Ocurrió un problema</h3>
+  </div>
+  <div modal-footer>
+    <div modal-image>
+      <img src="assets/images/sign-up/icon-bad-request-answer.png" alt="" />
+    </div>
+    <h3>Error inesperado al verificar el token.</h3>
+    <button class="btn btn-primary btn-form" (click)="closeModal()">
+      Intentar de nuevo
+    </button>
+  </div>
+</app-info-modal>
