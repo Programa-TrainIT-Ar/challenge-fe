@@ -48,7 +48,7 @@ export class VerifyEmailComponent implements OnInit {
             const email = res.email;
             const first_name = res.first_name || res.name || '';
             this.router.navigate(['/account-setup'], {
-              queryParams: { email, name, id },
+              queryParams: { email, first_name, id },
             });
           } else {
             // Modal de error inesperado
