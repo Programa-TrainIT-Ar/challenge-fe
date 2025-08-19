@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
 import { UserService } from '../user.service';
 
 @Component({
@@ -9,13 +10,14 @@ import { UserService } from '../user.service';
 })
 export class VerifyEmailComponent implements OnInit {
   loading = true;
-
   showModal = false;
-  currentModal: 'expired' | 'invalid' | 'notConfirmed' | 'error' | null = null;
+  currentModal: 'expired' | 'invalid' | 'unexpected' | null = null;
+  modalMessageBody = '';
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
+    private http: HttpClient,
     private userService: UserService
   ) {}
 
@@ -23,15 +25,18 @@ export class VerifyEmailComponent implements OnInit {
     this.route.queryParams.subscribe(params => {
       const token = params['token'];
       if (!token) {
-        this.showModal = true;
         this.currentModal = 'invalid';
+        this.modalMessageBody = 'Token no proporcionado.';
+        this.showModal = true;
         this.loading = false;
         return;
       }
 
+      // Confirmar el email con el token
       this.userService.VerifyEmail(token).subscribe({
         next: (res: any) => {
           this.loading = false;
+
           if (res.emailConfirmed === true) {
             const id = res.user_id;
             const email = res.email;
@@ -40,19 +45,21 @@ export class VerifyEmailComponent implements OnInit {
               queryParams: { email, name, id },
             });
           } else {
+            this.currentModal = 'unexpected';
+            this.modalMessageBody = 'El email no ha sido confirmado aún.';
             this.showModal = true;
-            this.currentModal = 'notConfirmed';
           }
         },
         error: error => {
           this.loading = false;
           if (error.status === 400) {
-            this.showModal = true;
             this.currentModal = 'expired';
+            this.modalMessageBody = 'El enlace ha expirado o es inválido.';
           } else {
-            this.showModal = true;
-            this.currentModal = 'error';
+            this.currentModal = 'unexpected';
+            this.modalMessageBody = 'Error inesperado al verificar el token.';
           }
+          this.showModal = true;
         },
       });
     });
@@ -61,6 +68,9 @@ export class VerifyEmailComponent implements OnInit {
   closeModal() {
     this.showModal = false;
     this.currentModal = null;
-    this.router.navigate(['/register']); // o donde quieras que vaya si falla
+  }
+
+  navigateToRegister() {
+    this.router.navigate(['/register']);
   }
 }
