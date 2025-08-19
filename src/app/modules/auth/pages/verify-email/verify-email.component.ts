@@ -40,9 +40,9 @@ export class VerifyEmailComponent implements OnInit {
           if (res.emailConfirmed === true) {
             const id = res.user_id;
             const email = res.email;
-            const name = res.name || '';
+            const first_name = res.first_name || res.name || '';
             this.router.navigate(['/account-setup'], {
-              queryParams: { email, name, id },
+              queryParams: { email, first_name, id },
             });
           } else {
             this.currentModal = 'unexpected';
