@@ -10,7 +10,9 @@ import { UserService } from '../user.service';
 })
 export class VerifyEmailComponent implements OnInit {
   loading = true;
-  errorMessage = '';
+  showModal = false;
+  currentModal: 'expired' | 'invalid' | 'unexpected' | null = null;
+  modalMessageBody = '';
 
   constructor(
     private route: ActivatedRoute,
@@ -20,11 +22,12 @@ export class VerifyEmailComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    console.log('VerifyEmailComponent ngOnInit');
     this.route.queryParams.subscribe(params => {
       const token = params['token'];
       if (!token) {
-        this.errorMessage = 'Token no proporcionado';
+        this.currentModal = 'invalid';
+        this.modalMessageBody = 'Token no proporcionado.';
+        this.showModal = true;
         this.loading = false;
         return;
       }
@@ -33,27 +36,41 @@ export class VerifyEmailComponent implements OnInit {
       this.userService.VerifyEmail(token).subscribe({
         next: (res: any) => {
           this.loading = false;
-          // Validamos que el email esté confirmado
+
           if (res.emailConfirmed === true) {
-            const id = res.id;
+            const id = res.user_id;
             const email = res.email;
             const first_name = res.first_name || res.name || '';
             this.router.navigate(['/account-setup'], {
               queryParams: { email, first_name, id },
             });
           } else {
-            this.errorMessage = 'El email no ha sido confirmado aún.';
+            this.currentModal = 'unexpected';
+            this.modalMessageBody = 'El email no ha sido confirmado aún.';
+            this.showModal = true;
           }
         },
         error: error => {
           this.loading = false;
           if (error.status === 400) {
-            this.errorMessage = 'El enlace ha expirado o es inválido.';
+            this.currentModal = 'expired';
+            this.modalMessageBody = 'El enlace ha expirado o es inválido.';
           } else {
-            this.errorMessage = 'Error inesperado al verificar el token.';
+            this.currentModal = 'unexpected';
+            this.modalMessageBody = 'Error inesperado al verificar el token.';
           }
+          this.showModal = true;
         },
       });
     });
+  }
+
+  closeModal() {
+    this.showModal = false;
+    this.currentModal = null;
+  }
+
+  navigateToRegister() {
+    this.router.navigate(['/register']);
   }
 }
