@@ -1,5 +1,4 @@
-<!-- Loading -->
-<div *ngIf="loading">Verificando correo...</div>
+<div *ngIf="loading">Loading...</div>
 
 <app-info-modal
   *ngIf="showModal && currentModal === 'invalid'"
@@ -7,13 +6,13 @@
   <div modal-header>
     <h3>Token inválido</h3>
   </div>
+  <div modal-image>
+    <img src="assets/images/sign-up/icon-bad-request-answer.png" alt="" />
+  </div>
   <div modal-footer>
-    <div modal-image>
-      <img src="assets/images/sign-up/icon-bad-request-answer.png" alt="" />
-    </div>
     <h3>{{ modalMessageBody }}</h3>
     <button class="btn btn-primary btn-form" (click)="navigateToRegister()">
-      Ir al registro
+      Ir a registro
     </button>
   </div>
 </app-info-modal>
@@ -22,15 +21,15 @@
   *ngIf="showModal && currentModal === 'expired'"
   (closed)="closeModal()">
   <div modal-header>
-    <h3>Token expirado</h3>
+    <h3>Enlace expirado</h3>
+  </div>
+  <div modal-image>
+    <img src="assets/images/sign-up/icon-request-alert.png" alt="" />
   </div>
   <div modal-footer>
-    <div modal-image>
-      <img src="assets/images/sign-up/icon-request-alert.png" alt="" />
-    </div>
     <h3>{{ modalMessageBody }}</h3>
     <button class="btn btn-primary btn-form" (click)="navigateToRegister()">
-      Obtener nuevo enlace
+      Ir a registro
     </button>
   </div>
 </app-info-modal>
@@ -39,12 +38,12 @@
   *ngIf="showModal && currentModal === 'unexpected'"
   (closed)="closeModal()">
   <div modal-header>
-    <h3>Upss. Algo salió mal</h3>
+    <h3>Upss. Ha ocurrido un problema</h3>
+  </div>
+  <div modal-image>
+    <img src="assets/images/sign-up/icon-bad-request-answer.png" alt="" />
   </div>
   <div modal-footer>
-    <div modal-image>
-      <img src="assets/images/sign-up/icon-request-answer.png" alt="" />
-    </div>
     <h3>{{ modalMessageBody }}</h3>
     <button class="btn btn-primary btn-form" (click)="closeModal()">
       Intentar de nuevo
