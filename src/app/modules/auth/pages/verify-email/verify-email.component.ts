@@ -46,7 +46,7 @@ export class VerifyEmailComponent implements OnInit {
             // Redirigir directo a account-setup
             const id = res.user_id;
             const email = res.email;
-            const name = res.name || '';
+            const first_name = res.first_name || res.name || '';
             this.router.navigate(['/account-setup'], {
               queryParams: { email, name, id },
             });
