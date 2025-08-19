@@ -37,9 +37,9 @@ export class VerifyEmailComponent implements OnInit {
           if (res.emailConfirmed === true) {
             const id = res.id;
             const email = res.email;
-            const name = res.first_name || res.name || '';
+            const first_name = res.first_name || res.name || '';
             this.router.navigate(['/account-setup'], {
-              queryParams: { email, name, id },
+              queryParams: { email, first_name, id },
             });
           } else {
             this.errorMessage = 'El email no ha sido confirmado aún.';
