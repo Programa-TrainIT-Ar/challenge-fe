@@ -20,7 +20,7 @@ export class NewPagesComponent {
     private auth: AuthService,
     private newPageService: NewPageService,
     private alertService: AlertService,
-    private router: Router,
+    private router: Router
   ) {}
 
   @Output() quizCreated = new EventEmitter<void>();
@@ -45,15 +45,15 @@ export class NewPagesComponent {
   };
 
   quizData = {
-      name: '',
-      description: '',
-      module: '',
-      cell_id: '',
-      seniority: '',
-      challenge_type: '',
-      created_by_id: '',
-      is_active: true,
-    };
+    name: '',
+    description: '',
+    module: '',
+    cell_id: '',
+    seniority: '',
+    challenge_type: '',
+    created_by_id: '',
+    is_active: true,
+  };
 
   questionText: string = '';
   questions: any[] = [];
@@ -74,7 +74,7 @@ export class NewPagesComponent {
   selectedValues: boolean[] = [];
   inputsValues: boolean = false;
   temporaryQuestions: any[] = [];
-  
+
   showInput: boolean = true;
   selectedRadio: string | null = null;
 
@@ -82,36 +82,36 @@ export class NewPagesComponent {
     this.selectNameForm.get('module').setValue(datos.module);
     this.selectNameForm.get('cell').setValue(datos.cell);
     this.selectNameForm.get('seniority').setValue(datos.seniority);
-    this.quizData.module= datos.moduleId,
-    this.quizData.cell_id= datos.cellId,
-    this.quizData.seniority= datos.seniority.toLowerCase()
+    (this.quizData.module = datos.moduleId),
+      (this.quizData.cell_id = datos.cellId),
+      (this.quizData.seniority = datos.seniority.toLowerCase());
   }
-  
+
   isFieldInvalid(field: string): boolean {
     const control = this.selectNameForm.get(field);
     return control.invalid && (control.dirty || control.touched);
   }
 
   isValidInput() {
-    return this.selectNameForm.valid
+    return this.selectNameForm.valid;
   }
-  
+
   async createQuiz() {
     // Conseguir el User_id del usuario autenticado
-    try {  
-      const user = await firstValueFrom(this.auth.user$);    
+    try {
+      const user = await firstValueFrom(this.auth.user$);
       if (!user?.email) {
         throw new Error('No se encontró el email del usuario autenticado');
       }
-      
+
       this.newPageService.findUserByEmail(user.email).subscribe({
-        next: (response: any)=>{
+        next: (response: any) => {
           this.quizData.created_by_id = response.id;
         },
-        error: (error)=>{
-          console.error('Error al obtener el usuario desde el backend')
-        }
-      })
+        error: error => {
+          console.error('Error al obtener el usuario desde el backend');
+        },
+      });
 
       // Mostrar el formulario para agregar preguntas
       this.showButton = false;
@@ -119,17 +119,16 @@ export class NewPagesComponent {
       this.toggle = false;
 
       // Guardar los datos del quiz para usarlos cuando tengamos todas las preguntas
-      this.quizData.name= this.selectNameForm.value.name;
-      this.quizData.challenge_type= 'immediate',
-      this.quizData.description= this.selectNameForm.value.description;
-    } 
-    catch (error) {
+      this.quizData.name = this.selectNameForm.value.name;
+      (this.quizData.challenge_type = 'immediate'),
+        (this.quizData.description = this.selectNameForm.value.description);
+    } catch (error) {
       console.error('Error preparando el quiz:', error);
       this.alertService.showError(error.message || 'Error al preparar el quiz');
       this.showButton = false;
     }
   }
-  
+
   trackByFn(index: number): any {
     return index;
   }
@@ -146,8 +145,8 @@ export class NewPagesComponent {
 
   answerChoiceRadio(i: number) {
     // Para radio buttons, simplemente estableces la opción seleccionada
-    this.correct_option = [i]; 
-}
+    this.correct_option = [i];
+  }
   changeInputType() {
     this.selectedValues = Array(this.options.length).fill(false);
     this.selectedRadio = null;
@@ -181,6 +180,10 @@ export class NewPagesComponent {
       this.showPlus = false;
     }
 
+    if (this.isTrueFalseQuestion) {
+      this.options = ['Falso', 'Verdadero'];
+    }
+
     this.changeInputType();
     this.cdr.detectChanges();
   }
@@ -207,20 +210,27 @@ export class NewPagesComponent {
 
       // Validate question text and correct options
       if (!formSection.questionText) {
-        this.alertService.showWarning('Por favor, ingrese el texto de la pregunta');
+        this.alertService.showWarning(
+          'Por favor, ingrese el texto de la pregunta'
+        );
         return;
       }
-      console.log(this.correct_option)
+      console.log(this.correct_option);
       if (questionType === 'multiple_choice') {
         if (this.correct_option.length < 2) {
-          this.alertService.showWarning('Por favor, seleccione al menos dos opciones correctas');
-        return;
+          this.alertService.showWarning(
+            'Por favor, seleccione al menos dos opciones correctas'
+          );
+          return;
         }
-      } else{
+      } else {
         if (this.correct_option.length === 0) {
-          this.alertService.showWarning('Por favor, seleccione una opción correcta');
-        return;
-      }}
+          this.alertService.showWarning(
+            'Por favor, seleccione una opción correcta'
+          );
+          return;
+        }
+      }
 
       // Prepare options, filtering out undefined or empty options
       const options = [
@@ -238,12 +248,12 @@ export class NewPagesComponent {
       // Validate options based on question type
       if (
         (questionType === 'true_false' && options.length !== 2) ||
-        (questionType === 'simple_choice' && options.length !== this.options.length) ||
-        (questionType === 'multiple_choice' && options.length !== this.options.length)
+        (questionType === 'simple_choice' &&
+          options.length !== this.options.length) ||
+        (questionType === 'multiple_choice' &&
+          options.length !== this.options.length)
       ) {
-        this.alertService.showWarning(
-          'Ingrese el texto en todas las opciones'
-        );
+        this.alertService.showWarning('Ingrese el texto en todas las opciones');
         return;
       }
 
@@ -253,7 +263,9 @@ export class NewPagesComponent {
         opt => opt > maxOptionIndex
       );
       if (invalidCorrectOptions) {
-        this.alertService.showWarning('Selección de opciones correctas no válida');
+        this.alertService.showWarning(
+          'Selección de opciones correctas no válida'
+        );
         return;
       }
 
@@ -280,8 +292,8 @@ export class NewPagesComponent {
 
       // If we have 10 questions, create the quiz with all questions
       if (this.temporaryQuestions.length === 10) {
-        this.quizData.name= this.selectNameForm.value.name;
-        this.quizData.description= this.selectNameForm.value.description;
+        this.quizData.name = this.selectNameForm.value.name;
+        this.quizData.description = this.selectNameForm.value.description;
         const quizWithQuestions = {
           ...this.quizData,
           questions: this.temporaryQuestions,
@@ -306,12 +318,14 @@ export class NewPagesComponent {
 
         const data = await response.json();
         this.quizID = data.id;
-        this.alertService.showSuccess('Cuestionario creado correctamente')
+        this.alertService.showSuccess('Cuestionario creado correctamente');
         this.quizCreated.emit();
       }
     } catch (error) {
       console.error('Detailed error:', error);
-      this.alertService.showError(error.message || 'Error al crear el cuestionario');
+      this.alertService.showError(
+        error.message || 'Error al crear el cuestionario'
+      );
     }
   }
 
