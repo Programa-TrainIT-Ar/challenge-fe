@@ -1,20 +1,20 @@
 <div class="normal-container transparent">
   <div class="header-inputs-container">
     <div>
-      <div 
+      <div
         [ngClass]="showForm ? 'quiz-container-true' : 'quiz-container-false'">
         <form [formGroup]="selectNameForm">
           <div class="flex-b">
             <input
               type="text"
               class="input-name mb-2"
-              [ngClass]="{ notice: isFieldInvalid('name') }" 
+              [ngClass]="{ notice: isFieldInvalid('name') }"
               [placeholder]="
                 isFieldInvalid('name')
                   ? '* El nombre es requerido'
                   : 'Nombre del Quiz'
               "
-              formControlName="name"/>
+              formControlName="name" />
           </div>
 
           <div class="flex-b mb-2">
@@ -23,7 +23,7 @@
               class="input-description"
               [ngClass]="{ notice: isFieldInvalid('description') }"
               placeholder="Descripción"
-              formControlName="description"/>
+              formControlName="description" />
           </div>
         </form>
 
@@ -36,14 +36,11 @@
       </div>
     </div>
   </div>
- 
-  @if(selectNameForm.valid && showButton) {
-    <button
-    class="custom-btn-save"
-    (click)="createQuiz()" >
-    Guardar</button>
+
+  @if (selectNameForm.valid && showButton) {
+    <button class="custom-btn-save" (click)="createQuiz()">Guardar</button>
   }
-  
+
   <div>
     <div *ngIf="showForm" class="content-2">
       <h3>Define la pregunta {{ questions.length + 1 }}/10</h3>
@@ -113,8 +110,8 @@
                   type="checkbox"
                   class="checkbox-input"
                   [(ngModel)]="selectedValues[i]"
-                  [name]="'checkbox' + i" 
-                  (click)="answerChoice(i)"/>
+                  [name]="'checkbox' + i"
+                  (click)="answerChoice(i)" />
               </div>
               <input
                 type="text"
@@ -122,6 +119,7 @@
                 [(ngModel)]="options[i]"
                 name="option{{ i }}"
                 [placeholder]="'Opción ' + (i + 1)"
+                [readonly]="isTrueFalseQuestion"
                 required />
             </div>
 
@@ -133,8 +131,8 @@
                 type="text"
                 class="custom-option-input"
                 name="agregate"
-                placeholder="Añadir una nueva opción" 
-                disabled/>
+                placeholder="Añadir una nueva opción"
+                disabled />
             </div>
           </div>
         </div>
@@ -147,5 +145,4 @@
       </form>
     </div>
   </div>
-
 </div>
