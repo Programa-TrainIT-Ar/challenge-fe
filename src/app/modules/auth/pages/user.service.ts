@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '@environments/environment';
+import { catchError, of, throwError } from 'rxjs';
 
 export interface UserData {
   email: string;
@@ -30,7 +31,14 @@ export class UserService {
   constructor(private http: HttpClient) {}
 
   finduserByEmail(email: string) {
-    return this.http.get(`${this.urlApi}/FindByEmail?email=${email}`);
+    return this.http.get<UserData>(`${this.urlApi}/FindByEmail?email=${email}`).pipe(
+      catchError(error => {
+        if (error.status === 404) {
+          return of(null);
+        }
+        throw Error ;
+    })
+    );
   }
 
   loginWithEmail(email: string, password: string) {
@@ -43,6 +51,10 @@ export class UserService {
 
   registerUser(userData: UserData) {
     return this.http.post(`${this.urlApi}/register`, userData);
+  }
+
+  registerUserWithAuth(userData: UserData) {
+    return this.http.post(`${this.urlApi}/register-with-auth`, userData);
   }
 
   accountSetup(id, userData: UserData){
