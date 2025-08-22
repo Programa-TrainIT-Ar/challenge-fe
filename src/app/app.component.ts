@@ -57,7 +57,7 @@ export class AppComponent implements OnInit {
       birthdate: user.birthdate || new Date().toISOString().split('T')[0]
     };
 
-    return this.userService.registerUser(userData).pipe(
+    return this.userService.registerUserWithAuth(userData).pipe(
       catchError(error => {
         console.error('❌ Error al registrar usuario:', error);
         throw error;

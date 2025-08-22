@@ -1,8 +1,14 @@
 import { Component, ElementRef, EventEmitter, HostListener, inject, Input, OnInit, Output } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
+import { AbstractControl, FormControl, ValidationErrors, Validators } from '@angular/forms';
 import { HeaderPageService } from './header-page.service';
 import { Module, Cell, Seniority } from './header-page.interface';
 import { switchMap } from 'rxjs';
+
+export function noWhitespaceValidator(control: AbstractControl): ValidationErrors | null {
+  const isWhitespace = (control.value || '').trim().length === 0;
+  const isValid = !isWhitespace;
+  return isValid ? null : { 'whitespace': true };
+}
 
 @Component({
   selector: 'app-header-page',
@@ -36,11 +42,11 @@ export class HeaderPageComponent {
   addModule: boolean = false;
   addCell: boolean = false;
   //campos de formulario
-  module= new FormControl('',[Validators.required, Validators.minLength(3)]);
-  editModuleControl= new FormControl('',[Validators.required, Validators.minLength(3)]);
+  module= new FormControl('',[Validators.required, Validators.minLength(3), noWhitespaceValidator]);
+  editModuleControl= new FormControl('',[Validators.required, Validators.minLength(3), noWhitespaceValidator]);
   editingModuleId: string | null = null;
-  cell= new FormControl('',[Validators.required, Validators.minLength(3)]);
-  editCellControl= new FormControl('',[Validators.required, Validators.minLength(3)]);
+  cell= new FormControl('',[Validators.required, Validators.minLength(3), noWhitespaceValidator]);
+  editCellControl= new FormControl('',[Validators.required, Validators.minLength(3),noWhitespaceValidator]);
   editingCellId: string | null = null;
   //seleccion actual de modulo celula y seniority
   quizCategory: any = {
@@ -347,4 +353,9 @@ export class HeaderPageComponent {
     const cellNumber = (index % 10) + 1;  
     return `cell-color-${cellNumber}`;
   }
+
+
+  
+
 }
+

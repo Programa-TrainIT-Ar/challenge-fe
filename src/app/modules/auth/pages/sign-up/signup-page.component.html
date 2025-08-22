@@ -64,14 +64,64 @@
     >
   </div>
   <!-- <button (click)="showModal = true">Abrir modal</button> -->
-
-  <app-info-modal *ngIf="showModal" (closed)="showModal = false">
+  <app-info-modal
+    *ngIf="showModal && currentModal === 'verification_sent'"
+    (closed)="closeModal()">
     <div modal-header>
-      <h3>Hemos enviado un correo de verificación.</h3>
+      <h3>Hemos enviado un correo de verificación</h3>
     </div>
-
+    <div modal-image>
+        <img src="assets/images/sign-up/logo.png" alt="" />
+      </div>
     <div modal-footer>
       <h3>¡Por favor revisa tu bandeja de entrada!</h3>
+    </div>
+  </app-info-modal>
+
+  <app-info-modal
+    *ngIf="showModal && currentModal === 'login'"
+    (closed)="closeModal()">
+    <div modal-header>
+      <h3>Correo confirmado</h3>
+    </div>
+    <div modal-image>
+        <img src="assets/images/sign-up/icon-request-answer.png" alt="" />
+      </div>
+    <div modal-footer>
+      <h3>Tu correo ya fue confirmado. Inicia sesión para continuar.</h3>
+      <button class="btn btn-primary btn-form" (click)="navigateToLogin()">
+        Ir al login
+      </button>
+    </div>
+  </app-info-modal>
+
+  <app-info-modal
+    *ngIf="showModal && currentModal === 'pending'"
+    (closed)="closeModal()">
+    <div modal-header>
+      <h3>Verificación pendiente</h3>
+    </div>
+    <div modal-image>
+        <img src="assets/images/sign-up/icon-request-alert.png" alt="" />
+      </div>
+    <div modal-footer>
+      
+      <h3>Ya se ha enviado un correo de confirmación</h3>
+    </div>
+  </app-info-modal>
+
+  <app-info-modal
+    *ngIf="showModal && currentModal === 'error'"
+    (closed)="closeModal()">
+    <div modal-header>
+      <h3>Upss. Ha ocurrido un problema</h3>
+    </div>
+    <img src="assets/images/sign-up/icon-bad-request-answer" alt="" />
+    <div modal-footer>
+      <h3>{{ modalMessageBody }}</h3>
+      <button class="btn btn-primary btn-form" (click)="closeModal()">
+        Intentar de nuevo
+      </button>
     </div>
   </app-info-modal>
 </app-background>

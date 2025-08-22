@@ -16,19 +16,6 @@ import { CommonModule } from '@angular/common';
 import { PrimaryBtnComponent } from 'src/app/shared/components/primary-btn/primary-btn.component';
 import { ModalComponent } from 'src/app/shared/components/info-modal/info-modal.component';
 import { UserService } from '../user.service';
-
-interface UserData {
-  email: string;
-  first_name?: string;
-  last_name?: string;
-  photo?: string;
-  phone_number?: string;
-  timezone?: string;
-  gender?: string;
-  password?: string;
-  birthdate?: Date;
-}
-
 @Component({
   selector: 'app-auth-page',
   standalone: true,
@@ -45,14 +32,14 @@ interface UserData {
 })
 export class AuthPageComponent implements OnInit {
   registerForm: FormGroup;
-
   showModal = false;
+  currentModal: 'login' | 'pending' | 'verification_sent' | 'error' =
+    'verification_sent';
+  modalMessageBody = '';
 
   constructor(
     private fb: FormBuilder,
-    private auth: AuthService,
     private router: Router,
-    private http: HttpClient, 
     private userService: UserService
   ) {}
 
@@ -67,40 +54,50 @@ export class AuthPageComponent implements OnInit {
     return this.registerForm.controls;
   }
 
-  // Método principal llamado al enviar el formulario
   submit() {
     if (this.registerForm.invalid) return;
-
     const { name, email } = this.registerForm.value;
     this.sendVerificationEmail(name, email);
   }
 
   sendVerificationEmail(name: string, email: string) {
-    this.userService
-      .sentEmailVerification(email, name)
-      .subscribe({
-        next: res => {
-          switch (res['action']) {
-            case 'login':
-              //alert(res['message']);
-              this.router.navigate(['/login']);
-              break;
-            case 'pending':
-            case 'verification_sent':
-              this.showModal = true;
-              this.registerForm.reset();
-              break;
-            default:
-              alert('Respuesta inesperada del servidor.');
-          }
-        },
-        error: error => {
-          alert(
-            'No se pudo enviar el correo de verificación. Intenta nuevamente.'
-          );
-          console.error(error);
-        },
-      });
+    this.userService.sentEmailVerification(email, name).subscribe({
+      next: res => {
+        switch (res['action']) {
+          case 'login':
+            this.currentModal = 'login';
+            this.modalMessageBody = res['message'];
+            this.showModal = true;
+            break;
+
+          case 'pending':
+            this.currentModal = 'pending';
+            this.modalMessageBody = res['message'];
+            this.showModal = true;
+            this.registerForm.reset();
+            break;
+
+          case 'verification_sent':
+            this.currentModal = 'verification_sent';
+            this.modalMessageBody = res['message'];
+            this.showModal = true;
+            this.registerForm.reset();
+            break;
+
+          default:
+            this.currentModal = 'error';
+            this.modalMessageBody = 'Respuesta inesperada del servidor.';
+            this.showModal = true;
+        }
+      },
+      error: error => {
+        this.currentModal = 'error';
+        this.modalMessageBody =
+          'No se pudo enviar el correo de verificación. Intenta nuevamente.';
+        this.showModal = true;
+        console.error(error);
+      },
+    });
   }
 
   closeModal() {

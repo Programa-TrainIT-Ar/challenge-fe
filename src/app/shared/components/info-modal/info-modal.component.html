@@ -15,8 +15,9 @@
         </div>
 
         <!-- Imagen central -->
-        <img *ngIf="showImage" src="assets/trainit.png" alt="Logo" class="logo" />
-
+        <div class="modal-image">
+          <ng-content select="[modal-image]"></ng-content>
+        </div>
         <!-- Contenido proyectado abajo -->
         <div class="modal-footer">
           <ng-content select="[modal-footer]"></ng-content>

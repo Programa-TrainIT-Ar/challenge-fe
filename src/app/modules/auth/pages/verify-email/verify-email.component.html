@@ -1,2 +1,52 @@
-<div>Loading: {{ loading }}</div>
-<div>Error: {{ errorMessage }}</div>
+<div *ngIf="loading">Loading...</div>
+
+<app-info-modal
+  *ngIf="showModal && currentModal === 'invalid'"
+  (closed)="closeModal()">
+  <div modal-header>
+    <h3>Token inválido</h3>
+  </div>
+  <div modal-image>
+    <img src="assets/images/sign-up/icon-bad-request-answer.png" alt="" />
+  </div>
+  <div modal-footer>
+    <h3>{{ modalMessageBody }}</h3>
+    <button class="btn btn-primary btn-form" (click)="navigateToRegister()">
+      Ir a registro
+    </button>
+  </div>
+</app-info-modal>
+
+<app-info-modal
+  *ngIf="showModal && currentModal === 'expired'"
+  (closed)="closeModal()">
+  <div modal-header>
+    <h3>Enlace expirado</h3>
+  </div>
+  <div modal-image>
+    <img src="assets/images/sign-up/icon-request-alert.png" alt="" />
+  </div>
+  <div modal-footer>
+    <h3>{{ modalMessageBody }}</h3>
+    <button class="btn btn-primary btn-form" (click)="navigateToRegister()">
+      Ir a registro
+    </button>
+  </div>
+</app-info-modal>
+
+<app-info-modal
+  *ngIf="showModal && currentModal === 'unexpected'"
+  (closed)="closeModal()">
+  <div modal-header>
+    <h3>Upss. Ha ocurrido un problema</h3>
+  </div>
+  <div modal-image>
+    <img src="assets/images/sign-up/icon-bad-request-answer.png" alt="" />
+  </div>
+  <div modal-footer>
+    <h3>{{ modalMessageBody }}</h3>
+    <button class="btn btn-primary btn-form" (click)="closeModal()">
+      Intentar de nuevo
+    </button>
+  </div>
+</app-info-modal>
