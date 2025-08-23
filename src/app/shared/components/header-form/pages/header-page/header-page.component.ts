@@ -3,6 +3,7 @@ import { AbstractControl, FormControl, ValidationErrors, Validators } from '@ang
 import { HeaderPageService } from './header-page.service';
 import { Module, Cell, Seniority } from './header-page.interface';
 import { switchMap } from 'rxjs';
+import { AlertService } from '../../../alert/alert.service';
 
 export function noWhitespaceValidator(control: AbstractControl): ValidationErrors | null {
   const isWhitespace = (control.value || '').trim().length === 0;
@@ -24,6 +25,7 @@ export class HeaderPageComponent {
   
   private headerPageService = inject(HeaderPageService)
   private elementRef= inject(ElementRef)
+  private alertService = inject(AlertService);
 
   //Estructura de los dropdown
   modules: Module[] = []
@@ -160,6 +162,14 @@ export class HeaderPageComponent {
   //Crea un nuevo modulo 
   createModule() {
     if (this.module.valid) {
+      const existingModule = this.modules.find(
+        module => module.name === this.module.value
+      );
+      if (existingModule) {
+        console.error('El módulo ya existe');
+        this.alertService.showWarning('El módulo ya existe');
+        return;
+      }
       this.headerPageService.createModule(this.module.value).subscribe({
         next: () => {
           this.getCategory()
@@ -212,10 +222,24 @@ export class HeaderPageComponent {
   //Crea una nueva celula 
   createCell() {
     if (this.cell.valid && this.quizCategory.moduleId) {
-      this.headerPageService.createCell(this.cell.value, this.quizCategory.moduleId).pipe(
-        switchMap(() => {
-          // Una vez que termine la creacion, obtener la lista actualizada
-          return this.headerPageService.getModules();})
+      // Buscar el módulo seleccionado
+      const selectedModule = this.modules.find(module => module.id === this.quizCategory.moduleId);
+      console.log(selectedModule);
+      const existingCell = selectedModule.cell?.find(
+        cell => cell.name === this.cell.value
+      );
+      if (existingCell) {
+        // La célula ya existe, manejar el caso (mostrar mensaje al usuario)
+        console.error('La célula ya existe en el módulo seleccionado');
+        this.alertService.showWarning('La célula ya existe en el módulo seleccionado los nombres deben ser únicos')
+        return;
+      } 
+      if (selectedModule && selectedModule.cell) {
+        this.headerPageService.createCell(this.cell.value, this.quizCategory.moduleId).pipe(
+          switchMap(() => {
+            // Una vez que termine la creacion, obtener la lista actualizada
+            return this.headerPageService.getModules();
+          })
       ).subscribe({
         next: (response: any) => {
           this.modules = response;
@@ -227,10 +251,13 @@ export class HeaderPageComponent {
           
         },
         error: (error) => {
-          console.error('Error al crear la célula', error);
+          const message = 'Error al crear la célula en el módulo seleccionado los nombres deben ser únicos';
+          this.alertService.showWarning(message)
+          console.error(message, error);
           // Manejar error (mostrar mensaje al usuario)
         }
       });
+    }
     }
   }
   // Método para iniciar la edición
