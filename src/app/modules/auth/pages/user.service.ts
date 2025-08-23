@@ -17,9 +17,10 @@ export interface UserData {
 
 export interface LoginResponse {
   access_token: string;
+  id_token: string;
   scope: string;
-  token_type: string;
   expires_in: number;
+  token_type: string;
 }
 
 @Injectable({
