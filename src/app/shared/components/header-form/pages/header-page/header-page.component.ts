@@ -168,8 +168,7 @@ export class HeaderPageComponent {
       if (existingModule) {
         console.error('El módulo ya existe');
         this.alertService.showWarning('El módulo ya existe');
-        return;
-      }
+      } else {
       this.headerPageService.createModule(this.module.value).subscribe({
         next: () => {
           this.getCategory()
@@ -179,7 +178,8 @@ export class HeaderPageComponent {
           console.error('Error al crear módulo', error);
           // Manejar error (mostrar mensaje al usuario)
         }
-      });
+        });
+        }
     }
   }
   // Método para iniciar la edición
@@ -232,9 +232,8 @@ export class HeaderPageComponent {
         // La célula ya existe, manejar el caso (mostrar mensaje al usuario)
         console.error('La célula ya existe en el módulo seleccionado');
         this.alertService.showWarning('La célula ya existe en el módulo seleccionado los nombres deben ser únicos')
-        return;
-      } 
-      if (selectedModule && selectedModule.cell) {
+      } else { 
+        if (selectedModule && selectedModule.cell) {
         this.headerPageService.createCell(this.cell.value, this.quizCategory.moduleId).pipe(
           switchMap(() => {
             // Una vez que termine la creacion, obtener la lista actualizada
@@ -257,6 +256,7 @@ export class HeaderPageComponent {
           // Manejar error (mostrar mensaje al usuario)
         }
       });
+    }
     }
     }
   }
@@ -319,15 +319,23 @@ export class HeaderPageComponent {
   //Escucha los click del mouse en el documento
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent) {
-    // Verifica si el clic fue fuera de los contenedores
-    const clickedInside = this.elementRef.nativeElement.contains(event.target);
-    
+    const target = event.target as HTMLElement;
+    console.log('Document clicked:', target);
+    //Si el click fue dentro del Swal, ignorar
+    if (target.closest('.swal2-container')) {
+      return;
+    }
+
+    // Si el click fue dentro del propio dropdown, ignorar
+    const clickedInside = this.elementRef.nativeElement.contains(target);
+    console.log('Clicked inside:', clickedInside);
     if (!clickedInside) {
       this.showModulo = false;
       this.showCelula = false;
       this.showSeniority = false;
     }
   }
+
   //Cambia la visibilidad de modulo, celula y seniority
   isShowModulo(event?: MouseEvent) {
     if (event) {
