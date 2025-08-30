@@ -1,13 +1,13 @@
 <section class="d-flex page">
-  <app-side-bar> </app-side-bar>
+  <app-side-bar role="candidate"> </app-side-bar>
 
   <!-- Content -->
   <div class="dashboard-container">
     <div class="header" *ngIf="user$ | async as user">
       <h1>
-        Bienvenido <span>{{ users.name }}</span>
+        Bienvenido, {{ user.name }}
       </h1>
-      <p class="date">{{ users.date }}</p>
+      <p class="date">{{ currentDate | date:'dd MMM yyyy' }}</p>
     </div>
     
     <!-- Cards -->
