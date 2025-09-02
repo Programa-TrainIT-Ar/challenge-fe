@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import {
   Component,
   ViewEncapsulation,
@@ -96,7 +97,10 @@ export class CandidatoFormComponent implements AfterViewChecked, OnInit {
 
   registroExitoso = false;
 
-  constructor(private fb: FormBuilder) {}
+  constructor(
+    private fb: FormBuilder,
+    private http: HttpClient
+  ) {}
 
   ngOnInit(): void {
     this.form = this.fb.group({
@@ -148,10 +152,20 @@ export class CandidatoFormComponent implements AfterViewChecked, OnInit {
         level: this.form.value.level?.label,
         availability: this.form.value.availability?.name,
       };
-      console.log('📤 Datos listos para backend:', payload);
 
-      this.registroExitoso = true;
-      window.alert('✅ Registro actualizado con éxito');
+      this.http
+        .post('', payload)
+        .subscribe({
+          next: res => {
+            console.log('📤 Datos enviados correctamente:', res);
+            this.registroExitoso = true;
+            window.alert('✅ Registro actualizado con éxito');
+          },
+          error: err => {
+            console.error('❌ Error al enviar datos:', err);
+            window.alert('⚠ Ocurrió un error al enviar tus datos');
+          },
+        });
     } else {
       window.alert('⚠ Faltan campos por llenar');
       this.form.markAllAsTouched();
