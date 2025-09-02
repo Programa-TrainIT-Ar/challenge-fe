@@ -153,19 +153,17 @@ export class CandidatoFormComponent implements AfterViewChecked, OnInit {
         availability: this.form.value.availability?.name,
       };
 
-      this.http
-        .post('', payload)
-        .subscribe({
-          next: res => {
-            console.log('📤 Datos enviados correctamente:', res);
-            this.registroExitoso = true;
-            window.alert('✅ Registro actualizado con éxito');
-          },
-          error: err => {
-            console.error('❌ Error al enviar datos:', err);
-            window.alert('⚠ Ocurrió un error al enviar tus datos');
-          },
-        });
+      this.http.post('', payload).subscribe({
+        next: res => {
+          console.log('📤 Datos enviados correctamente:', res);
+          this.registroExitoso = true;
+          window.alert('✅ Registro actualizado con éxito');
+        },
+        error: err => {
+          console.error('❌ Error al enviar datos:', err);
+          window.alert('⚠ Ocurrió un error al enviar tus datos');
+        },
+      });
     } else {
       window.alert('⚠ Faltan campos por llenar');
       this.form.markAllAsTouched();
