@@ -1,5 +1,6 @@
 <div class="registro-escritorio">
   <div class="registro-formulario">
+    <!-- Sección de bienvenida -->
     <div class="registro-texto">
       <h1 class="titulo-principal">Bienvenido a TrainIT</h1>
       <p class="subtitulo">
@@ -8,6 +9,7 @@
       </p>
     </div>
 
+    <!-- Formulario -->
     <div class="formulario">
       <div class="formulario-logo">
         <img src="/assets/trainit.png" alt="Logo TrainIT" />
@@ -21,14 +23,12 @@
             <span class="label-text">País o región</span>
             <span class="label-required">*</span>
           </div>
-
           <p-dropdown
             [options]="countries"
             formControlName="country"
             optionLabel="name"
             placeholder="Selecciona tu país"
             styleClass="custom-dropdown">
-            <!-- Items de la lista -->
             <ng-template pTemplate="item" let-country>
               <div class="dropdown-item-content">
                 <span class="flag">{{ country.flag }}</span>
@@ -36,7 +36,6 @@
               </div>
             </ng-template>
 
-            <!-- Item seleccionado -->
             <ng-template pTemplate="selectedItem" let-country>
               <div *ngIf="country" class="dropdown-item-content">
                 <span class="flag">{{ country.flag }}</span>
@@ -44,8 +43,6 @@
               </div>
             </ng-template>
           </p-dropdown>
-
-          <!-- Error -->
           <small
             *ngIf="form.get('country')?.invalid && form.get('country')?.touched"
             class="alert-error">
@@ -53,22 +50,41 @@
           </small>
         </div>
 
-        <!-- Teléfono -->
+        <!-- Rol -->
         <div class="input-label">
           <div class="label-container">
-            <span class="label-text">Roll</span>
+            <span class="label-text">Rol</span>
             <span class="label-required">*</span>
           </div>
-          <div class="input-container">
-            <input
-              type="text"
-              formControlName="phone"
-              placeholder="Ingresa tu roll" />
-          </div>
+          <p-dropdown
+            [options]="roles"
+            formControlName="role"
+            optionLabel="name"
+            placeholder="Selecciona tu rol"
+            styleClass="custom-dropdown">
+            <ng-template pTemplate="item" let-role>
+              <div class="dropdown-item-content">
+                <span class="name">{{ role.name }}</span>
+              </div>
+            </ng-template>
+
+            <ng-template pTemplate="selectedItem" let-role>
+              <div
+                *ngIf="role; else rolPlaceholder"
+                class="dropdown-item-content">
+                <span class="name">{{ role.name }}</span>
+              </div>
+            </ng-template>
+          </p-dropdown>
+
+          <ng-template #rolPlaceholder>
+            <span class="placeholder-text">Selecciona tu rol</span>
+          </ng-template>
+
           <small
-            *ngIf="form.get('phone')?.invalid && form.get('phone')?.touched"
+            *ngIf="form.get('role')?.invalid && form.get('role')?.touched"
             class="alert-error">
-            Ingresa un número válido (7-15 dígitos).
+            Selecciona un rol válido.
           </small>
         </div>
 
@@ -91,7 +107,7 @@
             styleClass="custom-dropdown"
             [maxSelectedLabels]="5"
             (onChange)="validateSelection($event)">
-            <!-- Items de la lista -->
+            <!-- Items -->
             <ng-template let-language pTemplate="item">
               <div
                 class="dropdown-item-content"
@@ -121,6 +137,7 @@
               </div>
             </ng-template>
           </p-multiSelect>
+
           <small
             *ngIf="selectionError && form.get('languages')?.touched"
             class="alert-error">
@@ -148,36 +165,43 @@
           </small>
         </div>
 
-        <!-- Disponibilidad -->
+        <!-- Disponibilidad horaria -->
         <div class="input-label">
           <div class="label-container">
             <span class="label-text">Disponibilidad horaria</span>
             <span class="label-required">*</span>
           </div>
-          <div class="input-container">
-            <input
-              type="text"
-              formControlName="availability"
-              placeholder="Ingresa tu disponibilidad" />
-          </div>
+          <p-dropdown
+            [options]="availabilities"
+            formControlName="availability"
+            optionLabel="name"
+            placeholder="Selecciona tu disponibilidad"
+            styleClass="custom-dropdown">
+            <ng-template pTemplate="item" let-availability>
+              <div class="dropdown-item-content">
+                <span class="name">{{ availability.name }}</span>
+              </div>
+            </ng-template>
+
+            <ng-template pTemplate="selectedItem" let-availability>
+              <div *ngIf="availability" class="dropdown-item-content">
+                <span class="name">{{ availability.name }}</span>
+              </div>
+            </ng-template>
+          </p-dropdown>
+
           <small
             *ngIf="
               form.get('availability')?.invalid &&
               form.get('availability')?.touched
             "
             class="alert-error">
-            Este campo es obligatorio.
+            Selecciona una opción de disponibilidad.
           </small>
         </div>
 
-        <!-- Botón dinámico -->
-        <button class="btn-guardar" type="submit">Guardar
-        </button>
-
-        <!-- Alerta central -->
-        <div *ngIf="registroExitoso" class="alert-central">
-          ✅ Registro actualizado con éxito
-        </div>
+        <!-- Botón de envío -->
+        <button class="btn-guardar" type="submit">Guardar</button>
       </form>
     </div>
   </div>
