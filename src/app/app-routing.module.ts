@@ -28,7 +28,7 @@ import { CandidatoFormComponent } from './modules/candidato-dashboard/candidato-
         {
           path: '',
           redirectTo: 'register',
-          pathMatch: 'full'
+          pathMatch: 'full',
         },
         {
           path: 'candidato',
@@ -72,6 +72,7 @@ import { CandidatoFormComponent } from './modules/candidato-dashboard/candidato-
         },
         {
           path: 'candidato-form',
+          canActivate: [AuthGuard],
           component: CandidatoFormComponent,
         },
         {
