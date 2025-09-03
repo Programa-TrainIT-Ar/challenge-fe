@@ -1,4 +1,4 @@
-import { Component, inject, input, OnInit, output } from '@angular/core';
+import { Component, inject, Input, OnInit, Output, EventEmitter} from '@angular/core';
 import { Router } from '@angular/router';
 import {
   trigger,
@@ -7,8 +7,6 @@ import {
   animate,
   state,
 } from '@angular/animations';
-import { Output, EventEmitter } from '@angular/core';
-import Swal from 'sweetalert2';
 import { AlertService } from 'src/app/shared/components/alert/alert.service'; 
 import { AllPageService } from './all-page.service';
 
@@ -53,6 +51,9 @@ interface Quiz {
   ],
 })
 export class AllPageComponent implements OnInit {
+
+  @Input() isAdmin: boolean = true; //Permite adaptar la vista dependiendo del rol
+
   @Output() quizSelected = new EventEmitter<any>();
 
   module: string = '';

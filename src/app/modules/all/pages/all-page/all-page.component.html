@@ -20,10 +20,10 @@
           <td>Módulo</td>
           <td>Célula</td>
           <td>Seniority</td>
-          <td>Fec. Creación</td>
-          <td>Creador</td>
+          <td *ngIf="isAdmin">Fec. Creación</td>
+          <td *ngIf="isAdmin">Creador</td>
           <td>Estado</td>
-          <td>Acciones</td>
+          <td *ngIf="isAdmin">Acciones</td>
         </tr>
       </thead>
       <tbody>
@@ -32,8 +32,10 @@
           <td class="table-int">{{ quiz?.cell?.module?.name }}</td>
           <td class="table-int">{{ quiz?.cell?.name }}</td>
           <td class="table-int">{{ quiz?.seniority }}</td>
-          <td class="table-int">{{ quiz?.created_at | date:'dd/MM/yyyy' }}</td>
-          <td class="table-int">{{ quiz?.created_by?.first_name }}</td>
+
+
+          <td *ngIf="isAdmin" class="table-int">{{ quiz?.created_at | date:'dd/MM/yyyy' }}</td>
+          <td *ngIf="isAdmin" class="table-int">{{ quiz?.created_by?.first_name }}</td>
           <td class="table-int">
             <span class="status" 
                   [ngClass]="{'activo': quiz?.is_active, 'inactivo': !quiz?.is_active}" 
@@ -41,7 +43,7 @@
               {{ quiz?.is_active ? 'Activo' : 'Inactivo' }}
             </span>
           </td>
-          <td class="actions">
+          <td *ngIf="isAdmin" class="actions">
             <button (click)="viewQuiz(quiz)"><i class="bi bi-eye"></i></button>
             <button (click)="editQuiz(quiz)"><i class="bi bi-pencil-square"></i></button>
             <button (click)="deleteQuiz(quiz)"><i class="bi bi-trash"></i></button>
