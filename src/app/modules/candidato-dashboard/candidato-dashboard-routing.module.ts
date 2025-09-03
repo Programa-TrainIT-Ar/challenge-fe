@@ -1,8 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { DashboardPageComponent } from './dashboard-page/dashboard-page.component';
+import { DashboardPageComponent } from './dashboard-mainpage/dashboard-page.component';
 import { AllPageComponent } from '../all/pages/all-page/all-page.component';
 import { DashboardCardsComponent } from './dashboard-cards/dashboard-cards.component';
+import { DashboardQuizzesComponent } from './dashboard-quizzes/dashboard-quizzes.component';
 
 const routes: Routes = [
   {
@@ -11,7 +12,7 @@ const routes: Routes = [
     children: [
       { path: '', redirectTo: 'cards', pathMatch: 'full' },
       { path: 'cards', component: DashboardCardsComponent },
-      { path: 'quizzes', component: AllPageComponent },
+      { path: 'quizzes', component: DashboardQuizzesComponent },
     ],
   },
 ];
