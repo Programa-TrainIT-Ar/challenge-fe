@@ -1,0 +1,93 @@
+.subpage{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 2rem;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  width: 100%;
+  padding: 0px 8px;
+}
+
+.header h1 {
+  font-size: 2rem;
+  margin: 0;
+}
+
+.header span {
+  color: #55aaff;
+}
+
+.header .date {
+  font-size: 1rem;
+  color: #ccc;
+}
+
+.content h1 {
+  text-align: center;
+  margin-bottom: 3rem;
+  font-size: 32px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  row-gap: 10px;
+  column-gap: 58px;
+}
+
+.card {
+  width: 206px;
+  height: 250px;
+  border-radius: 16px;
+  border: none;
+  // position: relative;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+  background-color: #212121;
+  box-shadow: 0px 4px 12px 0px rgba(0, 0, 0, 0.25);
+  box-shadow: 0px 4px 9.5px 0px rgba(0, 0, 0, 0.25);
+}
+
+.card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+.card img {
+  width: 152px;
+  height: 143px;
+}
+
+.card .title {
+  visibility: hidden;
+  color: white;
+  transform: translateY(10px);
+  transition:
+    opacity 0.3s,
+    transform 0.6s;
+  // width: 206px;
+  height: 90px;
+  gap: 0px;
+  opacity: 0;
+  font-family: Poppins;
+  font-size: 20px; //Antes era 36px, pero si el texto es muy largo, desplaza los íconos hacia abajo
+  font-weight: 700;
+  line-height: 45px;
+  letter-spacing: 0.2px;
+  text-align: center;
+  text-decoration-skip-ink: none;
+}
+
+.card:hover .title {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}

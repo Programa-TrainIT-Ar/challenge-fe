@@ -41,8 +41,6 @@ import { VerifyEmailComponent } from './modules/auth/pages/verify-email/verify-e
         {
           path: 'dashboard',
           canActivate: [AuthGuard],
-          component: DashboardPageComponent,
-
           loadChildren: () =>
             import(
               './modules/candidato-dashboard/candidato-dashboard.module'
