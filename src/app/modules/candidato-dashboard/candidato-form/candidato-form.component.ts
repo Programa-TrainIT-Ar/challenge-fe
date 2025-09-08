@@ -67,7 +67,6 @@ export class CandidatoFormComponent implements AfterViewChecked, OnInit {
     { name: 'Python' },
     { name: 'Java' },
     { name: 'Go' },
-    { name: 'AWS' },
     { name: 'Node.js' },
     { name: 'Angular' },
     { name: 'React' },
