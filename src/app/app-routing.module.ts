@@ -71,7 +71,7 @@ import { CandidatoFormComponent } from './modules/candidato-dashboard/candidato-
           component: LoginComponent,
         },
         {
-          path: 'candidato-form',
+          path: 'complete-profile',
           canActivate: [AuthGuard],
           component: CandidatoFormComponent,
         },
