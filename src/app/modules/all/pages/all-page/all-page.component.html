@@ -6,7 +6,8 @@
     [editMode]='false'>
   </app-header-page>
   <div class="search-container">
-    <h2>Todos los Quiz</h2>
+    <h2 *ngIf="isAdmin">Todos los Quiz</h2>
+    <h2 *ngIf="!isAdmin">Elige un challenge</h2>
     <div class="input-wrapper">
       <i class="bi bi-search"></i>
       <input type="text" placeholder="Buscar" [(ngModel)]="searchText" (input)="onSearchChange()" />
@@ -16,7 +17,8 @@
     <table class="quiz-table">
       <thead>
         <tr class="table-sup">
-          <td>Nombre Q.</td>
+          <td *ngIf="isAdmin">Nombre Q.</td>
+          <td *ngIf="!isAdmin">Challenge</td>
           <td>Módulo</td>
           <td>Célula</td>
           <td>Seniority</td>
