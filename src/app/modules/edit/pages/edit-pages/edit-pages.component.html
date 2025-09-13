@@ -28,9 +28,10 @@
     </div>
 
     <app-header-page
-      [resetButton]="true"
+      [resetButton]="false"
       [editMode]="true"
-      [initialCategory]="initialQuizCategory">
+      [initialCategory]="initialQuizCategory"
+      (datosParaPadre)="receiveCategory($event)">
     </app-header-page>
 
     <div [formGroup]="selectNameForm" id="questions-scroll">
