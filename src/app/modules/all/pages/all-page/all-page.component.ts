@@ -1,4 +1,11 @@
-import { Component, inject, Input, OnInit, Output, EventEmitter} from '@angular/core';
+import {
+  Component,
+  inject,
+  Input,
+  OnInit,
+  Output,
+  EventEmitter,
+} from '@angular/core';
 import { Router } from '@angular/router';
 import {
   trigger,
@@ -7,7 +14,7 @@ import {
   animate,
   state,
 } from '@angular/animations';
-import { AlertService } from 'src/app/shared/components/alert/alert.service'; 
+import { AlertService } from 'src/app/shared/components/alert/alert.service';
 import { AllPageService } from './all-page.service';
 
 interface User {
@@ -51,7 +58,6 @@ interface Quiz {
   ],
 })
 export class AllPageComponent implements OnInit {
-
   @Input() isAdmin: boolean = true; //Permite adaptar la vista dependiendo del rol
 
   @Output() quizSelected = new EventEmitter<any>();
@@ -68,13 +74,20 @@ export class AllPageComponent implements OnInit {
   showEdit: boolean = false;
 
   private allPageService = inject(AllPageService);
-  constructor(private router: Router,
-              private alertService: AlertService,
+  constructor(
+    private router: Router,
+    private alertService: AlertService
   ) {}
 
   ngOnInit(): void {
     this.allPageService.getAllQuiz().subscribe((response: any) => {
-      this.quizzes = response.quizzes;
+      if (!this.isAdmin) {
+        // Si el usuario no es admin, filtra solo los quizzes activos
+        this.quizzes = response.quizzes.filter((quiz: Quiz) => quiz.is_active);
+      } else {
+        // Si es admin, muestra todos los quizzes
+        this.quizzes = response.quizzes;
+      }
     });
   }
 
@@ -94,7 +107,15 @@ export class AllPageComponent implements OnInit {
         search: this.searchText,
       })
       .subscribe((response: any) => {
-        this.quizzes = response.quizzes;
+        if (!this.isAdmin) {
+          // Si el usuario no es admin, filtra solo los quizzes activos
+          this.quizzes = response.quizzes.filter(
+            (quiz: Quiz) => quiz.is_active
+          );
+        } else {
+          // Si es admin, muestra todos los quizzes
+          this.quizzes = response.quizzes;
+        }
       });
   }
 
@@ -128,18 +149,19 @@ export class AllPageComponent implements OnInit {
             this.quizzes = this.quizzes.filter(q => q.id !== quiz.id);
             this.alertService.showSuccess(
               'Eliminado',
-              'El registro ha sido eliminado.')
+              'El registro ha sido eliminado.'
+            );
           },
           error: () => {
             this.alertService.showError(
               'Error',
-              'No se pudo eliminar el registro.',
-            )
+              'No se pudo eliminar el registro.'
+            );
           },
-        })
-        },
-        'Eliminar'
-      )
+        });
+      },
+      'Eliminar'
+    );
   }
 
   editQuiz(quiz: Quiz) {
