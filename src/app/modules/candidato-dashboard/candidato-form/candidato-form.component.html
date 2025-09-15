@@ -1,0 +1,208 @@
+<div class="registro-escritorio">
+  <div class="registro-formulario">
+    <!-- Sección de bienvenida -->
+    <div class="registro-texto">
+      <h1 class="titulo-principal">Bienvenido a TrainIT</h1>
+      <p class="subtitulo">
+        Este es el comienzo de tu camino para adquirir experiencia en el mundo
+        IT
+      </p>
+    </div>
+
+    <!-- Formulario -->
+    <div class="formulario">
+      <div class="formulario-logo">
+        <img src="/assets/trainit.png" alt="Logo TrainIT" />
+      </div>
+      <h1 class="formulario-texto">Completa tus datos</h1>
+
+      <form [formGroup]="form" (ngSubmit)="submit()" class="formulario-inputs">
+        <!-- País o región -->
+        <div class="input-label">
+          <div class="label-container">
+            <span class="label-text">País o región</span>
+            <span class="label-required">*</span>
+          </div>
+          <p-dropdown
+            [options]="countries"
+            formControlName="country"
+            optionLabel="name"
+            placeholder="Selecciona tu país"
+            styleClass="custom-dropdown">
+            <ng-template pTemplate="item" let-country>
+              <div class="dropdown-item-content">
+                <span class="flag">{{ country.flag }}</span>
+                <span class="name">{{ country.name }}</span>
+              </div>
+            </ng-template>
+
+            <ng-template pTemplate="selectedItem" let-country>
+              <div *ngIf="country" class="dropdown-item-content">
+                <span class="flag">{{ country.flag }}</span>
+                <span class="name">{{ country.name }}</span>
+              </div>
+            </ng-template>
+          </p-dropdown>
+          <small
+            *ngIf="form.get('country')?.invalid && form.get('country')?.touched"
+            class="alert-error">
+            Debes seleccionar un país.
+          </small>
+        </div>
+
+        <!-- Rol -->
+        <div class="input-label">
+          <div class="label-container">
+            <span class="label-text">Rol</span>
+            <span class="label-required">*</span>
+          </div>
+          <p-dropdown
+            [options]="roles"
+            formControlName="role"
+            optionLabel="name"
+            placeholder="Selecciona tu rol"
+            styleClass="custom-dropdown">
+            <ng-template pTemplate="item" let-role>
+              <div class="dropdown-item-content">
+                <span class="name">{{ role.name }}</span>
+              </div>
+            </ng-template>
+
+            <ng-template pTemplate="selectedItem" let-role>
+              <div
+                *ngIf="role; else rolPlaceholder"
+                class="dropdown-item-content">
+                <span class="name">{{ role.name }}</span>
+              </div>
+            </ng-template>
+          </p-dropdown>
+
+          <ng-template #rolPlaceholder>
+            <span class="placeholder-text">Selecciona tu rol</span>
+          </ng-template>
+
+          <small
+            *ngIf="form.get('role')?.invalid && form.get('role')?.touched"
+            class="alert-error">
+            Selecciona un rol válido.
+          </small>
+        </div>
+
+        <!-- Tecnologías -->
+        <div class="input-label">
+          <div class="label-container">
+            <span class="label-text">Tecnologías</span>
+            <span class="label-required">*</span>
+          </div>
+          <p-multiSelect
+            [options]="languages"
+            formControlName="languages"
+            placeholder="Selecciona lenguajes"
+            optionLabel="name"
+            display="chip"
+            class="w-full md:w-80"
+            [filter]="false"
+            [showClear]="false"
+            [showToggleAll]="false"
+            styleClass="custom-dropdown"
+            [maxSelectedLabels]="5"
+            (onChange)="validateSelection($event)">
+            <!-- Items -->
+            <ng-template let-language pTemplate="item">
+              <div
+                class="dropdown-item-content"
+                [ngStyle]="{
+                  'background-color': form
+                    .get('languages')
+                    ?.value?.includes(language)
+                    ? getChipColor(language.name)
+                    : '#202020',
+                  color: form.get('languages')?.value?.includes(language)
+                    ? '#fff'
+                    : '#ccc',
+                }">
+                <span class="name">{{ language.name }}</span>
+              </div>
+            </ng-template>
+
+            <!-- Chips seleccionados -->
+            <ng-template let-language pTemplate="selectedItem">
+              <div
+                class="custom-chip"
+                [ngStyle]="{
+                  'background-color': getChipColor(language.name),
+                  color: '#ffffff',
+                }">
+                <span class="chip-name">{{ language.name }}</span>
+              </div>
+            </ng-template>
+          </p-multiSelect>
+
+          <small
+            *ngIf="selectionError && form.get('languages')?.touched"
+            class="alert-error">
+            Debes seleccionar entre 1 y 5 lenguajes.
+          </small>
+        </div>
+
+        <!-- Nivel -->
+        <div class="input-label">
+          <div class="label-container">
+            <span class="label-text">Seniority</span>
+            <span class="label-required">*</span>
+          </div>
+          <p-dropdown
+            [options]="levels"
+            formControlName="level"
+            optionLabel="label"
+            placeholder="Selecciona tu nivel"
+            styleClass="custom-dropdown">
+          </p-dropdown>
+          <small
+            *ngIf="form.get('level')?.invalid && form.get('level')?.touched"
+            class="alert-error">
+            Selecciona tu nivel.
+          </small>
+        </div>
+
+        <!-- Disponibilidad horaria -->
+        <div class="input-label">
+          <div class="label-container">
+            <span class="label-text">Disponibilidad horaria</span>
+            <span class="label-required">*</span>
+          </div>
+          <p-dropdown
+            [options]="availabilities"
+            formControlName="availability"
+            optionLabel="name"
+            placeholder="Selecciona tu disponibilidad"
+            styleClass="custom-dropdown">
+            <ng-template pTemplate="item" let-availability>
+              <div class="dropdown-item-content">
+                <span class="name">{{ availability.name }}</span>
+              </div>
+            </ng-template>
+
+            <ng-template pTemplate="selectedItem" let-availability>
+              <div *ngIf="availability" class="dropdown-item-content">
+                <span class="name">{{ availability.name }}</span>
+              </div>
+            </ng-template>
+          </p-dropdown>
+
+          <small
+            *ngIf="
+              form.get('availability')?.invalid &&
+              form.get('availability')?.touched
+            "
+            class="alert-error">
+            Selecciona una opción de disponibilidad.
+          </small>
+        </div>
+
+        <!-- Botón de envío -->
+        <button class="btn-guardar" type="submit">Guardar</button>
+      </form>
+    </div>
+  </div>
+</div>

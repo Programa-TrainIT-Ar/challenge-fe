@@ -12,6 +12,7 @@ import { authenticatedGuard } from './modules/guards/authenticated.guard';
 import { ErrorComponent } from './modules/home/pages/error/error.component';
 
 import { VerifyEmailComponent } from './modules/auth/pages/verify-email/verify-email.component';
+import { CandidatoFormComponent } from './modules/candidato-dashboard/candidato-form/candidato-form.component';
 @NgModule({
   imports: [
     RouterModule.forRoot(
@@ -27,7 +28,7 @@ import { VerifyEmailComponent } from './modules/auth/pages/verify-email/verify-e
         {
           path: '',
           redirectTo: 'register',
-          pathMatch: 'full'
+          pathMatch: 'full',
         },
         {
           path: 'candidato',
@@ -66,6 +67,11 @@ import { VerifyEmailComponent } from './modules/auth/pages/verify-email/verify-e
           path: 'login',
           canActivate: [authenticatedGuard], // Si esta autenticado lo redirige a home o candidato segun su rol
           component: LoginComponent,
+        },
+        {
+          path: 'complete-profile',
+          canActivate: [AuthGuard],
+          component: CandidatoFormComponent,
         },
         {
           path: 'verify-email',

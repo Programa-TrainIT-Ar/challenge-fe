@@ -36,6 +36,8 @@ export class EditPagesComponent implements OnInit {
   correct_option: number[] = [];
   selectedRadio: string | null = null;
   initialQuizCategory: any = null;
+  cell_id: string = '';
+  seniority: string = '';
 
   constructor(
     private formBuilder: FormBuilder,
@@ -62,26 +64,20 @@ export class EditPagesComponent implements OnInit {
 
     this.quizService.getQuizWithQuestions(this.quizId).subscribe({
       next: quizData => {
-        console.log('Respuesta de la API:', quizData);
         this.selectNameForm.patchValue({
           name: quizData.name,
           description: quizData.description,
         });
 
-        const quizCategory = {
-          module: quizData.module?.value || '',
-          moduleId: quizData.module?.id || '',
-          cell: quizData.cell?.name || '',
-          cellId: quizData.cell?.id || '',
-          cellClass: quizData.cell
-            ? this.getCellClass(quizData.cell.index)
-            : '',
-          seniority: quizData.seniority || '',
+        this.initialQuizCategory = {
+          module: quizData.cell.module.name,
+          module_id: quizData.cell.module.id,
+          cell: quizData.cell.name,
+          cell_id: quizData.cell.id,
+          seniority: quizData.seniority
         };
-
-        console.log('Quiz Category:', quizCategory);
-        this.initialQuizCategory = quizCategory;
-
+        
+        console.log('Modulo inicial:', this.initialQuizCategory);
         this.populateQuestions(quizData.questions);
       },
       error: error => {
@@ -162,12 +158,24 @@ export class EditPagesComponent implements OnInit {
     }
   }
 
+
+  receiveCategory(quizCategory: any) {
+    this.initialQuizCategory.module = quizCategory.module;
+    this.initialQuizCategory.module_id = quizCategory.moduleId;
+    this.cell_id = quizCategory.cellId;
+    this.seniority = quizCategory.seniority;
+    this.initialQuizCategory.cell_id = quizCategory.cellId;
+    this.initialQuizCategory.seniority = quizCategory.seniority;
+  }
+
   createQuiz() {
     const formValue = this.selectNameForm.value;
     const updatedQuiz = {
       id: this.quizId,
       name: formValue.name,
       description: formValue.description,
+      cell_id: this.initialQuizCategory.cell_id,
+      seniority: this.initialQuizCategory.seniority.toLowerCase(),
       questions: formValue.questions.map(question => {
         if (question.type === 'true_false') {
           return {
