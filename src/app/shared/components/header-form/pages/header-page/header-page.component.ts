@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, HostListener, inject, Input, OnInit, Output } from '@angular/core';
+import { Component, ElementRef, EventEmitter, HostListener, inject, Input, OnInit, Output, SimpleChanges } from '@angular/core';
 import { AbstractControl, FormControl, ValidationErrors, Validators } from '@angular/forms';
 import { HeaderPageService } from './header-page.service';
 import { Module, Cell, Seniority } from './header-page.interface';
@@ -64,20 +64,35 @@ export class HeaderPageComponent {
     // Consulta los modulos y las celullas que tiene anidadas
     this.getCategory();
   
-    // If initial category is provided, set it after modules are loaded
-    if (this.initialCategory) {
-      this.setInitialCategory();
-    }
   }
 
-  setInitialCategory() {
-    // Increase delay and add error handling
-    setTimeout(() => {
-      if (!this.initialCategory) {
-        console.warn('No initial category provided');
-        return;
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['initialCategory'] && changes['initialCategory'].currentValue) {
+      this.quizCategory = { ...changes['initialCategory'].currentValue };
+      console.log('Header: initialCategory changed ->', this.quizCategory);
+      // Si ya tenemos módulos cargados, aplicar de inmediato
+      if (this.modules.length > 0) {
+        this.setInitialCategory();
       }
+    }
+  }
+  
 
+  //obtiene los modulos y celulas de la api
+  getCategory() {
+    this.headerPageService.getModules().subscribe({
+      next:( response: any) => {
+        this.modules= response;
+        // If initial category is provided, set it after modules are loaded
+        if (this.initialCategory) {
+          this.setInitialCategory();
+        }
+      }
+    });
+  }
+  
+  setInitialCategory() {   
+      // Debugging logs
       console.log('Initial Category:', this.initialCategory);
       console.log('Available Modules:', this.modules);
 
@@ -98,7 +113,8 @@ export class HeaderPageComponent {
             const cell = module.cell.find(c => 
               c.name.trim().toLowerCase() === this.initialCategory.cell.trim().toLowerCase()
             );
-
+            this.cells = module.cell; // Asegura que las células estén cargadas
+            console.log('Available Cells for Module:', this.cells);
             if (cell) {
               const cellIndex = module.cell.indexOf(cell);
               console.log('Found Cell:', cell, 'at index', cellIndex);
@@ -110,19 +126,13 @@ export class HeaderPageComponent {
 
           // If seniority is provided
           if (this.initialCategory.seniority) {
-            this.selectSeniority(this.initialCategory.seniority);
+            const seniorityCapitalized = this.initialCategory.seniority.charAt(0).toUpperCase() + this.initialCategory.seniority.slice(1).toLowerCase();
+            this.selectSeniority(seniorityCapitalized);
           }
         } else {
           console.warn('Module not found:', this.initialCategory.module);
         }
       }
-    }, 300);  // Increased delay to 300ms
-  }
-  //obtiene los modulos y celulas de la api
-  getCategory() {
-    this.headerPageService.getModules().subscribe(( response: any) => {
-      this.modules= response
-    })
   }
   
   //Coloca los valores de modulo, celula y seniority vacios

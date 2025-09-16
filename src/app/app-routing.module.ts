@@ -6,7 +6,7 @@ import { HomePageComponent } from './modules/home/pages/home-page/home-page.comp
 import { AuthGuard } from '../app/modules/guards/authGuard.guard';
 import { RoleGuard } from '../app/modules/guards/role.guard';
 import { WelcomeCandidatoComponent } from './modules/welcome-candidato/welcome-candidato.component';
-import { DashboardPageComponent } from './modules/candidato-dashboard/dashboard-page/dashboard-page.component';
+import { DashboardPageComponent } from './modules/candidato-dashboard/dashboard-mainpage/dashboard-page.component';
 import { LoginComponent } from './modules/auth/pages/login/login.component';
 import { authenticatedGuard } from './modules/guards/authenticated.guard';
 import { ErrorComponent } from './modules/home/pages/error/error.component';
@@ -42,8 +42,6 @@ import { CandidatoFormComponent } from './modules/candidato-dashboard/candidato-
         {
           path: 'dashboard',
           canActivate: [AuthGuard],
-          component: DashboardPageComponent,
-
           loadChildren: () =>
             import(
               './modules/candidato-dashboard/candidato-dashboard.module'

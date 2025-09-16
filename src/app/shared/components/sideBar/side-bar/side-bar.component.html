@@ -17,7 +17,7 @@
       @for (item of sidebarItems; track $index) {
         <button
           [ngClass]="extended ? 'sidebar-btns-extended' : 'sidebar-btns'"
-          class="active-btn mb-2">
+          class="active-btn mb-2" (click)="onItemClick(item)">
           <ng-container *ngIf="item.type === 'image'">
             <img class="svg" [src]="item.icon" />
           </ng-container>
