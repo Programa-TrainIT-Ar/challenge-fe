@@ -8,7 +8,6 @@ import { FormsModule } from '@angular/forms';
 import { HeaderFormModule } from 'src/app/shared/components/header-form/header-form.module';
 import { EditModule } from '../edit/edit.module';
 import { EditPagesComponent } from '../edit/pages/edit-pages/edit-pages.component';
-import { CandidatoDashboardModule } from '../candidato-dashboard/candidato-dashboard.module';
 
 const routes: Routes = [
   {
@@ -39,7 +38,6 @@ const routes: Routes = [
     FormsModule,
     HeaderFormModule,
     EditModule,
-    CandidatoDashboardModule, // Importa el módulo
     RouterModule.forChild(routes), // Cambia forRoot por forChild
   ],
   exports: [
