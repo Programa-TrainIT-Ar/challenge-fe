@@ -41,12 +41,13 @@
         <span *ngIf="extended" class="sidebar-font-btn svg">Configuración</span>
       </button>
 
-      <!-- Botón cerrar sesióm -->
+      <!-- Botón cerrar sesión -->
       <button
         [ngClass]="extended ? 'sidebar-btns-extended' : 'sidebar-btns'"
-        class="active-btn mb-2">
+        class="active-btn mb-2"
+        (click)="logout()"
+        >
         <img
-          (click)="logout()"
           class="svg"
           src="../../../../../assets/images/Crear Quizz/Vector.png" />
         <span *ngIf="extended" class="sidebar-font-btn">Salir</span>
