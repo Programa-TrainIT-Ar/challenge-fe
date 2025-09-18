@@ -40,7 +40,7 @@
         "prismjs": "^1.29.0",
         "rimraf": "^4.4.1",
         "rxjs": "~7.8.1",
-        "sweetalert2": "^11.14.3",
+        "sweetalert2": "^11.23.0",
         "tslib": "^2.5.0",
         "uuid": "^11.0.3",
         "webpack": "^5.96.1",
