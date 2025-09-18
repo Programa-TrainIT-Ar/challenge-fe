@@ -171,7 +171,7 @@
                     type="radio"
                     class="checkbox-input"
                     name="correct_option_{{ i }}"
-                    [checked]="question.get('correct_option').value === 0"
+                    [checked]="question.get('correct_option').value === 1"
                     (change)="selectCorrectOption(i, 'Verdadero')" />
                 </div>
 
@@ -185,7 +185,7 @@
                     type="radio"
                     class="checkbox-input"
                     name="correct_option_{{ i }}"
-                    [checked]="question.get('correct_option').value === 1"
+                    [checked]="question.get('correct_option').value === 0"
                     (change)="selectCorrectOption(i, 'Falso')" />
                 </div>
 
