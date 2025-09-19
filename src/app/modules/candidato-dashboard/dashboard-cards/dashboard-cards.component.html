@@ -6,10 +6,13 @@
   <div class="content">
     <h1>Selecciona tu stack</h1>
     <div class="grid">
-      <div class="card" *ngFor="let item of items">
+      <div class="card" *ngFor="let item of items" (click)="filtrarQuizzes(item.search)">
         <span class="title">{{ item.title }}</span>
         <img [src]="item.icon" [alt]="item.title" />
       </div>
+    </div>
+    <div class="d-flex justify-content-end">
+      <button class="btn-all" (click)="filtrarQuizzes('all')">→ Ver todos</button>
     </div>
   </div>
 </section>
