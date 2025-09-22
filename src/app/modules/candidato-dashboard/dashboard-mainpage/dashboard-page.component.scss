@@ -1,13 +1,25 @@
 .page {
+  display:flex;
+  flex-direction: row;
   background: #1b1b1b;
-  height: auto;
+  height: 100vh;
 }
 
 .dashboard-container {
-  width: 100%;
-  height: 100%;
+  flex: 1;                   
+  display: flex;
+  flex-direction: column;    
+  overflow: auto; 
 }
 
+.app-side-bar{
+   flex: 0 0 80px;
+
+}
+
+app-side-bar.sidebar-container-extended {
+  flex: 0 0 250px;          
+}
 
 .footer {
   width: 100%;
@@ -46,4 +58,14 @@
   text-align: left;
   text-underline-position: from-font;
   text-decoration-skip-ink: none;
+}
+
+@media (max-width: 768px) {
+  .app-side-bar{
+       position: fixed;
+       height: 100vh; 
+       width: 250px; 
+       z-index: 1000
+  }
+  
 }

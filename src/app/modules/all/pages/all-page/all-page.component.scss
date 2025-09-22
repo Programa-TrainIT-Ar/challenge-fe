@@ -6,33 +6,29 @@ $border-radius: 12px;
 $transition-time: 0.3s;
 $spacing: 20px;
 
-
 .quiz-dashboard {
   padding: 20px;
   background-color: #212121;
   color: #fff;
-  height: 95vh;
-  width: 150vh; 
+  width: 100%;
   border-radius: 12px;
-  padding: 24px 8px 8px 8px;
-  gap: 47px;  
-  opacity: 0px;
-  overflow: auto; 
   margin-block: 2.5vh;
+  overflow: hidden;   
 }
-.table-sup{
+
+.table-sup {
   font-family: Poppins;
   font-size: 16px;
   font-weight: 400;
   line-height: 24px;
-  letter-spacing: 0.20000000298023224px;
   text-align: center;
+}
 
+.table-int { 
+  margin: 0 auto;
+  flex: auto;
 }
-.table-int{ 
- margin: 0 auto;
- flex: auto;
-}
+
 h2 {
   color: #fff;
   font-size: 1.5rem;
@@ -72,6 +68,7 @@ h2 {
   border-radius: 5px;
   width: 200px;
 }
+
 .overlay {
   position: fixed;
   top: 50%;
@@ -79,7 +76,7 @@ h2 {
   transform: translate(-50%,-50%);
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5); /* Fondo semitransparente */
+  background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -87,14 +84,12 @@ h2 {
 }
 
 .popup {
-  // background-color: rgb(66, 66, 66);
-  // padding: 20px;
   border-radius: 8px;
   max-width: 80%;
-
   overflow-y: auto;
   z-index: 1001;
 }
+
 .table-and-button {
   display: flex;
   justify-content: space-between;
@@ -125,20 +120,61 @@ h2 {
   background-color: #4500b5;
 }
 
+
 .quiz-table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 10px;
-}
-.activo {
-  color:rgba(151, 71, 255, 1);
-  ; 
-  font-weight: bold; 
+  display: block;
 }
 
-.inactivo {
-  color: red; 
-  font-weight: normal; 
+.quiz-table thead {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+  background-color: #333;
+}
+
+.quiz-table tbody {
+  display: block;
+  max-height: 350px;   
+  overflow-y: auto;  
+  width: 100%;
+}
+
+.quiz-table tr {
+  display: table;
+  table-layout: fixed;
+  width: 100%;
+}
+
+.quiz-table th,
+.quiz-table td {
+  padding: 10px;
+  text-align: center;
+  border-bottom: 1px solid #444;
+  font-family: "Poppins";
+  background-color: #222;
+}
+
+.actions button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: white;
+}
+
+.status {
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.status.Activo {
+  color: rgba(151, 71, 255, 1);
+}
+
+.status.Inactivo {
+  color: #ff0000;
 }
 
 .input-wrapper {
@@ -154,6 +190,12 @@ h2 {
   transform: translateY(-50%);
   color: #aaa; 
 }
+
+.input-wrapper input {
+  padding-left: 35px; 
+  width: 100%; 
+}
+
 .custom-popup {
   background-color: #1f1f1f; 
   color: #fff;               
@@ -185,48 +227,20 @@ h2 {
   padding: 10px 20px;
 }
 
-.input-wrapper input {
-  padding-left: 35px; 
-  width: 100%; 
-}
+@media (max-width: 768px) {
+  .quiz-table-wrapper {
+    overflow-x: auto;  
+  }
 
-.quiz-table th, .quiz-table td {
-  padding: 10px;
-  text-align: left;
-  border-bottom: 1px solid #444;
-}
+  .quiz-table {
+    border-collapse: collapse;
+    min-width: 600px;  
+  }
 
-.quiz-table th {
-  background-color: #333;
-  
-}
-
-
-.quiz-table td {
-  background-color: #222;
-  text-align: center; // Centrar el texto horizontalmente
-  padding: 12px; // Espacio alrededor del texto    
-  font-family: "Poppins"; 
-}
-
-.actions button {
-  display: flexbox;
-  background: none;
-  border: none;
-  cursor: pointer;
-  color: white;
-}
-
-.status {
-  font-weight: bold;
-  cursor: pointer;
-}
-
-.status.Activo {
-  color: rgba(151, 71, 255, 1);
-  ;
-}
-
-.status.Inactivo {
-  color: #ff0000;
+  .quiz-table th,
+  .quiz-table td {
+    font-size: 14px;
+    padding: 8px;
+    white-space: wrap;
+  }
 }

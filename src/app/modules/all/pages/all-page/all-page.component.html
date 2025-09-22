@@ -13,19 +13,19 @@
       <input type="text" placeholder="Buscar" [(ngModel)]="searchText" (input)="onSearchChange()" />
     </div>
   </div>
-  <div>
+  <div class="quiz-table-wrapper">
     <table class="quiz-table">
       <thead>
         <tr class="table-sup">
-          <td *ngIf="isAdmin">Nombre Q.</td>
-          <td *ngIf="!isAdmin">Challenge</td>
-          <td>Módulo</td>
-          <td>Célula</td>
-          <td>Seniority</td>
-          <td *ngIf="isAdmin">Fec. Creación</td>
-          <td *ngIf="isAdmin">Creador</td>
-          <td>Estado</td>
-          <td *ngIf="isAdmin">Acciones</td>
+          <th *ngIf="isAdmin">Nombre Q.</th>
+          <th *ngIf="!isAdmin">Challenge</th>
+          <th>Módulo</th>
+          <th>Célula</th>
+          <th>Seniority</th>
+          <th *ngIf="isAdmin">Fec. Creación</th>
+          <th *ngIf="isAdmin">Creador</th>
+          <th>Estado</th>
+          <th *ngIf="isAdmin">Acciones</th>
         </tr>
       </thead>
       <tbody>

@@ -10,7 +10,7 @@
 }
 
 .text-description {
-  width: 135vh;
+  width: 135vw;
   height: 76px;
   margin: 0;
   padding-top: 8px;
@@ -35,7 +35,7 @@
 }
 
 .content {
-  display: flex;
+  display: block;
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -47,14 +47,14 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  width: 135vh;
+  width: 100%;
   position: relative;
   border-radius: 12px;
   padding: 0.8rem;
 }
 
 .input-container {
-  width: 41vh;
+  width: 25%;
   height: 9vh;
   display: flex;
   flex-direction: column;
@@ -64,11 +64,11 @@
 .option-floating {
   position: absolute;
   z-index: 1000;
-  width: 41vh;
+  width: 30%;
   background-color: #303030;
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 0.8rem;
   align-items: center;
   padding: 0.8rem;
@@ -77,7 +77,7 @@
 }
 
 .module-option {
-  width: 38vh;
+  width: 100%;
   height: 4.5vh;
   background-color: #202020;
   border: none;
@@ -133,6 +133,8 @@
   padding: 0 15px;
   background: linear-gradient(to right, #6a5fff80, #ff5ea680);
   border: none;
+  align-self: flex-end;
+  margin-top: 0.5rem;
 }
 
 
@@ -237,4 +239,38 @@ h4 {
 .cell-color-10 {
   background-color: #FF2D55;
   color: #97263B;
+}
+
+@media (max-width: 768px) {
+  .content{
+    width: 100%;
+    align-items: flex-start;
+    padding: 0;
+    margin: 0;
+  }
+  .content-1 {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .input-container {
+    width: 100% !important;
+    box-sizing: border-box;
+    padding: 0;
+    margin-bottom: 1rem;
+    flex: 1;
+  }
+
+  .form-select.option-select,
+  .floating {
+    width: 100%;
+    box-sizing: border-box;
+    overflow-wrap: break-word;
+    white-space: nowrap;
+  }
+
+  .option-floating {
+    width: 100%;
+  }
+
 }
