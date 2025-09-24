@@ -232,12 +232,6 @@
     <div class="input-container">
       <div class="d-flex align-items-center justify-content-between">
         <h4>Seniority / Nivel</h4>
-        @if (resetButton) {
-          <button class="btn-plus" (click)="resetValue()">
-            <!-- <i class="bi bi-arrow-counterclockwise"></i> -->
-            Limpiar campos
-          </button>
-        }
       </div>
       <div class="form-select option-select" (click)="isShowSeniority()">
         <span class="floating" [class]="getSelectedSeniorityClass()"
@@ -257,5 +251,12 @@
         </div>
       }
     </div>
+
+    @if (resetButton) {
+          <button class="btn-plus reset-btn" (click)="resetValue()">
+            <!-- <i class="bi bi-arrow-counterclockwise"></i> -->
+            Limpiar campos
+          </button>
+        }
   </div>
 </div>
