@@ -1,0 +1,30 @@
+<div class="option-row">
+    <div class="option-item">
+          <span>
+            <div class="checkbox-container">
+              <input
+                  type="radio"
+                  class="checkbox-input"
+                  name="correct_option_{{ index }}"
+                  [checked]="question.correct_option[0]=== 1"
+                  (change)="selectCorrectOption(index, 'Verdadero')" />
+            </div>
+
+            <label class="option-label">Verdadero</label>
+          </span>
+    </div>
+    <div class="option-item">
+      <span>
+        <div class="checkbox-container">
+          <input
+              type="radio"
+              class="checkbox-input"
+              name="correct_option_{{ index }}"
+              [checked]="question.correct_option[0]=== 0"
+              (change)="selectCorrectOption(index, 'Falso')" />
+        </div>
+
+        <label class="option-label">Falso</label>
+      </span>
+    </div>
+</div>

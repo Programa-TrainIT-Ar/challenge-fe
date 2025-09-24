@@ -1,0 +1,24 @@
+<div class="question-header"></div>
+
+<div class="text-question">
+    <div>{{ question.question }}</div>
+    <button (click)="this.edit.emit(index)" class="edit-button">
+        <i class="fas fa-edit"></i>
+    </button>
+</div>
+
+<!-- Opciones para preguntas de tipo 'true_false' -->
+@if (question.type === 'true_false') {
+    <app-true-false-question
+        [question] = question
+        [index]="index"
+    />
+}
+
+<!-- Opciones para preguntas de tipo 'multiple_choice' o 'simple_choice' -->
+@if (question.type.includes('choice')) {
+    <app-choice-question
+        [question]="question"
+    />
+}
+
