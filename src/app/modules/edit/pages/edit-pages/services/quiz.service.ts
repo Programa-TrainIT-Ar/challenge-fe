@@ -3,6 +3,10 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { environment } from '@environments/environment';
 import { tap, catchError } from 'rxjs/operators';
+import {
+  ResponseQuestion,
+  UpdateQuizRequest,
+} from '../../../../../shared/question-container/question-interface';
 
 @Injectable({
   providedIn: 'root',
@@ -24,12 +28,14 @@ export class QuizService {
   }
 
   // Método para actualizar un cuestionario
-  updateQuiz(id: string, quizData: any): Observable<any> {
-    return this.http.put(`${this.apiUrl}/${id}`, quizData).pipe(
+  updateQuiz(id: string, quizData: UpdateQuizRequest): Observable<any> {
+    return this.http.put(`${this.apiUrl}/nested/${id}`, quizData).pipe(
       catchError(error => {
         console.error('Error al actualizar el cuestionario:', error);
         return throwError(error);
       })
     );
   }
+
+
 }
