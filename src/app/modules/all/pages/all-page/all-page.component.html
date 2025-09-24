@@ -48,11 +48,11 @@
             </span>
 
             <!-- Realizar quiz (candidato) -->
-            <span *ngIf="!isAdmin" class="status activo">
-              Realizar  <!-- FUNCIONALIDAD DEL BOTÓN PENDIENTE -->
+            <span *ngIf="!isAdmin" class="status activo" (click)="takeQuiz(quiz)">
+              Realizar  <!-- Redireccion a la pagina para realizar el quizz -->
             </span>
            
-
+            
           </td>
           <td *ngIf="isAdmin" class="actions">
             <button (click)="viewQuiz(quiz)"><i class="bi bi-eye"></i></button>
