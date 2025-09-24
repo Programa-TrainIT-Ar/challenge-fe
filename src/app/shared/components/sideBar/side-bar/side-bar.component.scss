@@ -29,6 +29,8 @@
   align-items: center;
   justify-content: space-around;
   transition: width 0.3s ease;
+  position: fixed;
+  z-index: 9999;
   /* Suaviza la transición */
 
 }

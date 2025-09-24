@@ -12,6 +12,7 @@ import { Question } from '../question-container/question-interface';
   templateUrl: './question.component.html',
   styleUrl: './question.component.scss'
 })
+
 export class QuestionComponent {
   private formBuilder = inject(FormBuilder)
   
