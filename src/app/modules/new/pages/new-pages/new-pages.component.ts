@@ -106,7 +106,7 @@ export class NewPagesComponent {
 
       this.newPageService.findUserByEmail(user.email).subscribe({
         next: (response: any) => {
-          this.quizData.created_by_id = response.user.id;
+          this.quizData.created_by_id = response.id;
         },
         error: error => {
           console.error('Error al obtener el usuario desde el backend');

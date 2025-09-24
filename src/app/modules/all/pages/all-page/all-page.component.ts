@@ -144,10 +144,6 @@ export class AllPageComponent implements OnInit {
     });
   }
 
-  takeQuiz(quiz: Quiz) {
-    this.router.navigate(['/quiz', quiz.id]);
-  }
-
   viewQuiz(quiz: Quiz) {
     this.selectedQuizOnView = quiz; // Esto hace que la ventana emergente se muestre
   }

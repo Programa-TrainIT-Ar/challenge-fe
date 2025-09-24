@@ -40,12 +40,6 @@ import { CandidatoFormComponent } from './modules/candidato-dashboard/candidato-
             ),
         },
         {
-          path: 'quiz',
-          canActivate: [AuthGuard],
-          loadChildren: () =>
-            import('./modules/quiz/quiz.module').then(m => m.QuizModule),
-        },
-        {
           path: 'dashboard',
           canActivate: [AuthGuard],
           loadChildren: () =>
