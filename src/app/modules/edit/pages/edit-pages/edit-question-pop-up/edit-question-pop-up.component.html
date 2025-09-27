@@ -48,7 +48,8 @@
                          <span class="span-container">
                             @if (this.showInput) {
                                 <div class="checkbox-container">
-                                    @if (inputType=== "radio"){
+                                    @if (inputType === "radio" || this.currentEditingQuestion.type == 'true_false'){
+
                                         <input
                                             type="radio"
                                             class="checkbox-input"
@@ -65,6 +66,7 @@
                                             [name]="'checkbox' + $index"
                                         />
                                     }
+
                                </div>
                             }
                              <input
