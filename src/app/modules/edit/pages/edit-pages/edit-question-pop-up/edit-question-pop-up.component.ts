@@ -16,7 +16,7 @@ export class EditQuestionPopUpComponent {
   @Input() questionToEdit: Question;
   @Input() inputType: string = '';
   @Input() selectedOption: string = '';
-  @Input() isTrueFalseQuestion;
+  isTrueFalseQuestion : boolean = true;
   @Input() showPlus: boolean = false;
   @Input() showInput: boolean = true;
 
@@ -30,19 +30,18 @@ export class EditQuestionPopUpComponent {
   ];
 
   saveChanges() {
+    this.deleteEmptyOptions();
     this.editedQuestion.emit(this.currentEditingQuestion);
   }
+  private deleteEmptyOptions() {
+    this.currentEditingQuestion.options = this.currentEditingQuestion.options.filter(option => option.trim() !== '');
+  }
+
   closeEditPopup() {
     this.cancel.emit();
   }
   addOption() {
     this.currentEditingQuestion.options.push('Opción nueva');
-  }
-  private changeType(): string {
-    if (this.selectedOption == 'Selección mutiple') return 'multiple_choice';
-    if (this.selectedOption == 'Casilla') return 'simple_choice';
-    if (this.selectedOption == 'Verdadero o falso') return 'true_false';
-    return '';
   }
 
  answerChoice(index: number) {
@@ -60,8 +59,8 @@ export class EditQuestionPopUpComponent {
   changeText($event, index) {
     this.currentEditingQuestion.options[index] = $event.target.value;
   }
-  onQuestionTypeChange() {
 
+  onQuestionTypeChange() {
     this.currentEditingQuestion.correct_option = [];
     this.currentEditingQuestion.correct_option.push(0);
     this.currentEditingQuestion.options = [];
