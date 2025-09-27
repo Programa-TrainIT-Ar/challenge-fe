@@ -2,11 +2,12 @@ import { Component } from '@angular/core';
 import { SharedModule } from "../../shared/shared.module";
 import { QuestionContainerComponent } from "../../shared/question-container/question-container.component";
 import { BlueButtonComponent } from 'src/app/shared/components/blue-button/blue-button.component';
+import { SideBarComponent } from 'src/app/shared/components/sideBar/side-bar/side-bar.component';
 
 @Component({
   selector: 'app-welcome-candidato',
   standalone: true,
-  imports: [SharedModule, QuestionContainerComponent, BlueButtonComponent],
+  imports: [SharedModule, QuestionContainerComponent, BlueButtonComponent, SideBarComponent],
   templateUrl: './welcome-candidato.component.html',
   styleUrls: ['./welcome-candidato.component.scss']
 })

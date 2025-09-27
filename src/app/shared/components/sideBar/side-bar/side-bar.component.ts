@@ -1,6 +1,6 @@
 import { Component, Input, Inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { DOCUMENT } from '@angular/common';
+import { CommonModule, DOCUMENT } from '@angular/common';
 import { AuthService } from '@auth0/auth0-angular';
 import { LocalAuthService } from 'src/app/modules/auth/local-auth.service';
 export type UserRole = 'admin' | 'candidate' | 'hr';
@@ -13,6 +13,8 @@ interface SidebarItem {
 }
 @Component({
   selector: 'app-side-bar',
+  standalone: true,
+  imports: [CommonModule],
   templateUrl: './side-bar.component.html',
   styleUrl: './side-bar.component.scss',
 })
