@@ -4,8 +4,8 @@ import { SideBarComponent } from './components/sideBar/side-bar/side-bar.compone
 import { PopMessageComponent } from './components/pop-message/pop-message.component';
 
 @NgModule({
-  declarations: [SideBarComponent, PopMessageComponent],
+  declarations: [ PopMessageComponent],
   imports: [CommonModule],
-  exports: [SideBarComponent, PopMessageComponent],
+  exports: [ PopMessageComponent],
 })
 export class SharedModule {}

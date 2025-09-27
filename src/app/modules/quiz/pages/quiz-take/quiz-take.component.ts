@@ -5,6 +5,9 @@ import { QuestionContainerComponent } from 'src/app/shared/question-container/qu
 import { BlueButtonComponent } from 'src/app/shared/components/blue-button/blue-button.component';
 import { SharedModule } from 'primeng/api';
 import { CommonModule } from '@angular/common';
+import { SideBarComponent } from 'src/app/shared/components/sideBar/side-bar/side-bar.component'; // FALTABA
+import { Quiz } from 'src/app/shared/question-container/question-interface';
+
 
 @Component({
   selector: 'app-quiz-take',
@@ -15,14 +18,16 @@ import { CommonModule } from '@angular/common';
     CommonModule, 
     QuestionContainerComponent,
     BlueButtonComponent,
-    SharedModule
+    SharedModule,
+    SideBarComponent
   ]
 })
+
 export class QuizTakeComponent implements OnInit {
   step = 1;
   countdown = 5;
   quizId: string = '';
-  quiz: any = null;
+  quiz: Quiz = null;
   loading = true;
 
   constructor(
@@ -31,12 +36,13 @@ export class QuizTakeComponent implements OnInit {
     private quizService: QuizService
   ) {}
 
+  // llamar al quizz por id sin respuestas correctas
   ngOnInit() {
     this.quizId = this.route.snapshot.paramMap.get('id') || '';
     if (this.quizId) {
       this.loadQuiz();
     } else {
-      this.router.navigate(['/']); // Redirige si no hay ID
+      this.router.navigate(['/error']); // Redirige si no hay ID 
     }
   }
 
@@ -48,7 +54,7 @@ export class QuizTakeComponent implements OnInit {
       },
       error: (error) => {
         console.error('Error loading quiz:', error);
-        this.router.navigate(['/']); // Redirige si hay error
+        this.router.navigate(['/error']); // Redirige si hay error
       }
     });
   }
