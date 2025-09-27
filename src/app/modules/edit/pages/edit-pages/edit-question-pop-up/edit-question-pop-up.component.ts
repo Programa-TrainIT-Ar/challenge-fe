@@ -61,11 +61,12 @@ export class EditQuestionPopUpComponent {
     this.currentEditingQuestion.options[index] = $event.target.value;
   }
   onQuestionTypeChange() {
-    this.currentEditingQuestion.type = this.changeType();
+
     this.currentEditingQuestion.correct_option = [];
+    this.currentEditingQuestion.correct_option.push(0);
     this.currentEditingQuestion.options = [];
     this.showSubmits = true;
-    const selectedType = this.changeType();
+    const selectedType = this.currentEditingQuestion.type;
     if (selectedType === 'true_false') {
       this.currentEditingQuestion.options = ['Verdadero', 'Falso'];
       this.inputType = 'radio';
@@ -80,6 +81,7 @@ export class EditQuestionPopUpComponent {
       this.inputType = 'checkbox';
       this.isTrueFalseQuestion = false;
       this.showPlus = true;
+      this.currentEditingQuestion.correct_option.push(1);
     } else if (selectedType === 'simple_choice') {
       this.currentEditingQuestion.options = ['Opción 1', 'Opción 2'];
       this.inputType = 'radio';
