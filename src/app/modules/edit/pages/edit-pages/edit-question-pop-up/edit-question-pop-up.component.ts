@@ -45,14 +45,18 @@ export class EditQuestionPopUpComponent {
     return '';
   }
 
-  answerChoice(index: number) {
-    const idx = this.currentEditingQuestion.correct_option.indexOf(index);
-    if (idx > -1) {
-      this.currentEditingQuestion.correct_option.splice(idx, 1);
-    } else {
-      this.currentEditingQuestion.correct_option.push(index);
-    }
-  }
+ answerChoice(index: number) {
+   if (this.currentEditingQuestion.type === 'true_false') {
+     this.currentEditingQuestion.correct_option = [index];
+   } else {
+     const idx = this.currentEditingQuestion.correct_option.indexOf(index);
+     if (idx > -1) {
+       this.currentEditingQuestion.correct_option.splice(idx, 1);
+     } else {
+       this.currentEditingQuestion.correct_option.push(index);
+     }
+   }
+ }
   changeText($event, index) {
     this.currentEditingQuestion.options[index] = $event.target.value;
   }
