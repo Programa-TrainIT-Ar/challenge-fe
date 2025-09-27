@@ -13,13 +13,13 @@
                         class="custom-input"
                         id="questionType"
                         name="questionType"
-                        [(ngModel)]="selectedOption"
+                        [(ngModel)]="this.currentEditingQuestion.type"
                         (ngModelChange)="onQuestionTypeChange()"
                         required
                     >
                         @for (type of questionTypes; track $index){
                             <option [value]="type">
-                                {{type}}
+                                {{type | typeOptions}}
                             </option>
                         }
                     </select>
