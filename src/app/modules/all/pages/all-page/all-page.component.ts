@@ -7,7 +7,6 @@ import {
   EventEmitter,
 } from '@angular/core';
 import { Router } from '@angular/router';
-import { ActivatedRoute } from '@angular/router';
 import {
   trigger,
   style,
@@ -76,31 +75,19 @@ export class AllPageComponent implements OnInit {
 
   private allPageService = inject(AllPageService);
   constructor(
-    private alertService: AlertService,
-    private route: ActivatedRoute
+    private router: Router,
+    private alertService: AlertService
   ) {}
 
   ngOnInit(): void {
-    // this.allPageService.getAllQuiz().subscribe((response: any) => {
-    //   if (!this.isAdmin) {
-    //     // Si el usuario no es admin, filtra solo los quizzes activos
-    //     this.quizzes = response.quizzes.filter((quiz: Quiz) => quiz.is_active);
-    //   } else {
-    //     // Si es admin, muestra todos los quizzes
-    //     this.quizzes = response.quizzes;
-    //   }
-    // });
-
-   // 1. Suscribirse a los parámetros de la URL.
-    this.route.queryParams.subscribe(params => {
-      // 2. Asignar los valores de los parámetros a las propiedades del componente.
-      this.module = params['module'] || '';
-      this.cell = params['cell'] || '';
-      this.seniority = params['seniority'] || '';
-      this.searchText = params['search'] || '';
-
-      // 3. Llamar al método de filtrado que ahora será el único encargado de cargar los quizzes.
-      this.onSearchChange();
+    this.allPageService.getAllQuiz().subscribe((response: any) => {
+      if (!this.isAdmin) {
+        // Si el usuario no es admin, filtra solo los quizzes activos
+        this.quizzes = response.quizzes.filter((quiz: Quiz) => quiz.is_active);
+      } else {
+        // Si es admin, muestra todos los quizzes
+        this.quizzes = response.quizzes;
+      }
     });
   }
 
@@ -142,6 +129,10 @@ export class AllPageComponent implements OnInit {
         console.error('Error al actualizar el estado del quiz:', error);
       },
     });
+  }
+
+  takeQuiz(quiz: Quiz) {
+    this.router.navigate(['/quiz', quiz.id]);
   }
 
   viewQuiz(quiz: Quiz) {
