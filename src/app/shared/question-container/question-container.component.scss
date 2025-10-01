@@ -84,3 +84,10 @@
     z-index: -5;
   
   }
+
+.header {
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    padding: 5rem;
+}
