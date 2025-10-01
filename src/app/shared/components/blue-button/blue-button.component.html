@@ -1,3 +1,7 @@
-<button class="blue-button" (click)="handleClick()">
-    {{text}}
+<button 
+  class="blue-button" 
+  [disabled]="disabled"
+  [class.disabled]="disabled"
+  (click)="handleClick()">
+  {{ text }}
 </button>

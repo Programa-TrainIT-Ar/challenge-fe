@@ -49,7 +49,7 @@
             <app-question-container 
                 [test]="false" 
                 [quiz]="quiz" 
-                [quizId]="quiz.id" />
+                (quizCompleted)="onQuizCompleted()" />
         }
     }
 </div>

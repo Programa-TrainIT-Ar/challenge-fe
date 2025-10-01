@@ -1,9 +1,13 @@
-import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
-import { QuestionComponent } from '../question/question.component';
+import { Component, EventEmitter, inject, Input, OnInit, Output, OnDestroy } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
-import { QuestionService } from './question.service';
-import { Question, ResponseQuestion } from './question-interface';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+
+import { QuestionComponent } from '../question/question.component';
 import { BlueButtonComponent } from '../components/blue-button/blue-button.component';
+import { QuizService } from '../../modules/quiz/pages/quiz-take/quiz-take.service';
+import { Quiz, Question } from './question-interface';
+import { QuizAnswer, QuizSubmission } from 'src/app/modules/quiz/quiz.interface';
 
 @Component({
   selector: 'app-question-container',
@@ -12,141 +16,131 @@ import { BlueButtonComponent } from '../components/blue-button/blue-button.compo
   templateUrl: './question-container.component.html',
   styleUrl: './question-container.component.scss'
 })
-export class QuestionContainerComponent implements OnInit {
+export class QuestionContainerComponent implements OnInit, OnDestroy {
   @Input() test: boolean = false;
-  @Input() quiz: any = null; // Recibe el quiz desde el padre
-  @Input() quizId: string = ''; // Recibe el quizId
+  @Input() quiz!: Quiz;
   @Output() nextStep = new EventEmitter<void>();
 
+  private destroy$ = new Subject<void>();
+  
+  currentQuestionIndex = 0;
+  currentQuestion: Question | null = null;
+  userAnswers: Map<string, number[]> = new Map();
   counter = new Date(0);
-  index: number = 0;
-  question: Question | null = null;
-  questions: any[] = []; // Cambiado para usar los datos reales
-  userAnswers: any[] = []; // Para guardar las respuestas del usuario
+  isSubmitting = false;
 
-  questionsTest: Question[] = [
-    {
-      questionNumber: 1,
-      question: 'Pregunta',
-      type: 'true_false',
-      options: ['falso', 'verdadero'],
-      correct_option: [],
-    },
-    {
-      questionNumber: 2,
-      question: 'Pregunta',
-      type: 'simple_choice',
-      options: ['Opcion 1', 'Opcion 2', 'Opcion 3'],
-      correct_option: [],
-    },
-    {
-      questionNumber: 3,
-      question: 'Pregunta',
-      type: 'multiple_choice',
-      options: ['Opcion 1', 'Opcion 2', 'Opcion 3', 'Opcion 4'],
-      correct_option: [],
-    },
+  // AGREGADO - array para manejar todas las preguntas
+  allQuestions: Question[] = [];
+
+  private readonly testQuestions: Question[] = [
+    { questionNumber: 1, question: '¿Cuál es la capital de Francia?', type: 'simple_choice', options: ['Londres', 'París', 'Madrid', 'Roma'], correct_option: [1] },
+    { questionNumber: 2, question: 'El cielo es azul', type: 'true_false', options: ['Falso', 'Verdadero'], correct_option: [1] },
+    { questionNumber: 3, question: 'Selecciona los lenguajes de programación:', type: 'multiple_choice', options: ['JavaScript', 'HTML', 'Python', 'CSS'], correct_option: [0, 2] },
   ];
 
-  private questionService = inject(QuestionService);
+  // AGREGADO - para medir tiempo
+  private startTime?: Date;
 
-  constructor() {
+  constructor(private quizService: QuizService) {
     setInterval(() => {
       this.counter = new Date(this.counter.getTime() + 1000);
     }, 1000);
   }
 
   ngOnInit(): void {
-    console.log('QuestionContainer - test:', this.test);
-    console.log('QuestionContainer - quiz:', this.quiz);
-    
-    if (this.test) {
-      this.loadTestQuestions();
-    } else {
-      this.loadRealQuiz();
+    this.loadQuestions();
+    // AGREGADO - iniciar medición de tiempo solo para quiz real
+    if (!this.test) {
+      this.startTime = new Date();
+      console.log('Quiz iniciado a las:', this.startTime.toLocaleTimeString());
     }
   }
 
-  private loadTestQuestions() {
-    this.questions = this.questionsTest.map((q, index) => ({
-      id: `test-${index}`,
-      question: q.question,
-      seniority: 'test',
-      type: q.type,
-      options: q.options,
-      correct_option: q.correct_option,
-      explanation: '',
-      link: '',
-      is_active: true,
-      created_at: new Date(),
-      updated_at: new Date(),
-      quiz_id: 'test-quiz'
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  private loadQuestions(): void {
+    // SIMPLIFICADO - cargar todas las preguntas de una vez
+    this.allQuestions = this.test ? this.testQuestions : 
+      this.quiz?.questions?.map((q, i) => ({ questionNumber: i + 1, question: q.question, type: q.type, options: q.options, correct_option: [] })) || [];
+    
+    this.currentQuestion = this.allQuestions[0] || null;
+  }
+
+  onAnswerChanged(answer: number[]): void {
+    if (!this.currentQuestion) return;
+    
+    // CORREGIDO - obtener ID de forma segura
+    const questionId = this.test ? `test-${this.currentQuestionIndex}` : 
+      (this.quiz.questions?.[this.currentQuestionIndex]?.id || `question-${this.currentQuestionIndex}`);
+    
+    this.userAnswers.set(questionId, answer);
+    
+    // AGREGADO - Console log como solicitaste
+    console.log('Question ID:', questionId, 'Selected answers:', answer);
+  }
+
+  nextQuestion(): void {
+    // AGREGADO - validación simple
+    if (!this.canProceed() || this.isSubmitting) return;
+
+    this.currentQuestionIndex++;
+    
+    // SIMPLIFICADO - lógica única para ambos casos
+    if (this.currentQuestionIndex >= this.allQuestions.length) {
+      this.test ? this.nextStep.emit() : this.submitQuiz();
+    } else {
+      this.currentQuestion = this.allQuestions[this.currentQuestionIndex];
+    }
+  }
+
+  private submitQuiz(): void {
+    if (this.isSubmitting) return;
+    this.isSubmitting = true;
+    
+    const answers: QuizAnswer[] = Array.from(this.userAnswers.entries()).map(([questionId, selectedOptions]) => ({
+      question_id: questionId,
+      selected_options: selectedOptions
     }));
-    this.updateQuestion();
+
+    // AGREGADO - calcular tiempo y timestamps
+    const endTime = new Date();
+    const timeSpentSeconds = this.startTime ? 
+      Math.floor((endTime.getTime() - this.startTime.getTime()) / 1000) : 0;
+
+    console.log('Quiz terminado a las:', endTime.toLocaleTimeString());
+    console.log('Tiempo total:', timeSpentSeconds, 'segundos');
+
+    const submission = {
+      quiz_id: this.quiz.id,
+      answers,
+      started_at: this.startTime?.toISOString(), // AGREGADO - cuándo comenzó
+      completed_at: endTime.toISOString(), // AGREGADO - cuándo terminó
+      time_spent_seconds: timeSpentSeconds // AGREGADO - tiempo total
+    };
+
+    console.log('Submitting quiz:', submission);
+    // Aquí irías al servicio cuando esté listo
   }
 
-  private loadRealQuiz() {
-    // USAR LOS DATOS DEL QUIZ PASADOS COMO INPUT
-    if (this.quiz && this.quiz.questions && this.quiz.questions.length > 0) {
-      console.log('Loading real quiz questions:', this.quiz.questions);
-      this.questions = this.quiz.questions;
-      this.userAnswers = new Array(this.questions.length).fill(null);
-      this.updateQuestion();
-    } else {
-      console.error('No quiz data or questions provided', this.quiz);
-    }
-  }
-
-  updateQuestion() {
-    if (this.questions && this.questions.length > this.index) {
-      // Crear la pregunta usando los datos reales del backend
-      this.question = {
-        questionNumber: this.index + 1,
-        question: this.questions[this.index].question,
-        type: this.questions[this.index].type,
-        options: this.questions[this.index].options,
-        correct_option: [] // No mostrar respuestas correctas
-      };
-      
-      console.log('Current question:', this.question);
-      this.index++;
-    } else {
-      if (!this.test) {
-        console.log('Quiz completed! Answers:', this.userAnswers);
-        this.submitQuiz();
-      } else {
-        this.nextStep.emit();
-      }
-    }
-  }
-
-  // Método para recibir respuesta seleccionada
-  onAnswerSelected(answer: any) {
-    const currentQuestionIndex = this.index - 1;
-    if (currentQuestionIndex >= 0 && currentQuestionIndex < this.questions.length) {
-      this.userAnswers[currentQuestionIndex] = {
-        questionId: this.questions[currentQuestionIndex].id,
-        selectedOptions: Array.isArray(answer) ? answer : [answer]
-      };
-      console.log('Answer selected:', this.userAnswers[currentQuestionIndex]);
-    }
-  }
-
-  private submitQuiz() {
-    // Filtrar respuestas válidas (que no sean null)
-    const validAnswers = this.userAnswers.filter(answer => answer !== null);
+  canProceed(): boolean {
+    if (!this.currentQuestion) return false;
     
-    console.log('Submitting quiz with answers:', validAnswers);
+    const questionId = this.test ? `test-${this.currentQuestionIndex}` : 
+      (this.quiz.questions?.[this.currentQuestionIndex]?.id || `question-${this.currentQuestionIndex}`);
     
-    // Aquí puedes implementar el envío al backend
-    // this.questionService.submitQuiz(this.quizId, validAnswers).subscribe(...)
-    
-    // Por ahora solo mostrar en consola
-    alert(`Quiz completado! ${validAnswers.length} respuestas registradas.`);
+    return this.userAnswers.has(questionId) && (this.userAnswers.get(questionId)?.length || 0) > 0;
   }
 
-  // Método para verificar si todas las preguntas están respondidas
-  isQuizComplete(): boolean {
-    return this.userAnswers.every(answer => answer !== null);
+  getCurrentQuestionNumber(): string {
+    return `${this.currentQuestionIndex + 1} de ${this.allQuestions.length}`;
+  }
+
+  // AGREGADO - texto dinámico del botón (mínimo)
+  getButtonText(): string {
+    return this.isSubmitting ? 'Enviando...' : 
+           this.currentQuestionIndex === this.allQuestions.length - 1 ? 'Finalizar' : 'Siguiente';
   }
 }
