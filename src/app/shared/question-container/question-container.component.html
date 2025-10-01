@@ -1,20 +1,38 @@
 <div class="question-container">
-  <div class="header">
+  <div
+    class="header"
+    [style.justify-content]="
+      test && currentQuestion ? 'space-between' : 'flex-end'
+    "
+    [style.margin-top]="test && currentQuestion ? 0 : '4.5rem'"
+    [style.margin-bottom]="test && currentQuestion ? 0 : '5rem'">
+    @if (test && currentQuestion) {
+      <div class="question-number">
+        <h2 class="question-title">Preguntas de Práctica</h2>
+        <div class="question-container-text">
+          {{ getCurrentQuestionTypeText() }}
+        </div>
+      </div>
+    } @else {
+      <!-- Div vacío para mantener el espacio -->
+      <div class="spacer"></div>
+    }
+
     <div class="timer counter-container">
-      {{ counter | date:'mm:ss' }}
+      {{ counter | date: 'mm:ss' }}
     </div>
   </div>
 
   @if (currentQuestion) {
-    <app-question 
+    <app-question
       [question]="currentQuestion"
       (answerChanged)="onAnswerChanged($event)">
     </app-question>
   }
 
   <div class="button-container">
-    <app-blue-button 
-      [text]="getButtonText()"      
+    <app-blue-button
+      [text]="getButtonText()"
       [disabled]="!canProceed() || isSubmitting"
       (onClick)="nextQuestion()">
     </app-blue-button>

@@ -22,7 +22,7 @@ export class QuestionContainerComponent implements OnInit, OnDestroy {
   @Output() nextStep = new EventEmitter<void>();
 
   private destroy$ = new Subject<void>();
-  
+
   currentQuestionIndex = 0;
   currentQuestion: Question | null = null;
   userAnswers: Map<string, number[]> = new Map();
@@ -142,5 +142,17 @@ export class QuestionContainerComponent implements OnInit, OnDestroy {
   getButtonText(): string {
     return this.isSubmitting ? 'Enviando...' : 
            this.currentQuestionIndex === this.allQuestions.length - 1 ? 'Finalizar' : 'Siguiente';
+  }
+
+  // AGREGADO - método para mostrar tipo de pregunta
+  getCurrentQuestionTypeText(): string {
+    if (!this.currentQuestion) return '';
+    
+    switch (this.currentQuestion.type) {
+      case 'simple_choice': return 'Preguntas de selección simple.';
+      case 'true_false': return 'Preguntas de verdadero y falso.';
+      case 'multiple_choice': return 'Preguntas de selección múltiple.';
+      default: return '';
+    }
   }
 }
