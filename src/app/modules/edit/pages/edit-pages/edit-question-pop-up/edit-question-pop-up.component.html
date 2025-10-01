@@ -13,13 +13,13 @@
                         class="custom-input"
                         id="questionType"
                         name="questionType"
-                        [(ngModel)]="selectedOption"
+                        [(ngModel)]="this.currentEditingQuestion.type"
                         (ngModelChange)="onQuestionTypeChange()"
                         required
                     >
                         @for (type of questionTypes; track $index){
                             <option [value]="type">
-                                {{type}}
+                                {{type | typeOptions}}
                             </option>
                         }
                     </select>
@@ -48,23 +48,23 @@
                          <span class="span-container">
                             @if (this.showInput) {
                                 <div class="checkbox-container">
-                                    @if (inputType=== "radio"){
-                                        <input
-                                            type="radio"
-                                            class="checkbox-input"
-                                            [checked]="this.currentEditingQuestion.correct_option.includes($index)"
-                                            name="radioGroup"
-                                            (click)="answerChoice($index)"
-                                        />
-                                    } @else if (inputType === 'checkbox'){
-                                        <input
-                                            type="checkbox"
-                                            class="checkbox-input"
-                                            [checked]="this.currentEditingQuestion.correct_option.includes($index)"
-                                            (click)="answerChoice($index)"
-                                            [name]="'checkbox' + $index"
-                                        />
-                                    }
+                                @if (this.currentEditingQuestion.type.includes('choice')) {
+                                    <input
+                                        type="checkbox"
+                                        class="checkbox-input"
+                                        [checked]="this.currentEditingQuestion.correct_option.includes?.($index)"
+                                        (click)="answerChoice($index)"
+                                        [name]="'checkbox' + $index"
+                                    />
+                                } @else if (this.currentEditingQuestion.type === 'true_false') {
+                                    <input
+                                        type="radio"
+                                        class="checkbox-input"
+                                        [checked]="this.currentEditingQuestion.correct_option.includes($index)"
+                                        name="radioGroup"
+                                        (click)="answerChoice($index)"
+                                    />
+                                }
                                </div>
                             }
                              <input
