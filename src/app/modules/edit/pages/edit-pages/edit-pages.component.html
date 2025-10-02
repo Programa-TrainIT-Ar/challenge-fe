@@ -39,6 +39,7 @@
                 @for (question of this.questionsData; track $index){
                     <div class="question-container">
                         <app-question
+
                             [question]="question"
                             [index]="$index"
                             (edit)="showEditPopup($event)"
@@ -50,7 +51,7 @@
                             >
                                 <app-edit-question-pop-up
                                     [currentEditingQuestion]="this.currentEditingQuestion"
-                                    [inputType]="this.inputType"
+                                    [inputType]="this.currentEditingQuestion.type"
                                     [selectedOption]="this.selectedOption"
                                     (cancel)="closeEditPopup()"
                                     (editedQuestion)="onEditHandler($event)"
