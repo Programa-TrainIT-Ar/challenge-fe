@@ -62,7 +62,7 @@ export class UserService {
 
   accountSetup(id: string, userData: UserData) {
     //El interceptor se encarga de añadir el token
-    return this.http.put(`${this.urlApi}/${id}`, userData);
+    return this.http.put(`${this.urlApi}/setup/${id}`, userData);
   }
 
   sentEmailVerification(email: string, first_name: string) {
