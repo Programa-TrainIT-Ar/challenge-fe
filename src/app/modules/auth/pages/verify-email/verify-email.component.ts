@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { UserService } from '../user.service';
 import { CommonModule } from '@angular/common';
 import { ModalComponent } from 'src/app/shared/components/info-modal/info-modal.component';
+import { LocalAuthService } from '../../local-auth.service';
 
 @Component({
   selector: 'app-verify-email',
@@ -24,7 +25,8 @@ export class VerifyEmailComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private http: HttpClient,
-    private userService: UserService
+    private userService: UserService,
+    private localAuth: LocalAuthService
   ) {}
 
   ngOnInit(): void {
@@ -38,22 +40,35 @@ export class VerifyEmailComponent implements OnInit {
         return;
       }
 
+      console.log("token: ", token);
+      
+
       this.userService.VerifyEmail(token).subscribe({
         next: (res: any) => {
           this.loading = false;
 
-          if (res.emailConfirmed === true) {
-            // Redirigir directo a account-setup
-            const id = res.user_id;
-            const email = res.email;
-            const first_name = res.first_name || res.name || '';
+          // Capturar y guardar el nuevo access_token y el resto de datos del usuario
+          const accessToken = res.access_token;
+          const userId = res.user_id; 
+          const email = res.email;
+          const first_name = res.first_name || res.name || '';
+
+          if (accessToken) {
+            //Almacenar el token en localStorage
+            this.localAuth.setToken(accessToken);
+
+            // Si usas un servicio de autenticación (Recomendado):
+            // this.authService.setToken(accessToken);
+
+            //Redirigir a account-setup
             this.router.navigate(['/account-setup'], {
-              queryParams: { email, first_name, id },
+              queryParams: { email, first_name, id: userId }, // Pasar datos del usuario
             });
           } else {
-            // Modal de error inesperado
+            // Modal de error inesperado (si el backend no devuelve el token)
             this.currentModal = 'unexpected';
-            this.modalMessageBody = 'No se pudo confirmar el email. Por favor intenta nuevamente.';
+            this.modalMessageBody =
+              'Confirmación exitosa, pero no se recibió el token de acceso.';
             this.showModal = true;
           }
         },
