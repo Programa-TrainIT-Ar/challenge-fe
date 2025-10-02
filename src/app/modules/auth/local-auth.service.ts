@@ -17,7 +17,7 @@ export class LocalAuthService {
     localStorage.removeItem(this.tokenKey);
   }
 
-getUser(): any {
+  getUser(): any {
     const token = this.getToken();
     return token ? jwtDecode(token) : null;
   }

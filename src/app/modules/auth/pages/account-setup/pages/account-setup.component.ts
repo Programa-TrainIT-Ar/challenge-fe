@@ -176,10 +176,10 @@ export class AccountSetupComponent implements OnInit {
           .accountSetup(this.id, this.registerForm.value)
           .subscribe({
             next: response => {
-              this.localAuth.clearToken();
+              // this.localAuth.clearToken(); Quitar esta línea permite que el usuario sea direccionado a /candidato. De lo contrario, irá al login.
               this.successOperation = true;
               this.showModal = true;
-              this.router.navigate(['/candidato']);
+              
             },
             error: error => {
               this.successOperation = false;
@@ -207,5 +207,11 @@ export class AccountSetupComponent implements OnInit {
 
   closeModal() {
     this.showModal = false;
+  }
+
+  finalizarProceso(){
+    this.showModal = false;
+    //Redirreccionar a /candidato una vez leído el mensaje de éxito en la operación.
+    this.router.navigate(['/candidato']);
   }
 }
