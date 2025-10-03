@@ -1,0 +1,110 @@
+<form>
+    <div class="question-container-edit mb-3">
+        <div class="form-group" id="form-group">
+            <div>
+                <label
+                    for="questionType"
+                    class="custom-label"
+                >
+                    Tipo de Pregunta
+                </label>
+                <div class="d-flex">
+                    <select
+                        class="custom-input"
+                        id="questionType"
+                        name="questionType"
+                        [(ngModel)]="this.currentEditingQuestion.type"
+                        (ngModelChange)="onQuestionTypeChange()"
+                        required
+                    >
+                        @for (type of questionTypes; track $index){
+                            <option [value]="type">
+                                {{type | typeOptions}}
+                            </option>
+                        }
+                    </select>
+                </div>
+            </div>
+
+            <div class="custom-label">
+                <label for="questionText" class="custom-label">
+                    Escribe una pregunta
+                </label>
+                <input
+                    type="text"
+                    id="questionText"
+                    class="custom-input"
+                    name="questionText"
+                    [(ngModel)]="this.currentEditingQuestion.question"
+                    required
+                    />
+            </div>
+        </div>
+
+        <div class="form-group mt-3">
+            <div class="option-row">
+                @for(option of this.currentEditingQuestion.options; track $index){
+                    <div class="row mb-2">
+                         <span class="span-container">
+                            @if (this.showInput) {
+                                <div class="checkbox-container">
+                                @if (this.currentEditingQuestion.type.includes('choice')) {
+                                    <input
+                                        type="checkbox"
+                                        class="checkbox-input"
+                                        [checked]="this.currentEditingQuestion.correct_option.includes?.($index)"
+                                        (click)="answerChoice($index)"
+                                        [name]="'checkbox' + $index"
+                                    />
+                                } @else if (this.currentEditingQuestion.type === 'true_false') {
+                                    <input
+                                        type="radio"
+                                        class="checkbox-input"
+                                        [checked]="this.currentEditingQuestion.correct_option.includes($index)"
+                                        name="radioGroup"
+                                        (click)="answerChoice($index)"
+                                    />
+                                }
+                               </div>
+                            }
+                             <input
+                                 class="custom-option-input"
+                                 type="text"
+                                 [value]='this.currentEditingQuestion.options.at($index)'
+                                 (keyup)="changeText($event,$index)"
+                                 name="option{{ $index }}"
+                                 [readonly]="isTrueFalseQuestion"
+                                 [placeholder]="'Opción ' + ($index + 1)"
+                                 required
+                             />
+
+                        </span>
+                    </div>
+                }
+
+                @if (showPlus) {
+                    <div class="row">
+                        <div class="checkbox-container">
+                            <i
+                                class="bi bi-plus-circle"
+                                (click)="addOption()"
+                            >
+                            </i>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+
+         @if (showSubmits){
+            <div class="d-flex justify-content-around mt-3">
+                <button type="submit" class="custom-btn-submit" (click)="saveChanges()">
+                    Guardar
+                </button>
+                <button class="close-button" (click)="closeEditPopup()">
+                    Cerrar
+                </button>
+            </div>
+         }
+    </div>
+</form>

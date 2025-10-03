@@ -13,6 +13,7 @@ import { ErrorComponent } from './modules/home/pages/error/error.component';
 
 import { VerifyEmailComponent } from './modules/auth/pages/verify-email/verify-email.component';
 import { CandidatoFormComponent } from './modules/candidato-dashboard/candidato-form/candidato-form.component';
+import { QuizTakeComponent } from './modules/quiz/pages/quiz-take/quiz-take.component';
 @NgModule({
   imports: [
     RouterModule.forRoot(
@@ -38,6 +39,18 @@ import { CandidatoFormComponent } from './modules/candidato-dashboard/candidato-
             import('./modules/welcome-candidato/welcome-candidato.module').then(
               m => m.WelcomeCandidatoModule
             ),
+        },
+        {
+          path: 'quiz',
+          canActivate: [AuthGuard],
+          loadChildren: () =>
+            import('./modules/quiz/quiz.module').then(m => m.QuizModule),
+        },
+        {
+          path: 'quiz/:id',
+          canActivate: [AuthGuard],
+          loadChildren: () =>
+            import('./modules/quiz/pages/quiz-take/quiz-take.component').then(m => m.QuizTakeComponent),
         },
         {
           path: 'dashboard',

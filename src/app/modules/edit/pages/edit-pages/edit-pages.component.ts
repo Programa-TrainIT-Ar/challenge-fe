@@ -1,4 +1,11 @@
-import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
+import {
+  Component,
+  Input,
+  Output,
+  EventEmitter,
+  OnInit,
+  inject,
+} from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -6,44 +13,43 @@ import {
   AbstractControl,
 } from '@angular/forms';
 import { QuizService } from './services/quiz.service';
+import {
+  Question,
+  ResponseQuestion,
+  UpdateQuizRequest,
+} from '../../../../shared/question-container/question-interface';
+import {Quiz} from '../../../../shared/question-container/question-interface';
 
 @Component({
-  selector: 'app-edit-pages',
-  templateUrl: './edit-pages.component.html',
-  styleUrls: ['./edit-pages.component.scss'],
+    selector: 'app-edit-pages',
+    templateUrl: './edit-pages.component.html',
+    styleUrls: ['./edit-pages.component.scss'],
 })
 export class EditPagesComponent implements OnInit {
-  @Input() quizId: string;
-  @Output() close = new EventEmitter<void>();
+    private quizService = inject(QuizService);
+    private formBuilder = inject(FormBuilder);
+    @Input() quizId: string;
+    @Output() close = new EventEmitter<void>();
+    quiz : Quiz={} as Quiz;
+    questionsData: Question[] = [];
+    currentEditingQuestion: null| Question = null;
+    currentEditingIndex: number | null = null;
+    selectNameForm: FormGroup;
+    showEditForm: boolean = false;
+    selectedOption: string = '';
+    options: string[] = [];
+    inputType: string = '';
+    showPlus: boolean = false;
+    showSubmits: boolean = false;
+    selectedValues: boolean[] = [];
+    correct_option: number[] = [];
+    initialQuizCategory: any = null;
+    cell_id: string = '';
+    seniority: string = '';
 
-  selectNameForm: FormGroup;
-  showEditForm: boolean = false;
-  currentEditingQuestion: FormGroup | null = null;
-  currentEditingIndex: number | null = null;
-  selectedOption: string = '';
-  options: string[] = [];
-  questionTypes: string[] = [
-    'Selección mutiple',
-    'Casilla',
-    'Verdadero o falso',
-  ];
-  showInput: boolean = true;
-  inputType: string = '';
-  isTrueFalseQuestion: boolean = false;
-  showPlus: boolean = false;
-  showSubmits: boolean = false;
-  selectedValues: boolean[] = [];
-  correct_option: number[] = [];
-  selectedRadio: string | null = null;
-  initialQuizCategory: any = null;
-  cell_id: string = '';
-  seniority: string = '';
-
-  constructor(
-    private formBuilder: FormBuilder,
-    private quizService: QuizService
-  ) {
-    this.selectNameForm = this.formBuilder.group({
+    constructor(
+    ) {
+        this.selectNameForm = this.formBuilder.group({
       name: [''],
       description: [''],
       questions: this.formBuilder.array([]),
@@ -63,7 +69,7 @@ export class EditPagesComponent implements OnInit {
     }
 
     this.quizService.getQuizWithQuestions(this.quizId).subscribe({
-      next: quizData => {
+      next: (quizData : Quiz) => {
         this.selectNameForm.patchValue({
           name: quizData.name,
           description: quizData.description,
@@ -76,86 +82,24 @@ export class EditPagesComponent implements OnInit {
           cell_id: quizData.cell.id,
           seniority: quizData.seniority
         };
-        
+
         console.log('Modulo inicial:', this.initialQuizCategory);
-        this.populateQuestions(quizData.questions);
+        this.quiz = quizData;
+
+        quizData.questions.forEach((data,index) => this.questionsData.push(this.ToQuestion(data,index)));
       },
       error: error => {
         console.error('Error al obtener el cuestionario:', error);
       },
     });
   }
-  private getCellClass(index: number): string {
-    const cellNumber = (index % 10) + 1;
-    return `cell-color-${cellNumber}`;
-  }
 
-  private populateQuestions(questions: any[]) {
-    const questionForms = questions.map(question => {
-      const optionsArray = this.formBuilder.array(
-        question.options.map((optionText: string, index: number) =>
-          this.formBuilder.group({
-            id: [index],
-            text: [optionText],
-            selected: [question.correct_option.includes(index)],
-          })
-        )
-      );
 
-      return this.formBuilder.group({
-        id: [question.id],
-        text: [question.question],
-        type: [question.type],
-        correct_option: [question.correct_option[0]],
-        options: optionsArray,
-      });
-    });
 
-    const questionsArray = this.selectNameForm.get('questions') as FormArray;
-    questionsArray.clear();
-    questionForms.forEach(form => questionsArray.push(form));
-  }
+
 
   get questions(): FormArray {
     return this.selectNameForm.get('questions') as FormArray;
-  }
-
-  handleOptionSelection(
-    questionIndex: number,
-    optionIndex: number,
-    event: any
-  ) {
-    const question = this.questions.at(questionIndex);
-    const options = question.get('options') as FormArray;
-    const questionType = question.get('type')?.value;
-
-    if (questionType === 'multiple_choice') {
-      const option = options.at(optionIndex);
-      option.patchValue({ selected: event.target.checked });
-
-      const selectedIndices = options.controls
-        .map((opt, idx) => (opt.get('selected')?.value ? idx : null))
-        .filter(idx => idx !== null);
-
-      question.patchValue({ correct_option: selectedIndices });
-    } else {
-      options.controls.forEach((option, index) => {
-        option.patchValue({
-          selected: index === optionIndex,
-        });
-      });
-      question.patchValue({ correct_option: optionIndex });
-    }
-  }
-
-  selectCorrectOption(questionIndex: number, optionValue: string) {
-    const question = this.questions.at(questionIndex);
-    if (question.get('type')?.value === 'true_false') {
-      const correctOption = optionValue === 'Verdadero' ? 0 : 1;
-      question.patchValue({
-        correct_option: correctOption,
-      });
-    }
   }
 
 
@@ -167,27 +111,8 @@ export class EditPagesComponent implements OnInit {
     this.initialQuizCategory.cell_id = quizCategory.cellId;
     this.initialQuizCategory.seniority = quizCategory.seniority;
   }
-
   createQuiz() {
-    const formValue = this.selectNameForm.value;
-    const updatedQuiz = {
-      id: this.quizId,
-      name: formValue.name,
-      description: formValue.description,
-      cell_id: this.initialQuizCategory.cell_id,
-      seniority: this.initialQuizCategory.seniority.toLowerCase(),
-      questions: formValue.questions.map(question => {
-        if (question.type === 'true_false') {
-          return {
-            ...question,
-            correct_option: [question.correct_option],
-          };
-        }
-        return question;
-      }),
-    };
-
-    this.quizService.updateQuiz(this.quizId, updatedQuiz).subscribe({
+    this.quizService.updateQuiz(this.quizId, this.toUpdateQuizRequest()).subscribe({
       next: response => {
         console.log('Cambios guardados para el quiz:', response);
         this.close.emit();
@@ -198,51 +123,36 @@ export class EditPagesComponent implements OnInit {
     });
   }
 
-  trackByFn(index: number): number {
-    return index;
+  private ToQuestion(data: ResponseQuestion, questionNumber : number): Question {
+    return {
+      id: data.id,
+      correct_option: data.correct_option,
+      options: data.options,
+      question: data.question,
+      questionNumber: questionNumber,
+      type: data.type,
+      seniority: this.quiz.seniority,
+    }
   }
+  private toUpdateQuizRequest(): UpdateQuizRequest{
+    return {
+      cell_id: this.quiz.cell_id,
+      challenge_type: this.quiz.challenge_type,
+      created_by_id: this.quiz.created_by_id,
+      description: this.quiz.description,
+      is_active: this.quiz.is_active,
+      max_time: this.quiz.max_time,
+      name: this.quiz.name,
+      questions: this.questionsData,
+      seniority: this.quiz.seniority,
 
+    }
+  }
   showEditPopup(questionIndex: number) {
-    const question = this.questions.at(questionIndex) as FormGroup;
-    this.currentEditingQuestion = question;
+    this.currentEditingQuestion = this.questionsData[questionIndex];
     this.currentEditingIndex = questionIndex;
     this.showEditForm = true;
-
-    const type = question.get('type')?.value;
-    switch (type) {
-      case 'multiple_choice':
-        this.selectedOption = 'Selección mutiple';
-        this.inputType = 'checkbox';
-        break;
-      case 'simple_choice':
-        this.selectedOption = 'Casilla';
-        this.inputType = 'radio';
-        break;
-      case 'true_false':
-        this.selectedOption = 'Verdadero o falso';
-        this.inputType = 'radio';
-        break;
-    }
-
-    const optionsArray = question.get('options') as FormArray;
-    this.options = optionsArray.controls.map(
-      (control: AbstractControl) => control.get('text')?.value
-    );
-
-    if (type === 'true_false') {
-      this.correct_option = [
-        question.get('correct_option')?.value === 'Verdadero' ? 0 : 1,
-      ];
-    } else {
-      this.correct_option = optionsArray.controls
-        .map((control, index) => (control.get('selected')?.value ? index : -1))
-        .filter(index => index !== -1);
-    }
-
     this.showSubmits = true;
-    this.showPlus = type !== 'true_false';
-    this.isTrueFalseQuestion = type === 'true_false';
-    this.changeInputType();
   }
 
   closeEditPopup() {
@@ -254,95 +164,9 @@ export class EditPagesComponent implements OnInit {
     this.selectedValues = [];
   }
 
-  updateQuestion(form: any) {
-    if (!this.currentEditingQuestion) return;
-
-    const formSection = form.value;
-    let questionType = '';
-
-    switch (formSection.questionType) {
-      case 'Selección mutiple':
-        questionType = 'multiple_choice';
-        break;
-      case 'Casilla':
-        questionType = 'simple_choice';
-        break;
-      case 'Verdadero o falso':
-        questionType = 'true_false';
-        break;
-      default:
-        console.error('Tipo de pregunta no reconocido');
-        return;
-    }
-
-    this.currentEditingQuestion.patchValue({
-      type: questionType,
-      text: formSection.questionText,
-      correct_option: this.correct_option,
-    });
-
-    const optionsArray = this.currentEditingQuestion.get(
-      'options'
-    ) as FormArray;
-    this.selectedValues.forEach((isSelected, index) => {
-      optionsArray.at(index).patchValue({ selected: isSelected });
-    });
-
+  onEditHandler(question: Question) {
+    this.questionsData[question.questionNumber]= question;
     this.closeEditPopup();
   }
 
-  onQuestionTypeChange(selectedType: any, form: any) {
-    this.correct_option = [];
-    this.selectedValues = [];
-    this.showSubmits = true;
-    if (selectedType === 'Verdadero o falso') {
-      this.options = ['Verdadero', 'Falso'];
-      this.inputType = 'radio';
-      this.isTrueFalseQuestion = true;
-      this.showPlus = false;
-    } else if (selectedType === 'Selección mutiple') {
-      this.options = ['Opción 1', 'Opción 2', 'Opción 3'];
-      this.inputType = 'checkbox';
-      this.isTrueFalseQuestion = false;
-      this.showPlus = true;
-    } else if (selectedType === 'Casilla') {
-      this.options = ['Opción 1', 'Opción 2'];
-      this.inputType = 'radio';
-      this.isTrueFalseQuestion = false;
-      this.showPlus = true;
-    } else {
-      this.showPlus = false;
-    }
-
-    this.changeInputType();
-    // this.cdr.detectChanges();
-    // Implementar la lógica necesaria para el cambio de tipo de pregunta
-  }
-
-  addOption() {
-    this.options.push('');
-    this.selectedValues.push(false);
-  }
-
-  answerChoice(index: number) {
-    if (this.inputType === 'radio') {
-      this.selectedValues = this.options.map((_, i) => i === index);
-      this.correct_option = [index];
-    } else {
-      this.selectedValues[index] = !this.selectedValues[index];
-      this.correct_option = this.selectedValues
-        .map((isSelected, i) => (isSelected ? i : -1))
-        .filter(i => i !== -1);
-    }
-  }
-
-  changeInputType() {
-    this.selectedValues = Array(this.options.length).fill(false);
-    this.selectedRadio = null;
-    this.showInput = false;
-    setTimeout(() => {
-      this.showInput = true;
-      // this.cdr.detectChanges();
-    }, 50);
-  }
 }
