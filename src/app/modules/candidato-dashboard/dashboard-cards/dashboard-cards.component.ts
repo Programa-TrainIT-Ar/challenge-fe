@@ -25,18 +25,21 @@ export class DashboardCardsComponent implements OnInit {
 
   //Filtros
   cards = null;
+  uniqueCells = null; //Para almacenar las cards sin duplicados
 
   ngOnInit(): void {
     //Cargando los filtros dinámicamente desde la base de datos
-    this.cellService.getAllActiveCells().subscribe((response: any) => {
-      this.cards = response.map((card: any, index: number) => {
-        // Usamos el índice proporcionado por map y el operador %
-        const itemIndex = index % this.items.length;
-        card.icon = this.items[itemIndex].icon;
-        return card;
+    this.cellService
+      .getAllActiveCellsWithQuizzes()
+      .subscribe((response: any) => {
+        this.cards = response.map((card: any, index: number) => {
+          // Usamos el índice proporcionado por map y el operador %
+          const itemIndex = index % this.items.length;
+          card.icon = this.items[itemIndex].icon;
+          return card;
+        });
+        this.uniqueCells = this.filterDuplicateCells(this.cards); //Eliminando cards duplicadas
       });
-      console.log('Cards: ', this.cards);
-    });
   }
 
   items: any[] = [
@@ -61,7 +64,7 @@ export class DashboardCardsComponent implements OnInit {
     { title: 'QA', icon: 'assets/scrum.png', search: 'Q.A.' },
   ];
 
-  filtrarQuizzes(filter): void {    
+  filtrarQuizzes(filter): void {
     if (filter === 'all') {
       //Si el filtro es all, muestra todos los quizzes
       this.router.navigate(['/dashboard/quizzes']);
@@ -71,5 +74,22 @@ export class DashboardCardsComponent implements OnInit {
         queryParams: { cell: filter },
       });
     }
+  }
+
+  filterDuplicateCells(cells) {
+    // Usamos un Map para almacenar las células, con el nombre como clave (key).
+    // Esto asegura que cada nombre solo se pueda almacenar una vez.
+    const uniqueCellsMap = new Map();
+
+    for (const cell of cells) {
+      // Si el nombre ya existe como clave en el Map, se omite (no se vuelve a insertar).
+      // Si el nombre no existe, se añade al Map.
+      if (!uniqueCellsMap.has(cell.name)) {
+        uniqueCellsMap.set(cell.name, cell);
+      }
+    }
+
+    // Convertimos los valores del Map de nuevo a un array para usarlo en la UI.
+    return Array.from(uniqueCellsMap.values());
   }
 }

@@ -10,9 +10,9 @@ export class DashboardCardsService {
 
   constructor(private http: HttpClient) {}
 
-  getAllActiveCells() {
+  getAllActiveCellsWithQuizzes() {
     //Buscar todas las células existentes que estén activas
-    let params = new HttpParams().set('is_active', 'true');
+    let params = new HttpParams().set('is_active', 'true').set('has_quizzes', 'true');
     return this.http.get(this.urlApi, { params: params });
   }
 }
