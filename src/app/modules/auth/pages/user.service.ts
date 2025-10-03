@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '@environments/environment';
 import { catchError, of, throwError } from 'rxjs';
+import { AccountSetupResponse } from '../interfaces/account-setup.interface';
 
 export interface UserData {
   email: string;
@@ -62,7 +63,7 @@ export class UserService {
 
   accountSetup(id: string, userData: UserData) {
     //El interceptor se encarga de añadir el token
-    return this.http.put(`${this.urlApi}/setup/${id}`, userData);
+    return this.http.put<AccountSetupResponse>(`${this.urlApi}/setup/${id}`, userData);
   }
 
   sentEmailVerification(email: string, first_name: string) {

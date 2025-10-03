@@ -38,10 +38,7 @@ export class VerifyEmailComponent implements OnInit {
         this.showModal = true;
         this.loading = false;
         return;
-      }
-
-      console.log("token: ", token);
-      
+      }     
 
       this.userService.VerifyEmail(token).subscribe({
         next: (res: any) => {
