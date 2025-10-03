@@ -6,7 +6,7 @@
   <div class="content">
     <h1>Selecciona tu stack</h1>
     <div class="grid">
-      <div class="card" *ngFor="let item of cards" (click)="filtrarQuizzes(item.search)">
+      <div class="card" *ngFor="let item of cards" (click)="filtrarQuizzes(item.name)">
         <span class="title">{{ item.name }}</span>
         <img [src]="item.icon" [alt]="item.name" />
       </div>

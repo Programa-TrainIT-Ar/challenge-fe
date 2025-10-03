@@ -61,7 +61,7 @@ export class DashboardCardsComponent implements OnInit {
     { title: 'QA', icon: 'assets/scrum.png', search: 'Q.A.' },
   ];
 
-  filtrarQuizzes(filter): void {
+  filtrarQuizzes(filter): void {    
     if (filter === 'all') {
       //Si el filtro es all, muestra todos los quizzes
       this.router.navigate(['/dashboard/quizzes']);
