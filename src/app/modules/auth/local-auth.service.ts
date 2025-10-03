@@ -17,7 +17,7 @@ export class LocalAuthService {
     localStorage.removeItem(this.tokenKey);
   }
 
-  getUser(): string | null {
+  getUser(): any{ // Por ahora debe ser any, hasta que se adapte el login (falta el rol del usuario en la estrategia jwt)
     const token = this.getToken();
     return token ? jwtDecode(token) : null;
   }
