@@ -1,7 +1,8 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '@environments/environment';
 import { catchError, of, throwError } from 'rxjs';
+import { AccountSetupResponse } from '../interfaces/account-setup.interface';
 
 export interface UserData {
   email: string;
@@ -32,14 +33,16 @@ export class UserService {
   constructor(private http: HttpClient) {}
 
   finduserByEmail(email: string) {
-    return this.http.get<UserData>(`${this.urlApi}/FindByEmail?email=${email}`).pipe(
-      catchError(error => {
-        if (error.status === 404) {
-          return of(null);
-        }
-        throw Error ;
-    })
-    );
+    return this.http
+      .get<UserData>(`${this.urlApi}/FindByEmail?email=${email}`)
+      .pipe(
+        catchError(error => {
+          if (error.status === 404) {
+            return of(null);
+          }
+          throw Error;
+        })
+      );
   }
 
   loginWithEmail(email: string, password: string) {
@@ -58,15 +61,19 @@ export class UserService {
     return this.http.post(`${this.urlApi}/register-with-auth`, userData);
   }
 
-  accountSetup(id, userData: UserData){
-    return this.http.put(`${this.urlApi}/${id}`, userData);
+  accountSetup(id: string, userData: UserData) {
+    //El interceptor se encarga de añadir el token
+    return this.http.put<AccountSetupResponse>(`${this.urlApi}/setup/${id}`, userData);
   }
 
-  sentEmailVerification(email: string , first_name: string) {
-    return this.http.post(`${this.urlApi}/send-email-confirmation`, { email, first_name });
+  sentEmailVerification(email: string, first_name: string) {
+    return this.http.post(`${this.urlApi}/send-email-confirmation`, {
+      email,
+      first_name,
+    });
   }
 
   VerifyEmail(token: string) {
-    return this.http.post(`${this.urlApi}/confirm-email`, { token });
+    return this.http.post(`${this.urlApi}/confirm-email`, { confirmationToken: token });
   }
 }
