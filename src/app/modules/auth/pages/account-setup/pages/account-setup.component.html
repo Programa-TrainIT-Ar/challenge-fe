@@ -209,7 +209,10 @@
     [showImage]="false">
     <div modal-footer *ngIf="successOperation">
       <img src="assets/images/sign-up/icon-request-answer.png" alt="" />
-      <h3>¡Tu registro se ha completado con éxito!</h3>
+      <h3>¡Tus datos se han registrado con éxito!</h3>
+      <button class="btn btn-primary btn-form" (click)="finalizarProceso()">
+        Aceptar
+      </button>
     </div>
 
     <div modal-header *ngIf="!successOperation">
@@ -218,7 +221,7 @@
 
     <div modal-footer *ngIf="!successOperation">
       <img src="assets/images/sign-up/icon-bad-request-answer.png" alt="" />
-      <h3>Tu registro no pudo completarse</h3>
+      <h3>Tus datos no pudieron registrarse</h3>
       <button class="btn btn-primary btn-form" (click)="showModal = false">
         Intentar de nuevo
       </button>

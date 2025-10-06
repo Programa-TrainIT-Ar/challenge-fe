@@ -17,7 +17,10 @@ export class AuthInterceptor implements HttpInterceptor {
     private localAuth: LocalAuthService
   ) {}
 
-  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+  intercept(
+    req: HttpRequest<any>,
+    next: HttpHandler
+  ): Observable<HttpEvent<any>> {
     // Intentamos primero con Auth0
     return this.auth.getAccessTokenSilently({ detailedResponse: true }).pipe(
       catchError(() => of(null)), // Si falla (ej: login con email), devolvemos null
