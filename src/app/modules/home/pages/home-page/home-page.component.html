@@ -1,8 +1,11 @@
 <div class="container-fluid">
-  <div><app-side-bar
+  <div>
+    
+    <app-side-bar
     [extended]="true"
     role="admin"
-    ></app-side-bar></div>
+    ></app-side-bar>
+  </div>
   <div id="welcome"><router-outlet></router-outlet></div>
 
   <div *ngIf="user$ | async as user" class="mensaje" [class.hidden]="isMessageHidden">

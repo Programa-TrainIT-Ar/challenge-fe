@@ -13,7 +13,6 @@ import { ButtonModule } from 'primeng/button';
 
 @NgModule({
   declarations: [
-    DashboardPageComponent,
     CandidatoFormComponent,
   ],
   imports: [
@@ -29,7 +28,6 @@ import { ButtonModule } from 'primeng/button';
     ButtonModule,
   ],
   exports: [
-    DashboardPageComponent, 
     CandidatoFormComponent,
   ],
 })

@@ -14,6 +14,7 @@ export class QuizService {
     return this.http.get(`${this.urlApi}/quiz/take/${id}`);
   }
   
+  // Enviar respuestas del quiz - por hacer
   submitQuizAnswers(quizId: string, answers: any[]): Observable<any> {
     return this.http.post(`${this.urlApi}/quiz/take/${quizId}/submit`, {
       quizId,
