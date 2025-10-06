@@ -40,31 +40,15 @@ export class DashboardCardsComponent implements OnInit {
           return card;
         });
         this.uniqueCells = this.filterDuplicateCells(this.cards); //Eliminando cards duplicadas
-        if(this.uniqueCells <= 6){
+               
+        //Establecer modelo de Cards a usar dependiendo de la cantidad de células
+        if(this.uniqueCells.length >= 6){
           this.model_one = true; //Se usa el primer modelo de Cards
         } else {
           this.model_one = false; //Se usa el segundo modelo de Cards
         }
       });
   }
-
-  items: any[] = [
-    { title: 'Diseño UX', icon: 'assets/ui.png' },
-    {
-      title: 'Frontend',
-      icon: 'assets/frontend.png',
-    },
-    {
-      title: 'Backend',
-      icon: 'assets/backend.png',
-    },
-    {
-      title: 'Fullstack',
-      icon: 'assets/fullstack.png',
-    },
-    { title: 'PM', icon: 'assets/qa.png' },
-    { title: 'QA', icon: 'assets/scrum.png' },
-  ];
 
   icons = [
     // 'assets/ui.png',
