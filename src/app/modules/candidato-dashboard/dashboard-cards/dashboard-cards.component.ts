@@ -34,8 +34,8 @@ export class DashboardCardsComponent implements OnInit {
       .subscribe((response: any) => {
         this.cards = response.map((card: any, index: number) => {
           // Usamos el índice proporcionado por map y el operador %
-          const itemIndex = index % this.items.length;
-          card.icon = this.items[itemIndex].icon;
+          const itemIndex = index % this.icons.length;
+          card.icon = this.icons[itemIndex];
           return card;
         });
         this.uniqueCells = this.filterDuplicateCells(this.cards); //Eliminando cards duplicadas
@@ -43,25 +43,30 @@ export class DashboardCardsComponent implements OnInit {
   }
 
   items: any[] = [
-    // La propiedad search es el string que se usará para filtrar los quizzes al hacer click en el card
-    { title: 'Diseño UX', icon: 'assets/ui.png', search: 'UX/UI' },
+    { title: 'Diseño UX', icon: 'assets/ui.png' },
     {
       title: 'Frontend',
       icon: 'assets/frontend.png',
-      search: 'Frontend Developer',
     },
     {
       title: 'Backend',
       icon: 'assets/backend.png',
-      search: 'Backend Developer',
     },
     {
       title: 'Fullstack',
       icon: 'assets/fullstack.png',
-      search: 'Fullstack Development',
     },
-    { title: 'PM', icon: 'assets/qa.png', search: 'P.M.' },
-    { title: 'QA', icon: 'assets/scrum.png', search: 'Q.A.' },
+    { title: 'PM', icon: 'assets/qa.png' },
+    { title: 'QA', icon: 'assets/scrum.png' },
+  ];
+
+  icons = [
+    // 'assets/ui.png',
+    'assets/frontend.png',
+    'assets/backend.png',
+    'assets/fullstack.png',
+    'assets/qa.png',
+    'assets/scrum.png',
   ];
 
   filtrarQuizzes(filter): void {
