@@ -29,7 +29,7 @@ export class QuestionContainerComponent implements OnInit, OnDestroy {
   counter = new Date(0);
   isSubmitting = false;
 
-  // AGREGADO - array para manejar todas las preguntas
+  // array para manejar todas las preguntas
   allQuestions: Question[] = [];
 
   private readonly testQuestions: Question[] = [
@@ -38,7 +38,7 @@ export class QuestionContainerComponent implements OnInit, OnDestroy {
     { questionNumber: 3, question: 'Selecciona los lenguajes de programación:', type: 'multiple_choice', options: ['JavaScript', 'HTML', 'Python', 'CSS'], correct_option: [0, 2] },
   ];
 
-  // AGREGADO - para medir tiempo
+  //  para medir tiempo
   private startTime?: Date;
 
   constructor(private quizService: QuizService) {
@@ -49,10 +49,10 @@ export class QuestionContainerComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.loadQuestions();
-    // AGREGADO - iniciar medición de tiempo solo para quiz real
+    //  iniciar medición de tiempo solo para quiz real
     if (!this.test) {
       this.startTime = new Date();
-      console.log('Quiz iniciado a las:', this.startTime.toLocaleTimeString());
+      
     }
   }
 
@@ -62,7 +62,7 @@ export class QuestionContainerComponent implements OnInit, OnDestroy {
   }
 
   private loadQuestions(): void {
-    // SIMPLIFICADO - cargar todas las preguntas de una vez
+    //  cargar todas las preguntas de una vez
     this.allQuestions = this.test ? this.testQuestions : 
       this.quiz?.questions?.map((q, i) => ({ questionNumber: i + 1, question: q.question, type: q.type, options: q.options, correct_option: [] })) || [];
     
@@ -72,23 +72,21 @@ export class QuestionContainerComponent implements OnInit, OnDestroy {
   onAnswerChanged(answer: number[]): void {
     if (!this.currentQuestion) return;
     
-    // CORREGIDO - obtener ID de forma segura
+    //  obtener ID 
     const questionId = this.test ? `test-${this.currentQuestionIndex}` : 
       (this.quiz.questions?.[this.currentQuestionIndex]?.id || `question-${this.currentQuestionIndex}`);
     
     this.userAnswers.set(questionId, answer);
     
-    // AGREGADO - Console log como solicitaste
-    console.log('Question ID:', questionId, 'Selected answers:', answer);
   }
 
   nextQuestion(): void {
-    // AGREGADO - validación simple
+    // A validación simple
     if (!this.canProceed() || this.isSubmitting) return;
 
     this.currentQuestionIndex++;
     
-    // SIMPLIFICADO - lógica única para ambos casos
+    //  lógica única para ambos casos
     if (this.currentQuestionIndex >= this.allQuestions.length) {
       this.test ? this.nextStep.emit() : this.submitQuiz();
     } else {
@@ -105,24 +103,21 @@ export class QuestionContainerComponent implements OnInit, OnDestroy {
       selected_options: selectedOptions
     }));
 
-    // AGREGADO - calcular tiempo y timestamps
+    //  calcular tiempo y timestamps
     const endTime = new Date();
     const timeSpentSeconds = this.startTime ? 
       Math.floor((endTime.getTime() - this.startTime.getTime()) / 1000) : 0;
 
-    console.log('Quiz terminado a las:', endTime.toLocaleTimeString());
-    console.log('Tiempo total:', timeSpentSeconds, 'segundos');
-
     const submission = {
       quiz_id: this.quiz.id,
       answers,
-      started_at: this.startTime?.toISOString(), // AGREGADO - cuándo comenzó
-      completed_at: endTime.toISOString(), // AGREGADO - cuándo terminó
-      time_spent_seconds: timeSpentSeconds // AGREGADO - tiempo total
+      started_at: this.startTime?.toISOString(), //  cuándo comenzó
+      completed_at: endTime.toISOString(), //  cuándo terminó
+      time_spent_seconds: timeSpentSeconds // tiempo total en segundos
     };
 
-    console.log('Submitting quiz:', submission);
-    // Aquí irías al servicio cuando esté listo
+    // Aquí iría al servicio cuando esté listo
+
   }
 
   canProceed(): boolean {
@@ -138,13 +133,13 @@ export class QuestionContainerComponent implements OnInit, OnDestroy {
     return `${this.currentQuestionIndex + 1} de ${this.allQuestions.length}`;
   }
 
-  // AGREGADO - texto dinámico del botón (mínimo)
+  //  texto dinámico del botón 
   getButtonText(): string {
     return this.isSubmitting ? 'Enviando...' : 
            this.currentQuestionIndex === this.allQuestions.length - 1 ? 'Finalizar' : 'Siguiente';
   }
 
-  // AGREGADO - método para mostrar tipo de pregunta
+  //  método para mostrar tipo de pregunta
   getCurrentQuestionTypeText(): string {
     if (!this.currentQuestion) return '';
     

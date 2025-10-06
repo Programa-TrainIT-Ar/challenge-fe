@@ -5,8 +5,8 @@ import { SideBarComponent } from 'src/app/shared/components/sideBar/side-bar/sid
 
 @Component({
   selector: 'app-dashboard-page',
-  standalone: true, // AGREGADO
-  imports: [CommonModule, SideBarComponent, RouterOutlet ], // AGREGADO
+  standalone: true, 
+  imports: [CommonModule, SideBarComponent, RouterOutlet ], 
   templateUrl: './dashboard-page.component.html',
   styleUrls: ['./dashboard-page.component.scss'],
 })
