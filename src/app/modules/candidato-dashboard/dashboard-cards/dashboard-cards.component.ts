@@ -26,6 +26,7 @@ export class DashboardCardsComponent implements OnInit {
   //Filtros
   cards = null;
   uniqueCells = null; //Para almacenar las cards sin duplicados
+  model_one = true; //Modelo de Cards - True → Modelo 1. False → Modelo 2
 
   ngOnInit(): void {
     //Cargando los filtros dinámicamente desde la base de datos
@@ -39,6 +40,11 @@ export class DashboardCardsComponent implements OnInit {
           return card;
         });
         this.uniqueCells = this.filterDuplicateCells(this.cards); //Eliminando cards duplicadas
+        if(this.uniqueCells <= 6){
+          this.model_one = true; //Se usa el primer modelo de Cards
+        } else {
+          this.model_one = false; //Se usa el segundo modelo de Cards
+        }
       });
   }
 
