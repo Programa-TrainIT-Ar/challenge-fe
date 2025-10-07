@@ -20,7 +20,8 @@ export class QuestionContainerComponent implements OnInit, OnDestroy {
   @Input() test: boolean = false;
   @Input() quiz!: Quiz;
   @Output() nextStep = new EventEmitter<void>();
-
+  @Output() quizStarted = new EventEmitter<boolean>();
+  @Output() quizCompleted = new EventEmitter<boolean>();
   private destroy$ = new Subject<void>();
 
   currentQuestionIndex = 0;
@@ -52,7 +53,7 @@ export class QuestionContainerComponent implements OnInit, OnDestroy {
     //  iniciar medición de tiempo solo para quiz real
     if (!this.test) {
       this.startTime = new Date();
-      
+        this.quizStarted.emit(true);
     }
   }
 
@@ -63,21 +64,21 @@ export class QuestionContainerComponent implements OnInit, OnDestroy {
 
   private loadQuestions(): void {
     //  cargar todas las preguntas de una vez
-    this.allQuestions = this.test ? this.testQuestions : 
+    this.allQuestions = this.test ? this.testQuestions :
       this.quiz?.questions?.map((q, i) => ({ questionNumber: i + 1, question: q.question, type: q.type, options: q.options, correct_option: [] })) || [];
-    
+
     this.currentQuestion = this.allQuestions[0] || null;
   }
 
   onAnswerChanged(answer: number[]): void {
     if (!this.currentQuestion) return;
-    
-    //  obtener ID 
-    const questionId = this.test ? `test-${this.currentQuestionIndex}` : 
+
+    //  obtener ID
+    const questionId = this.test ? `test-${this.currentQuestionIndex}` :
       (this.quiz.questions?.[this.currentQuestionIndex]?.id || `question-${this.currentQuestionIndex}`);
-    
+
     this.userAnswers.set(questionId, answer);
-    
+
   }
 
   nextQuestion(): void {
@@ -85,7 +86,7 @@ export class QuestionContainerComponent implements OnInit, OnDestroy {
     if (!this.canProceed() || this.isSubmitting) return;
 
     this.currentQuestionIndex++;
-    
+
     //  lógica única para ambos casos
     if (this.currentQuestionIndex >= this.allQuestions.length) {
       this.test ? this.nextStep.emit() : this.submitQuiz();
@@ -97,7 +98,7 @@ export class QuestionContainerComponent implements OnInit, OnDestroy {
   private submitQuiz(): void {
     if (this.isSubmitting) return;
     this.isSubmitting = true;
-    
+
     const answers: QuizAnswer[] = Array.from(this.userAnswers.entries()).map(([questionId, selectedOptions]) => ({
       question_id: questionId,
       selected_options: selectedOptions
@@ -105,7 +106,7 @@ export class QuestionContainerComponent implements OnInit, OnDestroy {
 
     //  calcular tiempo y timestamps
     const endTime = new Date();
-    const timeSpentSeconds = this.startTime ? 
+    const timeSpentSeconds = this.startTime ?
       Math.floor((endTime.getTime() - this.startTime.getTime()) / 1000) : 0;
 
     const submission = {
@@ -122,10 +123,10 @@ export class QuestionContainerComponent implements OnInit, OnDestroy {
 
   canProceed(): boolean {
     if (!this.currentQuestion) return false;
-    
-    const questionId = this.test ? `test-${this.currentQuestionIndex}` : 
+
+    const questionId = this.test ? `test-${this.currentQuestionIndex}` :
       (this.quiz.questions?.[this.currentQuestionIndex]?.id || `question-${this.currentQuestionIndex}`);
-    
+
     return this.userAnswers.has(questionId) && (this.userAnswers.get(questionId)?.length || 0) > 0;
   }
 
@@ -133,16 +134,16 @@ export class QuestionContainerComponent implements OnInit, OnDestroy {
     return `${this.currentQuestionIndex + 1} de ${this.allQuestions.length}`;
   }
 
-  //  texto dinámico del botón 
+  //  texto dinámico del botón
   getButtonText(): string {
-    return this.isSubmitting ? 'Enviando...' : 
+    return this.isSubmitting ? 'Enviando...' :
            this.currentQuestionIndex === this.allQuestions.length - 1 ? 'Finalizar' : 'Siguiente';
   }
 
   //  método para mostrar tipo de pregunta
   getCurrentQuestionTypeText(): string {
     if (!this.currentQuestion) return '';
-    
+
     switch (this.currentQuestion.type) {
       case 'simple_choice': return 'Preguntas de selección simple.';
       case 'true_false': return 'Preguntas de verdadero y falso.';
