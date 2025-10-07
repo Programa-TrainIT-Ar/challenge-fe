@@ -6,7 +6,7 @@ import {
   Output,
   EventEmitter,
 } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import {
   trigger,
   style,
@@ -76,18 +76,21 @@ export class AllPageComponent implements OnInit {
   private allPageService = inject(AllPageService);
   constructor(
     private router: Router,
-    private alertService: AlertService
+    private alertService: AlertService,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
-    this.allPageService.getAllQuiz().subscribe((response: any) => {
-      if (!this.isAdmin) {
-        // Si el usuario no es admin, filtra solo los quizzes activos
-        this.quizzes = response.quizzes.filter((quiz: Quiz) => quiz.is_active);
-      } else {
-        // Si es admin, muestra todos los quizzes
-        this.quizzes = response.quizzes;
-      }
+    // 1. Suscribirse a los parámetros de la URL.
+    this.route.queryParams.subscribe(params => {
+      // 2. Asignar los valores de los parámetros a las propiedades del componente.
+      this.module = params['module'] || '';
+      this.cell = params['cell'] || '';
+      this.seniority = params['seniority'] || '';
+      this.searchText = params['search'] || '';
+
+      // 3. Llamar al método de filtrado que es el encargado de cargar los quizzes.
+      this.onSearchChange();
     });
   }
 
