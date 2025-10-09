@@ -35,6 +35,8 @@ export class LoginComponent implements OnInit{
   ) {}
 
   ngOnInit(): void {
+
+    //Verficiación de inicio de sesión con Auth0
     this.auth.user$.pipe(
       tap(user => console.log('🔒 Verificando autenticación del usuario:', user)),
       filter(user => !!user),
@@ -48,7 +50,9 @@ export class LoginComponent implements OnInit{
       password: ['', [Validators.required]]
     });
   }
-  login() {
+
+  //Login con credenciales 
+  loginLocal() {
     if (this.loginForm.valid) {
       // Lógica para manejar el envío del formulario
       const {email, password} = this.loginForm.value;

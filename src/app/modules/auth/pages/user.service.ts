@@ -46,7 +46,7 @@ export class UserService {
   }
 
   loginWithEmail(email: string, password: string) {
-    return this.http.post(`${this.urlApi}/login`, { email, password });
+    return this.http.post(`${this.urlApi}/login-local`, { email, password });
   }
 
   sendResetLink(email: string) {
