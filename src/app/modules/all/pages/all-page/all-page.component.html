@@ -6,24 +6,26 @@
     [editMode]='false'>
   </app-header-page>
   <div class="search-container">
-    <h2>Todos los Quiz</h2>
+    <h2 *ngIf="isAdmin">Todos los Quiz</h2>
+    <h2 *ngIf="!isAdmin">Elige un challenge</h2>
     <div class="input-wrapper">
       <i class="bi bi-search"></i>
       <input type="text" placeholder="Buscar" [(ngModel)]="searchText" (input)="onSearchChange()" />
     </div>
   </div>
-  <div>
+  <div class="quiz-table-wrapper">
     <table class="quiz-table">
       <thead>
         <tr class="table-sup">
-          <td>Nombre Q.</td>
-          <td>Módulo</td>
-          <td>Célula</td>
-          <td>Seniority</td>
-          <td>Fec. Creación</td>
-          <td>Creador</td>
-          <td>Estado</td>
-          <td>Acciones</td>
+          <th *ngIf="isAdmin">Nombre Q.</th>
+          <th *ngIf="!isAdmin">Challenge</th>
+          <th>Módulo</th>
+          <th>Célula</th>
+          <th>Seniority</th>
+          <th *ngIf="isAdmin">Fec. Creación</th>
+          <th *ngIf="isAdmin">Creador</th>
+          <th>Estado</th>
+          <th *ngIf="isAdmin">Acciones</th>
         </tr>
       </thead>
       <tbody>
@@ -32,16 +34,27 @@
           <td class="table-int">{{ quiz?.cell?.module?.name }}</td>
           <td class="table-int">{{ quiz?.cell?.name }}</td>
           <td class="table-int">{{ quiz?.seniority }}</td>
-          <td class="table-int">{{ quiz?.created_at | date:'dd/MM/yyyy' }}</td>
-          <td class="table-int">{{ quiz?.created_by?.first_name }}</td>
+
+
+          <td *ngIf="isAdmin" class="table-int">{{ quiz?.created_at | date:'dd/MM/yyyy' }}</td>
+          <td *ngIf="isAdmin" class="table-int">{{ quiz?.created_by?.first_name }}</td>
           <td class="table-int">
-            <span class="status" 
+
+            <!-- Activar o desactivar quiz (admin) --> 
+            <span *ngIf="isAdmin" class="status" 
                   [ngClass]="{'activo': quiz?.is_active, 'inactivo': !quiz?.is_active}" 
                   (click)="toggleActive(quiz)">
               {{ quiz?.is_active ? 'Activo' : 'Inactivo' }}
             </span>
+
+            <!-- Realizar quiz (candidato) -->
+            <span *ngIf="!isAdmin" class="status activo" (click)="takeQuiz(quiz)">
+              Realizar  <!-- Redireccion a la pagina para realizar el quizz -->
+            </span>
+           
+            
           </td>
-          <td class="actions">
+          <td *ngIf="isAdmin" class="actions">
             <button (click)="viewQuiz(quiz)"><i class="bi bi-eye"></i></button>
             <button (click)="editQuiz(quiz)"><i class="bi bi-pencil-square"></i></button>
             <button (click)="deleteQuiz(quiz)"><i class="bi bi-trash"></i></button>

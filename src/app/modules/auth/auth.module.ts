@@ -8,12 +8,13 @@ import { VerifyEmailComponent } from './pages/verify-email/verify-email.componen
 
 
 @NgModule({
-  declarations: [VerifyEmailComponent],
+  declarations: [],
   imports: [
     CommonModule,
     AuthRoutingModule,
     PrimaryBtnComponent,
     ModalComponent,
+    VerifyEmailComponent
   ]
 })
 export class AuthModule { }

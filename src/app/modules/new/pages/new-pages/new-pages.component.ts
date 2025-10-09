@@ -35,7 +35,7 @@ export class NewPagesComponent {
 
   questionTypes: string[] = [
     'Selección mutiple',
-    'Casilla',
+    'Selección simple',
     'Verdadero o falso',
   ];
 
@@ -106,7 +106,7 @@ export class NewPagesComponent {
 
       this.newPageService.findUserByEmail(user.email).subscribe({
         next: (response: any) => {
-          this.quizData.created_by_id = response.id;
+          this.quizData.created_by_id = response.user.id;
         },
         error: error => {
           console.error('Error al obtener el usuario desde el backend');
@@ -171,7 +171,7 @@ export class NewPagesComponent {
       this.inputType = 'checkbox';
       this.isTrueFalseQuestion = false;
       this.showPlus = true;
-    } else if (selectedType === 'Casilla') {
+    } else if (selectedType === 'Selección simple') {
       this.options = ['', ''];
       this.inputType = 'radio';
       this.isTrueFalseQuestion = false;
@@ -201,7 +201,7 @@ export class NewPagesComponent {
         case 'Verdadero o falso':
           questionType = 'true_false';
           break;
-        case 'Casilla':
+        case 'Selección simple':
           questionType = 'simple_choice';
           break;
         default:

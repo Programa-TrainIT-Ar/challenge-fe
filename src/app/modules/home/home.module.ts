@@ -6,7 +6,6 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { WelcomeModule } from '../welcome/welcome.module';
 
 @NgModule({
-  declarations: [HomePageComponent],
   imports: [
     CommonModule,
     HomeRoutingModule,

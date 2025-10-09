@@ -12,6 +12,7 @@ import { CommonModule } from '@angular/common';
 import { ModalComponent } from 'src/app/shared/components/info-modal/info-modal.component';
 import { UserService } from '../../user.service';
 import { ActivatedRoute } from '@angular/router';
+import { LocalAuthService } from '../../../local-auth.service';
 
 @Component({
   selector: 'app-sign-up-page',
@@ -46,18 +47,18 @@ export class AccountSetupComponent implements OnInit {
     private fb: FormBuilder,
     private router: Router,
     private userService: UserService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private localAuth: LocalAuthService
   ) {}
 
   ngOnInit(): void {
     try {
       //Tomando parámetros de la url
-      this.id = this.route.snapshot.paramMap.get('id');
+      this.id = this.route.snapshot.queryParamMap.get('id');
       this.first_name = this.route.snapshot.queryParamMap.get('first_name');
       this.email = this.route.snapshot.queryParamMap.get('email');
     } catch (error) {
-      console.log("Error al cargar parámetros desde la url");
-      
+      console.log('Error al cargar parámetros desde la url');
     }
 
     //Validaciones de cada campo del formulario
@@ -79,7 +80,8 @@ export class AccountSetupComponent implements OnInit {
         ],
         email: [
           '',
-          [,
+          [
+            ,
             Validators.required,
             Validators.pattern(
               /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/
@@ -162,14 +164,22 @@ export class AccountSetupComponent implements OnInit {
     try {
       this.registerForm.markAllAsTouched();
       if (this.registerForm.valid) {
-        // this.AccountSetupService.registerUser(this.registerForm.value).subscribe({
+        if (!this.id) {
+          //Si no hay id
+          console.error(
+            'ID de usuario no encontrado en la URL. No se puede actualizar.'
+          );
+          return;
+        }
+
         this.userService
           .accountSetup(this.id, this.registerForm.value)
           .subscribe({
             next: response => {
+              // this.localAuth.clearToken(); Quitar esta línea permite que el usuario sea direccionado a /candidato. De lo contrario, irá al login.
               this.successOperation = true;
               this.showModal = true;
-              this.router.navigate(['/candidato']);
+              
             },
             error: error => {
               this.successOperation = false;
@@ -197,5 +207,11 @@ export class AccountSetupComponent implements OnInit {
 
   closeModal() {
     this.showModal = false;
+  }
+
+  finalizarProceso(){
+    this.showModal = false;
+    //Redirreccionar a /candidato una vez leído el mensaje de éxito en la operación.
+    this.router.navigate(['/candidato']);
   }
 }

@@ -1,25 +1,40 @@
 <div class="question-container">
-    <img src="assets/images/logo.svg" alt="Logo" class="bg-logo">
-
-    <div class="title-component">
-        <h3 *ngIf="test">Preguntas de práctica</h3>
-        <div class="d-flex justify-content-between">
-            <div *ngIf="test" class="question-type-input">
-                <p *ngIf="question.type === 'true_false'">Preguntas de verdadero y falso.</p>
-                <p *ngIf="question.type == 'simple_choice'">Preguntas de selección simple.</p>
-                <p *ngIf="question.type == 'multiple_choice'">Preguntas de selección múltiple.</p>
-            </div>
-            <div class="counter-container">
-                {{ counter | date:'mm:ss' }}
-            </div>
+  <div
+    class="header"
+    [style.justify-content]="
+      test && currentQuestion ? 'space-between' : 'flex-end'
+    "
+    [style.margin-top]="test && currentQuestion ? 0 : '4.5rem'"
+    [style.margin-bottom]="test && currentQuestion ? 0 : '5rem'">
+    @if (test && currentQuestion) {
+      <div class="question-number">
+        <h2 class="question-title">Preguntas de Práctica</h2>
+        <div class="question-container-text">
+          {{ getCurrentQuestionTypeText() }}
         </div>
-    </div>
+      </div>
+    } @else {
+      <!-- Div vacío para mantener el espacio -->
+      <div class="spacer"></div>
+    }
 
-    <app-question [question]="question">
+    <div class="timer counter-container">
+      {{ counter | date: 'mm:ss' }}
+    </div>
+  </div>
+
+  @if (currentQuestion) {
+    <app-question
+      [question]="currentQuestion"
+      (answerChanged)="onAnswerChanged($event)">
     </app-question>
+  }
 
-    <div class="button-container">
-        <app-blue-button text="Siguiente" (click)="updateQuestion()">
-        </app-blue-button>
-    </div>
+  <div class="button-container">
+    <app-blue-button
+      [text]="getButtonText()"
+      [disabled]="!canProceed() || isSubmitting"
+      (onClick)="nextQuestion()">
+    </app-blue-button>
+  </div>
 </div>

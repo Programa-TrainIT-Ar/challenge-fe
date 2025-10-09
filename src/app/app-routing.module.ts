@@ -6,12 +6,14 @@ import { HomePageComponent } from './modules/home/pages/home-page/home-page.comp
 import { AuthGuard } from '../app/modules/guards/authGuard.guard';
 import { RoleGuard } from '../app/modules/guards/role.guard';
 import { WelcomeCandidatoComponent } from './modules/welcome-candidato/welcome-candidato.component';
-import { DashboardPageComponent } from './modules/candidato-dashboard/dashboard-page/dashboard-page.component';
+import { DashboardPageComponent } from './modules/candidato-dashboard/dashboard-mainpage/dashboard-page.component';
 import { LoginComponent } from './modules/auth/pages/login/login.component';
 import { authenticatedGuard } from './modules/guards/authenticated.guard';
 import { ErrorComponent } from './modules/home/pages/error/error.component';
 
 import { VerifyEmailComponent } from './modules/auth/pages/verify-email/verify-email.component';
+import { CandidatoFormComponent } from './modules/candidato-dashboard/candidato-form/candidato-form.component';
+import { QuizTakeComponent } from './modules/quiz/pages/quiz-take/quiz-take.component';
 @NgModule({
   imports: [
     RouterModule.forRoot(
@@ -27,7 +29,7 @@ import { VerifyEmailComponent } from './modules/auth/pages/verify-email/verify-e
         {
           path: '',
           redirectTo: 'register',
-          pathMatch: 'full'
+          pathMatch: 'full',
         },
         {
           path: 'candidato',
@@ -39,10 +41,20 @@ import { VerifyEmailComponent } from './modules/auth/pages/verify-email/verify-e
             ),
         },
         {
+          path: 'quiz',
+          canActivate: [AuthGuard],
+          loadChildren: () =>
+            import('./modules/quiz/quiz.module').then(m => m.QuizModule),
+        },
+        {
+          path: 'quiz/:id',
+          canActivate: [AuthGuard],
+          loadChildren: () =>
+            import('./modules/quiz/pages/quiz-take/quiz-take.component').then(m => m.QuizTakeComponent),
+        },
+        {
           path: 'dashboard',
           canActivate: [AuthGuard],
-          component: DashboardPageComponent,
-
           loadChildren: () =>
             import(
               './modules/candidato-dashboard/candidato-dashboard.module'
@@ -68,6 +80,11 @@ import { VerifyEmailComponent } from './modules/auth/pages/verify-email/verify-e
           path: 'login',
           canActivate: [authenticatedGuard], // Si esta autenticado lo redirige a home o candidato segun su rol
           component: LoginComponent,
+        },
+        {
+          path: 'complete-profile',
+          canActivate: [AuthGuard],
+          component: CandidatoFormComponent,
         },
         {
           path: 'verify-email',

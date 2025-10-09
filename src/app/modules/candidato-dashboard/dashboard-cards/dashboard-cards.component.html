@@ -1,0 +1,30 @@
+<section class="subpage">
+  <div class="header" *ngIf="user$ | async as user">
+    <h1>Bienvenido, {{ user.name }}</h1>
+    <p class="date">{{ currentDate | date: 'dd MMM yyyy' }}</p>
+  </div>
+  <div class="content">
+    <h1>Selecciona tu stack</h1>
+
+    <!-- Cards -->
+    <div [class]="model_one ? 'grid' : 'grid2'">
+      @for (item of uniqueCells; track $index) {
+        <div
+          [class]="model_one ? 'card' : 'card2'"
+          (click)="filtrarQuizzes(item.name)">
+          <span class="title">{{ item.name }}</span>
+
+          @if (model_one) {
+            <img [src]="item.icon" [alt]="item.name" />
+          }
+        </div>
+      }
+    </div>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn-all" (click)="filtrarQuizzes('all')">
+        → Ver todos
+      </button>
+    </div>
+  </div>
+</section>
