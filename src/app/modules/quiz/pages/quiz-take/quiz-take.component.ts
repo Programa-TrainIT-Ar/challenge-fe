@@ -16,7 +16,7 @@ import { Quiz } from 'src/app/shared/question-container/question-interface';
   templateUrl: './quiz-take.component.html',
   styleUrls: ['./quiz-take.component.scss'],
   imports: [
-    CommonModule, 
+    CommonModule,
     QuestionContainerComponent,
     BlueButtonComponent,
     SideBarComponent
@@ -24,17 +24,18 @@ import { Quiz } from 'src/app/shared/question-container/question-interface';
 })
 export class QuizTakeComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
-  
+
   step = 1;
   countdown = 5;
   quiz: Quiz | null = null;
   loading = true;
   private countdownInterval?: ReturnType<typeof setInterval>;
-  
+
   // Variables para registro de tiempo
   private quizStartTime?: Date;
   private totalTimeSpent = 0; // en segundos
 
+    quizStarted = false;
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -112,4 +113,7 @@ export class QuizTakeComponent implements OnInit, OnDestroy {
     this.totalTimeSpent = this.getTimeSpent();
     console.log(`Quiz completado en ${this.totalTimeSpent} segundos`);
   }
+    onQuizStarted(isStarted : boolean): void {
+        this.quizStarted = isStarted;
+    }
 }

@@ -42,7 +42,7 @@ export class DashboardCardsComponent implements OnInit {
         this.uniqueCells = this.filterDuplicateCells(this.cards); //Eliminando cards duplicadas
                
         //Establecer modelo de Cards a usar dependiendo de la cantidad de células
-        if(this.uniqueCells.length >= 6){
+        if(this.uniqueCells.length <= 6){
           this.model_one = true; //Se usa el primer modelo de Cards
         } else {
           this.model_one = false; //Se usa el segundo modelo de Cards

@@ -28,7 +28,8 @@ export class QuestionContainerComponent implements OnInit, OnDestroy {
   @Input() test: boolean = false;
   @Input() quiz!: Quiz;
   @Output() nextStep = new EventEmitter<void>();
-
+  @Output() quizStarted = new EventEmitter<boolean>();
+  @Output() quizCompleted = new EventEmitter<boolean>();
   private destroy$ = new Subject<void>();
   private startTime?: Date;
   private currentUserId: string | null = null;
@@ -77,9 +78,10 @@ export class QuestionContainerComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.loadQuestions();
     this.loadCurrentUser();
-    
+     
     if (!this.test) {
       this.startTime = new Date();
+        this.quizStarted.emit(true);
     }
   }
 
