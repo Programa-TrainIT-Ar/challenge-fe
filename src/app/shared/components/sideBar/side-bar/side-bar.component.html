@@ -27,6 +27,7 @@
     <div class="gestion-btns">
       @for (item of sidebarItems; track $index) {
         <button
+            [disabled]="this.blockNavigation"
           [ngClass]="extended ? 'sidebar-btns-extended' : 'sidebar-btns'"
           class="active-btn mb-2" (click)="onItemClick(item)">
           <ng-container *ngIf="item.type === 'image'">
@@ -46,6 +47,7 @@
       <!-- Botón configuración. ¿Es sólo para candidatos? -->
       <button
         *ngIf="role === 'candidate'"
+        [disabled]="this.blockNavigation"
         [ngClass]="extended ? 'sidebar-btns-extended' : 'sidebar-btns'"
         class="active-btn mb-2">
         <i class="bi bi-gear"></i>
@@ -54,6 +56,7 @@
 
       <!-- Botón cerrar sesión -->
       <button
+          [disabled]="this.blockNavigation"
         [ngClass]="extended ? 'sidebar-btns-extended' : 'sidebar-btns'"
         class="active-btn mb-2"
         (click)="logout()"
