@@ -1,12 +1,9 @@
-<div [ngClass]="extended ? 'sidebar-container-extended' : 'sidebar-container'">
+<div class= 'sidebar-container'>
 
   <!-- Contenido del Sidebar -->
   <div class="d-flex flex-column">
-    <button class="toggle-sidebar border-0 mb-3" (click)="toggleSidebar()">
-      <i class="bi bi-list"></i>
-    </button>
     <img
-      [ngClass]="extended ? 'side-img-extended' : 'side-img'"
+      class='side-img'
       src="assets/images/logo.svg"
       alt="logo" />
   </div>
