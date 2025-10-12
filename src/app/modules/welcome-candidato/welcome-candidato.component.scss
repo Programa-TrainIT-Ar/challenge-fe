@@ -2,12 +2,11 @@
   display: flex;
   height: 100vh;
   background: rgba(27, 27, 27, 1);
-  align-items: center;
-
 }
 
 .question-container {
-  width: 80vw;
+  flex:1;
+  margin: 0 1rem;
   height: 95vh;
   padding: 24px 8px 8px 8px;
   gap: 47px;
@@ -63,8 +62,6 @@
   z-index: -5;
 
 }
-
-
 
 // ---------------STEP 3---------------------------------------------------
 
