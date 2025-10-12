@@ -21,10 +21,10 @@ interface SidebarItem {
 export class SideBarComponent {
   @Input() role: UserRole = 'admin';
   @Input() extended: boolean = true;
+    @Input() blockNavigation: boolean = false;
+    isSidebarOpen: boolean = true;
 
-  isSidebarOpen: boolean = true;
-
-  constructor(
+    constructor(
     private authService: AuthService,
     private router: Router,
     private localAuthService: LocalAuthService,
