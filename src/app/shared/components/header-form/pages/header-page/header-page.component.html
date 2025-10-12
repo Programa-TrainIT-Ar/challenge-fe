@@ -1,5 +1,6 @@
 <div class="content">
   <div class="content-1">
+      holaa:
     <!-- Opciones de Módulo -->
     <div class="input-container">
       <h4 class="mb-5">Módulo</h4>
@@ -10,7 +11,7 @@
       </div>
       @if (showModulo) {
         <div
-          class="option-floating floating-module"
+          class="option-floating cell-overflow  floating-module"
           (click)="$event.stopPropagation()">
           @for (module of modules; track $index) {
             <button class="module-option" (click)="selectModule(module)">
