@@ -5,6 +5,7 @@ import { catchError, of, throwError } from 'rxjs';
 import { AccountSetupResponse } from '../interfaces/account-setup.interface';
 
 export interface UserData {
+  id?: string;
   email: string;
   first_name?: string;
   last_name?: string;
@@ -24,6 +25,11 @@ export interface LoginResponse {
   token_type: string;
 }
 
+export interface FindUserResponse {
+  user: UserData;
+  register_complete: boolean;
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -34,7 +40,7 @@ export class UserService {
 
   finduserByEmail(email: string) {
     return this.http
-      .get<UserData>(`${this.urlApi}/FindByEmail?email=${email}`)
+      .get<FindUserResponse>(`${this.urlApi}/FindByEmail?email=${email}`)
       .pipe(
         catchError(error => {
           if (error.status === 404) {
