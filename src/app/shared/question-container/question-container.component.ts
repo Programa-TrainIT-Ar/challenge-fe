@@ -7,15 +7,15 @@ import {
   OnDestroy,
 } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
-import { Subject, Observable, firstValueFrom } from 'rxjs';
-import { takeUntil, filter, switchMap } from 'rxjs/operators';
-import { AuthService, User } from '@auth0/auth0-angular';
+import { Subject, firstValueFrom } from 'rxjs';
+import { Router } from '@angular/router';
 
 import { QuestionComponent } from '../question/question.component';
 import { BlueButtonComponent } from '../components/blue-button/blue-button.component';
 import { QuizService } from '../../modules/quiz/pages/quiz-take/quiz-take.service';
 import { Quiz, Question } from './question-interface';
-import { UserService } from '../../modules/auth/pages/user.service';
+import { AlertService } from '../components/alert/alert.service';
+import { UserAuthService } from '../../modules/auth/user-auth.service';
 
 @Component({
   selector: 'app-question-container',
@@ -30,6 +30,7 @@ export class QuestionContainerComponent implements OnInit, OnDestroy {
   @Output() nextStep = new EventEmitter<void>();
   @Output() quizStarted = new EventEmitter<boolean>();
   @Output() quizCompleted = new EventEmitter<boolean>();
+
   private destroy$ = new Subject<void>();
   private startTime?: Date;
   private currentUserId: string | null = null;
@@ -41,6 +42,7 @@ export class QuestionContainerComponent implements OnInit, OnDestroy {
   counter = new Date(0);
   isSubmitting = false;
   allQuestions: Question[] = [];
+  isLoading = true; // Para mostrar loading mientras verifica sesión
 
   // Preguntas de test
   private readonly testQuestions: Question[] = [
@@ -69,19 +71,21 @@ export class QuestionContainerComponent implements OnInit, OnDestroy {
 
   constructor(
     private quizService: QuizService,
-    private auth: AuthService,
-    private userService: UserService
+    private router: Router,
+    private alertService: AlertService,
+    private userAuthService: UserAuthService
   ) {
     this.initTimer();
   }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     this.loadQuestions();
-    this.loadCurrentUser();
-     
+    
+    // Verificar sesión ANTES de iniciar el quiz
     if (!this.test) {
-      this.startTime = new Date();
-        this.quizStarted.emit(true);
+      await this.initializeUserSession();
+    } else {
+      this.isLoading = false;
     }
   }
 
@@ -91,6 +95,42 @@ export class QuestionContainerComponent implements OnInit, OnDestroy {
   }
 
   // ============= INICIALIZACIÓN =============
+
+  private async initializeUserSession(): Promise<void> {
+    try {
+
+      // Verificar y cargar usuario
+      const userId = await this.userAuthService.getCurrentUserId();
+      
+      if (!userId) {
+        this.handleSessionExpired();
+        return;
+      }
+
+      // Usuario válido - continuar con el quiz
+      this.currentUserId = userId;
+      this.startTime = new Date();
+      this.isLoading = false;
+      
+      this.quizStarted.emit(true);
+      
+    } catch (error) {
+      this.handleSessionExpired();
+    }
+  }
+
+  private handleSessionExpired(): void {
+    this.isLoading = false;
+    
+    this.alertService.showConfirm(
+      'Sesión Requerida',
+      'Necesitas iniciar sesión para realizar este quiz.',
+      () => {
+        this.router.navigate(['/login']);
+      },
+      'Ir al Login'
+    );
+  }
 
   private initTimer(): void {
     setInterval(() => {
@@ -112,57 +152,23 @@ export class QuestionContainerComponent implements OnInit, OnDestroy {
     this.currentQuestion = this.allQuestions[0] || null;
   }
 
-  private async loadCurrentUser(): Promise<void> {
-    try {
-      // Obtener usuario de Auth0
-      const authUser = await firstValueFrom(
-        this.auth.user$.pipe(
-          filter(user => !!user && !!user.email),
-          takeUntil(this.destroy$)
-        )
-      );
-
-      if (!authUser?.email) {
-        return;
-      }
-
-      // Buscar usuario en la base de datos
-      const dbUserResponse = await firstValueFrom(
-        this.userService.finduserByEmail(authUser.email).pipe(takeUntil(this.destroy$))
-      );
-
-      if (!dbUserResponse || !dbUserResponse.user || !dbUserResponse.user.id) {
-        console.error('❌ Usuario no encontrado en la base de datos');
-        return;
-      }
-
-      // Ahora sí acceder correctamente al ID
-      this.currentUserId = dbUserResponse.user.id;
-      
-    } catch (error) {
-      console.error('❌ Error cargando usuario:', error);
-    }
-  }
-
   // ============= MANEJO DE RESPUESTAS =============
 
   onAnswerChanged(answer: number[]): void {
     if (!this.currentQuestion) return;
 
-    // Guardar respuesta usando tanto el ID como el índice para mayor compatibilidad
     const questionId = this.getQuestionId();
     const questionIndex = `question-${this.currentQuestionIndex}`;
-    
+
     this.userAnswers.set(questionId, answer);
     this.userAnswers.set(questionIndex, answer);
-    
   }
 
   private getQuestionId(): string {
     return this.test
       ? `test-${this.currentQuestionIndex}`
       : this.quiz.questions?.[this.currentQuestionIndex]?.id ||
-        `question-${this.currentQuestionIndex}`;
+          `question-${this.currentQuestionIndex}`;
   }
 
   // ============= NAVEGACIÓN =============
@@ -180,49 +186,72 @@ export class QuestionContainerComponent implements OnInit, OnDestroy {
   }
 
   canProceed(): boolean {
-    if (!this.currentQuestion) return false;
+    if (!this.currentQuestion || this.isLoading) return false;
 
     const questionId = this.getQuestionId();
-    const hasAnswer = this.userAnswers.has(questionId) && 
-                     (this.userAnswers.get(questionId)?.length || 0) > 0;
-    
+    const hasAnswer =
+      this.userAnswers.has(questionId) &&
+      (this.userAnswers.get(questionId)?.length || 0) > 0;
+
     return hasAnswer;
   }
 
   // ============= ENVÍO DEL QUIZ =============
 
   private async submitQuiz(): Promise<void> {
-    if (this.isSubmitting) return;
-    
+    if (this.isSubmitting || !this.currentUserId) return;
+
     this.isSubmitting = true;
 
     try {
-      if (!this.currentUserId) {
-        throw new Error('Usuario no autenticado. No se puede enviar el quiz.');
-      }
 
       // Preparar datos
       const challengeData = this.prepareChallengeData(this.currentUserId);
-      
-      // envio al backend
-      const response = await firstValueFrom(
-        this.quizService.submitQuizAnswers(challengeData)
+
+      // Enviar al backend
+      await firstValueFrom(this.quizService.submitQuizAnswers(challengeData));
+
+      // Mostrar modal de éxito con redirección
+      this.alertService.showConfirm(
+        '¡Quiz Completado!',
+        'Tu quiz ha sido enviado exitosamente. Presiona "Ver Resultados" para ver tu calificación.',
+        () => {
+          this.router.navigate(['/result', this.quiz.id]);
+        },
+        'Ver Resultados'
       );
 
-      // Avanzar a la pagina de resultados
-      this.nextStep.emit();
-
     } catch (error) {
-      console.error('❌ Error enviando challenge:', error);
+      this.handleSubmissionError(error);
     } finally {
       this.isSubmitting = false;
     }
   }
 
+  private handleSubmissionError(error: any): void {
+    let errorMessage = 'Ocurrió un error inesperado al enviar tu quiz.';
+    let errorTitle = 'Error al Enviar Quiz';
+
+    if (error?.status === 400) {
+      errorMessage = 'Los datos del quiz no son válidos. Por favor, intenta nuevamente.';
+    } else if (error?.status === 404) {
+      errorMessage = 'El quiz no fue encontrado. Por favor, recarga la página.';
+      errorTitle = 'Quiz No Encontrado';
+    } else if (error?.status === 500) {
+      errorMessage = 'Error en el servidor. Por favor, intenta más tarde.';
+      errorTitle = 'Error del Servidor';
+    } else if (error?.status === 401 || error?.status === 403) {
+      // Sesión expirada durante el envío
+      this.handleSessionExpired();
+      return;
+    }
+
+    this.alertService.showError(errorMessage, errorTitle);
+  }
+
   private prepareChallengeData(userId: string) {
     const questionAnswers: number[][] = [];
 
-    // Crear array de respuestas en el orden correcto
     this.quiz.questions?.forEach((question, index) => {
       const questionId = question.id;
       const userAnswer = this.userAnswers.get(questionId);
@@ -249,6 +278,7 @@ export class QuestionContainerComponent implements OnInit, OnDestroy {
   }
 
   getButtonText(): string {
+    if (this.isLoading) return 'Cargando...';
     return this.isSubmitting
       ? 'Enviando...'
       : this.currentQuestionIndex === this.allQuestions.length - 1
