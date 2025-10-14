@@ -1,4 +1,12 @@
 <div class="question-container">
+  <!-- Loading state -->
+  @if (isLoading) {
+    <div class="loading-container">
+      <p>Verificando sesión...</p>
+      <!-- Aquí puedes agregar un spinner -->
+    </div>
+  }
+
   <div
     class="header"
     [style.justify-content]="
