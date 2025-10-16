@@ -14,7 +14,7 @@ $spacing: 20px;
   border-radius: 12px;
   margin-block: 2.5vh;
   overflow: hidden;
-    min-height:70dvh;
+    min-height:95dvh;
 }
 
 .table-sup {
@@ -139,7 +139,8 @@ h2 {
 
 .quiz-table tbody {
   display: block;
-  max-height: 350px;
+  height: 60dvh;
+
   overflow-y: auto;
   width: 100%;
 
