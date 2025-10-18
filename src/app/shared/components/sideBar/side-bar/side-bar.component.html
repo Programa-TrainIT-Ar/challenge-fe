@@ -1,15 +1,14 @@
-<div class= 'sidebar-container'>
+<div class= 'sidebar-container' [class.open]="isSidebarOpen">
 
   <!-- Contenido del Sidebar -->
-  <div class="d-flex flex-column">
-    <img
-      class='side-img'
-      src="assets/images/logo.svg"
-      alt="logo" />
-  </div>
+    <img class='side-img' src="assets/images/logo.svg" alt="logo" />
+
+  <button class="toggle-sidebar border-0 mb-3" (click)="toggleSidebar()">
+    <i class="bi bi-list"></i>
+  </button>
 
   <!-- Botones cargados desde el componente dependiendo del rol del usuario -->
-  <div class="sidebar-btns-container">
+  <div class="sidebar-btns-container" [ngClass]="{'show': isMenuOpen}">
     <div class="gestion-btns">
       @for (item of sidebarItems; track $index) {
         <button
@@ -29,7 +28,7 @@
       }
     </div>
 
-    <div class="w-100">
+    <div class="w-100 mt-2">
       <!-- Botón configuración. ¿Es sólo para candidatos? -->
       <button
         *ngIf="role === 'candidate'"
@@ -56,56 +55,3 @@
   </div>
 </div>
 
-<!--
-<button class="toggle-sidebar d-md-none" (click)="toggleSidebar()">
-  <i class="bi bi-list">Toggle</i>
-</button>
-
-
-
-
-
-<div class="sidebar" [ngClass]="{'active': isSidebarOpen}">
-  <div class="mb-5 side-img">
-    <img src="assets/layout/images/logo.svg" class="" alt="logo" />
-  </div>
-
-  <div class="sidebar-btns-container">
-    <div class="gestion-btns">
-      <div>
-        <button class="sidebar-btns active-btn">
-          <i class="bi bi-card-checklist"></i>
-          <span class="sidebar-font-btn">Gestión Quiz</span>
-        </button>
-      </div>
-
-      <div>
-        <button class="sidebar-btns">
-          <i class="bi bi-boxes"></i>
-          <span class="sidebar-font-btn">Gestión Challenge</span>
-        </button>
-      </div>
-
-      <div>
-        <button class="sidebar-btns">
-          <i class="bi bi-people"></i>
-          <div class="sidebar-font-btn">Gestionar Candidatos</div>
-        </button>
-      </div>
-    </div>
-
-    <div class="config-btn">
-      <button class="sidebar-btns">
-        <i class="bi bi-gear"></i>
-        <span class="sidebar-font-btn">Configuración</span>
-      </button>
-      <button
-
-            class="sidebar-btns text-white mt-3"
-            (click)="logout()">
-            <i class="bi bi-box-arrow-left"></i>
-            salir
-        </button>
-    </div>
-  </div>
-</div> -->

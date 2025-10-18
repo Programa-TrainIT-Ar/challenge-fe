@@ -23,6 +23,7 @@ export class SideBarComponent {
   @Input() extended: boolean = true;
     @Input() blockNavigation: boolean = false;
     isSidebarOpen: boolean = true;
+    isMenuOpen: boolean = false;
 
     constructor(
     private authService: AuthService,
@@ -81,8 +82,10 @@ export class SideBarComponent {
   }
 
   toggleSidebar() {
-    this.extended = !this.extended;
+    this.extended = this.extended;
+    this.isMenuOpen = !this.isMenuOpen;
   }
+  
 
   logout() {
     this.localAuthService.clearToken();
