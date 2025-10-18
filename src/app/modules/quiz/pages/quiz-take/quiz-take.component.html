@@ -70,10 +70,8 @@
         <app-question-container
           [test]="false"
           [quiz]="quiz"
-          (quizCompleted)="onQuizCompleted()"
-            (quizStarted)="onQuizStarted($event)"
-        />
-
+          (quizStarted)="onQuizStarted($event)"
+          (quizCompleted)="onQuizCompleted()" />
       }
     }
   </div>

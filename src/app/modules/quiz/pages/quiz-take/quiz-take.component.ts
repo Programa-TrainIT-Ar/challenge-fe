@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { Subject } from 'rxjs';
@@ -9,6 +9,7 @@ import { QuestionContainerComponent } from 'src/app/shared/question-container/qu
 import { BlueButtonComponent } from 'src/app/shared/components/blue-button/blue-button.component';
 import { SideBarComponent } from 'src/app/shared/components/sideBar/side-bar/side-bar.component';
 import { Quiz } from 'src/app/shared/question-container/question-interface';
+import { CanComponentDeactivate } from './unsaved-changes.guard';
 
 @Component({
   selector: 'app-quiz-take',
@@ -22,7 +23,7 @@ import { Quiz } from 'src/app/shared/question-container/question-interface';
     SideBarComponent
   ]
 })
-export class QuizTakeComponent implements OnInit, OnDestroy {
+export class QuizTakeComponent implements OnInit, OnDestroy,CanComponentDeactivate {
   private destroy$ = new Subject<void>();
 
   step = 1;
@@ -113,6 +114,10 @@ export class QuizTakeComponent implements OnInit, OnDestroy {
     this.totalTimeSpent = this.getTimeSpent();
     console.log(`Quiz completado en ${this.totalTimeSpent} segundos`);
   }
+    @HostListener('window:beforeunload', ['$event'])
+    canDeactivate(): boolean {
+        return !this.quizStarted;
+    }
     onQuizStarted(isStarted : boolean): void {
         this.quizStarted = isStarted;
     }
