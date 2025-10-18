@@ -165,4 +165,29 @@
   display: block;
   cursor: pointer;
 }
+
+.sidebar-btns-container.show .btn-logout{
+ width: 10rem;
+  height: 4vh;
+  color: white;
+  background: linear-gradient(#202020, #202020) padding-box,  
+              linear-gradient(90deg, #FF5EA6, #572EFF) border-box; 
+  border: 2px solid transparent; 
+  border-radius: 15px;
+  margin-right: 10px;
+  display: flex;     
+  align-items: center;         
+  justify-content: flex-start;
+  text-align: center;
+}
+
+.sidebar-btns-container.show .btn-logout span {
+  margin: 0;
+  padding: 0;
+  display: block;
+   background: linear-gradient(90deg, #FF5EA6, #572EFF);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
 }

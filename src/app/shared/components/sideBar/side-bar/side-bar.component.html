@@ -43,13 +43,13 @@
       <button
           [disabled]="this.blockNavigation"
         [ngClass]="extended ? 'sidebar-btns-extended' : 'sidebar-btns'"
-        class="active-btn mb-2"
+        class="btn-logout"
         (click)="logout()"
         >
         <img
           class="svg"
           src="../../../../../assets/images/Crear Quizz/Vector.png" />
-        <span *ngIf="extended" class="sidebar-font-btn">Salir</span>
+        <span *ngIf="extended" class="sidebar-font-btn">Cerrar sesion</span>
       </button>
     </div>
   </div>
