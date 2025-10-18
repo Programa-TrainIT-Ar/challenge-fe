@@ -1,4 +1,4 @@
-import { Component, Input, Inject } from '@angular/core';
+import { Component, Input, Inject,HostListener } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule, DOCUMENT } from '@angular/common';
 import { AuthService } from '@auth0/auth0-angular';
@@ -24,6 +24,7 @@ export class SideBarComponent {
     @Input() blockNavigation: boolean = false;
     isSidebarOpen: boolean = true;
     isMenuOpen: boolean = false;
+    isMobile: boolean = false;
 
     constructor(
     private authService: AuthService,
@@ -31,6 +32,10 @@ export class SideBarComponent {
     private localAuthService: LocalAuthService,
     @Inject(DOCUMENT) public document: Document
   ) {}
+
+    ngOnInit(): void {
+    this.checkScreenSize();
+  }
 
   private adminItems: SidebarItem[] = [
     {
@@ -105,4 +110,10 @@ export class SideBarComponent {
       this.router.navigate([item.route]);
     }
   }
+
+  // Método para verificar el tamaño de la pantalla
+  @HostListener('window:resize')
+  checkScreenSize() {
+  this.isMobile = window.innerWidth <= 768; 
+}
 }

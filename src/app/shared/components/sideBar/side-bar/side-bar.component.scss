@@ -80,6 +80,10 @@
 .active-btn {
   background-color: #1b1b1bb2;
 }
+.sidebar-btns-container .btn-logout{
+  background-color: #212121;
+}
+
 
 .side-img {
   width: clamp(100px, 15vw, 130px);;
@@ -93,6 +97,10 @@
 
 .svg {
   width: 15px;
+}
+
+.d-none {
+  display: none;
 }
 
 @media (max-width: 768px) {

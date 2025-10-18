@@ -42,14 +42,15 @@
       <!-- Botón cerrar sesión -->
       <button
           [disabled]="this.blockNavigation"
-        [ngClass]="extended ? 'sidebar-btns-extended' : 'sidebar-btns'"
-        class="btn-logout"
+        [ngClass]="extended ? 'sidebar-btns-extended' : 'sidebar-btns'" class="btn-logout"
         (click)="logout()"
         >
         <img
           class="svg"
           src="../../../../../assets/images/Crear Quizz/Vector.png" />
-        <span *ngIf="extended" class="sidebar-font-btn">Cerrar sesion</span>
+        <span class="sidebar-font-btn" [ngClass]="{ 'd-none': !extended }">
+          {{ isMobile ? 'Cerrar sesión' : 'Salir' }}
+        </span>
       </button>
     </div>
   </div>
