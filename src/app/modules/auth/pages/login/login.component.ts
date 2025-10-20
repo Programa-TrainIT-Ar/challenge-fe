@@ -34,6 +34,8 @@ export class LoginComponent implements OnInit{
     private localAuthService: LocalAuthService
   ) {}
 
+  isLoading = false;
+
   ngOnInit(): void {
 
     //Verficiación de inicio de sesión con Auth0
@@ -43,7 +45,6 @@ export class LoginComponent implements OnInit{
       take(1)
     ).subscribe(() => {
       this.router.navigate(['/home']);
-      console.log('🔒 Usuario ya autenticado, redirigiendo a home');
     });
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -53,22 +54,22 @@ export class LoginComponent implements OnInit{
 
   //Login con credenciales 
   loginLocal() {
-    if (this.loginForm.valid) {
-      // Lógica para manejar el envío del formulario
+    if (this.loginForm.valid && !this.isLoading) {
+      this.isLoading = true; // Empieza a cargar
+
       const {email, password} = this.loginForm.value;
+
       this.userService.loginWithEmail(email, password).subscribe({
         next: (response: LoginResponse) => {
-          console.log('🔒 Inicio de sesión exitoso:', response);
           const accessToken = response.access_token; // Asegúrate de que la respuesta tenga el token en este formato
           this.localAuthService.setToken(accessToken); 
-          // Accede al contenido de la llave access_token
-            
-          console.log('Access Token:', accessToken);
           this.router.navigate(['/home']);
+          this.isLoading = false; // Detiene la carga al tener éxito
         },
         error: (error) => {
           console.error('🔒 Error al iniciar sesión:', error);
-          // Aquí podrías mostrar un mensaje de error al usuario
+          this.isLoading = false; // Detiene la carga al tener un error
+          // Aquí se podría mostrar un mensaje de error al usuario
         }
       });
     }
