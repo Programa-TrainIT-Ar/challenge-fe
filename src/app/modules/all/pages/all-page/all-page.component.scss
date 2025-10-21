@@ -227,6 +227,24 @@ h2 {
   padding: 10px 20px;
 }
 
+.no-quizzes {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  text-align: center;
+  margin-top: 10px;
+  min-height: 200px;
+
+  h1 {
+    font-size: 1.5rem;
+    font-weight: 400;
+    margin: 0 0 16px 0;
+    line-height: 1.4;
+  }
+}
+
 @media (max-width: 768px) {
   .quiz-table-wrapper {
     overflow-x: auto;  
@@ -242,5 +260,14 @@ h2 {
     font-size: 14px;
     padding: 8px;
     white-space: wrap;
+  }
+
+  .no-quizzes {
+    padding: 30px 15px;
+    min-height: 150px;
+
+    h1 {
+      font-size: 1.25rem;
+    }
   }
 }
