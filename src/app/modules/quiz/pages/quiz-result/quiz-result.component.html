@@ -1,0 +1,29 @@
+
+<div class="layout-container">
+    <app-side-bar></app-side-bar>
+    @if(result){
+    <div class="result-container">
+        <img src="assets/images/logo.svg" alt="Logo" class="bg-logo">
+        <div class="titles-container">
+            <h2 class="result-tittle">Resutados</h2>
+            <div class="result-name">
+                {{'Agregar Nombre del challenge'}}
+            </div>
+        </div>
+        <div class="content-container">
+            <div class="calification-container">
+                <h2>Puntaje</h2>
+                <h2>{{result.calification}} / 10</h2>
+            </div>
+            <div class="time-container">
+                <h2>Tiempo</h2>
+                <h2>{{result.time_taken}}</h2>
+            </div>
+            
+        </div>
+        <div class="button-container">
+            <app-blue-button text="Volver a inicio" (click)="redirectToHome()"></app-blue-button>
+        </div>
+    </div>
+    }
+</div>
