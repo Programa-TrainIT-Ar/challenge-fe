@@ -13,7 +13,8 @@ $spacing: 20px;
   width: 100%;
   border-radius: 12px;
   margin-block: 2.5vh;
-  overflow: hidden;   
+  overflow: hidden;
+    min-height:95dvh;
 }
 
 .table-sup {
@@ -24,7 +25,7 @@ $spacing: 20px;
   text-align: center;
 }
 
-.table-int { 
+.table-int {
   margin: 0 auto;
   flex: auto;
 }
@@ -50,7 +51,7 @@ h2 {
   width: 30%;
 }
 
-.search-container {  
+.search-container {
   top: 0;
   background-color: #1e1e1e;
   padding: 10px 20px;
@@ -97,8 +98,8 @@ h2 {
 
 .table-container {
   width: 85%;
-}
 
+}
 .new-button {
   display: flex;
   justify-content: center;
@@ -122,6 +123,7 @@ h2 {
 
 
 .quiz-table {
+
   width: 100%;
   border-collapse: collapse;
   margin-top: 10px;
@@ -137,9 +139,11 @@ h2 {
 
 .quiz-table tbody {
   display: block;
-  max-height: 350px;   
-  overflow-y: auto;  
+  height: 60dvh;
+
+  overflow-y: auto;
   width: 100%;
+
 }
 
 .quiz-table tr {
@@ -185,43 +189,43 @@ h2 {
 
 .input-wrapper i {
   position: absolute;
-  left: 10px; 
+  left: 10px;
   top: 50%;
   transform: translateY(-50%);
-  color: #aaa; 
+  color: #aaa;
 }
 
 .input-wrapper input {
-  padding-left: 35px; 
-  width: 100%; 
+  padding-left: 35px;
+  width: 100%;
 }
 
 .custom-popup {
-  background-color: #1f1f1f; 
-  color: #fff;               
-  border-radius: 15px;       
+  background-color: #1f1f1f;
+  color: #fff;
+  border-radius: 15px;
 }
 
 .custom-title {
-  font-size: 20px; 
+  font-size: 20px;
   font-weight: bold;
-  color: #fff;     
+  color: #fff;
 }
 
 .custom-content {
-  font-size: 14px;  
-  color: #cccccc;   
+  font-size: 14px;
+  color: #cccccc;
 }
 
 .custom-confirm-btn {
-  background-color: #6c63ff; 
-  border-radius: 10px;       
-  color: #fff;               
-  padding: 10px 20px;        
+  background-color: #6c63ff;
+  border-radius: 10px;
+  color: #fff;
+  padding: 10px 20px;
 }
 
 .custom-cancel-btn {
-  background-color: #4e4e4e; 
+  background-color: #4e4e4e;
   border-radius: 10px;
   color: #fff;
   padding: 10px 20px;
@@ -247,12 +251,12 @@ h2 {
 
 @media (max-width: 768px) {
   .quiz-table-wrapper {
-    overflow-x: auto;  
+    overflow-x: auto;
   }
 
   .quiz-table {
     border-collapse: collapse;
-    min-width: 600px;  
+    min-width: 600px;
   }
 
   .quiz-table th,

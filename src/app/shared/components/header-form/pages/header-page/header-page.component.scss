@@ -60,11 +60,16 @@
   flex-direction: column;
   justify-content: space-between;
 }
+.cell-overflow{
+    overflow-y:scroll;
 
+    min-height:30dvh;
+
+}
 .option-floating {
   position: absolute;
-  z-index: 1000;
-  width: 25%;
+ z-index: 2000;
+  width: 24%;
   background-color: #303030;
   display: flex;
   flex-wrap: wrap;
@@ -102,7 +107,8 @@
 .floating-module {
   position: absolute;
   top: 11vh;
-  width: 24%;
+    height:100%;
+
   // right: 92.5vh;
 }
 
@@ -270,6 +276,7 @@ h4 {
     box-sizing: border-box;
     overflow-wrap: break-word;
     white-space: nowrap;
+      z-index: 10000;
   }
 
   .option-floating {

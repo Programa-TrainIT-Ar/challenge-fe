@@ -28,7 +28,7 @@ import { QuizTakeComponent } from './modules/quiz/pages/quiz-take/quiz-take.comp
         },
         {
           path: '',
-          redirectTo: 'register',
+          redirectTo: 'login',
           pathMatch: 'full',
         },
         {
@@ -65,12 +65,6 @@ import { QuizTakeComponent } from './modules/quiz/pages/quiz-take/quiz-take.comp
           canActivate: [authenticatedGuard], // Si esta autenticado lo redirige a home o candidato segun su rol
           component: AuthPageComponent,
         },
-
-        // {
-        //   path: 'sign-up',
-        //   canActivate: [authenticatedGuard], // Si esta autenticado lo redirige a home o candidato segun su rol
-        //   component: SignUpComponent, //Colocar aquí la vista hecha por Carlos
-        // },
         {
           path: 'account-setup',
           //canActivate: [authenticatedGuard],

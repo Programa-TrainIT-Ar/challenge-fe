@@ -10,7 +10,7 @@
       </div>
       @if (showModulo) {
         <div
-          class="option-floating floating-module"
+          class="option-floating cell-overflow  floating-module"
           (click)="$event.stopPropagation()">
           @for (module of modules; track $index) {
             <button class="module-option" (click)="selectModule(module)">
