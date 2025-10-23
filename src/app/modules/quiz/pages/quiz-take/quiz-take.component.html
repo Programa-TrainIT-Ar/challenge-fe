@@ -1,10 +1,9 @@
 @if (!loading && quiz) {
   <div class="layout-container">
-      <app-side-bar
-          role="candidate"
-          [extended]="false"
-          [blockNavigation]="quizStarted"
-      />
+    <app-side-bar
+      role="candidate"
+      [extended]="false"
+      [blockNavigation]="quizStarted || step === 5" />
 
     @switch (step) {
       @case (1) {
@@ -71,7 +70,15 @@
           [test]="false"
           [quiz]="quiz"
           (quizStarted)="onQuizStarted($event)"
-          (quizCompleted)="onQuizCompleted()" />
+          (showResults)="onShowResults($event)" />
+      }
+
+      @case (5) {
+        <app-quiz-result
+          [result]="quizResults"
+          [quizName]="quiz.name"
+          [totalQuestions]="quiz.questions?.length || 10">
+        </app-quiz-result>
       }
     }
   </div>

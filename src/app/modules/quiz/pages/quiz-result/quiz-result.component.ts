@@ -1,9 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, inject, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { BlueButtonComponent } from 'src/app/shared/components/blue-button/blue-button.component';
-import { SideBarComponent } from 'src/app/shared/components/sideBar/side-bar/side-bar.component';
 
 interface ChallengeResult {
   id: string;
@@ -15,28 +14,31 @@ interface ChallengeResult {
   quiz_id?: string;
   user_id?: string;
 }
+
 @Component({
   selector: 'app-quiz-result',
   standalone: true,
-  imports: [CommonModule, BlueButtonComponent, SharedModule, SideBarComponent],
+  imports: [CommonModule, BlueButtonComponent, SharedModule],
   templateUrl: './quiz-result.component.html',
   styleUrl: './quiz-result.component.scss'
 })
-
 export class QuizResultComponent {
- 
-  private router = inject(Router);
- 
-  //ejemplo, darle a la variable result el valor del input que trae router
-  result: ChallengeResult = {
+  router = inject(Router);
+
+  @Input() result: ChallengeResult = {
     id: "1",
     calification: 2,
     time_taken: 15,
-   
-}
+  }
 
-redirectToHome(): void{
-    this.router.navigate(['dashboard']);
-}
+  @Input() quizName: string = '';
+  @Input() totalQuestions: number = 10;
 
+  formatTime(seconds: number): string {
+    if (!seconds) return '0:00';
+    
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
+  }
 }
