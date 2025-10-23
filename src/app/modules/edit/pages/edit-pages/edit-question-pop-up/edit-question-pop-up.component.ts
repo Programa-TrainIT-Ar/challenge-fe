@@ -41,8 +41,13 @@ export class EditQuestionPopUpComponent {
     this.cancel.emit();
   }
   addOption() {
-    this.currentEditingQuestion.options.push('Opción nueva');
+    if(this.currentEditingQuestion.options.length < 6){
+      this.currentEditingQuestion.options.push('Opción nueva');
+    }else{
+      alert('El límite son 6 opciones.');
+    }
   }
+
 
  answerChoice(index: number) {
    if (this.currentEditingQuestion.type === 'true_false') {
@@ -91,4 +96,5 @@ export class EditQuestionPopUpComponent {
     }
   }
 }
+
 
