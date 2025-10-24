@@ -21,28 +21,40 @@ export class AuthInterceptor implements HttpInterceptor {
     req: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
-    // Intentamos primero con Auth0
+    // 1. INTENTO LOCAL (SÍNCRONO): Verificar el token local primero.
+    const localToken = this.localAuth.getToken();
+
+    if (localToken) {
+      // Si hay un token local (login con email), se adjunta inmediatamente.
+      const authReq = req.clone({
+        setHeaders: { Authorization: `Bearer ${localToken}` },
+      });
+      return next.handle(authReq);
+    }
+
+    // 2. INTENTO AUTH0 (ASÍNCRONO): Si no hay token local, se consulta Auth0.
     return this.auth.getAccessTokenSilently({ detailedResponse: true }).pipe(
-      catchError(() => of(null)), // Si falla (ej: login con email), devolvemos null
       switchMap((tokenResponse: any) => {
-        let token: string | null = null;
+        let auth0Token: string | null = null;
 
         if (tokenResponse && tokenResponse.access_token) {
-          // Caso Auth0
-          token = tokenResponse.access_token;
-        } else {
-          // Caso login con email/local
-          token = this.localAuth.getToken();
+          auth0Token = tokenResponse.access_token;
         }
 
-        if (token) {
+        if (auth0Token) {
+          // Si Auth0 devuelve un token
           const authReq = req.clone({
-            setHeaders: { Authorization: `Bearer ${token}` },
+            setHeaders: { Authorization: `Bearer ${auth0Token}` },
           });
           return next.handle(authReq);
         }
 
-        // Si no hay token seguimos normal
+        // Si Auth0 falla (no hay sesión, catchError lo maneja implícitamente aquí),
+        // el flujo continúa al catchError de abajo.
+        return next.handle(req); // Nunca debería ejecutarse si hay un catchError.
+      }),
+      catchError(() => {
+        // Si el intento asíncrono de Auth0 falla, simplemente se devuelve la solicitud original.
         return next.handle(req);
       })
     );

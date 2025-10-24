@@ -9,6 +9,7 @@ import { QuizTakeComponent } from './pages/quiz-take/quiz-take.component';
 import { SharedModule } from "../../shared/shared.module";
 import { QuestionContainerComponent } from "../../shared/question-container/question-container.component";
 import { BlueButtonComponent } from 'src/app/shared/components/blue-button/blue-button.component';
+import { QuizResultComponent } from './pages/quiz-result/quiz-result.component';
 
 
 @NgModule({
@@ -19,7 +20,8 @@ import { BlueButtonComponent } from 'src/app/shared/components/blue-button/blue-
     QuestionContainerComponent,
     SharedModule,
     BlueButtonComponent,
-    QuizTakeComponent
+    QuizTakeComponent,
+    QuizResultComponent
   ]
 })
 export class QuizModule { }
