@@ -25,6 +25,7 @@ import { LocalAuthService } from '../../local-auth.service';
 })
 export class LoginComponent implements OnInit{
   loginForm: FormGroup;
+  showPassword: boolean = false;
 
   constructor(
     private fb: FormBuilder,

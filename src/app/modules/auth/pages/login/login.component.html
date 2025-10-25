@@ -22,8 +22,11 @@
             <!-- Contraseña -->
             <div class="input-w">
                 <label for="password">Contraseña <span class="required">*</span></label>
-                <input type="password" class="form-control" formControlName="password" placeholder="Contraseña"
-                    [class.is-invalid]="f['password'].invalid && f['password'].touched" />
+                <div class="password-input-container">
+                    <input [type]="showPassword ? 'text' : 'password'" class="form-control" formControlName="password" placeholder="Contraseña"
+                        [class.is-invalid]="f['password'].invalid && f['password'].touched" />
+                    <i [class]="showPassword ?  'pi pi-eye password-icon' : 'pi pi-eye-slash password-icon'" (click)="showPassword = !showPassword" ></i>
+                </div>
 
                 <!-- Alertas para la contraseña -->
                 <div *ngIf="f['password'].invalid && f['password'].touched" class="invalid-feedback d-block">
