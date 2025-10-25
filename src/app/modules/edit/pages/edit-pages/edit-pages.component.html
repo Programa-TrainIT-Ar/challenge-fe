@@ -9,19 +9,19 @@
     </div>
 
     <div class="content-1">
-        <div [formGroup]="selectNameForm" class="quiz-info">
+        <div class="quiz-info">
             <div class="form-group">
                 <input
                     type="text"
-                    formControlName="name"
+                    [(ngModel)]="quiz.name"
                     class="custom-input"
                     placeholder="Nombre del quiz"
                     style="width: max-content" />
             </div>
             <div class="form-group">
                 <input
+                    [(ngModel)]="quiz.description"
                     type="text"
-                    formControlName="description"
                     class="custom-input"
                     placeholder="Descripción del quiz" />
             </div>
@@ -34,8 +34,8 @@
             (datosParaPadre)="receiveCategory($event)">
         </app-header-page>
 
-        <div [formGroup]="selectNameForm" id="questions-scroll">
-            <div formArrayName="questions" id="question-container">
+        <div id="questions-scroll">
+            <div id="question-container">
                 @for (question of this.questionsData; track $index){
                     <div class="question-container">
                         <app-question
@@ -50,12 +50,10 @@
                                 class="edit-popup content-2"
                             >
                                 <app-edit-question-pop-up
-                                    [currentEditingQuestion]="this.currentEditingQuestion"
-                                    [inputType]="this.currentEditingQuestion.type"
-                                    [selectedOption]="this.selectedOption"
+                                    [questionToEdit]="this.currentEditingQuestion"
                                     (cancel)="closeEditPopup()"
                                     (editedQuestion)="onEditHandler($event)"
-                                    [showPlus]="this.showPlus"
+
                                 />
                             </div>
                         }
@@ -65,7 +63,7 @@
                     class="actions-container"
                     style="display: flex; justify-content: space-around"
                 >
-                    <button (click)="createQuiz()" class="save-button">Guardar</button>
+                    <button (click)="saveQuiz()" class="save-button">Guardar</button>
                 </div>
             </div>
         </div>
