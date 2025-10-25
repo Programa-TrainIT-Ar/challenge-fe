@@ -2,8 +2,8 @@
   <div class="layout-container">
     <app-side-bar
       role="candidate"
-      [extended]="false"
-      [blockNavigation]="quizStarted || step === 5" />
+      [extended]="true"
+      [blockNavigation]="quizStarted"/>
 
     @switch (step) {
       @case (1) {
@@ -70,6 +70,7 @@
           [test]="false"
           [quiz]="quiz"
           (quizStarted)="onQuizStarted($event)"
+
           (showResults)="onShowResults($event)" />
       }
 

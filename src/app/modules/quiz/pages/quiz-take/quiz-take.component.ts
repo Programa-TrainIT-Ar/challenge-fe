@@ -22,7 +22,7 @@ import { QuizResultComponent } from '../../pages/quiz-result/quiz-result.compone
     QuestionContainerComponent,
     BlueButtonComponent,
     SideBarComponent,
-    QuizResultComponent 
+    QuizResultComponent
   ]
 })
 
@@ -109,9 +109,10 @@ export class QuizTakeComponent implements OnInit, OnDestroy, CanComponentDeactiv
   }
 
   onShowResults(resultsData: any): void {
+      this.quizStarted = false;
     this.quizResults = resultsData.challengeResult;
     console.log('📊 Mostrando resultados:', this.quizResults);
-    
+
     this.step = 5;
   }
 }
