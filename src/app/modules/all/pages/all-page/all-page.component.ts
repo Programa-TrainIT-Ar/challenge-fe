@@ -67,6 +67,7 @@ export class AllPageComponent implements OnInit {
   seniority: string = '';
   searchText: string = '';
   selectedQuizOnView: Quiz | null = null;
+  isLoading: boolean = false;
 
   quizzes: Quiz[] = [];
   selectedQuiz: any;
@@ -101,6 +102,7 @@ export class AllPageComponent implements OnInit {
     this.onSearchChange();
   }
 
+  
   onSearchChange() {
     this.allPageService
       .getFilteredQuiz({
@@ -119,8 +121,10 @@ export class AllPageComponent implements OnInit {
           // Si es admin, muestra todos los quizzes
           this.quizzes = response.quizzes;
         }
+        this.isLoading = true;
       });
   }
+ 
 
   toggleActive(quiz: Quiz) {
     quiz.is_active = !quiz.is_active;
