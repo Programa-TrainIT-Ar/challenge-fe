@@ -61,11 +61,12 @@ app-side-bar.sidebar-container-extended {
 }
 
 @media (max-width: 768px) {
-  .app-side-bar{
-       position: fixed;
-       height: 100vh; 
-       width: 250px; 
-       z-index: 1000
+  .page {
+    flex-direction: column !important;
   }
-  
+
+  .dashboard-container {
+    width: 100% !important;
+    flex: none !important;
+  }
 }

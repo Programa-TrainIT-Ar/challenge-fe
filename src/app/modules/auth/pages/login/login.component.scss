@@ -39,7 +39,9 @@
   color: #ffffff;
   text-align: center;
   border-radius: 4px;
+  z-index: 10;
 }
+
 .required {
   color: #f63aaf;
 }
@@ -48,4 +50,27 @@
   margin-left: 10px;
   color: #f63aaf;
   margin-bottom: 10px;
+}
+
+.password-input-container {
+  position: relative;
+  width: 208px;
+}
+
+.password-input-container input {
+  padding-right: 35px;
+}
+
+.password-icon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color:#f63aaf;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.password-input-container .form-control.is-invalid {
+  background-image: none; // Quita el icono de danger en la contraseña
 }
