@@ -1,13 +1,13 @@
 .layout-container {
   display: flex;
+  flex-direction: row;
   height: 100vh;
   background: rgba(27, 27, 27, 1);
-  align-items: center;
-
 }
 
 .question-container {
-  width: 80vw;
+  flex:1;
+  margin: 0 1rem;
   height: 95vh;
   padding: 24px 8px 8px 8px;
   gap: 47px;
@@ -64,8 +64,6 @@
 
 }
 
-
-
 // ---------------STEP 3---------------------------------------------------
 
 .countdown-component {
@@ -100,15 +98,27 @@
   font-size: 8rem;
 }
 
+@media (max-width: 768px) {
+  .layout-container  {
+    flex-direction: column;
+    width: 100%;
 
-// .dots-top {
-//   position: absolute;
-//   top: 0;
-//   left: 8rem;
-// }
+  }
 
-// .dots-bottom {
-//   position: absolute;
-//   bottom: 0;
-//   right: 8rem;
-// }
+  app-side-bar {
+    width: 100%;      
+    display: block; 
+  }
+
+   .question-container {
+    width: 100%;
+    margin: 0 !important;
+    height: auto;      
+
+  }
+
+  .page-content {
+    width: 100%;
+    margin: 0;
+  }
+}

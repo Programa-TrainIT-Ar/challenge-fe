@@ -15,13 +15,5 @@ import {
 export class TrueFalseQuestionComponent {
   @Input() question : Question;
   @Input() index : any;
-  selectCorrectOption(questionIndex: number, optionValue: string) {
-    /*const question = this.questions.at(questionIndex);
-    if (question.get('type')?.value === 'true_false') {
-      const correctOption = optionValue === 'Verdadero' ? 0 : 1;
-      question.patchValue({
-        correct_option: correctOption,
-      });
-    }*/
-  }
+
 }
