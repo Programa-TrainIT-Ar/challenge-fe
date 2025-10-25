@@ -40,6 +40,7 @@ export class HeaderPageComponent {
   showModulo: boolean = false;
   showCelula: boolean = false;
   showSeniority: boolean = false;
+  isMobile: boolean = false;
   //visibilidad del input para agregar modulos o celulas
   addModule: boolean = false;
   addCell: boolean = false;
@@ -63,6 +64,7 @@ export class HeaderPageComponent {
   ngOnInit(): void {
     // Consulta los modulos y las celullas que tiene anidadas
     this.getCategory();
+    this.checkScreenSize();
   
   }
 
@@ -399,8 +401,17 @@ export class HeaderPageComponent {
     return `cell-color-${cellNumber}`;
   }
 
+  // Método para verificar el tamaño de la pantalla
+    @HostListener('window:resize')
+    checkScreenSize() {
+    this.isMobile = window.innerWidth <= 768; 
+  }
 
-  
+  closeAll(){
+  this.showModulo = false;
+  this.showCelula = false;
+  this.showSeniority = false;
+  }
 
 }
 
