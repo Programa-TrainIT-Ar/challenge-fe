@@ -252,35 +252,53 @@ h4 {
 
 @media (max-width: 768px) {
   .content{
-    width: 100%;
-    align-items: flex-start;
-    padding: 0;
-    margin: 0;
-  }
-  .content-1 {
-    flex-direction: column;
-    width: 100%;
+    z-index: 100;
   }
 
   .input-container {
-    width: 100% !important;
-    box-sizing: border-box;
-    padding: 0;
-    margin-bottom: 1rem;
-    flex: 1;
+    height: auto;
+    margin-bottom: 0.5rem;
   }
 
-  .form-select.option-select,
-  .floating {
-    width: 100%;
-    box-sizing: border-box;
-    overflow-wrap: break-word;
-    white-space: nowrap;
-      z-index: 10000;
+  .input-container h4{
+    display: none; 
   }
 
-  .option-floating {
-    width: 100%;
-  }
+  .btn-plus {
+    margin-top: 0;       /* quitar espacio extra */
+  align-self: flex-end;
+}
+
+.option-select {
+  height: 3.3vh;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.3); /* o transparente si no quieres oscuro */
+  z-index: 10;
+}
+.floating-module, .floating-celula {
+  position: absolute;
+  width: 60vw;
+  z-index: 200;
+  transform: translate(0, -20%);
+  background-color: #303030;
+  z-index: 20;
+}
+
+.floating-seniority {
+  position: absolute;
+  width: 40vw;
+  z-index: 200;
+  right: 0;
+  transform: translate(0, -70%);
+  background-color: #303030;
+  z-index: 20;
+}
 
 }
