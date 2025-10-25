@@ -28,8 +28,8 @@ export class QuestionContainerComponent implements OnInit, OnDestroy {
   @Input() test: boolean = false;
   @Input() quiz!: Quiz;
   @Output() nextStep = new EventEmitter<void>();
-    @Output() quizStarted = new EventEmitter<boolean>();
-    @Output() quizCompleted = new EventEmitter<boolean>();
+  @Output() quizStarted = new EventEmitter<boolean>();
+  @Output() showResults = new EventEmitter<any>(); 
   private destroy$ = new Subject<void>();
   private startTime?: Date;
   private currentUserId: string | null = null;
@@ -79,12 +79,8 @@ export class QuestionContainerComponent implements OnInit, OnDestroy {
 
   async ngOnInit(): Promise<void> {
     this.loadQuestions();
-    
-    // Verificar sesión ANTES de iniciar el quiz
-    if (!this.test) {
-      this.startTime = new Date();
 
-      this.quizStarted.emit(true)
+    if (!this.test) {
       await this.initializeUserSession();
     } else {
       this.isLoading = false;
@@ -100,21 +96,17 @@ export class QuestionContainerComponent implements OnInit, OnDestroy {
 
   private async initializeUserSession(): Promise<void> {
     try {
-
-      // Verificar y cargar usuario
       const userId = await this.userAuthService.getCurrentUserId();
-      
+
       if (!userId) {
         this.handleSessionExpired();
         return;
       }
 
-      // Usuario válido - continuar con el quiz
       this.currentUserId = userId;
-      this.startTime = new Date();
+      this.startTime = new Date();        
       this.isLoading = false;
-      
-      this.quizStarted.emit(true);
+      this.quizStarted.emit(true);        
       
     } catch (error) {
       this.handleSessionExpired();
@@ -123,7 +115,7 @@ export class QuestionContainerComponent implements OnInit, OnDestroy {
 
   private handleSessionExpired(): void {
     this.isLoading = false;
-    
+
     this.alertService.showConfirm(
       'Sesión Requerida',
       'Necesitas iniciar sesión para realizar este quiz.',
@@ -206,22 +198,26 @@ export class QuestionContainerComponent implements OnInit, OnDestroy {
     this.isSubmitting = true;
 
     try {
-
       // Preparar datos
       const challengeData = this.prepareChallengeData(this.currentUserId);
 
       // Enviar al backend
-      await firstValueFrom(this.quizService.submitQuizAnswers(challengeData));
+      const response = await firstValueFrom(this.quizService.submitQuizAnswers(challengeData));
 
-      // Mostrar modal de éxito con redirección
+      console.log('✅ Quiz enviado exitosamente:', response);
+
       this.alertService.showConfirm(
-        '¡Quiz Completado!',
-        'Tu quiz ha sido enviado exitosamente. Presiona "Ver Resultados" para ver tu calificación.',
-        () => {
-          this.router.navigate(['/result', this.quiz.id]);
-        },
-        'Ver Resultados'
-      );
+      '¡Quiz Completado!',
+      'Tu quiz ha sido enviado exitosamente. Presiona "Ver Resultados" para ver tu calificación.',
+      () => {
+        // Al confirmar, emitir evento para mostrar resultados
+        this.showResults.emit({
+          challengeResult: response, 
+          quiz: this.quiz
+        });
+      },
+      'Ver Resultados'
+    );
 
     } catch (error) {
       this.handleSubmissionError(error);
@@ -284,8 +280,8 @@ export class QuestionContainerComponent implements OnInit, OnDestroy {
     return this.isSubmitting
       ? 'Enviando...'
       : this.currentQuestionIndex === this.allQuestions.length - 1
-        ? 'Finalizar'
-        : 'Siguiente';
+      ? 'Finalizar'
+      : 'Siguiente';
   }
 
   getCurrentQuestionTypeText(): string {
@@ -302,5 +298,4 @@ export class QuestionContainerComponent implements OnInit, OnDestroy {
         return '';
     }
   }
-
 }

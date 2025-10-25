@@ -10,6 +10,7 @@ import { BlueButtonComponent } from 'src/app/shared/components/blue-button/blue-
 import { SideBarComponent } from 'src/app/shared/components/sideBar/side-bar/side-bar.component';
 import { Quiz } from 'src/app/shared/question-container/question-interface';
 import { CanComponentDeactivate } from './unsaved-changes.guard';
+import { QuizResultComponent } from '../../pages/quiz-result/quiz-result.component';
 
 @Component({
   selector: 'app-quiz-take',
@@ -20,10 +21,12 @@ import { CanComponentDeactivate } from './unsaved-changes.guard';
     CommonModule,
     QuestionContainerComponent,
     BlueButtonComponent,
-    SideBarComponent
+    SideBarComponent,
+    QuizResultComponent 
   ]
 })
-export class QuizTakeComponent implements OnInit, OnDestroy,CanComponentDeactivate {
+
+export class QuizTakeComponent implements OnInit, OnDestroy, CanComponentDeactivate {
   private destroy$ = new Subject<void>();
 
   step = 1;
@@ -32,11 +35,10 @@ export class QuizTakeComponent implements OnInit, OnDestroy,CanComponentDeactiva
   loading = true;
   private countdownInterval?: ReturnType<typeof setInterval>;
 
-  // Variables para registro de tiempo
-  private quizStartTime?: Date;
-  private totalTimeSpent = 0; // en segundos
+  quizStarted = false;
 
-    quizStarted = false;
+  quizResults: any = null;
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -76,14 +78,13 @@ export class QuizTakeComponent implements OnInit, OnDestroy,CanComponentDeactiva
   }
 
   nextStep(): void {
-    if (this.step < 4) {
+    if (this.step < 5) {
       this.step++;
       if (this.step === 3) {
         this.startCountdown();
-      } else if (this.step === 4) {
-        // Iniciar el timer cuando comience el quiz real
-        this.startQuizTimer();
       }
+    } else if (this.step === 5) {
+      this.router.navigate(['/dashboard']);
     }
   }
 
@@ -99,26 +100,18 @@ export class QuizTakeComponent implements OnInit, OnDestroy,CanComponentDeactiva
     }, 1000);
   }
 
-  private startQuizTimer(): void {
-    this.quizStartTime = new Date();
+  @HostListener('window:beforeunload', ['$event'])
+  canDeactivate(): boolean {
+    return !this.quizStarted;
+  }
+  onQuizStarted(isStarted: boolean): void {
+    this.quizStarted = isStarted;
   }
 
-  // Método público para obtener el tiempo transcurrido
-  getTimeSpent(): number {
-    if (!this.quizStartTime) return 0;
-    return Math.floor((new Date().getTime() - this.quizStartTime.getTime()) / 1000);
+  onShowResults(resultsData: any): void {
+    this.quizResults = resultsData.challengeResult;
+    console.log('📊 Mostrando resultados:', this.quizResults);
+    
+    this.step = 5;
   }
-
-  // Método público para cuando se complete el quiz
-  onQuizCompleted(): void {
-    this.totalTimeSpent = this.getTimeSpent();
-    console.log(`Quiz completado en ${this.totalTimeSpent} segundos`);
-  }
-    @HostListener('window:beforeunload', ['$event'])
-    canDeactivate(): boolean {
-        return !this.quizStarted;
-    }
-    onQuizStarted(isStarted : boolean): void {
-        this.quizStarted = isStarted;
-    }
 }
