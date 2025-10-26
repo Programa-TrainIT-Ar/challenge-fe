@@ -15,7 +15,12 @@ import { ModalComponent } from 'src/app/shared/components/info-modal/info-modal.
 @Component({
   selector: 'app-reset-password',
   standalone: true,
-  imports: [ReactiveFormsModule, BackgroundComponent, CommonModule, ModalComponent],
+  imports: [
+    ReactiveFormsModule,
+    BackgroundComponent,
+    CommonModule,
+    ModalComponent,
+  ],
   templateUrl: './reset-password.component.html',
   styleUrl: './reset-password.component.scss',
 })
@@ -127,13 +132,9 @@ export class ResetPasswordComponent {
     return this.resetPasswordForm.controls;
   }
 
-  closeModal() {
-    this.showModal = false;
-  }
-
   finalizarProceso() {
     this.showModal = false;
-    //Redirreccionar a /candidato una vez leído el mensaje de éxito en la operación.
+    //Redirreccionar una vez leído el mensaje de éxito en la operación.
     this.router.navigate(['/login']);
   }
 }
