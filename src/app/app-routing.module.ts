@@ -14,6 +14,7 @@ import { ErrorComponent } from './modules/home/pages/error/error.component';
 import { VerifyEmailComponent } from './modules/auth/pages/verify-email/verify-email.component';
 import { CandidatoFormComponent } from './modules/candidato-dashboard/candidato-form/candidato-form.component';
 import { QuizTakeComponent } from './modules/quiz/pages/quiz-take/quiz-take.component';
+import { ResetPasswordComponent } from './modules/auth/pages/reset-password/reset-password.component';
 @NgModule({
   imports: [
     RouterModule.forRoot(
@@ -91,6 +92,10 @@ import { QuizTakeComponent } from './modules/quiz/pages/quiz-take/quiz-take.comp
             import(
               './modules/auth/pages/forgot-password/forgot-password.component'
             ).then(m => m.ForgotPasswordComponent),
+        },
+        {
+          path: 'reset-password',
+          component: ResetPasswordComponent,
         },
         {
           path: '**',

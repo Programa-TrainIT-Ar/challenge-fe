@@ -59,6 +59,10 @@ export class UserService {
     return this.http.post(`${this.urlApi}/forgot-password`, { email });
   }
 
+  setNewPassword(confirmationToken: string, password: string, confirmPassword: string){
+    return this.http.post(`${this.urlApi}/reset-password`, {confirmationToken, password, confirmPassword})
+  }
+
   registerUser(userData: UserData) {
     return this.http.post(`${this.urlApi}/register`, userData);
   }
