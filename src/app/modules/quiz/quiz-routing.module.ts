@@ -5,7 +5,6 @@ import { UnsavedChangesGuard } from './pages/quiz-take/unsaved-changes.guard';
 import { QuizResultComponent } from './pages/quiz-result/quiz-result.component';
 
 const routes: Routes = [
-  { path: 'result', component: QuizResultComponent },
   { path: ':id', component: QuizTakeComponent, canDeactivate: [UnsavedChangesGuard] }
 ];
 
