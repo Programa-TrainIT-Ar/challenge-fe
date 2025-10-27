@@ -50,8 +50,7 @@ export class ForgotPasswordComponent implements OnInit {
       this.userService.sendResetLink(this.emailForm.value.email).subscribe({
         next: response => {
           this.successOperation = true;
-          this.responseMessage =
-            'Enlace de recuperación enviado, revisa tu bandeja de entrada';
+          this.responseMessage =response.message;
           this.showModal = true;
         },
         error: error => {
