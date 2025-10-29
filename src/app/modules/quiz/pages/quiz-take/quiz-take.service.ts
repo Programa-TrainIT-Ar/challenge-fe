@@ -13,6 +13,10 @@ export class QuizService {
   getQuizById(id: string): Observable<any> {
     return this.http.get(`${this.urlApi}/quiz/take/${id}`);
   }
+   // Verificar si ya existe challenge completado
+  checkExistingChallenge(userId: string, quizId: string): Observable<any> {
+    return this.http.get<any>(`${this.urlApi}/challenge/check/${userId}/${quizId}`);
+  }
   
   // Enviar respuestas del quiz
   submitQuizAnswers(challengeData: any): Observable<any> {
