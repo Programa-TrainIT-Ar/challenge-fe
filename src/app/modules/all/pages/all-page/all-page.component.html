@@ -48,9 +48,8 @@
             </span>
 
             <!-- Realizar quiz (candidato) -->
-            <span *ngIf="!isAdmin" 
-                  class="Activo"
-                  [ngClass]="getButtonClass(quiz)" 
+            <span *ngIf="!isAdmin"
+                  [ngClass]="getButtonClass(quiz)"
                   (click)="takeQuiz(quiz)">
               {{ getButtonText(quiz) }}
             </span>
