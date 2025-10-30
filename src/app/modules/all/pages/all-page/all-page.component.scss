@@ -69,6 +69,10 @@ h2 {
   border-radius: 5px;
   width: 200px;
 }
+.status.completado {
+  color: #28a745;
+  cursor: pointer;
+}
 
 .overlay {
   position: fixed;

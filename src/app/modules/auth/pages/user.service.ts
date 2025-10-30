@@ -1,8 +1,9 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '@environments/environment';
-import { catchError, of, throwError } from 'rxjs';
+import { catchError, Observable, of, throwError } from 'rxjs';
 import { AccountSetupResponse } from '../interfaces/account-setup.interface';
+import { PasswordResetResponse } from '../interfaces/forgot-password.interface';
 
 export interface UserData {
   id?: string;
@@ -55,8 +56,12 @@ export class UserService {
     return this.http.post(`${this.urlApi}/login-local`, { email, password });
   }
 
-  sendResetLink(email: string) {
-    return this.http.post(`${this.urlApi}/forgot-password`, { email });
+  sendResetLink(email: string): Observable<PasswordResetResponse> {
+    return this.http.post<PasswordResetResponse>(`${this.urlApi}/forgot-password`, { email });
+  }
+
+  setNewPassword(confirmationToken: string, password: string, confirmPassword: string){
+    return this.http.post(`${this.urlApi}/reset-password`, {confirmationToken, password, confirmPassword})
   }
 
   registerUser(userData: UserData) {
