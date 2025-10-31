@@ -11,11 +11,12 @@
   <div *ngIf="user$ | async as user" class="mensaje" [class.hidden]="isMessageHidden">
     <div class="Bienvenida">
       Bienvenido, {{ user.name }}
-      <div *ngIf="user.picture">
+      <div>
         <img
           [src]="user.picture"
+           (error)="user.picture = 'assets/images/user/user-round.png'"
           alt="Foto de perfil"
-          class="profile-picture ml-2" />
+          class="profile-picture" />
       </div>
     </div>
   </div>

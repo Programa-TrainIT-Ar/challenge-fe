@@ -17,7 +17,6 @@ export class GoogleBtnComponent {
   async onGoogleClick(): Promise<void> {
 
     try {
-      console.log('🚀 Iniciando login con Google...');
       await this.auth.loginWithRedirect({
         authorizationParams: {
           connection: 'google-oauth2',

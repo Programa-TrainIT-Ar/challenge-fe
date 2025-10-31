@@ -1,14 +1,17 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { QuizService } from './quiz-take.service';
+import { UserAuthService } from 'src/app/modules/auth/user-auth.service'; // AGREGADO
 import { QuestionContainerComponent } from 'src/app/shared/question-container/question-container.component';
 import { BlueButtonComponent } from 'src/app/shared/components/blue-button/blue-button.component';
 import { SideBarComponent } from 'src/app/shared/components/sideBar/side-bar/side-bar.component';
 import { Quiz } from 'src/app/shared/question-container/question-interface';
+import { CanComponentDeactivate } from './unsaved-changes.guard';
+import { QuizResultComponent } from '../../pages/quiz-result/quiz-result.component';
 
 @Component({
   selector: 'app-quiz-take',
@@ -16,29 +19,31 @@ import { Quiz } from 'src/app/shared/question-container/question-interface';
   templateUrl: './quiz-take.component.html',
   styleUrls: ['./quiz-take.component.scss'],
   imports: [
-    CommonModule, 
+    CommonModule,
     QuestionContainerComponent,
     BlueButtonComponent,
-    SideBarComponent
+    SideBarComponent,
+    QuizResultComponent
   ]
 })
-export class QuizTakeComponent implements OnInit, OnDestroy {
+export class QuizTakeComponent implements OnInit, OnDestroy, CanComponentDeactivate {
   private destroy$ = new Subject<void>();
-  
+
   step = 1;
   countdown = 5;
   quiz: Quiz | null = null;
   loading = true;
   private countdownInterval?: ReturnType<typeof setInterval>;
-  
-  // Variables para registro de tiempo
-  private quizStartTime?: Date;
-  private totalTimeSpent = 0; // en segundos
+
+  quizStarted = false;
+  quizResults: any = null;
+  isAlreadyCompleted = false; // flag para saber si ya estaba completado
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private quizService: QuizService
+    private quizService: QuizService,
+    private userAuthService: UserAuthService // AGREGADO
   ) {}
 
   ngOnInit(): void {
@@ -64,7 +69,8 @@ export class QuizTakeComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (quiz) => {
           this.quiz = quiz;
-          this.loading = false;
+          // Verificar si ya completó el challenge
+          this.checkExistingChallenge(quizId);
         },
         error: (error) => {
           console.error('Error loading quiz:', error);
@@ -73,15 +79,64 @@ export class QuizTakeComponent implements OnInit, OnDestroy {
       });
   }
 
+  private async checkExistingChallenge(quizId: string): Promise<void> {
+    try {
+      // Obtener userId usando el servicio existente
+      const userId = await this.userAuthService.getCurrentUserId();
+      
+      if (!userId) {
+        console.error('No se pudo obtener el ID del usuario');
+        this.loading = false;
+        return;
+      }
+
+      console.log('🔍 Verificando challenge existente para usuario:', userId);
+      
+      this.quizService.checkExistingChallenge(userId, quizId)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe({
+          next: (result) => {
+            console.log('📋 Resultado verificación:', result);
+            
+            if (result.already_completed) {
+              //  Mapear datos para el componente de resultado
+              this.quizResults = {
+                id: result.id,
+                calification: result.calification,
+                time_taken: result.time_taken,
+                created_at: result.created_at
+              };
+              
+              this.isAlreadyCompleted = true; // AGREGADO
+              this.step = 5; // Ir directamente a mostrar resultados
+              
+              console.log('✅ Challenge ya completado, mostrando resultados:', this.quizResults);
+            } else {
+              console.log('🆕 Challenge no completado, permitir realizarlo');
+            }
+            
+            this.loading = false;
+          },
+          error: (error) => {
+            console.error('❌ Error verificando challenge:', error);
+            this.loading = false; // Permitir continuar en caso de error
+          }
+        });
+        
+    } catch (error) {
+      console.error('❌ Error obteniendo userId:', error);
+      this.loading = false;
+    }
+  }
+
   nextStep(): void {
-    if (this.step < 4) {
+    if (this.step < 5) {
       this.step++;
       if (this.step === 3) {
         this.startCountdown();
-      } else if (this.step === 4) {
-        // Iniciar el timer cuando comience el quiz real
-        this.startQuizTimer();
       }
+    } else if (this.step === 5) {
+      this.router.navigate(['/dashboard']);
     }
   }
 
@@ -97,19 +152,20 @@ export class QuizTakeComponent implements OnInit, OnDestroy {
     }, 1000);
   }
 
-  private startQuizTimer(): void {
-    this.quizStartTime = new Date();
+  @HostListener('window:beforeunload', ['$event'])
+  canDeactivate(): boolean {
+    return !this.quizStarted;
   }
 
-  // Método público para obtener el tiempo transcurrido
-  getTimeSpent(): number {
-    if (!this.quizStartTime) return 0;
-    return Math.floor((new Date().getTime() - this.quizStartTime.getTime()) / 1000);
+  onQuizStarted(isStarted: boolean): void {
+    this.quizStarted = isStarted;
   }
 
-  // Método público para cuando se complete el quiz
-  onQuizCompleted(): void {
-    this.totalTimeSpent = this.getTimeSpent();
-    console.log(`Quiz completado en ${this.totalTimeSpent} segundos`);
+  onShowResults(resultsData: any): void {
+    this.quizStarted = false;
+    this.quizResults = resultsData.challengeResult;
+    this.isAlreadyCompleted = false; // Es un resultado nuevo
+    console.log('📊 Mostrando resultados nuevos:', this.quizResults);
+    this.step = 5;
   }
 }

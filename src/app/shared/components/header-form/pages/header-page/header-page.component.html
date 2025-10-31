@@ -5,12 +5,12 @@
       <h4 class="mb-5">Módulo</h4>
       <div class="form-select option-select" (click)="isShowModulo($event)">
         <span [ngClass]="[quizCategory?.module, 'floating']">
-          {{ quizCategory?.module || 'Selecciona el modulo' }}
+          {{ quizCategory?.module || (isMobile ? 'Modulo' : 'Seleccionar modulo') }}
         </span>
       </div>
       @if (showModulo) {
         <div
-          class="option-floating floating-module"
+          class="option-floating cell-overflow  floating-module"
           (click)="$event.stopPropagation()">
           @for (module of modules; track $index) {
             <button class="module-option" (click)="selectModule(module)">
@@ -121,7 +121,7 @@
       <h4>Célula</h4>
       <div class="form-select option-select" (click)="isShowCelula($event)">
         <span class="floating {{ quizCategory?.cellClass }}">
-          {{ quizCategory?.cell || 'Selecciona la célula' }}
+          {{ quizCategory?.cell || (isMobile ? 'Celula' : 'Selecciona la célula') }}
         </span>
       </div>
       @if (showCelula && quizCategory.module != '') {
@@ -230,12 +230,10 @@
     </div>
     <!-- senñority -->
     <div class="input-container">
-      <div class="d-flex align-items-center justify-content-between">
         <h4>Seniority / Nivel</h4>
-      </div>
       <div class="form-select option-select" (click)="isShowSeniority()">
         <span class="floating" [class]="getSelectedSeniorityClass()"
-          >{{ quizCategory?.seniority || 'Seniority' }}
+          >{{ quizCategory?.seniority || (isMobile ? 'Seniority' :'Seniority') }}
         </span>
       </div>
       <!-- absolute -->
@@ -252,11 +250,15 @@
       }
     </div>
 
-    @if (resetButton) {
+      @if (resetButton) {
           <button class="btn-plus reset-btn" (click)="resetValue()">
             <!-- <i class="bi bi-arrow-counterclockwise"></i> -->
             Limpiar campos
           </button>
         }
   </div>
+  
+  @if (showModulo || showCelula || showSeniority) {
+  <div class="overlay" (click)="closeAll()"></div>
+}
 </div>

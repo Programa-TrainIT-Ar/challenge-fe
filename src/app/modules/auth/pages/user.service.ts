@@ -1,10 +1,12 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '@environments/environment';
-import { catchError, of, throwError } from 'rxjs';
+import { catchError, Observable, of, throwError } from 'rxjs';
 import { AccountSetupResponse } from '../interfaces/account-setup.interface';
+import { PasswordResetResponse } from '../interfaces/forgot-password.interface';
 
 export interface UserData {
+  id?: string;
   email: string;
   first_name?: string;
   last_name?: string;
@@ -24,6 +26,11 @@ export interface LoginResponse {
   token_type: string;
 }
 
+export interface FindUserResponse {
+  user: UserData;
+  register_complete: boolean;
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -34,7 +41,7 @@ export class UserService {
 
   finduserByEmail(email: string) {
     return this.http
-      .get<UserData>(`${this.urlApi}/FindByEmail?email=${email}`)
+      .get<FindUserResponse>(`${this.urlApi}/FindByEmail?email=${email}`)
       .pipe(
         catchError(error => {
           if (error.status === 404) {
@@ -46,11 +53,15 @@ export class UserService {
   }
 
   loginWithEmail(email: string, password: string) {
-    return this.http.post(`${this.urlApi}/login`, { email, password });
+    return this.http.post(`${this.urlApi}/login-local`, { email, password });
   }
 
-  sendResetLink(email: string) {
-    return this.http.post(`${this.urlApi}/forgot-password`, { email });
+  sendResetLink(email: string): Observable<PasswordResetResponse> {
+    return this.http.post<PasswordResetResponse>(`${this.urlApi}/forgot-password`, { email });
+  }
+
+  setNewPassword(confirmationToken: string, password: string, confirmPassword: string){
+    return this.http.post(`${this.urlApi}/reset-password`, {confirmationToken, password, confirmPassword})
   }
 
   registerUser(userData: UserData) {

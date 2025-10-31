@@ -14,7 +14,7 @@
                         id="questionType"
                         name="questionType"
                         [(ngModel)]="this.currentEditingQuestion.type"
-                        (ngModelChange)="onQuestionTypeChange()"
+                        (ngModelChange)="changeQuestionType()"
                         required
                     >
                         @for (type of questionTypes; track $index){
@@ -53,7 +53,7 @@
                                         type="checkbox"
                                         class="checkbox-input"
                                         [checked]="this.currentEditingQuestion.correct_option.includes?.($index)"
-                                        (click)="answerChoice($index)"
+                                        (click)="changeQuestionAnswer($index)"
                                         [name]="'checkbox' + $index"
                                     />
                                 } @else if (this.currentEditingQuestion.type === 'true_false') {
@@ -62,7 +62,7 @@
                                         class="checkbox-input"
                                         [checked]="this.currentEditingQuestion.correct_option.includes($index)"
                                         name="radioGroup"
-                                        (click)="answerChoice($index)"
+                                        (click)="changeQuestionAnswer($index)"
                                     />
                                 }
                                </div>
@@ -71,7 +71,7 @@
                                  class="custom-option-input"
                                  type="text"
                                  [value]='this.currentEditingQuestion.options.at($index)'
-                                 (keyup)="changeText($event,$index)"
+                                 (keyup)="changeQuestionText($event,$index)"
                                  name="option{{ $index }}"
                                  [readonly]="isTrueFalseQuestion"
                                  [placeholder]="'Opción ' + ($index + 1)"
@@ -101,7 +101,7 @@
                 <button type="submit" class="custom-btn-submit" (click)="saveChanges()">
                     Guardar
                 </button>
-                <button class="close-button" (click)="closeEditPopup()">
+                <button class="close-button" (click)="this.cancel.emit()">
                     Cerrar
                 </button>
             </div>

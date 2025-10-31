@@ -1,0 +1,27 @@
+@if (result) {
+  <div class="result-container">
+    <img src="assets/images/logo.svg" alt="Logo" class="bg-logo" />
+    <div class="titles-container">
+      <h2 class="result-tittle">Resultados</h2>
+      <div class="result-name">
+        {{ quizName }}
+      </div>
+    </div>
+    <div class="content-container">
+      <div class="calification-container">
+        <h2>Puntaje</h2>
+        <h2>{{ result.calification }} / {{ totalQuestions }}</h2>
+      </div>
+      <div class="time-container">
+        <h2>Tiempo</h2>
+        <h2>{{ formatTime(result.time_taken) }}</h2>
+      </div>
+    </div>
+    <div class="button-container">
+      <app-blue-button
+        text="Volver a inicio"
+        (onClick)="router.navigate(['/dashboard'])">
+      </app-blue-button>
+    </div>
+  </div>
+}
