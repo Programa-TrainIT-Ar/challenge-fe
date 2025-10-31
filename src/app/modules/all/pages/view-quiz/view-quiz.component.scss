@@ -1,9 +1,9 @@
 .normal-container {
-  width: 804px; 
-  height: 600px; 
-  padding: 25px 16px; 
-  gap: 17px; 
-  border-radius: 8px 0px 0px 0px;   
+  width: 804px;
+  height: 600px;
+  padding: 25px 16px;
+  gap: 17px;
+  border-radius: 8px 0px 0px 0px;
   box-shadow: 0px 0px 12.8px rgba(241, 121, 197, 1);
   background: rgba(56, 53, 53, 1);
   border: 2px solid rgba(241, 121, 197, 1);
@@ -17,7 +17,7 @@
 }
 
 .wrapper {
-  width: 100%; 
+  width: 100%;
 }
 
 .contenedor {
@@ -111,7 +111,7 @@
 .button-container {
   display: flex;
   align-items: center;
-  justify-content: space-between; 
+  justify-content: space-between;
 }
 
 .btn-plus {
@@ -125,7 +125,7 @@
 }
 
 .btn-circle {
-  margin-left: auto; 
+  margin-left: auto;
 }
 
 .btn-delete{
@@ -137,7 +137,7 @@
 .btn-edit{
   border: 1.4px solid rgba(112, 111, 229, 1) !important;
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.15);
-
+    color:white;
 }
 #loading{
   background-color: #333232;

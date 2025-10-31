@@ -68,13 +68,19 @@ export class QuestionContainerComponent implements OnInit, OnDestroy {
     },
   ];
 
+  // referencia al interval para poder detenerlo
+  private timerInterval?: ReturnType<typeof setInterval>;
+
   constructor(
     private quizService: QuizService,
     private router: Router,
     private alertService: AlertService,
     private userAuthService: UserAuthService
   ) {
-    this.initTimer();
+    // guardar referencia del timer
+    this.timerInterval = setInterval(() => {
+      this.counter = new Date(this.counter.getTime() + 1000);
+    }, 1000);
   }
 
   async ngOnInit(): Promise<void> {
@@ -90,6 +96,10 @@ export class QuestionContainerComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
+    //  limpiar timer al destruir componente
+    if (this.timerInterval) {
+      clearInterval(this.timerInterval);
+    }
   }
 
   // ============= INICIALIZACIÓN =============
@@ -124,12 +134,6 @@ export class QuestionContainerComponent implements OnInit, OnDestroy {
       },
       'Ir al Login'
     );
-  }
-
-  private initTimer(): void {
-    setInterval(() => {
-      this.counter = new Date(this.counter.getTime() + 1000);
-    }, 1000);
   }
 
   private loadQuestions(): void {
@@ -192,10 +196,22 @@ export class QuestionContainerComponent implements OnInit, OnDestroy {
 
   // ============= ENVÍO DEL QUIZ =============
 
+  //  método para detener el timer
+  private stopTimer(): void {
+    if (this.timerInterval) {
+      clearInterval(this.timerInterval);
+      this.timerInterval = undefined;
+      console.log('⏱️ Timer detenido en:', this.counter.toTimeString().substr(3, 5));
+    }
+  }
+
   private async submitQuiz(): Promise<void> {
     if (this.isSubmitting || !this.currentUserId) return;
 
     this.isSubmitting = true;
+    
+    //  detener timer inmediatamente al presionar finalizar
+    this.stopTimer();
 
     try {
       // Preparar datos
@@ -207,17 +223,17 @@ export class QuestionContainerComponent implements OnInit, OnDestroy {
       console.log('✅ Quiz enviado exitosamente:', response);
 
       this.alertService.showConfirm(
-      '¡Quiz Completado!',
-      'Tu quiz ha sido enviado exitosamente. Presiona "Ver Resultados" para ver tu calificación.',
-      () => {
-        // Al confirmar, emitir evento para mostrar resultados
-        this.showResults.emit({
-          challengeResult: response, 
-          quiz: this.quiz
-        });
-      },
-      'Ver Resultados'
-    );
+        '¡Quiz Completado!',
+        'Tu quiz ha sido enviado exitosamente. Presiona "Ver Resultados" para ver tu calificación.',
+        () => {
+          // Al confirmar, emitir evento para mostrar resultados
+          this.showResults.emit({
+            challengeResult: response, 
+            quiz: this.quiz
+          });
+        },
+        'Ver Resultados'
+      );
 
     } catch (error) {
       this.handleSubmissionError(error);
