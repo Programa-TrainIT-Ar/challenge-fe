@@ -40,19 +40,21 @@
           <td *ngIf="isAdmin" class="table-int">{{ quiz?.created_by?.first_name }}</td>
           <td class="table-int">
 
-            <!-- Activar o desactivar quiz (admin) --> 
-            <span *ngIf="isAdmin" class="status" 
-                  [ngClass]="{'activo': quiz?.is_active, 'inactivo': !quiz?.is_active}" 
+            <!-- Activar o desactivar quiz (admin) -->
+            <span *ngIf="isAdmin" class="status"
+                  [ngClass]="{'activo': quiz?.is_active, 'inactivo': !quiz?.is_active}"
                   (click)="toggleActive(quiz)">
               {{ quiz?.is_active ? 'Activo' : 'Inactivo' }}
             </span>
 
             <!-- Realizar quiz (candidato) -->
-            <span *ngIf="!isAdmin" class="status activo" (click)="takeQuiz(quiz)">
-              Realizar  <!-- Redireccion a la pagina para realizar el quizz -->
+            <span *ngIf="!isAdmin"
+                  [ngClass]="getButtonClass(quiz)"
+                  (click)="takeQuiz(quiz)">
+              {{ getButtonText(quiz) }}
             </span>
-           
-            
+
+
           </td>
           <td *ngIf="isAdmin" class="actions">
             <button (click)="viewQuiz(quiz)"><i class="bi bi-eye"></i></button>
@@ -61,13 +63,13 @@
           </td>
         </tr>
       </tbody>
-      
+
     </table>
     <div *ngIf="quizzes.length === 0 && isLoading === true" class="no-quizzes">
       <h1>No se encontraron quizzes</h1>
     </div>
   </div>
-  
+
 </div>
 
 <div *ngIf="isExpanded3" class="edit-column" [@expandState3]="isExpanded3 ? 'expanded' : 'collapsed'">

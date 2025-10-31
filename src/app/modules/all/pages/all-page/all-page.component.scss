@@ -69,6 +69,10 @@ h2 {
   border-radius: 5px;
   width: 200px;
 }
+.status.completado {
+  color: #28a745;
+  cursor: pointer;
+}
 
 .overlay {
   position: fixed;
@@ -174,7 +178,7 @@ h2 {
 }
 
 .status.Activo {
-  color: rgba(151, 71, 255, 1);
+  color:#9747FF;
 }
 
 .status.Inactivo {
