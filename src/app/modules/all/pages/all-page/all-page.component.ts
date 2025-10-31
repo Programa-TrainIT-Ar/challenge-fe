@@ -80,12 +80,12 @@ export class AllPageComponent implements OnInit {
   currentUserId: string | null = null;
 
   private allPageService = inject(AllPageService);
-  
+
   constructor(
     private router: Router,
     private alertService: AlertService,
     private route: ActivatedRoute,
-    private userAuthService: UserAuthService 
+    private userAuthService: UserAuthService
   ) {}
 
   async ngOnInit(): Promise<void> {
@@ -126,7 +126,7 @@ export class AllPageComponent implements OnInit {
       .subscribe(async (response: any) => {
         if (!this.isAdmin) {
           this.quizzes = response.quizzes.filter((quiz: Quiz) => quiz.is_active);
-          
+
           // Verificar cuáles están completados si hay userId
           if (this.currentUserId) {
             await this.checkCompletedChallenges();
@@ -145,7 +145,7 @@ export class AllPageComponent implements OnInit {
     for (const quiz of this.quizzes) {
       try {
         const result = await this.allPageService.checkCompletedChallenge(this.currentUserId, quiz.id).toPromise();
-        
+
         if (result.already_completed) {
           quiz.isCompleted = true;
           quiz.challengeResult = {
@@ -209,18 +209,18 @@ export class AllPageComponent implements OnInit {
 
   // Obtener texto del botón dinámicamente
   getButtonText(quiz: Quiz): string {
-    return quiz.isCompleted ? 'Ver Resultado' : 'Realizar';
+    return quiz.isCompleted ? 'Ver' : 'Realizar';
   }
 
   // Obtener clase CSS del botón
   getButtonClass(quiz: Quiz): string {
-    return quiz.isCompleted ? 'status completado' : 'status activo';
+    return quiz.isCompleted ? 'status Inactivo' : 'status Activo';
   }
 
   viewQuiz(quiz: Quiz) {
     this.selectedQuizOnView = quiz;
   }
-  
+
   closeQuiz() {
     this.selectedQuizOnView = null;
   }
