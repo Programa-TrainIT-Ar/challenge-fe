@@ -1,10 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { User, AuthService } from '@auth0/auth0-angular';
+import { User } from '@auth0/auth0-angular';
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
-import { query } from '@angular/animations';
 import { DashboardCardsService } from './dashboard-cards.service';
+import { UserStateService } from 'src/app/modules/auth/user-state.service';
 
 @Component({
   selector: 'app-dashboard-cards',
@@ -14,13 +14,14 @@ import { DashboardCardsService } from './dashboard-cards.service';
   styleUrl: './dashboard-cards.component.scss',
 })
 export class DashboardCardsComponent implements OnInit {
-  user$: Observable<User | null> = this.auth.user$;
-  userName: string = 'Usuario'; // Puedes obtener el nombre de usuario desde algún servicio
+  user$: Observable<User | null> = this.userStateService.unifiedUser$;
+  
   currentDate: Date = new Date(); // Fecha actual
+  
   constructor(
-    private auth: AuthService,
     private router: Router,
-    private cellService: DashboardCardsService
+    private cellService: DashboardCardsService,
+     private userStateService: UserStateService
   ) {}
 
   //Filtros

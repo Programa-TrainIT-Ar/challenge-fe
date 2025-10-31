@@ -1,8 +1,26 @@
 <section class="subpage">
-  <div class="header" *ngIf="user$ | async as user">
-    <h1>Bienvenido, {{ user.name }}</h1>
+  <div class="header" *ngIf="user$ | async as user; else loading">
+    <div>
+      <div class="profile">
+        <h1>Bienvenido, {{ user.name }}</h1>
+        <img
+          [src]="user.picture"
+          (error)="user.picture = 'assets/images/user/user-round.png'"
+          alt="Foto de perfil"
+          class="profile-picture"/>
+      </div>
+    </div>
+
     <p class="date">{{ currentDate | date: 'dd MMM yyyy' }}</p>
   </div>
+
+  <ng-template #loading>
+    <div class="header">
+      <h1>Cargando perfil...</h1>
+      <p class="date">{{ currentDate | date: 'dd MMM yyyy' }}</p>
+    </div>
+  </ng-template>
+
   <div class="content">
     <h1>Selecciona tu stack</h1>
 
