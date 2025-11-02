@@ -1,3 +1,7 @@
+/**
+ * Componente encargado de mostrar u ocultar la animación de carga (loader)
+ * según el estado proporcionado por el `LoaderService`.
+ */
 import { Component } from '@angular/core';
 import { LoaderService } from '../../services/loader.service';
 
