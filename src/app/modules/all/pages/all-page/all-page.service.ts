@@ -49,5 +49,10 @@ export class AllPageService {
   deleteQuiz(id: string) {
     return this.http.delete(`${this.urlApi}/${id}`)
   }
+
+  //  Verificar challenge completado
+  checkCompletedChallenge(userId: string, quizId: string) {
+    return this.http.get<any>(`${environment.url}/challenge/check/${userId}/${quizId}`);
+  }
 }
 

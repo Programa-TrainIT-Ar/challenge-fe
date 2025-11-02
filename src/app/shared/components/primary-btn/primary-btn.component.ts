@@ -12,6 +12,7 @@ export class PrimaryBtnComponent {
 
   @Input() buttonText: string = 'Entrar'; // Texto por defecto
   @Input() disabled: boolean = true; // Propiedad para deshabilitar el botón
+  @Input() loading: boolean = false; // Muestra spinner cuando está cargando
   @Output() submit = new EventEmitter<void>(); // Evento que emite al padre
   
   onSubmit(): void {

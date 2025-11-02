@@ -70,16 +70,18 @@
           [test]="false"
           [quiz]="quiz"
           (quizStarted)="onQuizStarted($event)"
-
           (showResults)="onShowResults($event)" />
       }
 
       @case (5) {
-        <app-quiz-result
-          [result]="quizResults"
-          [quizName]="quiz.name"
-          [totalQuestions]="quiz.questions?.length || 10">
-        </app-quiz-result>
+        <div class="result-wrapper">
+          
+          <app-quiz-result
+            [result]="quizResults"
+            [quizName]="quiz.name"
+            [totalQuestions]="quiz.questions?.length || 10">
+          </app-quiz-result>
+        </div>
       }
     }
   </div>

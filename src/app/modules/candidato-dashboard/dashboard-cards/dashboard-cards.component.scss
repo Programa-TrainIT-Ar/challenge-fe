@@ -12,7 +12,8 @@
   align-items: center;
   margin-bottom: 20px;
   width: 100%;
-  padding: 0px 8px;
+  padding: 0px 20px;
+  box-sizing: border-box;
 }
 
 .header h1 {
@@ -27,6 +28,13 @@
 .header .date {
   font-size: 1rem;
   color: #ccc;
+  white-space: nowrap;
+  text-align: right;
+}
+
+.profile{
+  display: flex;
+  align-items: center;
 }
 
 .content {
@@ -167,14 +175,13 @@
 
 .card2:hover .title {
   // Aplicar degradado como fondo
-  background: linear-gradient(234.95deg, #FF5EA6 0%, #572EFF 100%);
+  background: linear-gradient(234.95deg, #ff5ea6 0%, #572eff 100%);
   // Recortar fondo para que sólo ocupe el espacio del texto
   -webkit-background-clip: text;
   background-clip: text;
   // Hacer texto transparente para que se vea el degradado
   -webkit-text-fill-color: transparent;
   color: transparent;
-
 }
 
 //Fin del modelo 2
@@ -202,4 +209,12 @@
   vertical-align: middle;
   margin-bottom: 20px;
   margin-right: 20px;
+}
+
+.profile-picture {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-left: 12px;
 }
