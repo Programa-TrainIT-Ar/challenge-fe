@@ -54,11 +54,13 @@ export class LoginComponent implements OnInit {
     401: 'Usuario y/o contraseña incorrecta.',
     403: 'Usuario y/o contraseña incorrecta.',
     423: 'Tu cuenta está temporalmente bloqueada. Intenta en 15 minutos.',
-    429: 'Demasiados intentos. Intenta nuevamente en unos minutos.'
+    429: 'Demasiados intentos. Intenta nuevamente en unos minutos.',
   };
 
   ngOnInit(): void {
     //Verficiación de inicio de sesión con Auth0
+    // Si Auth0 detecta un usuario logueado, se le redirige a una ruta segura,
+    // y el RoleGuard se encargará de enviarlo a /home o /dashboard.
     this.auth.user$
       .pipe(
         tap(user =>
@@ -68,13 +70,8 @@ export class LoginComponent implements OnInit {
         take(1)
       )
       .subscribe(user => {
-        // 💡 Se asume que el objeto user de Auth0 contiene el rol en un custom claim
-        const roles: string[] = user[this.AUTH0_ROLES_CLAIM] || [];
-        const isAdmin = roles.includes('admin');
-        console.log('Rol:', roles);
-
-        const redirectPath = isAdmin ? '/home' : '/dashboard';
-        this.router.navigate([redirectPath]);
+        // Redirección directa. El Guard hace la validación de rol.
+        this.router.navigate(['/dashboard']);
       });
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -90,40 +87,31 @@ export class LoginComponent implements OnInit {
 
       const { email, password } = this.loginForm.value;
 
-      this.userService.loginWithEmail(email, password).pipe(
-        finalize(()=> {
-          this.isLoading = false;
-          this.loginForm.enable({ emitEvent: false });
-        })
-      ).subscribe({
-        next: (response: LoginResponse) => {
-          const accessToken = response.access_token;
+      this.userService
+        .loginWithEmail(email, password)
+        .pipe(
+          finalize(() => {
+            this.isLoading = false;
+            this.loginForm.enable({ emitEvent: false });
+          })
+        )
+        .subscribe({
+          next: (response: LoginResponse) => {
+            const accessToken = response.access_token;
 
-          // 1. Guardar el token (esto también notifica al UserStateService internamente)
-          this.localAuthService.setToken(accessToken);
-          this.alertService.showSuccess('Inicio de sesión exitoso');
+            // 1. Guardar el token (esto también notifica al UserStateService internamente)
+            this.localAuthService.setToken(accessToken);
+            this.alertService.showSuccess('Inicio de sesión exitoso');
 
-          // 2. Obtener el payload decodificado para leer el rol
-          const userPayload = this.localAuthService.getUser();
-
-          let redirectPath = '/dashboard'; // Default: Candidato
-          console.log('Rol:', userPayload.role);
-          // 3. Redirección condicional
-          if (userPayload && userPayload.role === 'admin') {
-            redirectPath = '/home'; // Admin
-          } else if (userPayload && userPayload.role === 'candidato') {
-            redirectPath = '/dashboard';
-          }
-
-          this.router.navigate([redirectPath]);
-
-        },
-        error: (error) => {
-          console.error('🔒 Error al iniciar sesión:', error);
-          this.isLoading = false; // Detiene la carga al tener un error
-          // Aquí se podría mostrar un mensaje de error al usuario
-        }
-      });
+            // 2. Redirección directa. El RoleGuard en /dashboard validará el rol.
+            this.router.navigate(['/dashboard']);
+          },
+          error: error => {
+            console.error('🔒 Error al iniciar sesión:', error);
+            this.isLoading = false; // Detiene la carga al tener un error
+            // Aquí se podría mostrar un mensaje de error al usuario
+          },
+        });
     }
   }
 
