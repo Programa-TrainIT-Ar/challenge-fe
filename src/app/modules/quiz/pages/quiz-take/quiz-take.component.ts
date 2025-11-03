@@ -1,8 +1,15 @@
 import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { of, Subject } from 'rxjs';
-import { catchError, filter, switchMap, take, takeUntil, tap } from 'rxjs/operators';
+import { Observable, of, Subject } from 'rxjs';
+import {
+  catchError,
+  filter,
+  switchMap,
+  take,
+  takeUntil,
+  tap,
+} from 'rxjs/operators';
 
 import { QuizService } from './quiz-take.service';
 import { UserStateService } from 'src/app/modules/auth/user-state.service'; // AGREGADO
@@ -69,13 +76,10 @@ export class QuizTakeComponent
     // 1. Obtener el ID del usuario de forma reactiva y ejecutar el flujo
     this.userStateService.unifiedUser$
       .pipe(
-        // Filtrar para asegurar que el objeto 'user' tenga un 'id' válido.
-        filter(user => !!(user?.sub || user?.id)), 
         take(1),
         switchMap(user => {
           const userId = user?.sub || user?.id || null;
-          console.log("User en quiz:", userId);
-          
+
           if (!userId) {
             console.error('No se pudo obtener el ID del usuario');
             this.loading = false;
@@ -83,13 +87,16 @@ export class QuizTakeComponent
             return of(null);
           }
 
-          // 2. Carga del Quiz (Lógica original envuelta)
+          // 2. Carga del Quiz
           return this.quizService.getQuizById(quizId).pipe(
+            take(1),
             tap(quiz => {
-              this.quiz = quiz; // Asignar quiz (Lógica original)
-              // 3. Llamar a la función checkExistingChallenge modificada con el userId
-              this.checkExistingChallenge(quizId, userId);
+              this.quiz = quiz; // Asignar quiz
             }),
+            // Se usa switchMap para encadenar la verificación del challenge
+            switchMap(() =>
+              this.checkExistingChallengeObservable(quizId, userId)
+            ),
             // Manejar error de carga del quiz
             catchError(error => {
               console.error('Error loading quiz:', error);
@@ -100,55 +107,54 @@ export class QuizTakeComponent
         }),
         takeUntil(this.destroy$)
       )
-      .subscribe(); // La suscripción solo inicia el flujo, el estado final se maneja en checkExistingChallenge.
-  }
-
-  private checkExistingChallenge(
-    quizId: string,
-    userId: string
-  ): void {
-    // La validación de userId se realizó en loadQuiz, pero se mantiene la verificación de seguridad
-    if (!userId) {
-      this.loading = false;
-      return;
-    }
-
-    console.log('🔍 Verificando challenge existente para usuario:', userId);
-
-    this.quizService
-      .checkExistingChallenge(userId, quizId)
-      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: result => {
-          console.log('📋 Resultado verificación:', result);
-
-          if (result.already_completed) {
-            //  Mapear datos para el componente de resultado
-            this.quizResults = {
-              id: result.id,
-              calification: result.calification,
-              time_taken: result.time_taken,
-              created_at: result.created_at,
-            };
-
-            this.isAlreadyCompleted = true; // AGREGADO
-            this.step = 5; // Ir directamente a mostrar resultados
-
+          // El 'result' es el resultado final de checkExistingChallengeObservable
+          if (result && result.already_completed) {
+            this.mapResultsAndShow(result);
             console.log(
               '✅ Challenge ya completado, mostrando resultados:',
               this.quizResults
             );
-          } else {
+          } else if (result !== null) {
             console.log('🆕 Challenge no completado, permitir realizarlo');
           }
-
+        },
+        error: () => {
+          // Error manejado en catchError, solo asegurarse de parar el loading
+        },
+        complete: () => {
+          // 🚨 Punto final para detener el cargando después de que todo el flujo termina
           this.loading = false;
         },
-        error: error => {
-          console.error('❌ Error verificando challenge:', error);
-          this.loading = false; // Permitir continuar en caso de error
-        },
       });
+  }
+
+  private checkExistingChallengeObservable(
+    quizId: string,
+    userId: string
+  ): Observable<any> {
+    console.log('🔍 Verificando challenge existente para usuario:', userId);
+    return this.quizService.checkExistingChallenge(userId, quizId).pipe(
+      take(1),
+      catchError(error => {
+        console.error('❌ Error verificando challenge:', error);
+        // Si hay error en la verificación, retornamos un observable con un resultado no completado
+        return of({ already_completed: false });
+      })
+    );
+  }
+
+  // Nueva función para encapsular el mapeo de resultados y manejo de estado (limpieza)
+  private mapResultsAndShow(result: any): void {
+    this.quizResults = {
+      id: result.id,
+      calification: result.calification,
+      time_taken: result.time_taken,
+      created_at: result.created_at,
+    };
+    this.isAlreadyCompleted = true;
+    this.step = 5;
   }
 
   nextStep(): void {

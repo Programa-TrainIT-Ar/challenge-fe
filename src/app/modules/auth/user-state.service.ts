@@ -18,7 +18,9 @@ export class UserStateService {
   // 2. Fuente para usuarios autenticados vía JWT Local
   // Se usa 'any' porque el payload del JWT local puede no coincidir con el tipo 'User' de Auth0.
   // Inicializa el BehaviorSubject recuperando el usuario local del localStorage
-  private localUserSubject = new BehaviorSubject<any>(this.getInitialLocalUser());
+  private localUserSubject = new BehaviorSubject<any>(
+    this.getInitialLocalUser()
+  );
 
   /**
    * 3. Observable Unificado: Combina ambas fuentes.
@@ -55,6 +57,7 @@ export class UserStateService {
     name: string;
     email: string;
     picture?: string;
+    sub?: string;
     [key: string]: any;
   }) {
     this.localUserSubject.next(userData);
