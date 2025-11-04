@@ -109,8 +109,17 @@ export class QuestionContainerComponent implements OnInit, OnDestroy {
       const user = await firstValueFrom(
         this.userStateService.unifiedUser$.pipe(take(1))
       );
-      const userId = user?.sub || user?.id || null;
+      // Si la sesión es de Auth0, 'user' será el objeto de Auth0 + el 'id' de la DB inyectado.
+      // Si la sesión es local, 'user' será el objeto local con el 'id' de la DB.
+      let userId = user?.id || null;
 
+
+      if (!userId && user?.sub) {
+        userId = user.sub;
+        console.warn(
+          '[Quiz Auth] Usando ID de Auth0 (sub) temporalmente, la unificación del UUID no estaba lista.'
+        );
+      }
       if (!userId) {
         this.handleSessionExpired();
         return;
@@ -121,6 +130,11 @@ export class QuestionContainerComponent implements OnInit, OnDestroy {
       this.isLoading = false;
       this.quizStarted.emit(true);
     } catch (error) {
+      console.log(
+        'Error en la inicialización del usuario para realizar quiz: ',
+        error
+      );
+
       this.handleSessionExpired();
     }
   }
@@ -242,6 +256,8 @@ export class QuestionContainerComponent implements OnInit, OnDestroy {
         'Ver Resultados'
       );
     } catch (error) {
+      console.log('Error al enviar quiz al backend: ', error);
+
       this.handleSubmissionError(error);
     } finally {
       this.isSubmitting = false;

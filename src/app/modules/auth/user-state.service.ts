@@ -21,16 +21,51 @@ export class UserStateService {
   private localUserSubject = new BehaviorSubject<any>(
     this.getInitialLocalUser()
   );
+  public localUser$ = this.localUserSubject.asObservable();
+
+/**
+     * Combina el usuario de Auth0 con el ID de la DB si es que existe uno local.
+     * Si hay sesión de Auth0 (auth0User), pero su registro en la BD local 
+     * tiene el 'id', se inyecta en el objeto de Auth0.
+     */
+    private auth0UserWithLocalId$: Observable<any> = combineLatest([
+        this.auth0User$,
+        this.localUser$,
+    ]).pipe(
+        map(([auth0User, localUser]) => {
+            // 1. Si hay una sesión de Auth0 activa
+            if (auth0User) {
+                // 2. Se busca el ID unificado ('id') en el objeto local guardado
+                const dbId = localUser?.id; 
+                
+                // 3. Si se encuentra el ID de la DB, se añade al objeto de Auth0
+                if (dbId) {
+                    return {
+                        ...auth0User,
+                        // 1. Sobrescribir 'sub' con el UUID de la DB 
+                        sub: dbId, 
+                        // 2. Mantener la propiedad 'id' con el UUID de la DB (Para que se pueda realizar QUIZ)
+                        id: dbId,
+                    };
+                }
+                // Si la sesión de Auth0 existe, pero no se encuentra el ID local, 
+                // Se devuelve el objeto de Auth0 sin enriquecer (esto es un fallo, pero defensivo)
+                return auth0User; 
+            }
+            // Si no hay sesión de Auth0, se retorna null/undefined para que el unificado use el local
+            return null;
+        })
+    );
 
   /**
    * 3. Observable Unificado: Combina ambas fuentes.
    * Da prioridad a la sesión de Auth0 (si existe), y si no, usa la sesión local.
    */
   public unifiedUser$: Observable<any> = combineLatest([
-    this.auth0User$,
-    this.localUserSubject.asObservable(),
+    this.auth0UserWithLocalId$, // Fuente 1: Usuario de Auth0 enriquecido
+    this.localUser$,            // Fuente 2: Usuario local
   ]).pipe(
-    map(([auth0User, localUser]) => auth0User || localUser) // Retorna el objeto de usuario con datos
+    map(([auth0UserWithLocalId, localUser]) => auth0UserWithLocalId || localUser) // Retorna el objeto de usuario con datos
   );
 
   constructor(private auth: AuthService) {}
