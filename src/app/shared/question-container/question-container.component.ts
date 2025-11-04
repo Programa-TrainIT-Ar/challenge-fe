@@ -7,7 +7,7 @@ import {
   OnDestroy,
 } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
-import { Subject, firstValueFrom } from 'rxjs';
+import { Subject, firstValueFrom, take } from 'rxjs';
 import { Router } from '@angular/router';
 
 import { QuestionComponent } from '../question/question.component';
@@ -15,7 +15,7 @@ import { BlueButtonComponent } from '../components/blue-button/blue-button.compo
 import { QuizService } from '../../modules/quiz/pages/quiz-take/quiz-take.service';
 import { Quiz, Question } from './question-interface';
 import { AlertService } from '../components/alert/alert.service';
-import { UserAuthService } from '../../modules/auth/user-auth.service';
+import { UserStateService } from 'src/app/modules/auth/user-state.service';
 
 @Component({
   selector: 'app-question-container',
@@ -29,7 +29,7 @@ export class QuestionContainerComponent implements OnInit, OnDestroy {
   @Input() quiz!: Quiz;
   @Output() nextStep = new EventEmitter<void>();
   @Output() quizStarted = new EventEmitter<boolean>();
-  @Output() showResults = new EventEmitter<any>(); 
+  @Output() showResults = new EventEmitter<any>();
   private destroy$ = new Subject<void>();
   private startTime?: Date;
   private currentUserId: string | null = null;
@@ -75,7 +75,7 @@ export class QuestionContainerComponent implements OnInit, OnDestroy {
     private quizService: QuizService,
     private router: Router,
     private alertService: AlertService,
-    private userAuthService: UserAuthService
+    private userStateService: UserStateService
   ) {
     // guardar referencia del timer
     this.timerInterval = setInterval(() => {
@@ -106,7 +106,10 @@ export class QuestionContainerComponent implements OnInit, OnDestroy {
 
   private async initializeUserSession(): Promise<void> {
     try {
-      const userId = await this.userAuthService.getCurrentUserId();
+      const user = await firstValueFrom(
+        this.userStateService.unifiedUser$.pipe(take(1))
+      );
+      const userId = user?.sub || user?.id || null;
 
       if (!userId) {
         this.handleSessionExpired();
@@ -114,10 +117,9 @@ export class QuestionContainerComponent implements OnInit, OnDestroy {
       }
 
       this.currentUserId = userId;
-      this.startTime = new Date();        
+      this.startTime = new Date();
       this.isLoading = false;
-      this.quizStarted.emit(true);        
-      
+      this.quizStarted.emit(true);
     } catch (error) {
       this.handleSessionExpired();
     }
@@ -201,7 +203,10 @@ export class QuestionContainerComponent implements OnInit, OnDestroy {
     if (this.timerInterval) {
       clearInterval(this.timerInterval);
       this.timerInterval = undefined;
-      console.log('⏱️ Timer detenido en:', this.counter.toTimeString().substr(3, 5));
+      console.log(
+        '⏱️ Timer detenido en:',
+        this.counter.toTimeString().substr(3, 5)
+      );
     }
   }
 
@@ -209,7 +214,7 @@ export class QuestionContainerComponent implements OnInit, OnDestroy {
     if (this.isSubmitting || !this.currentUserId) return;
 
     this.isSubmitting = true;
-    
+
     //  detener timer inmediatamente al presionar finalizar
     this.stopTimer();
 
@@ -218,7 +223,9 @@ export class QuestionContainerComponent implements OnInit, OnDestroy {
       const challengeData = this.prepareChallengeData(this.currentUserId);
 
       // Enviar al backend
-      const response = await firstValueFrom(this.quizService.submitQuizAnswers(challengeData));
+      const response = await firstValueFrom(
+        this.quizService.submitQuizAnswers(challengeData)
+      );
 
       console.log('✅ Quiz enviado exitosamente:', response);
 
@@ -228,13 +235,12 @@ export class QuestionContainerComponent implements OnInit, OnDestroy {
         () => {
           // Al confirmar, emitir evento para mostrar resultados
           this.showResults.emit({
-            challengeResult: response, 
-            quiz: this.quiz
+            challengeResult: response,
+            quiz: this.quiz,
           });
         },
         'Ver Resultados'
       );
-
     } catch (error) {
       this.handleSubmissionError(error);
     } finally {
@@ -247,7 +253,8 @@ export class QuestionContainerComponent implements OnInit, OnDestroy {
     let errorTitle = 'Error al Enviar Quiz';
 
     if (error?.status === 400) {
-      errorMessage = 'Los datos del quiz no son válidos. Por favor, intenta nuevamente.';
+      errorMessage =
+        'Los datos del quiz no son válidos. Por favor, intenta nuevamente.';
     } else if (error?.status === 404) {
       errorMessage = 'El quiz no fue encontrado. Por favor, recarga la página.';
       errorTitle = 'Quiz No Encontrado';
@@ -296,8 +303,8 @@ export class QuestionContainerComponent implements OnInit, OnDestroy {
     return this.isSubmitting
       ? 'Enviando...'
       : this.currentQuestionIndex === this.allQuestions.length - 1
-      ? 'Finalizar'
-      : 'Siguiente';
+        ? 'Finalizar'
+        : 'Siguiente';
   }
 
   getCurrentQuestionTypeText(): string {
