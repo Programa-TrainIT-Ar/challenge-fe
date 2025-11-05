@@ -43,6 +43,9 @@ export class QuestionContainerComponent implements OnInit, OnDestroy {
   allQuestions: Question[] = [];
   isLoading = true; // Para mostrar loading mientras verifica sesión
 
+  // Estado del tutorial
+  tutorialStep: number = 0; // 0 = no mostrar, 1 = primer modal, 2 = segundo modal, 3 = tercer modal
+
   // Preguntas de test
   private readonly testQuestions: Question[] = [
     {
@@ -90,6 +93,10 @@ export class QuestionContainerComponent implements OnInit, OnDestroy {
       await this.initializeUserSession();
     } else {
       this.isLoading = false;
+      // Mostrar tutorial automáticamente al iniciar modo práctica (siempre se muestra)
+      setTimeout(() => {
+        this.tutorialStep = 1;
+      }, 300);
     }
   }
 
@@ -313,5 +320,19 @@ export class QuestionContainerComponent implements OnInit, OnDestroy {
       default:
         return '';
     }
+  }
+
+  // ============= MÉTODOS DEL TUTORIAL =============
+
+  nextTutorialStep(): void {
+    this.tutorialStep++;
+    
+    if (this.tutorialStep > 3) {
+      this.closeTutorial();
+    }
+  }
+
+  closeTutorial(): void {
+    this.tutorialStep = 0;
   }
 }
