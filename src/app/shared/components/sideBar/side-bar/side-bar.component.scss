@@ -77,7 +77,15 @@
 }
 
 .sidebar-btns:hover,
-.active-btn {
+.sidebar-btns-extended:hover {
+  background-color: #1b1b1bb2;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.4);
+  transform: translateY(-2px);
+  transition: all 0.3s ease;
+}
+
+.sidebar-btns.active,
+.sidebar-btns-extended.active {
   background-color: #1b1b1bb2;
 }
 .sidebar-btns-container .btn-logout{
