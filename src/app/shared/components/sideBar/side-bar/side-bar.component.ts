@@ -25,6 +25,7 @@ export class SideBarComponent {
     isSidebarOpen: boolean = true;
     isMenuOpen: boolean = false;
     isMobile: boolean = false;
+    selectedItem: SidebarItem | null = null;
 
     constructor(
     private authService: AuthService,
@@ -106,9 +107,10 @@ export class SideBarComponent {
    * @param item El ítem del sidebar al que se hizo clic.
    */
   onItemClick(item: SidebarItem): void {
-    if (item.route) {
-      this.router.navigate([item.route]);
-    }
+   this.selectedItem = item;
+   if (item.route) {
+    this.router.navigate([item.route]);
+  }
   }
 
   // Método para verificar el tamaño de la pantalla
