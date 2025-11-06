@@ -71,7 +71,7 @@ export class LoginComponent implements OnInit {
       )
       .subscribe(user => {
         // Redirección directa. El Guard hace la validación de rol.
-        this.router.navigate(['/dashboard']);
+        this.router.navigate(['/home']);
       });
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -104,7 +104,7 @@ export class LoginComponent implements OnInit {
             this.alertService.showSuccess('Inicio de sesión exitoso');
 
             // 2. Redirección directa. El RoleGuard en /dashboard validará el rol.
-            this.router.navigate(['/dashboard']);
+            this.router.navigate(['/home']);
           },
           error: error => {
             console.error('🔒 Error al iniciar sesión:', error);
