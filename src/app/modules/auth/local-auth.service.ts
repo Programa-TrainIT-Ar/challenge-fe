@@ -18,6 +18,7 @@ export class LocalAuthService {
       const userData = {
         name: decodedUser.first_name || decodedUser.email, 
         email: decodedUser.email,
+        sub: decodedUser.sub,
         // Se incluye cualquier otra propiedad necesaria (ej: picture, role)
         picture: decodedUser.picture, 
       };
