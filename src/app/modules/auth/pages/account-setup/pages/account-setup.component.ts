@@ -94,7 +94,7 @@ export class AccountSetupComponent implements OnInit {
             Validators.required,
             Validators.pattern(/^\+\d+$/),
             Validators.minLength(8),
-            Validators.maxLength(11),
+            Validators.maxLength(30),
           ],
         ],
         password: [
@@ -179,7 +179,7 @@ export class AccountSetupComponent implements OnInit {
               // this.localAuth.clearToken(); Quitar esta línea permite que el usuario sea direccionado a /candidato. De lo contrario, irá al login.
               this.successOperation = true;
               this.showModal = true;
-              
+
             },
             error: error => {
               this.successOperation = false;

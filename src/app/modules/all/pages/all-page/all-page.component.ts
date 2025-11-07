@@ -17,10 +17,10 @@ import {
 import { AlertService } from 'src/app/shared/components/alert/alert.service';
 import { AllPageService } from './all-page.service';
 import { UserAuthService } from 'src/app/modules/auth/user-auth.service'; // AGREGADO
+import { take } from 'rxjs';
+import { UserStateService } from 'src/app/modules/auth/user-state.service';
 import { firstValueFrom } from 'rxjs';
 import { LoaderService } from 'src/app/services/loader.service';
-
-
 
 interface User {
   first_name: string;
@@ -84,32 +84,38 @@ export class AllPageComponent implements OnInit {
   currentUserId: string | null = null;
 
   private allPageService = inject(AllPageService);
+  private userStateService = inject(UserStateService);
 
   constructor(
     private router: Router,
     private alertService: AlertService,
     private route: ActivatedRoute,
     private userAuthService: UserAuthService,
-    private loader: LoaderService
+    private loader: LoaderService 
   ) {}
 
   async ngOnInit(): Promise<void> {
-    //  Obtener userId si no es admin
-    if (!this.isAdmin) {
-      try {
-        this.currentUserId = await this.userAuthService.getCurrentUserId();
-      } catch (error) {
-        console.error('Error obteniendo userId:', error);
-      }
-    }
+    this.userStateService.unifiedUser$
+      .pipe(
+        take(1) // Obtiene el valor inicial del usuario inmediatamente.
+      )
+      .subscribe(user => {
+        // 1. Establecer el ID del usuario si no es admin
+        if (user && !this.isAdmin) {
+          // Se usa 'sub' (Auth0/JWT) o 'id' (DB/Local) como identificador
+          this.currentUserId = user.sub || user.id || null;
+        }
 
-    this.route.queryParams.subscribe(params => {
-      this.module = params['module'] || '';
-      this.cell = params['cell'] || '';
-      this.seniority = params['seniority'] || '';
-      this.searchText = params['search'] || '';
-      this.onSearchChange();
-    });
+        // 2. Iniciar la escucha de Query Params (Dependiente del User ID)
+        // Esto inicia la carga de datos solo después de que el estado del usuario sea conocido.
+        this.route.queryParams.subscribe(params => {
+          this.module = params['module'] || '';
+          this.cell = params['cell'] || '';
+          this.seniority = params['seniority'] || '';
+          this.searchText = params['search'] || '';
+          this.onSearchChange();
+        });
+      });
   }
 
   recibirDatos(quizCategory: any) {
@@ -132,7 +138,9 @@ export class AllPageComponent implements OnInit {
       })
     );
         if (!this.isAdmin) {
-          this.quizzes = response.quizzes.filter((quiz: Quiz) => quiz.is_active);
+          this.quizzes = response.quizzes.filter(
+            (quiz: Quiz) => quiz.is_active
+          );
 
           // Verificar cuáles están completados si hay userId
           if (this.currentUserId) {
@@ -155,7 +163,9 @@ export class AllPageComponent implements OnInit {
 
     for (const quiz of this.quizzes) {
       try {
-        const result = await this.allPageService.checkCompletedChallenge(this.currentUserId, quiz.id).toPromise();
+        const result = await this.allPageService
+          .checkCompletedChallenge(this.currentUserId, quiz.id)
+          .toPromise();
 
         if (result.already_completed) {
           quiz.isCompleted = true;
@@ -165,7 +175,7 @@ export class AllPageComponent implements OnInit {
             time_taken: result.time_taken,
             created_at: result.created_at,
             quiz_name: quiz.name,
-            total_questions: result.total_questions
+            total_questions: result.total_questions,
           };
         } else {
           quiz.isCompleted = false;

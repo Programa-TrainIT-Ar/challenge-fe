@@ -1,11 +1,18 @@
 import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { Observable, of, Subject } from 'rxjs';
+import {
+  catchError,
+  filter,
+  switchMap,
+  take,
+  takeUntil,
+  tap,
+} from 'rxjs/operators';
 
 import { QuizService } from './quiz-take.service';
-import { UserAuthService } from 'src/app/modules/auth/user-auth.service'; // AGREGADO
+import { UserStateService } from 'src/app/modules/auth/user-state.service'; // AGREGADO
 import { QuestionContainerComponent } from 'src/app/shared/question-container/question-container.component';
 import { BlueButtonComponent } from 'src/app/shared/components/blue-button/blue-button.component';
 import { SideBarComponent } from 'src/app/shared/components/sideBar/side-bar/side-bar.component';
@@ -23,10 +30,12 @@ import { QuizResultComponent } from '../../pages/quiz-result/quiz-result.compone
     QuestionContainerComponent,
     BlueButtonComponent,
     SideBarComponent,
-    QuizResultComponent
-  ]
+    QuizResultComponent,
+  ],
 })
-export class QuizTakeComponent implements OnInit, OnDestroy, CanComponentDeactivate {
+export class QuizTakeComponent
+  implements OnInit, OnDestroy, CanComponentDeactivate
+{
   private destroy$ = new Subject<void>();
 
   step = 1;
@@ -43,7 +52,7 @@ export class QuizTakeComponent implements OnInit, OnDestroy, CanComponentDeactiv
     private route: ActivatedRoute,
     private router: Router,
     private quizService: QuizService,
-    private userAuthService: UserAuthService // AGREGADO
+    private userStateService: UserStateService // AGREGADO
   ) {}
 
   ngOnInit(): void {
@@ -64,69 +73,88 @@ export class QuizTakeComponent implements OnInit, OnDestroy, CanComponentDeactiv
   }
 
   private loadQuiz(quizId: string): void {
-    this.quizService.getQuizById(quizId)
-      .pipe(takeUntil(this.destroy$))
+    // 1. Obtener el ID del usuario de forma reactiva y ejecutar el flujo
+    this.userStateService.unifiedUser$
+      .pipe(
+        take(1),
+        switchMap(user => {
+          const userId = user?.sub || user?.id || null;
+
+          if (!userId) {
+            console.error('No se pudo obtener el ID del usuario');
+            this.loading = false;
+            // Retornar un Observable vacío para detener el flujo.
+            return of(null);
+          }
+
+          // 2. Carga del Quiz
+          return this.quizService.getQuizById(quizId).pipe(
+            take(1),
+            tap(quiz => {
+              this.quiz = quiz; // Asignar quiz
+            }),
+            // Se usa switchMap para encadenar la verificación del challenge
+            switchMap(() =>
+              this.checkExistingChallengeObservable(quizId, userId)
+            ),
+            // Manejar error de carga del quiz
+            catchError(error => {
+              console.error('Error loading quiz:', error);
+              this.router.navigate(['/']);
+              return of(null);
+            })
+          );
+        }),
+        takeUntil(this.destroy$)
+      )
       .subscribe({
-        next: (quiz) => {
-          this.quiz = quiz;
-          // Verificar si ya completó el challenge
-          this.checkExistingChallenge(quizId);
+        next: result => {
+          // El 'result' es el resultado final de checkExistingChallengeObservable
+          if (result && result.already_completed) {
+            this.mapResultsAndShow(result);
+            console.log(
+              '✅ Challenge ya completado, mostrando resultados:',
+              this.quizResults
+            );
+          } else if (result !== null) {
+            console.log('🆕 Challenge no completado, permitir realizarlo');
+          }
         },
-        error: (error) => {
-          console.error('Error loading quiz:', error);
-          this.router.navigate(['/']);
-        }
+        error: () => {
+          // Error manejado en catchError, solo asegurarse de parar el loading
+        },
+        complete: () => {
+          // 🚨 Punto final para detener el cargando después de que todo el flujo termina
+          this.loading = false;
+        },
       });
   }
 
-  private async checkExistingChallenge(quizId: string): Promise<void> {
-    try {
-      // Obtener userId usando el servicio existente
-      const userId = await this.userAuthService.getCurrentUserId();
-      
-      if (!userId) {
-        console.error('No se pudo obtener el ID del usuario');
-        this.loading = false;
-        return;
-      }
+  private checkExistingChallengeObservable(
+    quizId: string,
+    userId: string
+  ): Observable<any> {
+    console.log('🔍 Verificando challenge existente para usuario:', userId);
+    return this.quizService.checkExistingChallenge(userId, quizId).pipe(
+      take(1),
+      catchError(error => {
+        console.error('❌ Error verificando challenge:', error);
+        // Si hay error en la verificación, retornamos un observable con un resultado no completado
+        return of({ already_completed: false });
+      })
+    );
+  }
 
-      console.log('🔍 Verificando challenge existente para usuario:', userId);
-      
-      this.quizService.checkExistingChallenge(userId, quizId)
-        .pipe(takeUntil(this.destroy$))
-        .subscribe({
-          next: (result) => {
-            console.log('📋 Resultado verificación:', result);
-            
-            if (result.already_completed) {
-              //  Mapear datos para el componente de resultado
-              this.quizResults = {
-                id: result.id,
-                calification: result.calification,
-                time_taken: result.time_taken,
-                created_at: result.created_at
-              };
-              
-              this.isAlreadyCompleted = true; // AGREGADO
-              this.step = 5; // Ir directamente a mostrar resultados
-              
-              console.log('✅ Challenge ya completado, mostrando resultados:', this.quizResults);
-            } else {
-              console.log('🆕 Challenge no completado, permitir realizarlo');
-            }
-            
-            this.loading = false;
-          },
-          error: (error) => {
-            console.error('❌ Error verificando challenge:', error);
-            this.loading = false; // Permitir continuar en caso de error
-          }
-        });
-        
-    } catch (error) {
-      console.error('❌ Error obteniendo userId:', error);
-      this.loading = false;
-    }
+  // Nueva función para encapsular el mapeo de resultados y manejo de estado (limpieza)
+  private mapResultsAndShow(result: any): void {
+    this.quizResults = {
+      id: result.id,
+      calification: result.calification,
+      time_taken: result.time_taken,
+      created_at: result.created_at,
+    };
+    this.isAlreadyCompleted = true;
+    this.step = 5;
   }
 
   nextStep(): void {
