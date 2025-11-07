@@ -8,6 +8,7 @@ import { FormsModule } from '@angular/forms';
 import { HeaderFormModule } from 'src/app/shared/components/header-form/header-form.module';
 import { EditModule } from '../edit/edit.module';
 import { EditPagesComponent } from '../edit/pages/edit-pages/edit-pages.component';
+import { LoaderComponent } from "src/app/shared/loader/loader.component";
 
 const routes: Routes = [
   {
@@ -38,8 +39,9 @@ const routes: Routes = [
     FormsModule,
     HeaderFormModule,
     EditModule,
-    RouterModule.forChild(routes), // Cambia forRoot por forChild
-  ],
+    RouterModule.forChild(routes),
+    LoaderComponent
+],
   exports: [
     AllPageComponent,
     ViewQuizComponent,

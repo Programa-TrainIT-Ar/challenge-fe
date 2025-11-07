@@ -17,6 +17,10 @@ import {
 import { AlertService } from 'src/app/shared/components/alert/alert.service';
 import { AllPageService } from './all-page.service';
 import { UserAuthService } from 'src/app/modules/auth/user-auth.service'; // AGREGADO
+import { firstValueFrom } from 'rxjs';
+import { LoaderService } from 'src/app/services/loader.service';
+
+
 
 interface User {
   first_name: string;
@@ -85,7 +89,8 @@ export class AllPageComponent implements OnInit {
     private router: Router,
     private alertService: AlertService,
     private route: ActivatedRoute,
-    private userAuthService: UserAuthService
+    private userAuthService: UserAuthService,
+    private loader: LoaderService
   ) {}
 
   async ngOnInit(): Promise<void> {
@@ -116,14 +121,16 @@ export class AllPageComponent implements OnInit {
 
   // Verificar challenges completados después de cargar quizzes
   async onSearchChange() {
-    this.allPageService
+    this.loader.show(); // Mostrar loader al iniciar la carga de datos
+    try{
+      const response: any = await firstValueFrom(this.allPageService
       .getFilteredQuiz({
         module: this.module,
         cell: this.cell,
         seniority: this.seniority.toLowerCase(),
-        search: this.searchText,
+        search: this.searchText, 
       })
-      .subscribe(async (response: any) => {
+    );
         if (!this.isAdmin) {
           this.quizzes = response.quizzes.filter((quiz: Quiz) => quiz.is_active);
 
@@ -134,9 +141,13 @@ export class AllPageComponent implements OnInit {
         } else {
           this.quizzes = response.quizzes;
         }
-        this.isLoading = true;
-      });
-  }
+       } catch (err) {
+        console.error('Error al cargar quizzes:', err);
+      } finally {
+        console.log('🔹 Ocultando loader'); 
+        this.loader.hide(); // Ocultar loader al finalizar la carga de datos
+      }
+    }
 
   // Verificar challenges completados
   private async checkCompletedChallenges(): Promise<void> {
