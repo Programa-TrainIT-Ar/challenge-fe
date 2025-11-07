@@ -1,5 +1,5 @@
 import { RouterModule } from '@angular/router';
-import { NgModule } from '@angular/core';
+import { Component, NgModule } from '@angular/core';
 import { AuthPageComponent } from './modules/auth/pages/sign-up/signup-page.component';
 import { AccountSetupComponent } from './modules/auth/pages/account-setup/pages/account-setup.component';
 import { HomePageComponent } from './modules/home/pages/home-page/home-page.component';
@@ -14,7 +14,9 @@ import { ErrorComponent } from './modules/home/pages/error/error.component';
 import { VerifyEmailComponent } from './modules/auth/pages/verify-email/verify-email.component';
 import { CandidatoFormComponent } from './modules/candidato-dashboard/candidato-form/candidato-form.component';
 import { QuizTakeComponent } from './modules/quiz/pages/quiz-take/quiz-take.component';
+import { LoaderComponent } from './shared/loader/loader.component';
 import { ResetPasswordComponent } from './modules/auth/pages/reset-password/reset-password.component';
+
 @NgModule({
   imports: [
     RouterModule.forRoot(
@@ -93,6 +95,10 @@ import { ResetPasswordComponent } from './modules/auth/pages/reset-password/rese
               './modules/auth/pages/forgot-password/forgot-password.component'
             ).then(m => m.ForgotPasswordComponent),
         },
+         {
+        path: 'loader',
+        component: LoaderComponent,
+      },
         {
           path: 'reset-password',
           component: ResetPasswordComponent,
@@ -102,6 +108,7 @@ import { ResetPasswordComponent } from './modules/auth/pages/reset-password/rese
           component: ErrorComponent,
           pathMatch: 'full',
         },
+       
       ],
       {
         scrollPositionRestoration: 'enabled',
