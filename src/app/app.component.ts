@@ -27,6 +27,8 @@ export class AppComponent implements OnInit {
       .pipe(
         filter(user => !!user && !!user.email),
         switchMap(user => {
+          console.log('Buscando usuario Auth0 en BD local...');
+
           return this.userService.finduserByEmail(user.email!).pipe(
             switchMap(existingUser => {
               if (!existingUser) {
@@ -48,7 +50,7 @@ export class AppComponent implements OnInit {
             [user.first_name, user.last_name]
               .filter(Boolean) // Filtra nulos o vacíos
               .join(' ') || user.email;
-          
+
           // 2. Construir el objeto con el campo 'name' requerido por UserStateService
           const userDataForState = {
             ...user, // Conserva todas las propiedades (incluyendo el ID crucial)
@@ -57,14 +59,15 @@ export class AppComponent implements OnInit {
           };
 
           // 3. Almacenar el objeto
-          this.userStateService.setLocalUser(userDataForState);          
+          this.userStateService.setLocalUser(userDataForState);
         },
-        error: error => console.error('❌ Error:', error),
+        error: error =>
+          console.error('❌ Error al cargar usuario de la BD local:', error),
       });
   }
 
   private handleUserRegistration(user: any) {
-    console.log('New user, registering...');
+    console.log('Nuevo usuario por Auth0, registrando en BD local...');
 
     const userData: UserData = {
       email: user.email,
