@@ -1,0 +1,16 @@
+.btn-form {
+  border-radius: 8px;
+  font-size: 10px;
+  border: solid 3px #6a5fff;
+  background-color: #6a5fff;
+  width: 208px;
+  height: 42px;
+  padding: 8px;
+  margin-bottom: 20px;
+  box-shadow: 0px 4px 4px 0px #00000026;
+}
+.btn-form:disabled {
+  background-color: #5F5F5F; /* Light gray for disabled state */
+  border-color: #5F5F5F; /* Darker gray for border */
+  cursor: not-allowed; /* Change cursor to indicate disabled state */
+}

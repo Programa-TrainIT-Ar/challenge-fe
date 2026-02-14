@@ -1,9 +1,23 @@
-<div class="home-container">
-  <div class="sidebar-container">
-    <app-side-bar></app-side-bar>
+<div class="container-fluid">
+  <div>
+    
+    <app-side-bar
+    [extended]="true"
+    role="admin"
+    ></app-side-bar>
   </div>
-  <div class="display-container">
-    <router-outlet></router-outlet>
+  <div id="welcome"><router-outlet></router-outlet></div>
+
+  <div *ngIf="user$ | async as user" class="mensaje" [class.hidden]="isMessageHidden">
+    <div class="Bienvenida">
+      Bienvenido, {{ user.name }}
+      <div>
+        <img
+          [src]="user.picture"
+           (error)="user.picture = 'assets/images/user/user-round.png'"
+          alt="Foto de perfil"
+          class="profile-picture" />
+      </div>
+    </div>
   </div>
-  
 </div>

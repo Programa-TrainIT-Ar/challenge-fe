@@ -1,11 +1,12 @@
 export const environment = {
     production: false,
     auth: {
-      domain: "dev-anq6akqu2adna18f.us.auth0.com",
-      clientId: "39vYLqvEh62Wl28SMo9UfkM3OtHl5iOB",
+      domain: "dev-etnwb5jjlx4qpvdm.us.auth0.com",
+      clientId: "cDXMB8lOxTHRJUodDMCLLrbxbooFe2le",
       authorizationParams: {
-        audience: 'https://trainIT',
-        redirect_uri: 'http://localhost:4200'
-      }
-    }
+        audience: 'http://localhost:3001',
+        redirect_uri: 'http://localhost:4200',
+      },
+    },
+    url: 'http://localhost:3001'
   };

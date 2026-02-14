@@ -1,0 +1,26 @@
+<div class="option-row">
+    <div>
+        @for (option of question.options; track $index){
+            <div class="option-item">
+                <span>
+                  <div class="checkbox-container">
+                    <input
+                        disabled
+                        [type]="
+                        question.type === 'multiple_choice'
+                          ? 'checkbox'
+                          : 'radio'
+                      "
+                        class="checkbox-input"
+                        name="correct_option_{{ question.correct_option[0] }}"
+                        [checked]="question.correct_option.includes($index)"
+                         />
+                  </div>
+                </span>
+                <span>
+                  <label class="option-label">{{ option }}</label>
+                </span>
+            </div>
+        }
+    </div>
+</div>

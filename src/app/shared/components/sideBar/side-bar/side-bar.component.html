@@ -1,36 +1,61 @@
-<!-- Sidebar -->
-<div class="mb-5">
-  <img src="assets/layout/images/logo.svg" class="side-img" alt="logo" />
-</div>
+<div class= 'sidebar-container' [class.open]="isSidebarOpen">
 
-<div class="sidebar-btns-container">
-  <div class="gestion-btns">
-    <div class="">
-      <button class="sidebar-btns active-btn">
-        <i class="bi bi-card-checklist"></i>
-        <span class="sidebar-font-btn">Gestión Quizz</span>
-      </button>
+  <!-- Contenido del Sidebar -->
+    <img class='side-img' src="assets/images/logo.svg" alt="logo" />
+
+  <button class="toggle-sidebar border-0 mb-3" (click)="toggleSidebar()">
+    <i class="bi bi-list"></i>
+  </button>
+
+  <!-- Botones cargados desde el componente dependiendo del rol del usuario -->
+  <div class="sidebar-btns-container" [ngClass]="{'show': isMenuOpen}">
+    <div class="gestion-btns">
+      @for (item of sidebarItems; track $index) {
+        <button
+            [disabled]="this.blockNavigation"
+          [ngClass]=" [
+            extended ? 'sidebar-btns-extended' : 'sidebar-btns',
+            selectedItem === item ? 'active' : ''
+            ]"
+          class="active-btn mb-2" (click)="onItemClick(item)">
+          <ng-container *ngIf="item.type === 'image'">
+            <img class="svg" [src]="item.icon" />
+          </ng-container>
+          <ng-container *ngIf="item.type === 'icon'">
+            <i [class]="item.icon"></i>
+          </ng-container>
+          <span *ngIf="extended" class="sidebar-font-btn">
+            {{ item.label }}</span
+          >
+        </button>
+      }
     </div>
 
-    <div class="">
-      <button class="sidebar-btns">
-        <i class="bi bi-boxes"></i>
-        <span class="sidebar-font-btn">Gestión Challenge</span>
+    <div class="w-100 mt-2">
+      <!-- Botón configuración. ¿Es sólo para candidatos? -->
+      <button
+        *ngIf="role === 'candidate'"
+        [disabled]="this.blockNavigation"
+        [ngClass]="extended ? 'sidebar-btns-extended' : 'sidebar-btns'"
+        class="active-btn mb-2">
+        <i class="bi bi-gear"></i>
+        <span *ngIf="extended" class="sidebar-font-btn svg">Configuración</span>
       </button>
-    </div>
 
-    <div class="">
-      <button class="sidebar-btns">
-        <i class="bi bi-people"></i>
-        <div class="sidebar-font-btn">Gestionar Candidatos</div>
+      <!-- Botón cerrar sesión -->
+      <button
+          [disabled]="this.blockNavigation"
+        [ngClass]="extended ? 'sidebar-btns-extended' : 'sidebar-btns'" class="btn-logout"
+        (click)="logout()"
+        >
+        <img
+          class="svg"
+          src="../../../../../assets/images/Crear Quizz/Vector.png" />
+        <span class="sidebar-font-btn" [ngClass]="{ 'd-none': !extended }">
+          {{ isMobile ? 'Cerrar sesión' : 'Salir' }}
+        </span>
       </button>
     </div>
   </div>
-
-  <div class="">
-    <button class="sidebar-btns">
-      <i class="bi bi-gear"></i>
-      <span class="sidebar-font-btn">Configuración</span>
-    </button>
-  </div>
 </div>
+

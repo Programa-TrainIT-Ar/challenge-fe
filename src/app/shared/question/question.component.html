@@ -1,0 +1,27 @@
+<div class="question-container" [ngClass]="questionForm.valid ? 'question-container-true' : 'question-container-false'">
+    <div class="question-number">
+        Pregunta {{ question.questionNumber }}
+    </div>
+    <div class="question-container-text">
+        <p>{{ question.question }}</p>
+    </div>
+    <form [formGroup]="questionForm" class="form-group">
+        @for(option of question.options; track $index) {
+        <div class="checkbox-container">
+            <div class="checkbox-input">
+                <input 
+                    [type]="question.type === 'multiple_choice' ? 'checkbox' : 'radio'"
+                    [name]="'question_' + question.questionNumber"
+                    [checked]="isOptionSelected($index)"
+                    (change)="onOptionChange($index, $event)" />
+            </div>
+            <input 
+                type="text" 
+                class="question-option-text" 
+                [placeholder]="option" 
+                disabled 
+                readonly />
+        </div>
+        }
+    </form>
+</div>

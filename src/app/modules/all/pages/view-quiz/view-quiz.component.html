@@ -1,0 +1,114 @@
+<div *ngIf="quizDetails; else loading" class="normal-container">
+  <div class="wrapper">
+    <!-- Contenedor de botones -->
+    <div class="button-container">
+      <button class="btn btn-circle" (click)="goBack()" aria-label="Cerrar">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          fill="white"
+          class="bi bi-x"
+          viewBox="0 0 16 16">
+          <path
+            d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
+        </svg>
+      </button>
+    </div>
+
+    <!-- Información general del quiz -->
+    <div class="contenedor">
+      <div class="inline-block">
+        <h4>Nombre del quiz</h4>
+        <input
+          type="text"
+          class="namequiz"
+          [value]="quizDetails?.name"
+          readonly />
+      </div>
+      <div class="inline-block">
+        <h4>Descripcion</h4>
+        <input
+          type="text"
+          class="descripcion"
+          [value]="quizDetails?.description"
+          readonly />
+      </div>
+    </div>
+
+    <div class="content-1">
+      <!-- Módulo -->
+      <div class="input-container">
+        <h4>Módulo</h4>
+        <div class="module-container custom-select-static">
+          <div class="styled-static">{{ quizDetails?.cell?.module?.name }}</div>
+        </div>
+      </div>
+
+      <!-- Célula -->
+      <div class="input-container">
+        <h4>Célula</h4>
+        <div class="cell-container custom-select-static">
+          <div class="styled-static">{{ quizDetails?.cell?.name }}</div>
+        </div>
+      </div>
+
+      <!-- Seniority / Nivel -->
+      <div class="input-container">
+        <h4>Seniority / Nivel</h4>
+        <div class="seniority-container custom-select-static">
+          <div class="styled-static">{{ quizDetails?.seniority }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sección de Preguntas -->
+  <div class="form-group">
+    <h4>Preguntas:</h4>
+    <ul class="question-container">
+      <li *ngFor="let question of quizDetails?.questions" class="question-item">
+        <h4>Pregunta: {{ question.question }}</h4>
+        <p><strong>Opciones:</strong></p>
+        <ul class="option-row d-flex flex-wrap">
+          <li
+            *ngFor="let option of question.options; let i = index"
+            class="option-item">
+            <div class="d-flex align-items-center me-3 option-box">
+              <div class="checkbox-container me-2">
+                <!-- Muestra un checkbox de solo lectura si la opción es correcta -->
+                <input
+                  type="checkbox"
+                  class="checkbox-input"
+                  [checked]="question.correct_option.includes(i)"
+                  disabled
+                  aria-label="Opción correcta" />
+              </div>
+              <input
+                type="text"
+                class="custom-option-input"
+                [value]="option"
+                readonly
+                aria-label="Opción de la pregunta" />
+            </div>
+          </li>
+        </ul>
+      </li>
+    </ul>
+    <!-- Mensaje cuando no hay preguntas -->
+    <p *ngIf="!quizDetails?.questions || quizDetails?.questions.length === 0">
+      Este quiz no tiene preguntas disponibles.
+    </p>
+  </div>
+
+  <!-- Botones de acciones -->
+  <div class="button-container">
+    <button class="btn btn-edit" (click)="editQuiz()">Editar</button>
+    <button class="btn btn-delete" (click)="deleteQuiz()">Eliminar Quiz</button>
+  </div>
+</div>
+
+<!-- Plantilla para cargar datos -->
+<ng-template #loading >
+  <p  id="loading">Cargando detalles del quiz...</p>
+</ng-template>

@@ -1,0 +1,230 @@
+<app-background>
+  <form
+    class="d-flex flex-column"
+    [formGroup]="registerForm"
+    (ngSubmit)="onSubmit()">
+    <!-- Nombre -->
+    <div class="input-w">
+      <label for="first_name">Nombre <span class="required">*</span></label>
+      <input
+        type="text"
+        class="form-control"
+        formControlName="first_name"
+        placeholder="Nombre"
+        [class.is-invalid]="
+          f['first_name'].invalid && f['first_name'].touched
+        " />
+      <!-- Alertas para nombre -->
+      <div
+        *ngIf="f['first_name'].invalid && f['first_name'].touched"
+        class="invalid-feedback d-block">
+        <div *ngIf="f['first_name'].errors?.['required']" class="required-text">
+          El nombre es requerido.
+        </div>
+        <div *ngIf="f['first_name'].errors?.['pattern']">
+          El nombre sólo puede contener letras.
+        </div>
+      </div>
+    </div>
+
+    <!-- Apellido -->
+    <div class="input-w">
+      <label for="last_name">Apellido <span class="required">*</span></label>
+      <input
+        type="text"
+        class="form-control"
+        formControlName="last_name"
+        placeholder="Apellido"
+        [class.is-invalid]="f['last_name'].invalid && f['last_name'].touched" />
+
+      <!-- Alertas para apellido -->
+
+      <div
+        *ngIf="f['last_name'].invalid && f['last_name'].touched"
+        class="invalid-feedback d-block">
+        <div *ngIf="f['last_name'].errors?.['required']" class="required-text">
+          El apellido es requerido.
+        </div>
+        <div *ngIf="f['last_name'].errors?.['pattern']">
+          El apellido solo puede contener letras.
+        </div>
+      </div>
+    </div>
+
+    <!-- Email -->
+    <div class="input-w">
+      <label for="email">Email <span class="required">*</span></label>
+      <input
+        type="email"
+        class="form-control"
+        formControlName="email"
+        placeholder="Email"
+        [class.is-invalid]="f['email'].invalid && f['email'].touched"/>
+
+      <!-- Alertas para el email -->
+      <div
+        *ngIf="f['email'].invalid && f['email'].touched"
+        class="invalid-feedback d-block required">
+        <div *ngIf="f['email'].errors?.['required']" class="required-text">
+          El email es requerido.
+        </div>
+        <div *ngIf="f['email'].errors?.['pattern']" class="required-text">
+          Ingresa un email válido.
+        </div>
+      </div>
+    </div>
+
+    <!-- Número telefónico -->
+    <div class="input-w">
+      <label for="phone_number">Teléfono <span class="required">*</span></label>
+      <input
+        type="tel"
+        class="form-control"
+        formControlName="phone_number"
+        placeholder="+54 9"
+        [class.is-invalid]="
+          f['phone_number'].invalid && f['phone_number'].touched
+        " />
+
+      <!-- Alertas para el teléfono -->
+      <div
+        *ngIf="f['phone_number'].invalid && f['phone_number'].touched"
+        class="invalid-feedback d-block">
+        <div
+          *ngIf="f['phone_number'].errors?.['required']"
+          class="required-text">
+          Ingresa un teléfono válido.
+        </div>
+        <div
+          *ngIf="f['phone_number'].errors?.['pattern']"
+          class="required-text">
+          El teléfono solo debe contener números y un símbolo + al inicio.
+        </div>
+      </div>
+    </div>
+
+    <!-- Contraseña -->
+    <div class="input-w">
+      <label for="nombre">Contraseña <span class="required">*</span></label>
+      <input
+        [type]="passwordFieldType1"
+        class="form-control"
+        formControlName="password"
+        placeholder="Contraseña"
+        [class.is-invalid]="f['password'].invalid && f['password'].touched" />
+
+      <button
+        class="btn showPasswordBtn shadow-none"
+        type="button"
+        id="password-toggle"
+        (click)="togglePasswordVisibility()">
+        <img
+          [src]="
+            passwordVisible1
+              ? 'assets/images/sign-up/ClosedEye.png'
+              : 'assets/images/sign-up/OpenedEye.png'
+          "
+          alt="mostrar contraseña"
+          class="eyePic" />
+      </button>
+      <!-- Alertas para la contraseña -->
+
+      <div
+        *ngIf="f['password'].invalid && f['password'].touched"
+        class="invalid-feedback d-flex">
+        <div *ngIf="f['password'].errors?.['required']" class="required-text">
+          La contraseña es requerida.
+        </div>
+        <div *ngIf="f['password'].errors?.['pattern']" class="required">
+          La contraseña no cumple con los parámetros.
+          <div
+            class="small mt-2 mb-2 flex flex-column align-items-start required">
+            Debe tener 8 caracteres, con al menos una letra mayúscula, un
+            número, y un símbolo especial.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Confirma contraseña / Contraseña 2 -->
+    <div class="input-w">
+      <label for="confirmPassword"
+        >Repite contraseña <span class="required">*</span></label
+      >
+      <input
+        [type]="passwordFieldType2"
+        class="form-control"
+        formControlName="confirmPassword"
+        placeholder="Repetir contraseña"
+        [class.is-invalid]="
+          f['confirmPassword'].invalid && f['confirmPassword'].touched
+        " />
+
+      <button
+        class="btn showPasswordBtn shadow-none"
+        type="button"
+        id="password-toggle"
+        (click)="togglePasswordVisibility2()">
+        <img
+          [src]="
+            passwordVisible2
+              ? 'assets/images/sign-up/ClosedEye.png'
+              : 'assets/images/sign-up/OpenedEye.png'
+          "
+          alt="mostrar contraseña"
+          class="eyePic" />
+      </button>
+
+      <!-- Aletas para contraseña 2 -->
+      <div
+        *ngIf="f['confirmPassword'].invalid && f['confirmPassword'].touched"
+        class="invalid-feedback d-block">
+        <div
+          *ngIf="f['confirmPassword'].errors?.['required']"
+          class="required-text">
+          Confirmar contraseña es requerido.
+        </div>
+      </div>
+      <div
+        *ngIf="
+          registerForm.errors?.['mismatch'] && f['confirmPassword'].touched
+        "
+        class="invalid-feedback d-block required-text">
+        Tu contraseña no coincide.
+      </div>
+    </div>
+
+    <button
+      type="submit"
+      class="btn btn-primary btn-form"
+      [disabled]="registerForm.invalid">
+      Registrarme
+    </button>
+
+  </form>
+
+  <app-info-modal
+    *ngIf="showModal"
+    (closed)="showModal = false"
+    [showImage]="false">
+    <div modal-footer *ngIf="successOperation">
+      <img src="assets/images/sign-up/icon-request-answer.png" alt="" />
+      <h3>¡Tus datos se han registrado con éxito!</h3>
+      <button class="btn btn-primary btn-form" (click)="finalizarProceso()">
+        Aceptar
+      </button>
+    </div>
+
+    <div modal-header *ngIf="!successOperation">
+      <h3>Upss. Ha ocurrido un problema</h3>
+    </div>
+
+    <div modal-footer *ngIf="!successOperation">
+      <img src="assets/images/sign-up/icon-bad-request-answer.png" alt="" />
+      <h3>Tus datos no pudieron registrarse</h3>
+      <button class="btn btn-primary btn-form" (click)="showModal = false">
+        Intentar de nuevo
+      </button>
+    </div>
+  </app-info-modal>
+</app-background>

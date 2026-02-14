@@ -1,0 +1,87 @@
+<div class="question-container" [class.tutorial-overlay]="tutorialStep === 2 || tutorialStep === 3">
+  <!-- Loading state -->
+  @if (isLoading) {
+    <div class="loading-container">
+      <p>Verificando sesión...</p>
+      <!-- Aquí puedes agregar un spinner -->
+    </div>
+  }
+
+  <div
+    class="header"
+    [style.justify-content]="
+      test && currentQuestion ? 'space-between' : 'flex-end'
+    "
+    [style.margin-top]="test && currentQuestion ? 0 : '4.5rem'"
+    [style.margin-bottom]="test && currentQuestion ? 0 : '5rem'">
+    @if (test && currentQuestion) {
+      <div class="question-number" [class.highlight-element]="tutorialStep === 3">
+        <h2 class="question-title">Preguntas de Práctica</h2>
+        <div class="question-container-text">
+          {{ getCurrentQuestionTypeText() }}
+        </div>
+      </div>
+    } @else {
+      <!-- Div vacío para mantener el espacio -->
+      <div class="spacer"></div>
+    }
+
+    <div class="timer counter-container" [class.highlight-element]="tutorialStep === 2">
+      {{ counter | date: 'mm:ss' }}
+    </div>
+  </div>
+
+  @if (currentQuestion) {
+    <app-question
+      [question]="currentQuestion"
+      (answerChanged)="onAnswerChanged($event)">
+    </app-question>
+  }
+
+  <div class="button-container">
+    <app-blue-button
+      [text]="getButtonText()"
+      [disabled]="!canProceed() || isSubmitting"
+      (onClick)="nextQuestion()">
+    </app-blue-button>
+  </div>
+
+  <!-- Tutorial Modals -->
+  @if (test && tutorialStep > 0) {
+    <!-- Modal 1: Introducción -->
+    @if (tutorialStep === 1) {
+      <div class="tutorial-modal slide-down" (click)="nextTutorialStep()">
+        <div class="tutorial-content">
+          <p>Recibirás 3 preguntas de práctica relacionadas con el challenge que estás por iniciar. 
+            Las preguntas de práctica brindan la oportunidad de ver el tipo de preguntas y la disposición de la plataforma al mismo tiempo.
+            <b> Tus respuestas a estas preguntas no inciden en el puntaje final.</b>
+          </p>
+          <p class="tutorial-hint">Haz clic para continuar</p>
+        </div>
+      </div>
+    }
+
+    <!-- Modal 2: Cronómetro -->
+    @if (tutorialStep === 2) {
+      <div class="tutorial-modal slide-down" (click)="nextTutorialStep()">
+        <div class="tutorial-content">
+          <p>Tendrás un cronómetro que tomará el tiempo que demores en completar el challenge. <b>Te recomendamos completarlo de una sola vez.</b>
+            </p>
+          <p class="tutorial-hint">Haz clic para continuar</p>
+        </div>
+      </div>
+    }
+
+    <!-- Modal 3: Zona de práctica -->
+    @if (tutorialStep === 3) {
+      <div class="tutorial-modal slide-down" (click)="closeTutorial()">
+        <div class="tutorial-content">
+          <p>
+              En esta zona tendrás el tipo de pregunta que se mostrará en el formulario. 
+          </p>
+          <p class="tutorial-hint">Haz clic para comenzar</p>
+        </div>
+      </div>
+    }
+  }
+</div>

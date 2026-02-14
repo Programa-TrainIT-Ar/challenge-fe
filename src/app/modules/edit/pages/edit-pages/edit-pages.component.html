@@ -1,1 +1,71 @@
-<p>Soy el edit page</p>
+<div class="body">
+    <div class="title">
+        <a class="leave" (click)="close.emit()">
+            <i class="fa-regular fa-circle-left mr-2" style="font-size: larger"></i>
+            <div>volver al listado</div>
+        </a>
+
+        <div class="empty-space"></div>
+    </div>
+
+    <div class="content-1">
+        <div class="quiz-info">
+            <div class="form-group">
+                <input
+                    type="text"
+                    [(ngModel)]="quiz.name"
+                    class="custom-input"
+                    placeholder="Nombre del quiz"
+                    style="width: max-content" />
+            </div>
+            <div class="form-group">
+                <input
+                    [(ngModel)]="quiz.description"
+                    type="text"
+                    class="custom-input"
+                    placeholder="Descripción del quiz" />
+            </div>
+        </div>
+
+        <app-header-page
+            [resetButton]="false"
+            [editMode]="true"
+            [initialCategory]="initialQuizCategory"
+            (datosParaPadre)="receiveCategory($event)">
+        </app-header-page>
+
+        <div id="questions-scroll">
+            <div id="question-container">
+                @for (question of this.questionsData; track $index){
+                    <div class="question-container">
+                        <app-question
+
+                            [question]="question"
+                            [index]="$index"
+                            (edit)="showEditPopup($event)"
+                        />
+                        <!--Editar pregunta Popup-->
+                        @if (showEditForm && currentEditingIndex === $index){
+                            <div
+                                class="edit-popup content-2"
+                            >
+                                <app-edit-question-pop-up
+                                    [questionToEdit]="this.currentEditingQuestion"
+                                    (cancel)="closeEditPopup()"
+                                    (editedQuestion)="onEditHandler($event)"
+
+                                />
+                            </div>
+                        }
+                    </div>
+                }
+                <div
+                    class="actions-container"
+                    style="display: flex; justify-content: space-around"
+                >
+                    <button (click)="saveQuiz()" class="save-button">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

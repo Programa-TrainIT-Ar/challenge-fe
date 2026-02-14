@@ -1,8 +1,137 @@
-import { Component } from '@angular/core';
+import {
+  Component,
+  Input,
+  Output,
+  EventEmitter,
+  OnInit,
+  inject,
+} from '@angular/core';
+import {
+  FormBuilder,
+  FormGroup,
+  FormArray,
+  AbstractControl,
+} from '@angular/forms';
+import { QuizService } from './services/quiz.service';
+import {
+  Question,
+  ResponseQuestion,
+  UpdateQuizRequest,
+} from '../../../../shared/question-container/question-interface';
+import {Quiz} from '../../../../shared/question-container/question-interface';
 
 @Component({
-  selector: 'app-edit-pages',
-  templateUrl: './edit-pages.component.html',
-  styleUrl: './edit-pages.component.scss',
+    selector: 'app-edit-pages',
+    templateUrl: './edit-pages.component.html',
+    styleUrls: ['./edit-pages.component.scss'],
 })
-export class EditPagesComponent {}
+export class EditPagesComponent implements OnInit {
+    private quizService = inject(QuizService);
+    @Input() quizId: string;
+    @Output() close = new EventEmitter<void>();
+    quiz : Quiz={} as Quiz;
+    questionsData: Question[] = [];
+    currentEditingQuestion: null| Question = null;
+    currentEditingIndex: number | null = null;
+    showEditForm: boolean = false;
+
+
+    initialQuizCategory: any = null;
+    cell_id: string = '';
+    seniority: string = '';
+
+    ngOnInit() {
+        this.loadQuiz();
+    }
+
+    private loadQuiz() {
+        if (!this.quizId) {
+            console.error('Quiz ID no proporcionado');
+            return;
+        }
+
+        this.quizService.getQuizWithQuestions(this.quizId).subscribe({
+            next: (quizData : Quiz) => {
+                this.initialQuizCategory = {
+                    module: quizData.cell.module.name,
+                    module_id: quizData.cell.module.id,
+                    cell: quizData.cell.name,
+                    cell_id: quizData.cell.id,
+                    seniority: quizData.seniority
+                };
+
+                console.log('Modulo inicial:', this.initialQuizCategory);
+                this.quiz = quizData;
+                quizData.questions.forEach((data,index) => this.questionsData.push(this.ToQuestion(data,index)));
+            },
+            error: error => {
+                console.error('Error al obtener el cuestionario:', error);
+            },
+        });
+    }
+
+    receiveCategory(quizCategory: any) {
+        this.initialQuizCategory.module = quizCategory.module;
+        this.initialQuizCategory.module_id = quizCategory.moduleId;
+        this.cell_id = quizCategory.cellId;
+        this.seniority = quizCategory.seniority;
+        this.initialQuizCategory.cell_id = quizCategory.cellId;
+        this.initialQuizCategory.seniority = quizCategory.seniority;
+        this.quiz.cell_id = quizCategory.cellId;
+        this.quiz.seniority = (quizCategory.seniority ?? '').toString().toLowerCase();
+    }
+
+    private ToQuestion(data: ResponseQuestion, questionNumber : number): Question {
+        return {
+            id: data.id,
+            correct_option: data.correct_option,
+            options: data.options,
+            question: data.question,
+            questionNumber: questionNumber,
+            type: data.type,
+            seniority: this.quiz.seniority,
+        }
+    }
+    private toUpdateQuizRequest(): UpdateQuizRequest{
+        return {
+            cell_id: this.quiz.cell_id,
+            challenge_type: this.quiz.challenge_type,
+            created_by_id: this.quiz.created_by_id,
+            description: this.quiz.description,
+            is_active: this.quiz.is_active,
+            max_time: this.quiz.max_time,
+            name: this.quiz.name,
+            questions: this.questionsData,
+            seniority: this.quiz.seniority,
+
+        }
+    }
+    showEditPopup(questionIndex: number) {
+        this.currentEditingQuestion = this.questionsData[questionIndex];
+        this.currentEditingIndex = questionIndex;
+        this.showEditForm = true;
+    }
+
+    closeEditPopup() {
+        this.currentEditingQuestion = null;
+        this.currentEditingIndex = null;
+        this.showEditForm = false;
+    }
+
+    onEditHandler(question: Question) {
+        this.questionsData[question.questionNumber]= question;
+        this.closeEditPopup();
+    }
+
+    saveQuiz() {
+        this.quizService.updateQuiz(this.quizId, this.toUpdateQuizRequest()).subscribe({
+            next: response => {
+                console.log('Cambios guardados para el quiz:', response);
+                this.close.emit();
+            },
+            error: error => {
+                console.error('Error al guardar cambios:', error);
+            },
+        });
+    }
+}

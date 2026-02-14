@@ -1,0 +1,90 @@
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { environment } from '@environments/environment';
+import { catchError, Observable, of, throwError } from 'rxjs';
+import { AccountSetupResponse } from '../interfaces/account-setup.interface';
+import { PasswordResetResponse } from '../interfaces/forgot-password.interface';
+
+export interface UserData {
+  id?: string;
+  email: string;
+  first_name?: string;
+  last_name?: string;
+  photo?: string;
+  phone_number?: string;
+  timezone?: string;
+  gender?: string;
+  password?: string;
+  birthdate?: string;
+}
+
+export interface LoginResponse {
+  access_token: string;
+  id_token: string;
+  scope: string;
+  expires_in: number;
+  token_type: string;
+}
+
+export interface FindUserResponse {
+  user: UserData;
+  register_complete: boolean;
+}
+
+@Injectable({
+  providedIn: 'root',
+})
+export class UserService {
+  private urlApi = `${environment.url}/user`;
+
+  constructor(private http: HttpClient) {}
+
+  finduserByEmail(email: string) {
+    return this.http
+      .get<FindUserResponse>(`${this.urlApi}/FindByEmail?email=${email}`)
+      .pipe(
+        catchError(error => {
+          if (error.status === 404) {
+            return of(null);
+          }
+          throw Error;
+        })
+      );
+  }
+
+  loginWithEmail(email: string, password: string) {
+    return this.http.post(`${this.urlApi}/login-local`, { email, password });
+  }
+
+  sendResetLink(email: string): Observable<PasswordResetResponse> {
+    return this.http.post<PasswordResetResponse>(`${this.urlApi}/forgot-password`, { email });
+  }
+
+  setNewPassword(confirmationToken: string, password: string, confirmPassword: string){
+    return this.http.post(`${this.urlApi}/reset-password`, {confirmationToken, password, confirmPassword})
+  }
+
+  registerUser(userData: UserData) {
+    return this.http.post(`${this.urlApi}/register`, userData);
+  }
+
+  registerUserWithAuth(userData: UserData) {
+    return this.http.post(`${this.urlApi}/register-with-auth`, userData);
+  }
+
+  accountSetup(id: string, userData: UserData) {
+    //El interceptor se encarga de añadir el token
+    return this.http.put<AccountSetupResponse>(`${this.urlApi}/setup/${id}`, userData);
+  }
+
+  sentEmailVerification(email: string, first_name: string) {
+    return this.http.post(`${this.urlApi}/send-email-confirmation`, {
+      email,
+      first_name,
+    });
+  }
+
+  VerifyEmail(token: string) {
+    return this.http.post(`${this.urlApi}/confirm-email`, { confirmationToken: token });
+  }
+}

@@ -1,0 +1,127 @@
+<app-background>
+  <div class="d-flex flex-column align-items-center w-100">
+    <h2 class="mb-5">Regístrate para comenzar la aventura</h2>
+
+    <form
+      class="d-flex flex-column align-items-center"
+      [formGroup]="registerForm"
+      (ngSubmit)="submit()">
+      <!-- Name -->
+      <div class="input-w">
+        <label for="nombre">Nombre <span class="required">*</span></label>
+        <input
+          type="text"
+          class="form-control"
+          formControlName="name"
+          placeholder="Nombre"
+          [class.is-invalid]="f['name'].invalid && f['name'].touched" />
+        <div
+          *ngIf="f['name'].invalid && f['name'].touched"
+          class="invalid-feedback d-block">
+          <div *ngIf="f['name'].errors?.['required']" class="required-text">
+            El nombre es requerido.
+          </div>
+        </div>
+      </div>
+
+      <!-- Email -->
+      <div class="input-w">
+        <label for="email">Email <span class="required">*</span></label>
+        <input
+          type="email"
+          class="form-control"
+          formControlName="email"
+          placeholder="Email"
+          [class.is-invalid]="f['email'].invalid && f['email'].touched" />
+
+        <!-- Alertas para el email -->
+        <div
+          *ngIf="f['email'].invalid && f['email'].touched"
+          class="invalid-feedback d-block">
+          <div *ngIf="f['email'].errors?.['required']" class="required-text">
+            El email es requerido.
+          </div>
+          <div *ngIf="f['email'].errors?.['email']" class="required-text">
+            Ingresa un email válido.
+          </div>
+        </div>
+      </div>
+
+      <app-primary-btn
+        buttonText="Regístrate"
+        type="submit"
+        [disabled]="registerForm.invalid">
+      </app-primary-btn>
+    </form>
+
+    <span class="mb-3">ó</span>
+    <app-google-btn buttonText="Regístrate con Google"> </app-google-btn>
+    <span
+      >¿Ya tienes una cuenta?
+      <span class="required" style="cursor: pointer" (click)="navigateToLogin()"
+        >Inicia sesión</span
+      ></span
+    >
+  </div>
+  <!-- <button (click)="showModal = true">Abrir modal</button> -->
+  <app-info-modal
+    *ngIf="showModal && currentModal === 'verification_sent'"
+    (closed)="closeModal()">
+    <div modal-header>
+      <h3>Hemos enviado un correo de verificación</h3>
+    </div>
+    <div modal-image>
+        <img src="assets/images/sign-up/logo.png" alt="" />
+      </div>
+    <div modal-footer>
+      <h3>¡Por favor revisa tu bandeja de entrada!</h3>
+    </div>
+  </app-info-modal>
+
+  <app-info-modal
+    *ngIf="showModal && currentModal === 'login'"
+    (closed)="closeModal()">
+    <div modal-header>
+      <h3>Correo confirmado</h3>
+    </div>
+    <div modal-image>
+        <img src="assets/images/sign-up/icon-request-answer.png" alt="" />
+      </div>
+    <div modal-footer>
+      <h3>Tu correo ya fue confirmado. Inicia sesión para continuar.</h3>
+      <button class="btn btn-primary btn-form" (click)="navigateToLogin()">
+        Ir al login
+      </button>
+    </div>
+  </app-info-modal>
+
+  <app-info-modal
+    *ngIf="showModal && currentModal === 'pending'"
+    (closed)="closeModal()">
+    <div modal-header>
+      <h3>Verificación pendiente</h3>
+    </div>
+    <div modal-image>
+        <img src="assets/images/sign-up/icon-request-alert.png" alt="" />
+      </div>
+    <div modal-footer>
+      
+      <h3>Ya se ha enviado un correo de confirmación</h3>
+    </div>
+  </app-info-modal>
+
+  <app-info-modal
+    *ngIf="showModal && currentModal === 'error'"
+    (closed)="closeModal()">
+    <div modal-header>
+      <h3>Upss. Ha ocurrido un problema</h3>
+    </div>
+    <img src="assets/images/sign-up/icon-bad-request-answer" alt="" />
+    <div modal-footer>
+      <h3>{{ modalMessageBody }}</h3>
+      <button class="btn btn-primary btn-form" (click)="closeModal()">
+        Intentar de nuevo
+      </button>
+    </div>
+  </app-info-modal>
+</app-background>

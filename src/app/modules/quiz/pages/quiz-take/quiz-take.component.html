@@ -1,0 +1,94 @@
+@if (!loading && quiz) {
+  <div class="layout-container">
+    <app-side-bar
+      role="candidate"
+      [extended]="true"
+      [blockNavigation]="quizStarted"/>
+
+    @switch (step) {
+      @case (1) {
+        <div class="question-container">
+          <img src="assets/images/logo.svg" alt="Logo" class="bg-logo" />
+          <div class="page-content">
+            <div class="question-tittle">
+              Bienvenido al Challenge {{ quiz.name }}
+            </div>
+            <div class="question-container-text">
+              {{
+                quiz.description ||
+                  'Gracias por tu interés en formar parte de la comunidad TrainIT. Bienvenido a nuestro Challenge TrainIT. Completar este Challenge le permitirá demostrar las habilidades requeridas para este rol'
+              }}
+            </div>
+            <div class="question-container-text">
+              <ul>
+                <li>
+                  Este Challenge consta de
+                  {{ quiz.questions?.length || 10 }} preguntas sencillas
+                  (Selección simple, múltiple y Verdadero/Falso).
+                </li>
+                <li>
+                  Completarlo te dará la oportunidad de mostrar tus habilidades.
+                </li>
+                <li>
+                  La evaluación está cronometrada. Se muestra un temporizador.
+                </li>
+                <li>Recomendamos completar la evaluación de una sola vez.</li>
+              </ul>
+
+              <br />
+              Buena Suerte!
+            </div>
+            <div class="button-container">
+              <app-blue-button text="Entendido" (click)="nextStep()" />
+            </div>
+          </div>
+        </div>
+      }
+
+      @case (2) {
+        <app-question-container
+          [test]="true"
+          [quiz]="quiz"
+          (nextStep)="nextStep()" />
+      }
+
+      @case (3) {
+        <div class="countdown-component">
+          <img
+            src="assets/images/logo.svg"
+            alt="Logo"
+            class="bg-logo-countdown" />
+          <div class="clock-container">
+            <p>Tu challenge inicia en</p>
+            <p class="clock">{{ countdown }}</p>
+          </div>
+        </div>
+      }
+
+      @case (4) {
+        <app-question-container
+          [test]="false"
+          [quiz]="quiz"
+          (quizStarted)="onQuizStarted($event)"
+          (showResults)="onShowResults($event)" />
+      }
+
+      @case (5) {
+        <div class="result-wrapper">
+          
+          <app-quiz-result
+            [result]="quizResults"
+            [quizName]="quiz.name"
+            [totalQuestions]="quiz.questions?.length || 10">
+          </app-quiz-result>
+        </div>
+      }
+    }
+  </div>
+}
+
+@if (loading) {
+  <div class="loading-container">
+    <p>Cargando quiz...</p>
+  </div>
+}

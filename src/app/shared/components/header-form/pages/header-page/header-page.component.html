@@ -1,0 +1,264 @@
+<div class="content">
+  <div class="content-1">
+    <!-- Opciones de Módulo -->
+    <div class="input-container">
+      <h4 class="mb-5">Módulo</h4>
+      <div class="form-select option-select" (click)="isShowModulo($event)">
+        <span [ngClass]="[quizCategory?.module, 'floating']">
+          {{ quizCategory?.module || (isMobile ? 'Modulo' : 'Seleccionar modulo') }}
+        </span>
+      </div>
+      @if (showModulo) {
+        <div
+          class="option-floating cell-overflow  floating-module"
+          (click)="$event.stopPropagation()">
+          @for (module of modules; track $index) {
+            <button class="module-option" (click)="selectModule(module)">
+              @if (editingModuleId === module.id) {
+                <div class="edit-module-form">
+                  <input
+                    [formControl]="editModuleControl"
+                    (click)="$event.stopPropagation()"
+                    (keyup.enter)="saveModuleEdit(module.id)"
+                    (keyup.escape)="cancelEditingModule()"
+                    placeholder="Nombre del módulo" />
+
+                  <!-- Validaciones del módulo -->
+                  @if (editModuleControl?.errors?.['required']) {
+                    <span class="d-block"
+                      >(El módulo no puede quedar vacío)</span
+                    >
+                  }
+                  @if (editModuleControl?.errors?.['minlength']) {
+                    <span class="d-block"
+                      >(Debe tener como mínimo 3 caracteres)</span
+                    >
+                  }
+
+                  @if (editModuleControl?.errors?.['whitespace']) {
+                    <span class="d-block"
+                      >(El nombre no puede ser solo espacios en blanco)</span
+                    >
+                  }
+
+                  <div class="edit-actions">
+                    <button
+                      class="actions-btn"
+                      (click)="
+                        $event.stopPropagation(); saveModuleEdit(module.id)
+                      ">
+                      <i class="bi bi-check fs-6"></i>
+                    </button>
+                    <button
+                      class="actions-btn ms-2"
+                      (click)="$event.stopPropagation(); cancelEditingModule()">
+                      <i class="bi bi-x fs-6"></i>
+                    </button>
+                  </div>
+                </div>
+              } @else {
+                <div class="module-container">
+                  <div>
+                    {{ module.name }}
+                  </div>
+                  @if (editMode) {
+                    <div class="actions">
+                      <button
+                        class="actions-btn"
+                        (click)="
+                          $event.stopPropagation();
+                          startEditingModule($event, module.id, module.name)
+                        ">
+                        <i class="bi bi-pencil-square fs-6"></i>
+                      </button>
+                    </div>
+                  }
+                </div>
+              }
+            </button>
+          }
+          @if (editMode) {
+            @if (!addModule) {
+              <button class="module-option" (click)="toggleAddModule()">
+                + Agregar modulo
+              </button>
+            } @else {
+              <div>
+                <input
+                  class="module-option"
+                  type="text"
+                  [formControl]="module"
+                  placeholder="Nombre del nuevo módulo"
+                  (keyup.escape)="toggleAddModule()"
+                  (keyup.enter)="createModule()" />
+
+                <!-- Validaciones del módulo nuevo -->
+                @if (module?.errors?.['required']) {
+                  <span class="d-block">(El módulo no puede quedar vacío)</span>
+                }
+                @if (module?.errors?.['minlength']) {
+                  <span class="d-block"
+                    >(Debe tener como mínimo 3 caracteres)</span
+                  >
+                }
+                @if (module?.errors?.['whitespace']) {
+                  <span class="d-block"
+                    >(El nombre no puede ser solo espacios en blanco)</span
+                  >
+                }
+                <div class="input-actions">
+                  <button (click)="createModule()">Guardar</button>
+                  <button (click)="toggleAddModule()">Cancelar</button>
+                </div>
+              </div>
+            }
+          }
+        </div>
+      }
+    </div>
+    <!-- Opciones de Célula -->
+    <div class="input-container">
+      <h4>Célula</h4>
+      <div class="form-select option-select" (click)="isShowCelula($event)">
+        <span class="floating {{ quizCategory?.cellClass }}">
+          {{ quizCategory?.cell || (isMobile ? 'Celula' : 'Selecciona la célula') }}
+        </span>
+      </div>
+      @if (showCelula && quizCategory.module != '') {
+        <div
+          class="option-floating floating-cell"
+          (click)="$event.stopPropagation()">
+          @for (cell of cells; track $index) {
+            <button
+              class="floating"
+              (click)="selectCell(cell, $index)"
+              [ngClass]="getCellClass($index)">
+              @if (editingCellId === cell.id) {
+                <div class="edit-cell-form">
+                  <input
+                    [formControl]="editCellControl"
+                    (click)="$event.stopPropagation()"
+                    (keyup.enter)="saveCellEdit(cell.id)"
+                    (keyup.escape)="cancelEditingCell()"
+                    placeholder="Nombre de la celula" />
+
+                  <!-- Validaciones de la célula -->
+                  @if (editCellControl?.errors?.['required']) {
+                    <span class="d-block"
+                      >(La celula no puede quedar vacía)</span
+                    >
+                  }
+                  @if (editCellControl?.errors?.['minlength']) {
+                    <span class="d-block"
+                      >(Debe tener como mínimo 3 caracteres)</span
+                    >
+                  }
+                  @if (editCellControl?.errors?.['whitespace']) {
+                    <span class="d-block"
+                      >(El nombre no puede ser solo espacios en blanco)</span
+                    >
+                  }
+                  <div class="edit-actions">
+                    <button
+                      (click)="$event.stopPropagation(); saveCellEdit(cell.id)">
+                      <i class="bi bi-check"></i>
+                    </button>
+                    <button
+                      (click)="$event.stopPropagation(); cancelEditingCell()">
+                      <i class="bi bi-x"></i>
+                    </button>
+                  </div>
+                </div>
+              } @else {
+                <div class="d-flex">
+                  <div>
+                    {{ cell.name }}
+                  </div>
+                  @if (editMode) {
+                    <div class="actions">
+                      <button
+                        class="actions-btn ms-2 me-1"
+                        (click)="
+                          $event.stopPropagation();
+                          startEditingCell($event, cell.id, cell.name)
+                        ">
+                        <i class="bi bi-pencil-square"></i>
+                      </button>
+                    </div>
+                  }
+                </div>
+              }
+            </button>
+          }
+          @if (editMode) {
+            @if (!addCell) {
+              <button class="module-option" (click)="toggleAddCell()">
+                + Agregar celula
+              </button>
+            } @else {
+              <div>
+                <input
+                  class="module-option"
+                  type="text"
+                  [formControl]="cell"
+                  placeholder="Nombre de la nueva célula"
+                  (keyup.escape)="toggleAddCell()"
+                  (keyup.enter)="createCell()" />
+                <!-- Validaciones de la célula -->
+                @if (cell?.errors?.['required']) {
+                  <span class="d-block">(La célula no puede quedar vacía)</span>
+                }
+                @if (cell?.errors?.['minlength']) {
+                  <span class="d-block"
+                    >(Debe tener como mínimo 3 caracteres)</span
+                  >
+                }
+                @if (editCellControl?.errors?.['whitespace']) {
+                  <span class="d-block"
+                    >(El nombre no puede ser solo espacios en blanco)</span
+                  >
+                }
+                <div class="input-actions">
+                  <button (click)="createCell()">Guardar</button>
+                  <button (click)="toggleAddCell()">Cancelar</button>
+                </div>
+              </div>
+            }
+          }
+        </div>
+      }
+    </div>
+    <!-- senñority -->
+    <div class="input-container">
+        <h4>Seniority / Nivel</h4>
+      <div class="form-select option-select" (click)="isShowSeniority()">
+        <span class="floating" [class]="getSelectedSeniorityClass()"
+          >{{ quizCategory?.seniority || (isMobile ? 'Seniority' :'Seniority') }}
+        </span>
+      </div>
+      <!-- absolute -->
+      @if (showSeniority) {
+        <div class="option-floating floating-seniority">
+          @for (seniority of seniorities; track $index) {
+            <button
+              (click)="selectSeniority(seniority.name)"
+              class="floating {{ seniority.class }} ">
+              {{ seniority.name }}
+            </button>
+          }
+        </div>
+      }
+    </div>
+
+      @if (resetButton) {
+          <button class="btn-plus reset-btn" (click)="resetValue()">
+            <!-- <i class="bi bi-arrow-counterclockwise"></i> -->
+            Limpiar campos
+          </button>
+        }
+  </div>
+  
+  @if (showModulo || showCelula || showSeniority) {
+  <div class="overlay" (click)="closeAll()"></div>
+}
+</div>

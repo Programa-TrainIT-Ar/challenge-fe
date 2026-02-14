@@ -1,0 +1,9 @@
+ <button
+   type="submit"
+   class="btn btn-primary btn-form"
+   (click)="onSubmit()"
+   [disabled]="disabled || loading">
+   <span *ngIf="loading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+   <span *ngIf="!loading">{{ buttonText }}</span>
+   <span class="visually-hidden" *ngIf="loading">Loading...</span>
+ </button>

@@ -1,0 +1,186 @@
+.question-container {
+  width: 75dvw;
+  height: 95vh;
+  padding: 24px 8px 8px 8px;
+  gap: 47px;
+  border-radius: 12px 0px 0px 0px;
+  opacity: 0px;
+  display: flex;
+  flex-direction: column;
+  background-color: #212121;
+  margin: 0 1rem;
+  border-radius: .8rem;
+  backdrop-filter: blur(4px);
+  box-shadow: 0px 4px 4px 0px #00000040;
+  font-family: 'Poppins';
+  position: relative;
+}
+
+.counter-container {
+    width: 108px;
+    height: 36px;
+    padding: 8px 0px 0px 0px;
+    gap: 0px;
+    opacity: 0px;
+    font-family: "Protest Guerrilla", sans-serif;
+    font-size: 32px;
+    font-weight: 400;
+    line-height: 20px;
+    letter-spacing: 0.25px;
+    text-align: left;
+    text-underline-position: from-font;
+    text-decoration-skip-ink: none;
+
+}
+
+
+.button-container {
+    width: 804px;
+    margin: 0 auto;
+    text-align: end;
+    padding-right: 1rem;
+    margin-top: 50px;
+}
+
+.title-component {
+    margin-top: 3rem;
+    margin-left: 5rem;
+    width: 50vw;
+    margin-bottom: 5rem;
+    font-family: 'poppins';
+    font-weight: 200;
+}
+
+.title-component h3 {
+    font-weight: 300;
+}
+
+
+.question-type-input {
+    background: rgba(27, 27, 27, 1);
+    border: 1px solid rgba(51, 50, 50, 1);
+    font-size: 1.1rem;
+    padding: .2rem 1rem;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    width: 60%;
+
+
+}
+
+.question-type-input p {
+    margin: 0;
+}
+
+.header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding-top: 1rem;
+    margin-left: 4rem;
+    margin-right: 4rem;
+}
+
+.spacer {
+    width: 5rem; /* Ocupa un espacio mínimo */
+}
+
+.question-container-text {
+  background: #1B1B1B;
+  border: 1px solid #333232;
+  font-size: 1rem;
+  font-weight: 300;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 4rem;
+}
+
+.question-test-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-bottom: 2rem;
+}
+
+// Estilos del tutorial
+.tutorial-overlay {
+  position: relative;
+
+  &::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.75);
+    z-index: 998;
+    backdrop-filter: blur(2px);
+  }
+}
+
+.highlight-element {
+  z-index: 999 !important;
+}
+
+.tutorial-modal {
+  position: fixed;
+  top: 25%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+
+  background: #1B1B1B;
+  border: 2px solid #333232;
+  border-radius: 12px;
+
+  cursor: pointer;
+  font-family: 'Poppins', sans-serif;
+
+  .tutorial-content {
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+
+    p {
+      margin: 0;
+      font-size: 1.3rem;
+      font-weight: 300;
+      line-height: 1.6;
+      color: #CCCCCC;
+      b{
+        font-weight: bold;
+
+      }
+    }
+
+    .tutorial-hint {
+      margin-top: 0.5rem;
+      font-size: 0.9rem;
+      font-style: italic;
+      color: #4A90E2;
+      opacity: 0.8;
+    }
+  }
+
+}
+
+.slide-down {
+  animation: slideDown 0.4s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    top: -100px;
+    opacity: 0;
+    transform: translateX(-50%) translateY(-20px);
+  }
+  to {
+    top: 25%;
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
